@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B: Strain Fixity - Virtual Lab</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Printing Lab</div>
+            
+        
+<div class="form-container ">
+            <div class="form-row">
+                <div class="form-label">Polymer Settings:</div>
+                <div class="form-options">
+                    <div class="slider-group">
+                        <label>Base Tg (°C)</label>
+                        <input type="range" id="baseTg" min="40" max="120" value="60">
+                        <div class="slider-val" id="valTg">60 °C</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-label">UTM Programming Cycle:</div>
+                <div class="form-options">
+                    <div class="slider-group">
+                        <label>Prog Temp (°C)</label>
+                        <input type="range" id="progTemp" min="20" max="150" value="80">
+                        <div class="slider-val" id="valPtemp">80 °C</div>
+                    </div>
+                    <div class="slider-group">
+                        <label>Max Applied Stress (MPa)</label>
+                        <input type="range" id="appStress" min="1" max="10" value="5">
+                        <div class="slider-val" id="valStress">5 MPa</div>
+                    </div>
+                    <div class="slider-group">
+                        <label>UTM Loading Rate (MPa/s)</label>
+                        <input type="range" id="loadRate" min="1" max="20" value="5">
+                        <div class="slider-val" id="valLoadRate">5 MPa/s</div>
+                    </div>
+                    <div class="slider-group">
+                        <label>Holding Time (min)</label>
+                        <input type="range" id="holdTime" min="0" max="30" value="10">
+                        <div class="slider-val" id="valHold">10 min</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="button" id="btnRun">Execute UTM Cycle</button>
+                <button type="button" onclick="location.reload()">Reset Setup</button>
+            </div>
+        </div>
+        
+        
+</nav>
+        <main class="content-area">
+            <div class="content-container">
+
+        <h1 class="title">Sub-Calc B: Viscoelastic Programming & Strain Fixity</h1>
+        
+        <div class="sim-viewport">
+            <div style="position: relative;">
+                <div class="sim-label" id="stateLabel">UTM Machine: Idle</div>
+                <canvas id="simCanvas" width="450" height="400"></canvas>
+            </div>
+            <div style="position: relative;">
+                <div class="sim-label">Live Analytics: Stress vs Strain</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+        
+        <div class="insight-box" id="liveInsight">
+            <strong>Live Insight:</strong> The polymer is mounted in the UTM clamps. Setup your programming cycle and click 'Execute'.
+        </div>
+
+        <div id="resultsContainer">
+            <div class="result-box premium-card">
+                <h3>Shape Fixity Analysis</h3>
+                <div class="result-row"><span>Maximum Viscoelastic Strain (ε_m):</span> <span class="result-val" id="resMaxStrain">-</span></div>
+                <div class="result-row"><span>Fixed Strain After Unloading (ε_u):</span> <span class="result-val" id="resFixed">-</span></div>
+                <div class="result-row"><span>Shape Fixity Ratio (R_f):</span> <span class="result-val" id="resFixity">-</span></div>
+            </div>
+        </div>
+    
+
+      <div class="floating-nav">
+    <a href="index.html" class="btn-nav">🡐 Back</a>
+    <a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment 🡒</a>
+</div>
+            </div>
+        </main>
+    </div>
+    <script src="js/script_b.js"></script>
+
+</body>
+</html>
+
+

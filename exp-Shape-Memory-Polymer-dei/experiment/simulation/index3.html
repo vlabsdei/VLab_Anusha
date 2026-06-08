@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D: Multi-Shape Memory - Virtual Lab</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Printing Lab</div>
+            
+        
+<div class="form-container ">
+            <div class="form-row">
+                <div class="form-label" style="text-align:center; flex:none;">PU/PMMA Blend Ratio:</div>
+                <div class="slider-group" style="flex:1; max-width: 100%;">
+                    <input type="range" id="blendSlider" min="0" max="100" value="50">
+                    <div style="display:flex; justify-content:space-between; margin-top:5px; font-weight:bold; color:#8A1134;">
+                        <span id="lblPU">50% PU</span>
+                        <span id="lblPMMA">50% PMMA</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row" style="margin-top: 15px;">
+                <div class="form-label" style="text-align:center; flex:none;">Blend Morphology:</div>
+                <div class="form-options" style="flex:1; display:flex; justify-content:center; gap:20px;">
+                    <label style="cursor:pointer;"><input type="radio" name="morphology" value="miscible"> Miscible Blend (1 Tg)</label>
+                    <label style="cursor:pointer;"><input type="radio" name="morphology" value="immiscible" checked> Phase-Separated Copolymer (2 Tgs)</label>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" id="btnRun">Initiate Heating Cycle (25°C to 130°C)</button>
+                <button type="button" onclick="location.reload()">Reset Setup</button>
+            </div>
+        </div>
+        
+        
+</nav>
+        <main class="content-area">
+            <div class="content-container">
+
+        <h1 class="title">Sub-Calc D: Triple-Shape Memory & Fox Equation</h1>
+        
+        <div class="sim-viewport">
+            <div style="position: relative;">
+                <div class="sim-label" id="stateLabel">Physical State: Temporary Shape 2</div>
+                <canvas id="simCanvas" width="450" height="400"></canvas>
+            </div>
+            <div style="position: relative;">
+                <div class="sim-label">Live Analytics: Recovery vs Temperature</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+        
+        <div class="insight-box" id="liveInsight">
+            <strong>Live Insight:</strong> Adjust the polymer blend and initiate heating to see how different domains unlock recovery sequentially.
+        </div>
+
+        <div id="resultsContainer">
+            <div class="result-box premium-card">
+                <h3>Multi-Shape Kinetic Results</h3>
+                <div class="result-row"><span>PU Weight Fraction (w1):</span> <span class="result-val" id="resW1">-</span></div>
+                <div class="result-row"><span>PMMA Weight Fraction (w2):</span> <span class="result-val" id="resW2">-</span></div>
+                <div class="result-row"><span>Calculated T_g (Fox Eq):</span> <span class="result-val" id="resTg">-</span></div>
+                <div class="result-row"><span>Observed Recoveries:</span> <span class="result-val" id="resObs">-</span></div>
+            </div>
+        </div>
+    
+
+      <div class="floating-nav">
+    <a href="index2.html" class="btn-nav">🡐 Back</a>
+    <a href="index4.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment 🡒</a>
+</div>
+            </div>
+        </main>
+    </div>
+    <script src="js/script_d.js"></script>
+
+</body>
+</html>
+
+
