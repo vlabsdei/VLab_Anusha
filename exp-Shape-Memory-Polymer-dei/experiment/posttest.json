@@ -1,5 +1,5 @@
 {
-  "version": 2.0,
+  "version": 2,
   "questions": [
     {
       "question": "Q1. Why does the Shape Fixity Ratio (R_f) rarely reach exactly 100% in real polyurethane SMPs?",
@@ -16,7 +16,7 @@
         "d": "Incorrect — WLF characterizes viscosity, not fixity mechanics."
       },
       "correctAnswer": "b",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q2. When programming a shape memory polymer (Strain Fixity phase), what must occur immediately after the polymer is deformed above T_g?",
@@ -33,7 +33,7 @@
         "d": "Incorrect — This is a thermal SMP, not a photo-responsive one."
       },
       "correctAnswer": "c",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q3. In a multi-shape memory copolymer with T_g1 = 45°C and T_g2 = 90°C, what happens when the programmed material is reheated to 60°C?",
@@ -50,7 +50,7 @@
         "d": "Incorrect — Polymers do not shatter from slow heating."
       },
       "correctAnswer": "b",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q4. How does the WLF equation predict the behavior of the polymer near T_g?",
@@ -67,7 +67,7 @@
         "d": "Incorrect — Not related to magnetics."
       },
       "correctAnswer": "a",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q5. What does the 'Actuation Energy Density' represent in a shape memory polymer actuator?",
@@ -84,7 +84,7 @@
         "d": "Incorrect — This is chemical formation energy."
       },
       "correctAnswer": "b",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q6. In Sub-Calc C, if a programmed polymer is heated under a physical constraint (preventing it from changing shape), what is generated?",
@@ -101,7 +101,7 @@
         "d": "Incorrect — SMPs can hold high recovery stresses safely."
       },
       "correctAnswer": "b",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q7. What is a known limitation of using the universal WLF constants (C1=17.44, C2=51.6) in precision engineering?",
@@ -118,7 +118,7 @@
         "d": "Incorrect — WLF applies above T_g."
       },
       "correctAnswer": "c",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q8. What primary mechanism causes the fatigue (decrease in Shape Recovery Ratio) of SMPs over multiple programming cycles?",
@@ -135,7 +135,7 @@
         "d": "Incorrect — T_g generally remains constant."
       },
       "correctAnswer": "a",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q9. To program a triple-shape memory polymer, how many distinct deformation steps are required?",
@@ -152,7 +152,7 @@
         "d": "Incorrect — 4D objects require post-print programming."
       },
       "correctAnswer": "b",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q10. Which physical force is fundamentally responsible for pulling the polymer chains back to their original shape during thermal recovery?",
@@ -169,7 +169,7 @@
         "d": "Incorrect — Van der Waals forces govern secondary bonding, but entropic elasticity drives the macro shape recovery."
       },
       "correctAnswer": "c",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     }
   ]
 }

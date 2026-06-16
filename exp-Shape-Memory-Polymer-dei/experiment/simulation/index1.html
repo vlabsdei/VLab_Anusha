@@ -4,100 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub-Calc B: Strain Fixity - Virtual Lab</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Three.js and OrbitControls for 3D simulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- KaTeX for math typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 </head>
 <body>
     <div class="app-layout">
         <nav class="sidebar">
             <div class="sidebar-logo">4D Printing Lab</div>
             
-        
-<div class="form-container ">
-            <div class="form-row">
-                <div class="form-label">Polymer Settings:</div>
-                <div class="form-options">
-                    <div class="slider-group">
-                        <label>Base Tg (°C)</label>
-                        <input type="range" id="baseTg" min="40" max="120" value="60">
-                        <div class="slider-val" id="valTg">60 °C</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">Active Material (Inherited):</div>
+                    <div class="premium-card-small" id="matInheritedCard" style="background: #fff1f2; border: 1px solid #ffe4e6; padding: 12px; border-radius: 8px; margin-bottom: 0;">
+                        <div style="font-weight: 700; color: #8A1134; font-size: 14px;" id="inheritedMatName">PLA-SMP</div>
+                        <div style="font-size: 11px; color: #64748b; margin-top: 4px;" id="inheritedMatSpecs">T_g = 60.0°C | X_c = 0.70</div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-label">UTM Programming Cycle:</div>
-                <div class="form-options">
-                    <div class="slider-group">
-                        <label>Prog Temp (°C)</label>
-                        <input type="range" id="progTemp" min="20" max="150" value="80">
-                        <div class="slider-val" id="valPtemp">80 °C</div>
-                    </div>
-                    <div class="slider-group">
-                        <label>Max Applied Stress (MPa)</label>
-                        <input type="range" id="appStress" min="1" max="10" value="5">
-                        <div class="slider-val" id="valStress">5 MPa</div>
-                    </div>
-                    <div class="slider-group">
-                        <label>UTM Loading Rate (MPa/s)</label>
-                        <input type="range" id="loadRate" min="1" max="20" value="5">
-                        <div class="slider-val" id="valLoadRate">5 MPa/s</div>
-                    </div>
-                    <div class="slider-group">
-                        <label>Holding Time (min)</label>
-                        <input type="range" id="holdTime" min="0" max="30" value="10">
-                        <div class="slider-val" id="valHold">10 min</div>
+                
+                <div class="form-row">
+                    <div class="form-label">Programming Temp Preset:</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                        <button type="button" class="btn-preset" id="presetTg10" style="padding: 8px 2px; font-size: 10px; font-weight: 700; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; color: #475569; transition: all 0.2s;">T_g + 10°C</button>
+                        <button type="button" class="btn-preset" id="presetTg30" style="padding: 8px 2px; font-size: 10px; font-weight: 700; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; color: #475569; transition: all 0.2s;">T_g + 30°C</button>
+                        <button type="button" class="btn-preset" id="presetTg60" style="padding: 8px 2px; font-size: 10px; font-weight: 700; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; color: #475569; transition: all 0.2s;">T_g + 60°C</button>
                     </div>
                 </div>
-            </div>
+                
+                <div class="form-row">
+                    <div class="form-label">Simulation Variables:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Programming Temp (°C)</label>
+                            <input type="range" id="progTemp" min="40" max="120" value="70">
+                            <div class="slider-val" id="valPtemp">70 °C</div>
+                        </div>
+                        <div class="slider-group">
+                            <label>Applied Stress (σ) (MPa)</label>
+                            <input type="range" id="appStress" min="0.5" max="4" value="2" step="0.1">
+                            <div class="slider-val" id="valStress">2 MPa</div>
+                        </div>
+                        <div class="slider-group">
+                            <label>Cooling Rate (°C/min)</label>
+                            <input type="range" id="coolingRate" min="5" max="30" value="15">
+                            <div class="slider-val" id="valCooling">15 °C/min</div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="buttons">
-                <button type="button" id="btnRun">Execute UTM Cycle</button>
-                <button type="button" onclick="location.reload()">Reset Setup</button>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Execute Programming Cycle</button>
+                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                </div>
             </div>
-        </div>
+        </nav>
         
-        
-</nav>
         <main class="content-area">
             <div class="content-container">
+                <h1 class="title">Sub-Calc B: Viscoelastic Programming & Strain Fixity</h1>
+                
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">UTM Phase: Idle</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label">Live Analytics: Stress vs Strain Loop</div>
+                        <canvas id="plotCanvas" width="450" height="400"></canvas>
+                    </div>
+                </div>
+                
+                <div class="insight-box" id="liveInsight">
+                    <strong>Live Insight:</strong> The polymer is mounted in the UTM clamps. Select a programming temperature preset and click 'Execute Programming Cycle'.
+                </div>
 
-        <h1 class="title">Sub-Calc B: Viscoelastic Programming & Strain Fixity</h1>
-        
-        <div class="sim-viewport">
-            <div style="position: relative;">
-                <div class="sim-label" id="stateLabel">UTM Machine: Idle</div>
-                <canvas id="simCanvas" width="450" height="400"></canvas>
-            </div>
-            <div style="position: relative;">
-                <div class="sim-label">Live Analytics: Stress vs Strain</div>
-                <canvas id="plotCanvas" width="450" height="400"></canvas>
-            </div>
-        </div>
-        
-        <div class="insight-box" id="liveInsight">
-            <strong>Live Insight:</strong> The polymer is mounted in the UTM clamps. Setup your programming cycle and click 'Execute'.
-        </div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Shape Fixity Analysis</h3>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Applied Programming Stress:</span>
+                            <span class="result-val" id="resStress" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Max Loading Strain (ε_load):</span>
+                            <span class="result-val" id="resMaxStrain" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Fixed Strain after Unloading (ε_u):</span>
+                            <span class="result-val" id="resFixed" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Shape Fixity Ratio (R_f):</span>
+                            <span class="result-val" id="resFixity" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                    </div>
 
-        <div id="resultsContainer">
-            <div class="result-box premium-card">
-                <h3>Shape Fixity Analysis</h3>
-                <div class="result-row"><span>Maximum Viscoelastic Strain (ε_m):</span> <span class="result-val" id="resMaxStrain">-</span></div>
-                <div class="result-row"><span>Fixed Strain After Unloading (ε_u):</span> <span class="result-val" id="resFixed">-</span></div>
-                <div class="result-row"><span>Shape Fixity Ratio (R_f):</span> <span class="result-val" id="resFixity">-</span></div>
-            </div>
-        </div>
-    
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Programming Presets Comparison</h3>
+                        <table id="presetComparisonTable" style="width: 100%; border-collapse: collapse; font-size: 11px; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 600;">
+                                    <th style="padding: 6px 2px;">T_prog</th>
+                                    <th style="padding: 6px 2px;">T_prog - T_g</th>
+                                    <th style="padding: 6px 2px;">ε_load (%)</th>
+                                    <th style="padding: 6px 2px;">R_f (%)</th>
+                                    <th style="padding: 6px 2px; text-align: right;">ε_u (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-      <div class="floating-nav">
-    <a href="index.html" class="btn-nav">🡐 Back</a>
-    <a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment 🡒</a>
-</div>
+                <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; margin-top: 20px;">
+                    <div class="premium-card" style="margin-bottom: 0; padding: 20px;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 17px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Fixity Curve: R_f vs (T_prog - T_g)</h3>
+                        <canvas id="fixityCanvas" width="400" height="200" style="width: 100%; height: auto; display: block; background: #fafbfc; border-radius: 8px; border: 1px solid #cbd5e1;"></canvas>
+                    </div>
+
+                    <div class="premium-card" style="margin-bottom: 0; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <h3 style="color: #8A1134; margin-bottom: 12px; font-size: 17px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Governing Physical Equations</h3>
+                            <div id="latexFormulaContainer" style="padding: 10px; font-size: 13px; overflow-x: auto; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 90px; margin-bottom: 10px;">
+                                <!-- KaTeX renders here -->
+                            </div>
+                        </div>
+                        <div class="model-note" style="font-size: 10px; color: #475569; background: #f8fafc; border-left: 3px solid #f59e0b; padding: 6px 10px; border-radius: 4px; line-height: 1.4;">
+                            <strong>Model Note:</strong> Shape fixity R_f is computed using a saturating exponential model &propto; (1 - e<sup>-&Delta;T/&Delta;T_char</sup>) derived from crystallization kinetics, rather than the simplified elastic ratio &epsilon;<sub>frozen</sub>/&epsilon;<sub>load</sub> which can produce unphysical values &gt; 100%.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-nav">
+                    <a href="index.html" class="btn-nav"><- Back</a>
+                    <a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a>
+                </div>
             </div>
         </main>
     </div>
-    <script src="js/script_b.js"></script>
-
+    <script src="js/main.js"></script>
 </body>
 </html>
-
-

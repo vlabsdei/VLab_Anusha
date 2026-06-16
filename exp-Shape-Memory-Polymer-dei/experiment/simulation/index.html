@@ -4,86 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub-Calc A: Glass Transition - Virtual Lab</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Three.js and OrbitControls for 3D simulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- KaTeX for math typesetting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
 </head>
 <body>
     <div class="app-layout">
         <nav class="sidebar">
             <div class="sidebar-logo">4D Printing Lab</div>
             
-        
-<div class="form-container ">
-            <div class="form-row">
-                <div class="form-label">Material Structure:</div>
-                <div class="form-options">
-                    <div class="option"><input type="radio" name="mat" value="PU" id="matPU" checked><label for="matPU">PU</label></div>
-                    <div class="option"><input type="radio" name="mat" value="PLA" id="matPLA"><label for="matPLA">PLA</label></div>
-                    <div class="option"><input type="radio" name="mat" value="PMMA" id="matPMMA"><label for="matPMMA">PMMA</label></div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-label">Simulation Variables:</div>
-                <div class="form-options">
-                    <div class="slider-group">
-                        <label>Heating Rate (°C/min)</label>
-                        <input type="range" id="heatingRate" min="1" max="20" value="5">
-                        <div class="slider-val" id="valRate">5 °C/min</div>
-                    </div>
-                    <div class="slider-group">
-                        <label>Crosslink Density (Molecules)</label>
-                        <input type="range" id="crosslink" min="20" max="200" value="60">
-                        <div class="slider-val" id="valCross">60 nodes</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">Material Structure:</div>
+                    <div class="form-options">
+                        <div class="option">
+                            <input type="radio" name="mat" value="PU" id="matPU" checked>
+                            <label for="matPU">PU-SMP</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="mat" value="PLA" id="matPLA">
+                            <label for="matPLA">PLA-SMP</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="mat" value="PMMA" id="matPMMA">
+                            <label for="matPMMA">PMMA-SMP</label>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                <div class="form-row">
+                    <div class="form-label">Simulation Variables:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Heating Rate (°C/min)</label>
+                            <input type="range" id="heatingRate" min="1" max="20" value="5">
+                            <div class="slider-val" id="valRate">5 °C/min</div>
+                        </div>
+                        <div class="slider-group">
+                            <label>Test Temperature (°C)</label>
+                            <input type="range" id="temperature" min="25" max="85" value="25">
+                            <div class="slider-val" id="valTemp">25 °C</div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="buttons">
-                <button type="button" id="btnRun">Run Thermal Cycle</button>
-                <button type="button" onclick="location.reload()">Reset Setup</button>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Run Thermal Cycle</button>
+                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                </div>
             </div>
-        </div>
+        </nav>
         
-        
-</nav>
         <main class="content-area">
             <div class="content-container">
+                <h1 class="title">Sub-Calc A: Thermodynamic Glass Transition & Viscoelasticity</h1>
+                
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">State: Glassy (Frozen)</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">WLF Shift Factor log(a_T) vs T</div>
+                            <canvas id="plotCanvasMain" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">DSC Heat Capacity C_p vs T</div>
+                            <canvas id="plotCanvasDSC" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-box" id="liveInsight">
+                    <strong>Live Insight:</strong> Setup your parameters and click 'Run Thermal Cycle' to begin the molecular simulation.
+                </div>
 
-        <h1 class="title">Sub-Calc A: Thermodynamic Glass Transition & Viscoelasticity</h1>
-        
-        <div class="sim-viewport">
-            <div style="position: relative;">
-                <div class="sim-label" id="stateLabel">Micro-Architecture: Glassy</div>
-                <canvas id="simCanvas" width="450" height="400"></canvas>
-            </div>
-            <div style="position: relative;">
-                <div class="sim-label">Live Analytics: log(aT) vs T</div>
-                <canvas id="plotCanvas" width="450" height="400"></canvas>
-            </div>
-        </div>
-        
-        <div class="insight-box" id="liveInsight">
-            <strong>Live Insight:</strong> Setup your parameters and click 'Run Thermal Cycle' to begin the molecular simulation.
-        </div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Real-Time Viscoelasticity</h3>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Material:</span>
+                            <span class="result-val" id="resMat" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">T_g:</span>
+                            <span class="result-val" id="resTg" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Current T:</span>
+                            <span class="result-val" id="resTemp" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">log(a_T):</span>
+                            <span class="result-val" id="resWLF" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">a_T (η ratio):</span>
+                            <span class="result-val" id="resVisc" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">Regime:</span>
+                            <span class="result-val" id="resRegime" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                        <div class="result-row" style="display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="color: #64748b; font-weight: 500;">ΔT from Tg:</span>
+                            <span class="result-val" id="resDeltaT" style="font-weight: 700; color: #1e293b;">-</span>
+                        </div>
+                    </div>
 
-        <div id="resultsContainer">
-            <div class="result-box premium-card">
-                <h3>Real-Time Thermodynamics</h3>
-                <div class="result-row"><span>Current Temperature:</span> <span class="result-val" id="resTemp">-</span></div>
-                <div class="result-row"><span>WLF Shift Factor (log a_T):</span> <span class="result-val" id="resWLF">-</span></div>
-            </div>
-        </div>
-    
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Biomedical Bio-Suitability Table</h3>
+                        <table id="suitabilityTable" style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #cbd5e1; color: #475569; font-weight: 600;">
+                                    <th style="padding: 6px 4px;">Material</th>
+                                    <th style="padding: 6px 4px;">T_g (°C)</th>
+                                    <th style="padding: 6px 4px;">|T_g - 37|</th>
+                                    <th style="padding: 6px 4px; text-align: right;">Suitability Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-      <div class="floating-nav">
-    <a href="index1.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment 🡒</a>
-</div>
+                <!-- Governing Equations Panel -->
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Governing Physical Equations</h3>
+                    <div id="latexFormulaContainer" style="padding: 10px; font-size: 14px; overflow-x: auto; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 80px;">
+                        <!-- KaTeX renders here -->
+                    </div>
+                </div>
+
+                <div class="floating-nav">
+                    <a href="index1.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a>
+                </div>
             </div>
         </main>
     </div>
-    <script src="js/script_a.js"></script>
-
+    <script src="js/main.js"></script>
 </body>
 </html>
-
-

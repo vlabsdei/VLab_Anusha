@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B: Hygroscopic Swelling, Anisotropic Expansion - Virtual Lab</title>
+    <!-- Premium Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <!-- KaTeX CSS for LaTeX equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <link rel="stylesheet" href="css/main.css?v=2">
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <!-- Three.js for 3D Viewport -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- LEFT COLUMN: SIDEBAR CONTROLS -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">4D Printing Lab</div>
+                <div class="sidebar-subtitle">Hygroscopic Swelling Simulator</div>
+            </div>
+            
+            <div class="control-sections">
+                <!-- Section 1: Physics Model Settings -->
+                <div class="control-group">
+                    <h3 class="section-title">1. Solver Model</h3>
+                    <div class="select-wrapper">
+                        <select id="solverModel">
+                            <option value="timoshenko" selected>Timoshenko (Linear)</option>
+                            <option value="elastica">Nonlinear Elastica</option>
+                            <option value="fem">FEM Validation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 2: Materials Configuration -->
+                <div class="control-group">
+                    <h3 class="section-title">2. Material Settings</h3>
+                    <div class="input-row">
+                        <label for="matActive">Active Layer (Top)</label>
+                        <div class="select-wrapper">
+                            <select id="matActive">
+                                <option value="cellulose" selected>Cellulose NFC (As = 7.0)</option>
+                                <option value="wood">Wood Spruce (As = 10.0)</option>
+                                <option value="custom">Custom Material</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <label for="matPassive">Passive Layer (Bottom)</label>
+                        <div class="select-wrapper">
+                            <select id="matPassive">
+                                <option value="cellulose_constrained" selected>Cellulose Constrained (β = 0)</option>
+                                <option value="pla_standard">Standard PLA (β = 0)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Anisotropy chips info -->
+                    <div class="material-chips" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;">
+                        <span class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px;">Active E = 8.5 GPa</span>
+                        <span class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px;">Passive E = 8.5 GPa</span>
+                        <span id="labelAs" class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px;">Anisotropy Index: 7.00</span>
+                    </div>
+                </div>
+
+                <!-- Section 3: Swelling Settings -->
+                <div class="control-group">
+                    <h3 class="section-title">3. Swelling Settings</h3>
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Moisture Uptake (ΔC_target)</span>
+                            <span id="valDC" class="value-badge">0.30 g/g</span>
+                        </div>
+                        <input type="range" id="deltaC" min="0.05" max="0.50" step="0.01" value="0.30">
+                    </div>
+                    
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Fibre Orientation (θ_f)</span>
+                            <span id="valTheta" class="value-badge">45°</span>
+                        </div>
+                        <input type="range" id="thetaF" min="0" max="90" step="1" value="45">
+                    </div>
+                </div>
+
+                <!-- Section 4: Geometry Settings -->
+                <div class="control-group">
+                    <h3 class="section-title">4. Geometry Settings</h3>
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Active Thickness (h₁)</span>
+                            <span id="valH1" class="value-badge">0.50 mm</span>
+                        </div>
+                        <input type="range" id="h1" min="0.1" max="2.0" step="0.05" value="0.50">
+                    </div>
+                    
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Passive Thickness (h₂)</span>
+                            <span id="valH2" class="value-badge">0.50 mm</span>
+                        </div>
+                        <input type="range" id="h2" min="0.1" max="2.0" step="0.05" value="0.50">
+                    </div>
+                    
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Total Length (L)</span>
+                            <span id="valLen" class="value-badge">50.00 mm</span>
+                        </div>
+                        <input type="range" id="len" min="10" max="100" step="1" value="50">
+                    </div>
+                    
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Beam Width (b)</span>
+                            <span id="valWidth" class="value-badge">10.00 mm</span>
+                        </div>
+                        <input type="range" id="beamWidth" min="2" max="20" step="0.5" value="10">
+                    </div>
+                </div>
+
+                <!-- Run / Reset Buttons -->
+                <div class="sidebar-buttons">
+                    <button type="button" id="btnRun" class="btn btn-primary">Run Simulation</button>
+                    <button type="button" id="btnReset" class="btn btn-secondary">Reset Lab</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER COLUMN: MAIN VIEWPORT & TIMELINE -->
+        <main class="center-content">
+            <!-- Viewport View -->
+            <div id="viewportContainer" style="display: flex; flex-direction: column; flex: 1;">
+                <div class="viewport-card">
+                    <div class="viewport-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span id="stateLabel" class="state-indicator flat" style="margin-right: auto;">State: Swelling — A_s = 7.00</span>
+                        <div class="tab-pill-container" style="margin: 0 15px; display: flex; gap: 4px;">
+                            <button type="button" class="tab-pill active" id="viewSpecimenBtn" style="padding: 4px 10px; font-size: 11px; height: 26px; line-height: 16px;">Specimen Swelling</button>
+                            <button type="button" class="tab-pill" id="viewBilayerBtn" style="padding: 4px 10px; font-size: 11px; height: 26px; line-height: 16px;">Bilayer Bending</button>
+                        </div>
+                        <div class="viewport-actions">
+                            <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 3D Render Area -->
+                    <div class="canvas-3d-wrapper">
+                        <div id="viewport3D"></div>
+                        <!-- Fallback 2D Canvas if Three.js fails -->
+                        <canvas id="simCanvas" width="500" height="400" style="display:none;"></canvas>
+                        
+                        <!-- Stress Heatmap Legend -->
+                        <div class="legend-box" style="width: 200px; padding: 10px; background: rgba(255,255,255,0.95); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                            <div class="legend-title" style="font-weight: 700; color: var(--text-primary); font-size: 11px;">Swelling Strain ε_xx</div>
+                            <div class="legend-bar" style="background: linear-gradient(to right, #3b82f6, #ffffff, #ef4444); height: 10px; border-radius: 2px; margin-top: 4px;"></div>
+                            <div class="legend-labels" style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-secondary); margin-top: 2px; margin-bottom: 8px;">
+                                <span>Low (Blue)</span>
+                                <span>0</span>
+                                <span>High (Red)</span>
+                            </div>
+                            <div class="legend-title" style="font-weight: 700; color: var(--text-primary); font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 6px;">Fibre Orientations</div>
+                            <div class="legend-direction-item" style="display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 9px; color: var(--text-secondary);">
+                                <span style="display: inline-block; width: 12px; height: 3px; background: #ef4444; border-radius: 1px;"></span>
+                                <span>Red Arrow: Parallel Fibre (∥)</span>
+                            </div>
+                            <div class="legend-direction-item" style="display: flex; align-items: center; gap: 6px; margin-top: 2px; font-size: 9px; color: var(--text-secondary);">
+                                <span style="display: inline-block; width: 12px; height: 3px; background: #3b82f6; border-radius: 1px;"></span>
+                                <span>Blue Arrow: Transverse Direction (⊥)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visibility control overlays -->
+                    <div class="viewport-overlay-controls">
+                        <label><input type="checkbox" id="showMeshNodes" checked> Show Mesh Nodes</label>
+                        <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Grid</label>
+                    </div>
+                </div>
+
+                <!-- Playback Timeline scrubber -->
+                <div class="timeline-card">
+                    <div class="timeline-row">
+                        <button id="btnPlayPause" class="btn-play">Play</button>
+                        <div class="timeline-slider-wrapper">
+                            <input type="range" id="timeScrubber" min="0" max="20" step="0.1" value="0" style="width: 100%;">
+                        </div>
+                        <div class="time-readout">
+                            <span id="timeVal">0.0</span> s / 20s
+                        </div>
+                    </div>
+                    <div class="timeline-stats-row">
+                        <div class="stat-badge">Moisture ΔC(t): <strong id="timelineC">0.00 g/g</strong></div>
+                        <div class="stat-badge">Orientation θ_f: <strong id="timelineTheta">45°</strong></div>
+                        <div class="stat-badge">Twist Angle: <strong id="timelineTwist">0.0°</strong></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT COLUMN: ANALYTICS & EQUATION PANELS -->
+        <aside class="right-panel">
+            <h2 class="panel-title">Live Analytics</h2>
+
+            <!-- Stress Profile σ(y) -->
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h3>Stress Profile σ(y)</h3>
+                    <span class="chart-subtitle">Through-Thickness Stresses</span>
+                </div>
+                <canvas id="stressChartCanvas" width="300" height="200" style="width: 100%; height: auto;"></canvas>
+            </div>
+
+            <!-- Curvature vs Fibre Orientation -->
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h3>Bending & Twist vs Orientation</h3>
+                    <span class="chart-subtitle">Angle (°) vs Fibre Angle θ_f (°)</span>
+                </div>
+                <canvas id="historyChartCanvas" width="300" height="180" style="width: 100%; height: auto;"></canvas>
+            </div>
+
+            <!-- Mathematical Equation Live Panel -->
+            <div class="analytics-card equation-card">
+                <div class="chart-header">
+                    <h3>Governing Equations</h3>
+                    <span class="chart-subtitle">Live Swelling Substitutions</span>
+                </div>
+                <div id="latexFormulaContainer" class="katex-formula-block">
+                    <!-- Formulas rendered by KaTeX -->
+                </div>
+            </div>
+
+            <!-- Quantitative Output Table -->
+            <div class="analytics-card results-summary-card">
+                <h3>Numerical Output</h3>
+                <table class="results-table">
+                    <tr>
+                        <td>Parallel Strain (ε_∥):</td>
+                        <td id="resEpsP" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Transverse Strain (ε_⊥):</td>
+                        <td id="resEpsT" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Anisotropy Ratio (A_s):</td>
+                        <td id="resAs" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Curvature (κ):</td>
+                        <td id="resCurv" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Bending Angle (θ_bend):</td>
+                        <td id="resBend" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Twist Angle (θ_twist):</td>
+                        <td id="resTwist" class="res-bold">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Status Banners warnings -->
+            <div id="safetyWarningsBox" class="safety-box">
+                <!-- Warnings injected here dynamically -->
+            </div>
+            
+            <!-- Floating navigation at bottom of right panel -->
+            <div class="floating-nav">
+                <a href="index.html" class="btn-nav"><- Back</a>
+                <a href="index2.html" class="btn-nav primary">Next Experiment -></a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Script loading -->
+    <script src="js/main.js"></script>
+</body>
+</html>

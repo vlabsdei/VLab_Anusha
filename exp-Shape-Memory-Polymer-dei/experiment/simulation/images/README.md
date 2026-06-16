@@ -1,2 +1,3 @@
-### This folder contains all the image files used in the simulation. 
-### Create sub-directories, if needed. ex: gifs/
+# 4D Printing Virtual Lab - Directory Reference
+
+This directory contains assets and files specific to the 4D Printing Technology Virtual Lab (Experiment 1: Shape Memory Polymers).

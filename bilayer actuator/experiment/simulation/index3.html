@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D: Moisture Diffusion Timescale - Virtual Lab</title>
+    <!-- Premium Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+    <!-- KaTeX CSS for LaTeX equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <link rel="stylesheet" href="css/main.css?v=2">
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <!-- Three.js for 3D Viewport -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- LEFT COLUMN: SIDEBAR CONTROLS -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">4D Printing Lab</div>
+                <div class="sidebar-subtitle">Moisture Diffusion Timescale</div>
+            </div>
+            
+            <div class="control-sections">
+                <!-- Section 1: Material Dropdown -->
+                <div class="control-group">
+                    <h3 class="section-title">1. Active Material</h3>
+                    <div class="select-wrapper" style="margin-bottom: 6px;">
+                        <select id="matDiff" style="width: 100%; padding: 5px;">
+                            <option value="cellulose" selected>Cellulose (D = 5×10⁻¹² m²/s)</option>
+                            <option value="pva_hydrogel">PVA Hydrogel (D = 8×10⁻¹¹ m²/s)</option>
+                            <option value="pnipam">PNIPAM (D = 1×10⁻¹⁰ m²/s)</option>
+                            <option value="hydrogel">Hydrogel (D = 2×10⁻¹⁰ m²/s)</option>
+                        </select>
+                    </div>
+                    <!-- Dynamic material description badge -->
+                    <div class="material-chips" style="display: flex; flex-direction: column; gap: 4px; margin-top: 4px;">
+                        <span id="labelDValue" class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px; text-align: left;">D = 5.0e-12 m²/s</span>
+                        <span id="labelMatDesc" class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px; text-align: left;">Semi-crystalline cellulose network</span>
+                    </div>
+                </div>
+
+                <!-- Section 2: Preset Thickness Buttons -->
+                <div class="control-group">
+                    <h3 class="section-title">2. Preset Thicknesses</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px;">
+                        <button type="button" class="btn btn-secondary" id="preset1Btn" style="font-size: 11px; padding: 6px 2px; height: auto;">0.2 mm</button>
+                        <button type="button" class="btn btn-secondary" id="preset2Btn" style="font-size: 11px; padding: 6px 2px; height: auto;">0.5 mm</button>
+                        <button type="button" class="btn btn-secondary" id="preset3Btn" style="font-size: 11px; padding: 6px 2px; height: auto;">1.0 mm</button>
+                    </div>
+                </div>
+
+                <!-- Section 3: Layer Thickness L Slider -->
+                <div class="control-group">
+                    <h3 class="section-title">3. Custom Thickness</h3>
+                    <div class="slider-wrapper">
+                        <div class="slider-header">
+                            <span>Layer Thickness (L)</span>
+                            <span id="valL" class="value-badge">0.5 mm</span>
+                        </div>
+                        <input type="range" id="layerL" min="0.1" max="2.0" step="0.1" value="0.5">
+                    </div>
+                </div>
+
+                <!-- Run / Reset Buttons -->
+                <div class="sidebar-buttons">
+                    <button type="button" id="btnRun" class="btn btn-primary">Simulate Diffusion</button>
+                    <button type="button" id="btnReset" class="btn btn-secondary">Reset Setup</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER COLUMN: MAIN VIEWPORT & TIMELINE -->
+        <main class="center-content">
+            <div id="viewportContainer" style="display: flex; flex-direction: column; flex: 1;">
+                <div class="viewport-card">
+                    <div class="viewport-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <span id="stateLabel" class="state-indicator flat" style="margin-right: auto;">State: Ready</span>
+                    </div>
+                    
+                    <!-- 2D Canvas Render Area -->
+                    <div class="canvas-3d-wrapper" style="display: flex; align-items: center; justify-content: center; background: #fafbfc; min-height: 400px; position: relative;">
+                        <canvas id="simCanvas" width="450" height="400" style="display: block; max-width: 100%; height: auto; z-index: 1;"></canvas>
+                        
+                        <!-- Gradient Concentration Legend -->
+                        <div class="legend-box" style="width: 150px; padding: 10px; background: rgba(255,255,255,0.95); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: absolute; bottom: 15px; left: 15px; z-index: 2;">
+                            <div class="legend-title" style="font-weight: 700; color: var(--text-primary); font-size: 11px;">Concentration C</div>
+                            <div class="legend-bar" style="background: linear-gradient(to right, #ecf0f1, #3498db); height: 10px; border-radius: 2px; margin-top: 4px;"></div>
+                            <div class="legend-labels" style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-secondary); margin-top: 2px;">
+                                <span>Dry (0)</span>
+                                <span>Wet (1)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playback Scrubber scrubber -->
+                <div class="timeline-card">
+                    <div class="timeline-row">
+                        <button id="btnPlayPause" class="btn-play">Play</button>
+                        <div class="timeline-slider-wrapper">
+                            <input type="range" id="timeScrubber" min="0" max="100" step="1" value="0" style="width: 100%;">
+                        </div>
+                        <div class="time-readout">
+                            <span id="timeVal">0</span>% Diffused
+                        </div>
+                    </div>
+                    <div class="timeline-stats-row">
+                        <div class="stat-badge">Material: <strong id="timelineMat">Cellulose</strong></div>
+                        <div class="stat-badge">Thickness L: <strong id="timelineL">0.5 mm</strong></div>
+                        <div class="stat-badge">Fourier Time τ: <strong id="timelineTau">0.000</strong></div>
+                        <div class="stat-badge">Slab Moisture: <strong id="timelineAvgC">0.0%</strong></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT COLUMN: ANALYTICS & EQUATION PANELS -->
+        <aside class="right-panel">
+            <h2 class="panel-title">Live Analytics</h2>
+
+            <!-- characteristic t_90 plot -->
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h3>Diffusion Timescale</h3>
+                    <span class="chart-subtitle">t_90 vs L² (Thickness Squared)</span>
+                </div>
+                <canvas id="plotCanvas" width="300" height="180" style="width: 100%; height: auto;"></canvas>
+            </div>
+
+            <!-- Thickness Comparison Table (Cellulose) -->
+            <div class="analytics-card" style="padding: 12px;">
+                <h3 style="margin-bottom: 8px;">Thickness Speedup Comparison (Cellulose)</h3>
+                <table class="results-table" id="comparisonTable" style="width: 100%; font-size: 10px; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e2e8f0; font-weight: 600;">
+                            <th style="padding: 4px; text-align: left;">L (mm)</th>
+                            <th style="padding: 4px; text-align: right;">L² (mm²)</th>
+                            <th style="padding: 4px; text-align: right;">t_diff</th>
+                            <th style="padding: 4px; text-align: right;">t_90</th>
+                            <th style="padding: 4px; text-align: right;">Speedup</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Injected dynamically in script_d.js -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Governing Equations -->
+            <div class="analytics-card equation-card">
+                <div class="chart-header">
+                    <h3>Governing Equations</h3>
+                    <span class="chart-subtitle">Fick's Second Law Live Substitutions</span>
+                </div>
+                <div id="latexFormulaContainer" class="katex-formula-block">
+                    <!-- Formulas rendered by KaTeX -->
+                </div>
+            </div>
+
+            <!-- Quantitative Output Table -->
+            <div class="analytics-card results-summary-card">
+                <h3>Numerical Output</h3>
+                <table class="results-table">
+                    <tr>
+                        <td>Thickness (L):</td>
+                        <td id="resL" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Char. Diffusion Time (t_diff):</td>
+                        <td id="resTdiff" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Time to 90% Equil. (t_90):</td>
+                        <td id="resT90" class="res-bold">-</td>
+                    </tr>
+                    <tr>
+                        <td>Penetration Depth @ t_90:</td>
+                        <td id="resDepth" class="res-bold">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Design Insight Banner -->
+            <div id="liveInsight" class="safety-box">
+                <!-- Injected dynamically -->
+            </div>
+            
+            <!-- Floating navigation at bottom of right panel -->
+            <div class="floating-nav">
+                <a href="index2.html" class="btn-nav"><- Back</a>
+                <a href="index4.html" class="btn-nav primary">Next Experiment -></a>
+            </div>
+        </aside>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
-  "version": 2.0,
+  "version": 2,
   "questions": [
     {
       "question": "Q1. What distinguishes 4D printing from 3D printing?",
@@ -16,7 +16,7 @@
         "d": "Incorrect — 4D printing heavily uses polymers."
       },
       "correctAnswer": "b",
-      "difficulty": "easy"
+      "difficulty": "beginner"
     },
     {
       "question": "Q2. The WLF equation characterizes which of the following?",
@@ -33,7 +33,7 @@
         "d": "Incorrect — Not related to WLF."
       },
       "correctAnswer": "a",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q3. The Shape Fixity Ratio (R_f) measures:",
@@ -50,7 +50,7 @@
         "d": "Incorrect — This describes recovery rate."
       },
       "correctAnswer": "b",
-      "difficulty": "easy"
+      "difficulty": "beginner"
     },
     {
       "question": "Q4. Which stimulus is typically used to trigger shape recovery in thermo-responsive SMPs?",
@@ -67,7 +67,7 @@
         "d": "Incorrect — This applies to hygroscopic structures."
       },
       "correctAnswer": "c",
-      "difficulty": "easy"
+      "difficulty": "beginner"
     },
     {
       "question": "Q5. Why is the low thermal efficiency (1-5%) of SMPs acceptable in biomedical applications?",
@@ -84,7 +84,7 @@
         "d": "Incorrect — Manufacturing cost is independent of thermal efficiency here."
       },
       "correctAnswer": "a",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q6. What is the Glass Transition Temperature (T_g)?",
@@ -101,7 +101,7 @@
         "d": "Incorrect — This is the degradation temperature."
       },
       "correctAnswer": "b",
-      "difficulty": "easy"
+      "difficulty": "beginner"
     },
     {
       "question": "Q7. In the context of shape memory polymers, what is the role of 'netpoints'?",
@@ -118,7 +118,7 @@
         "d": "Incorrect — This relates to hydrogel swelling."
       },
       "correctAnswer": "c",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q8. What happens to an amorphous polymer's relaxation time as its temperature rises significantly above T_g?",
@@ -135,7 +135,7 @@
         "d": "Incorrect — It approaches an asymptote but never reaches absolute zero."
       },
       "correctAnswer": "a",
-      "difficulty": "medium"
+      "difficulty": "intermediate"
     },
     {
       "question": "Q9. What material property is strictly required to create a 'triple-shape' memory polymer?",
@@ -152,7 +152,7 @@
         "d": "Incorrect — We are discussing polymers, not SMAs."
       },
       "correctAnswer": "b",
-      "difficulty": "hard"
+      "difficulty": "advanced"
     },
     {
       "question": "Q10. Which physical state characterizes an amorphous polymer when it is below its T_g?",
@@ -169,7 +169,7 @@
         "d": "Incorrect — This is vaporization."
       },
       "correctAnswer": "c",
-      "difficulty": "easy"
+      "difficulty": "beginner"
     }
   ]
 }

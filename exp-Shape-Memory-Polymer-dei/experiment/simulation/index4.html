@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sub-Calc E: Actuation Energy - Virtual Lab</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Three.js and OrbitControls for 3D simulation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div class="app-layout">
@@ -39,6 +43,18 @@
                 </div>
             </div>
 
+            <div class="form-row" style="margin-top: 15px;">
+                <div class="form-label">Material & Thermal Constants:</div>
+                <div class="model-note" style="font-size: 10px; color: #475569; background: #f8fafc; border-left: 3px solid #f59e0b; padding: 10px 12px; border-radius: 4px; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; justify-content: space-between;"><span>E_rubbery (PU Modulus):</span> <strong>15 MPa</strong></div>
+                    <div style="display: flex; justify-content: space-between;"><span>e_u (Programmed Strain):</span> <strong>100% (1.0)</strong></div>
+                    <div style="display: flex; justify-content: space-between;"><span>s_recovery (Opposing Stress):</span> <strong>1.5 MPa</strong></div>
+                    <div style="display: flex; justify-content: space-between;"><span>T_ambient (Ambient Temp):</span> <strong>20°C</strong></div>
+                    <div style="display: flex; justify-content: space-between;"><span>T_recovery (Trigger Temp):</span> <strong>45°C</strong></div>
+                    <div style="display: flex; justify-content: space-between; border-top: 1px solid #cbd5e1; padding-top: 4px; margin-top: 2px;"><span>ΔT (Actuation Delta):</span> <strong>25°C</strong></div>
+                </div>
+            </div>
+
             <div class="buttons">
                 <button type="button" id="btnRun">Trigger Thermodynamic Actuation</button>
                 <button type="button" onclick="location.reload()">Reset Setup</button>
@@ -53,9 +69,27 @@
         <h1 class="title">Sub-Calc E: Thermodynamics & Efficiency</h1>
         
         <div class="sim-viewport">
-            <div style="position: relative;">
+            <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
                 <div class="sim-label" id="stateLabel">Robotic Actuator Mechanics</div>
-                <canvas id="simCanvas" width="450" height="400"></canvas>
+                <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                
+                <div class="viewport-legend" style="position: absolute; bottom: 12px; left: 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); padding: 8px 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 10px; display: flex; flex-direction: column; gap: 4px; z-index: 10; pointer-events: none;">
+                    <div style="font-weight: 600; color: #1e293b; margin-bottom: 2px;">Actuator States:</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="display: inline-block; width: 10px; height: 10px; background: #64748b; border-radius: 2px;"></span>
+                        <span style="color: #475569;">Programmed / Cold (20°C)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="display: inline-block; width: 10px; height: 10px; background: #8A1134; border-radius: 2px;"></span>
+                        <span style="color: #475569;">Actuated / Hot (45°C)</span>
+                    </div>
+                    <div style="border-top: 1px solid #cbd5e1; padding-top: 4px; margin-top: 2px; font-weight: 600; color: #1e293b;">
+                        Live Temp: <span id="lblLiveTemp">20.0 °C</span>
+                    </div>
+                    <div style="font-weight: 600; color: #1e293b;">
+                        Recovered Strain: <span id="lblLiveStrain">0.00</span>
+                    </div>
+                </div>
             </div>
             <div style="position: relative;">
                 <div class="sim-label">Live Analytics: Energy Math</div>
@@ -64,27 +98,28 @@
         </div>
         
         <div class="insight-box" id="liveInsight">
-            <strong>Live Insight:</strong> Adjust geometry and material heat capacity. The robot arm will actuate, converting heat (Q) into physical work (W).
+            <strong>Live Insight:</strong> Adjust geometry and Cp. Heating the specimen from T_ambient (20°C) to T_recovery (45°C) triggers the recovery stroke, converting input heat (Q_trigger) into physical work (W_mech) while releasing the energy originally invested in programming (U_stored).
         </div>
 
         <div id="resultsContainer">
             <div class="result-box premium-card">
                 <h3>Work & Energy Profile</h3>
-                <div class="result-row"><span>Total Mass:</span> <span class="result-val" id="resMass">-</span></div>
+                <div class="result-row"><span>Total Mass (m):</span> <span class="result-val" id="resMass">-</span></div>
+                <div class="result-row"><span>Energy Stored, Programming (U_stored):</span> <span class="result-val" id="resUstored">-</span></div>
                 <div class="result-row"><span>Thermal Energy to Trigger (Q_trigger):</span> <span class="result-val" id="resThermal">-</span></div>
                 <div class="result-row"><span>Mechanical Work Output (W_mech):</span> <span class="result-val" id="resWork">-</span></div>
-                <div class="result-row"><span>Overall Thermal Efficiency:</span> <span class="result-val" id="resEff">-</span></div>
+                <div class="result-row"><span>Overall Thermal Efficiency (η_SMP):</span> <span class="result-val" id="resEff">-</span></div>
             </div>
         </div>
     
 
       <div class="floating-nav">
-    <a href="index3.html" class="btn-nav">🡐 Back</a>
+    <a href="index3.html" class="btn-nav">&larr; Back</a>
 </div>
             </div>
         </main>
     </div>
-    <script src="js/script_e.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 </html>
