@@ -812,34 +812,26 @@
     function updateEquationsPanel(T, Tg) {
         if (!latexFormulaContainer) return;
     
-        let subWlf = "T < T_g \\implies \\text{Undefined (GlassyState)}";
-        let subVisc = "T < T_g \\implies \\text{Undefined}";
+        let subWlf = "T &lt; T<sub>g</sub> &rArr; Undefined (Glassy State)";
+        let subVisc = "T &lt; T<sub>g</sub> &rArr; Undefined";
         
         const logVal = wlfShiftFactor(T, Tg);
         const viscVal = viscosityRatio(logVal);
     
         if (logVal !== null) {
-            subWlf = `\\log(a_T) = \\frac{-17.44(${T.toFixed(1)} - ${Tg})}{51.6 + (${T.toFixed(1)} - ${Tg})} = ${logVal.toFixed(3)}`;
-            subVisc = `a_T = 10^{${logVal.toFixed(3)}} = ${viscVal.toExponential(3)}`;
+            const viscStr = viscVal.toExponential(3).replace('e', ' &times; 10<sup>') + '</sup>';
+            subWlf = `log(a<sub>T</sub>) = -17.44(${T.toFixed(1)} - ${Tg}) / (51.6 + (${T.toFixed(1)} - ${Tg})) = ${logVal.toFixed(3)}`;
+            subVisc = `a<sub>T</sub> = 10<sup>${logVal.toFixed(3)}</sup> = ${viscStr}`;
         }
     
-        const latexString = `
-        \\begin{aligned}
-        &\\text{WLF Shift Factor Equation: } \\log(a_T) = \\frac{-C_1(T - T_g)}{C_2 + (T - T_g)} \\\\[0.6em]
-        &\\text{Substitution: } ${subWlf} \\\\[0.8em]
-        &\\text{Viscosity Ratio: } \\eta(T)/\\eta(T_g) = a_T = 10^{\\log(a_T)} \\\\[0.6em]
-        &\\text{Substitution: } ${subVisc}
-        \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; color: #1e293b; font-size: 16px; font-weight: bold;">
+                <div><strong>WLF Shift Factor Equation:</strong> log(a<sub>T</sub>) = -C<sub>1</sub>(T - T<sub>g</sub>) / (C<sub>2</sub> + (T - T<sub>g</sub>))</div>
+                <div style="margin-left: 20px; font-style: italic; color: #475569; font-size: 0.95em; margin-bottom: 8px;">Substitution: ${subWlf}</div>
+                <div><strong>Viscosity Ratio:</strong> &eta;(T)/&eta;(T<sub>g</sub>) = a<sub>T</sub> = 10<sup>log(a<sub>T</sub>)</sup></div>
+                <div style="margin-left: 20px; font-style: italic; color: #475569; font-size: 0.95em;">Substitution: ${subVisc}</div>
+            </div>
         `;
-    
-        try {
-            katex.render(latexString, latexFormulaContainer, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (err) {
-            console.error(err);
-        }
     }
     
     // ============================================================
@@ -1452,22 +1444,13 @@
         const rf = calculateRf(T_prog, Tg, Xc);
         const epsF = calculateEpsFixed(epsL, rf);
     
-        const latexString = `
-        \\begin{aligned}
-        &\\text{1. Rubber Loading Strain: } \\epsilon_{\\text{load}} = \\frac{\\sigma}{E_{\\text{rubbery}}} \\times 100\\% = \\frac{${activeStress.toFixed(1)}}{${E_rubbery}} \\times 100\\% = ${epsL.toFixed(1)}\\% \\\\[0.6em]
-        &\\text{2. Shape Fixity Ratio: } R_f = X_c \\left[1 - \\exp\\left(-\\frac{T_{\\text{prog}}-T_g}{15}\\right)\\right] \\times 100\\% = ${rf.toFixed(1)}\\% \\\\[0.6em]
-        &\\text{3. Fixed Shape Strain: } \\epsilon_u = \\frac{R_f}{100} \\epsilon_{\\text{load}} = \\frac{${rf.toFixed(1)}}{100} \\times ${epsL.toFixed(1)}\\% = ${epsF.toFixed(1)}\\%
-        \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; color: #1e293b; font-size: 16px; font-weight: bold;">
+                <div><strong>1. Rubber Loading Strain:</strong> &epsilon;<sub>load</sub> = (&sigma; / E<sub>rubbery</sub>) &times; 100% = (${activeStress.toFixed(1)} / ${E_rubbery}) &times; 100% = ${epsL.toFixed(1)}%</div>
+                <div style="margin-top: 8px;"><strong>2. Shape Fixity Ratio:</strong> R<sub>f</sub> = X<sub>c</sub> &times; [1 - exp(-(T<sub>prog</sub> - T<sub>g</sub>) / 15)] &times; 100% = ${rf.toFixed(1)}%</div>
+                <div style="margin-top: 8px;"><strong>3. Fixed Shape Strain:</strong> &epsilon;<sub>u</sub> = (R<sub>f</sub> / 100) &times; &epsilon;<sub>load</sub> = (${rf.toFixed(1)} / 100) &times; ${epsL.toFixed(1)}% = ${epsF.toFixed(1)}%</div>
+            </div>
         `;
-    
-        try {
-            katex.render(latexString, latexFormulaContainer, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (err) {
-            console.error(err);
-        }
     }
     
     // ============================================================
@@ -2166,39 +2149,30 @@
         const sigmaRec = recoveryStress(E_rubbery, eps_u, epsEq);
     
         const logAT = wlfShiftFactor(activeTemp, Tg);
-        const logATStr = logAT === null ? "\\infty" : logAT.toFixed(3);
+        const logATStr = logAT === null ? "&infin;" : logAT.toFixed(3);
         
         let tauStr;
         if (activeTau === Infinity) {
-            tauStr = "\\infty";
+            tauStr = "&infin;";
         } else if (activeTau < 0.001) {
             const str = activeTau.toExponential(3); // e.g. "3.870e-4"
             const parts = str.split('e');
-            tauStr = `${parts[0]} \\times 10^{${parts[1]}}\\text{ s}`;
+            tauStr = `${parts[0]} &times; 10<sup>${parts[1]}</sup> s`;
         } else if (activeTau < 0.1) {
-            tauStr = activeTau.toFixed(4) + "\\text{ s}";
+            tauStr = activeTau.toFixed(4) + " s";
         } else {
-            tauStr = activeTau.toFixed(1) + "\\text{ s}";
+            tauStr = activeTau.toFixed(1) + " s";
         }
     
-        const latexString = `
-        \\begin{aligned}
-        &\\text{1. WLF Shift } \\log(a_T) \\text{ at } ${activeTemp.toFixed(1)}^\\circ\\text{C}: \\log(a_T) = \\frac{-17.44(T-T_g)}{51.6+(T-T_g)} = ${logATStr} \\\\[0.4em]
-        &\\text{2. Relaxation Time: } \\tau(T) = \\tau_{\\text{ref}} \\times a_T = ${tauStr} \\\\[0.4em]
-        &\\text{3. Strain Equilibrium: } \\epsilon_{\\text{eq}} = ${activeScenario === 'free' ? '0\\%' : '\\min(\\epsilon_u, \\frac{\\sigma_{\\text{opp}}}{E_r} \\times 100\\%) = ' + epsEq.toFixed(2) + '\\%'} \\\\[0.4em]
-        &\\text{4. Recovery Stress: } \\sigma_{\\text{recovery}} = \\frac{E_{\\text{rubbery}} \\epsilon_{\\text{eq}}}{100} = ${activeScenario === 'free' ? '0\\text{ MPa}' : sigmaRec.toFixed(2) + '\\text{ MPa}'} \\\\[0.4em]
-        &\\text{5. Recovery kinetics: } \\epsilon(t) = \\epsilon_{\\text{eq}} + (\\epsilon_u - \\epsilon_{\\text{eq}})e^{-t/\\tau}
-        \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; color: #1e293b; font-size: 16px; font-weight: bold;">
+                <div><strong>1. WLF Shift log(a<sub>T</sub>) at ${activeTemp.toFixed(1)}&deg;C:</strong> log(a<sub>T</sub>) = -17.44(T - T<sub>g</sub>) / (51.6 + (T - T<sub>g</sub>)) = ${logATStr}</div>
+                <div style="margin-top: 6px;"><strong>2. Relaxation Time:</strong> &tau;(T) = &tau;<sub>ref</sub> &times; a<sub>T</sub> = ${tauStr}</div>
+                <div style="margin-top: 6px;"><strong>3. Strain Equilibrium:</strong> &epsilon;<sub>eq</sub> = ${activeScenario === 'free' ? '0%' : 'min(&epsilon;<sub>u</sub>, (&sigma;<sub>opp</sub> / E<sub>r</sub>) &times; 100%) = ' + epsEq.toFixed(2) + '%'}</div>
+                <div style="margin-top: 6px;"><strong>4. Recovery Stress:</strong> &sigma;<sub>recovery</sub> = (E<sub>rubbery</sub> &times; &epsilon;<sub>eq</sub>) / 100 = ${activeScenario === 'free' ? '0 MPa' : sigmaRec.toFixed(2) + ' MPa'}</div>
+                <div style="margin-top: 6px;"><strong>5. Recovery Kinetics:</strong> &epsilon;(t) = &epsilon;<sub>eq</sub> + (&epsilon;<sub>u</sub> - &epsilon;<sub>eq</sub>)e<sup>-t/&tau;</sup></div>
+            </div>
         `;
-    
-        try {
-            katex.render(latexString, latexFormulaContainer, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (err) {
-            console.error(err);
-        }
     }
     
     // ============================================================
@@ -2221,7 +2195,7 @@
         inheritedStrainVal.innerText = eps_u.toFixed(2) + " %";
     
         // Dynamic slider cap for opposing stress
-        const maxStressPossible = recoveryStress(E_rubbery, eps_u, 0); // E_r * eps_u / 100
+        const maxStressPossible = recoveryStress(E_rubbery, eps_u, eps_u); // E_r * eps_u / 100
         oppStress.max = maxStressPossible.toFixed(2);
         if (parseFloat(oppStress.value) > maxStressPossible) {
             oppStress.value = maxStressPossible.toFixed(2);
@@ -2856,33 +2830,27 @@
         const pmmaW2 = parseFloat(blendSlider.value) / 100;
         const puW1 = 1 - pmmaW2;
     
-        let latexString = "";
         if (currentMorphology === 'miscible') {
-            latexString = `
-            \\begin{aligned}
-            &\\text{1. Fox Equation (Miscible Blend } T_g\\text{): } \\frac{1}{T_{g,\\text{mixed}}} = \\frac{w_1}{T_{g1}} + \\frac{w_2}{T_{g2}} \\\\[0.4em]
-            &\\frac{1}{T_{g,\\text{mixed}}} = \\frac{${puW1.toFixed(2)}}{318.15\\text{ K}} + \\frac{${pmmaW2.toFixed(2)}}{363.15\\text{ K}} \\implies T_{g,\\text{mixed}} = ${mixedTg.toFixed(1)}^\\circ\\text{C} \\\\[0.4em]
-            &\\text{2. Single-Step Recovery: } \\epsilon(T) = \\epsilon_{\\text{total}} \\text{ for } T < T_{g,\\text{mixed}}, \\text{ else } 0
-            \\end{aligned}
+            container.innerHTML = `
+                <div style="font-family: inherit; line-height: 1.6; color: #1e293b; font-size: 16px; font-weight: bold;">
+                    <div><strong>1. Fox Equation (Miscible Blend T<sub>g</sub>):</strong> 1 / T<sub>g,mixed</sub> = w<sub>1</sub> / T<sub>g1</sub> + w<sub>2</sub> / T<sub>g2</sub></div>
+                    <div style="margin-left: 20px; font-style: italic; color: #475569; font-size: 0.95em; margin-bottom: 8px;">
+                        1 / T<sub>g,mixed</sub> = ${puW1.toFixed(2)} / 318.15 K + ${pmmaW2.toFixed(2)} / 363.15 K &rArr; T<sub>g,mixed</sub> = ${mixedTg.toFixed(1)}&deg;C
+                    </div>
+                    <div><strong>2. Single-Step Recovery:</strong> &epsilon;(T) = &epsilon;<sub>total</sub> for T &lt; T<sub>g,mixed</sub>, else 0</div>
+                </div>
             `;
         } else {
-            latexString = `
-            \\begin{aligned}
-            &\\text{1. Intermediate Release (at } T_{g1}\\text{): } \\epsilon_{\\text{intermediate}} = \\epsilon_{\\text{total}} \\times w_1 \\times \\frac{E_{g1,\\text{rubbery}}}{E_{g1,\\text{rubbery}} + w_2 \\times E_{g2,\\text{glassy,eff}}} \\\\[0.4em]
-            &\\epsilon_{\\text{intermediate}} = 100\\% \\times ${puW1.toFixed(2)} \\times \\frac{15\\text{ MPa}}{15\\text{ MPa} + ${pmmaW2.toFixed(2)} \\times ${E_g2_glassy_eff.toFixed(1)}\\text{ MPa}} = ${eps_intermediate.toFixed(1)}\\% \\\\[0.4em]
-            &\\text{2. Intermediate Plateau: } \\epsilon_{\\text{plateau}} = \\epsilon_{\\text{total}} - \\epsilon_{\\text{intermediate}} = ${eps_final.toFixed(1)}\\% \\\\[0.4em]
-            &\\text{3. Final Release (at } T_{g2}\\text{): } \\epsilon_{\\text{final}} = \\epsilon_{\\text{plateau}} \\to 0
-            \\end{aligned}
+            container.innerHTML = `
+                <div style="font-family: inherit; line-height: 1.6; color: #1e293b; font-size: 16px; font-weight: bold;">
+                    <div><strong>1. Intermediate Release (at T<sub>g1</sub>):</strong> &epsilon;<sub>intermediate</sub> = &epsilon;<sub>total</sub> &times; w<sub>1</sub> &times; E<sub>g1,rubbery</sub> / (E<sub>g1,rubbery</sub> + w<sub>2</sub> &times; E<sub>g2,glassy,eff</sub>)</div>
+                    <div style="margin-left: 20px; font-style: italic; color: #475569; font-size: 0.95em; margin-bottom: 8px;">
+                        &epsilon;<sub>intermediate</sub> = 100% &times; ${puW1.toFixed(2)} &times; 15 MPa / (15 MPa + ${pmmaW2.toFixed(2)} &times; ${E_g2_glassy_eff.toFixed(1)} MPa) = ${eps_intermediate.toFixed(1)}%
+                    </div>
+                    <div><strong>2. Intermediate Plateau:</strong> &epsilon;<sub>plateau</sub> = &epsilon;<sub>total</sub> - &epsilon;<sub>intermediate</sub> = ${eps_final.toFixed(1)}%</div>
+                    <div style="margin-top: 8px;"><strong>3. Final Release (at T<sub>g2</sub>):</strong> &epsilon;<sub>final</sub> = &epsilon;<sub>plateau</sub> &rArr; 0</div>
+                </div>
             `;
-        }
-    
-        try {
-            katex.render(latexString, container, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (err) {
-            console.error(err);
         }
     }
     

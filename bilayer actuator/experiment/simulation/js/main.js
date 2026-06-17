@@ -1145,28 +1145,26 @@
         ctx.fillText('0', padLeft - 6, padTop + h);
     }
     
-    // 12. KaTeX live substituted math formula renderer
+    // 12. HTML live substituted math formula renderer
     function renderLiveMath(m, n, h, deltaStrain, kappa) {
-        if (typeof katex === 'undefined') return;
+        if (!latexFormulaContainer) return;
     
         const h_mm = (h * 1000).toFixed(2);
-        const strain_exp = deltaStrain.toExponential(3);
+        const strain_exp = deltaStrain.toExponential(3).replace('e', ' &times; 10<sup>') + '</sup>';
         const k_val = kappa.toFixed(4);
     
-        const latexStr = `
-            \\begin{aligned}
-            \\kappa &= \\frac{6 \\cdot \\Delta \\epsilon \\cdot (1 + m)^2}{h \\cdot \\phi(m, n)} \\\\
-            m &= ${m.toFixed(3)}, \\quad n = ${n.toFixed(3)} \\\\
-            \\phi(m,n) &= 3(1+m)^2 + (1+mn)\\left(m^2 + \\frac{1}{mn}\\right) \\\\
-            \\kappa &= \\frac{6 \\cdot (${strain_exp}) \\cdot (1 + ${m.toFixed(2)})^2}{${h_mm}\\text{ mm} \\cdot \\phi(m, n)} \\\\
-            \\kappa &= ${k_val} \\text{ m}^{-1}
-            \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; font-size: 16px; font-weight: bold;">
+                <div style="font-weight: bold; margin-bottom: 6px;">Timoshenko Bimetal Formula:</div>
+                <div style="margin-left: 20px; font-style: italic; margin-bottom: 8px;">
+                    &kappa; = [6 &times; &Delta;&epsilon; &times; (1 + m)<sup>2</sup>] / [h &times; &phi;(m, n)]
+                </div>
+                <div>m = ${m.toFixed(3)}, &nbsp; n = ${n.toFixed(3)}</div>
+                <div style="margin-top: 4px;">&phi;(m,n) = 3(1+m)<sup>2</sup> + (1 + mn)(m<sup>2</sup> + 1/(mn))</div>
+                <div style="margin-top: 8px;">Substitution: &kappa; = [6 &times; (${strain_exp}) &times; (1 + ${m.toFixed(2)})<sup>2</sup>] / [${h_mm} mm &times; &phi;(m, n)]</div>
+                <div style="margin-top: 8px; font-weight: bold; color: #8A1134;">Result: &kappa; = ${k_val} m<sup>-1</sup></div>
+            </div>
         `;
-    
-        katex.render(latexStr, latexFormulaContainer, {
-            displayMode: true,
-            throwOnError: false
-        });
     }
     
     // 13. Viscoelastic Timeline Playback Controls
@@ -2479,9 +2477,9 @@
         ctx.fillText('0°', padLeft - 4, padTop + h);
     }
     
-    // 12. KaTeX live substituted math formula renderer
+    // 12. HTML live substituted math formula renderer
     function renderLiveMath(activeMat, deltaC, thetaF, epsA, As, phi_mn, h, m, kx) {
-        if (typeof katex === 'undefined' || !latexFormulaContainer) return;
+        if (!latexFormulaContainer) return;
     
         const b1_val = activeMat.beta1.toFixed(4);
         const b2_val = activeMat.beta2.toFixed(4);
@@ -2492,20 +2490,17 @@
         const exy_val = (epsA.eps_xy * 100).toFixed(3);
         const kx_val = kx.toFixed(4);
     
-        const latexStr = `
-            \\begin{aligned}
-            \\epsilon_\\parallel &= \\beta_\\parallel \\cdot \\Delta C = ${b1_val} \\cdot ${dc_val} = ${ep_val}\\% \\\\
-            \\epsilon_\\perp &= \\beta_\\perp \\cdot \\Delta C = ${b2_val} \\cdot ${dc_val} = ${et_val}\\% \\\\[6pt]
-            \\epsilon_{xx}(\\theta) &= \\epsilon_\\parallel \\cos^2\\theta + \\epsilon_\\perp \\sin^2\\theta = ${exx_val}\\% \\\\
-            \\epsilon_{xy}(\\theta) &= (\\epsilon_\\parallel - \\epsilon_\\perp) \\sin\\theta \\cos\\theta = ${exy_val}\\% \\\\[6pt]
-            \\kappa &= \\frac{6 \\cdot \\Delta\\epsilon_{xx} \\cdot (1+m)^2}{h \\cdot \\phi(m,n)} = ${kx_val} \\text{ m}^{-1}
-            \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; font-size: 16px; font-weight: bold;">
+                <div>&epsilon;<sub>&parallel;</sub> = &beta;<sub>&parallel;</sub> &times; &Delta;C = ${b1_val} &times; ${dc_val} = ${ep_val}%</div>
+                <div>&epsilon;<sub>&perp;</sub> = &beta;<sub>&perp;</sub> &times; &Delta;C = ${b2_val} &times; ${dc_val} = ${et_val}%</div>
+                <div style="margin-top: 4px;">&epsilon;<sub>xx</sub>(&theta;) = &epsilon;<sub>&parallel;</sub> cos<sup>2</sup>&theta; + &epsilon;<sub>&perp;</sub> sin<sup>2</sup>&theta; = ${exx_val}%</div>
+                <div>&epsilon;<sub>xy</sub>(&theta;) = (&epsilon;<sub>&parallel;</sub> - &epsilon;<sub>&perp;</sub>) sin&theta; cos&theta; = ${exy_val}%</div>
+                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">
+                    &kappa; = [6 &times; &Delta;&epsilon;<sub>xx</sub> &times; (1+m)<sup>2</sup>] / [h &times; &phi;(m,n)] = ${kx_val} m<sup>-1</sup>
+                </div>
+            </div>
         `;
-    
-        katex.render(latexStr, latexFormulaContainer, {
-            displayMode: true,
-            throwOnError: false
-        });
     }
     
     // 13. Dynamic Warning/Success Banners
@@ -3670,7 +3665,7 @@
     
     function renderLiveMath(alphaEffTop, alphaEffBot, alphaShearTop, alphaShearBot, deltaT, kappa, twistRate) {
         const latexFormulaContainer = document.getElementById('latexFormulaContainer');
-        if (typeof katex === 'undefined' || !latexFormulaContainer) return;
+        if (!latexFormulaContainer) return;
         
         const a_top_val = (alphaEffTop * 1e6).toFixed(1);
         const a_bot_val = (alphaEffBot * 1e6).toFixed(1);
@@ -3680,19 +3675,14 @@
         const k_val = kappa.toFixed(2);
         const t_val = twistRate.toFixed(2);
         
-        const latexStr = `
-            \\begin{aligned}
-            \\alpha_{\\text{eff,top}} &= \\alpha_\\parallel \\cos^2\\theta_{\\text{top}} + \\alpha_\\perp \\sin^2\\theta_{\\text{top}} = ${a_top_val} \\times 10^{-6}\\text{ K}^{-1} \\\\
-            \\alpha_{\\text{eff,bot}} &= \\alpha_\\parallel \\cos^2\\theta_{\\text{bot}} + \\alpha_\\perp \\sin^2\\theta_{\\text{bot}} = ${a_bot_val} \\times 10^{-6}\\text{ K}^{-1} \\\\[6pt]
-            \\kappa &= \\frac{6(\\alpha_{\\text{eff,top}} - \\alpha_{\\text{eff,bot}})\\Delta T (1+m)^2}{h} = ${k_val}\\text{ m}^{-1} \\\\
-            \\tau &= \\frac{6(\\alpha_{\\text{shear,top}} - \\alpha_{\\text{shear,bot}})\\Delta T (1+m)^2}{h} = ${t_val}\\text{ rad/m}
-            \\end{aligned}
+        latexFormulaContainer.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; font-size: 16px; font-weight: bold;">
+                <div>&alpha;<sub>eff,top</sub> = &alpha;<sub>&parallel;</sub> cos<sup>2</sup>&theta;<sub>top</sub> + &alpha;<sub>&perp;</sub> sin<sup>2</sup>&theta;<sub>top</sub> = ${a_top_val} &times; 10<sup>-6</sup> K<sup>-1</sup></div>
+                <div>&alpha;<sub>eff,bot</sub> = &alpha;<sub>&parallel;</sub> cos<sup>2</sup>&theta;<sub>bot</sub> + &alpha;<sub>&perp;</sub> sin<sup>2</sup>&theta;<sub>bot</sub> = ${a_bot_val} &times; 10<sup>-6</sup> K<sup>-1</sup></div>
+                <div style="margin-top: 6px;">&kappa; = [6(&alpha;<sub>eff,top</sub> - &alpha;<sub>eff,bot</sub>) &times; &Delta;T &times; (1+m)<sup>2</sup>] / h = ${k_val} m<sup>-1</sup></div>
+                <div>&tau; = [6(&alpha;<sub>shear,top</sub> - &alpha;<sub>shear,bot</sub>) &times; &Delta;T &times; (1+m)<sup>2</sup>] / h = ${t_val} rad/m</div>
+            </div>
         `;
-        
-        katex.render(latexStr, latexFormulaContainer, {
-            displayMode: true,
-            throwOnError: false
-        });
     }
     
     // ============================================================
@@ -4122,28 +4112,17 @@
         if (!container) return;
         
         const L = L_mm / 1000;
+        const D_html = D.toExponential(1).replace('e', ' &times; 10<sup>') + '</sup>';
+        const L_html = L.toExponential(1).replace('e', ' &times; 10<sup>') + '</sup>';
         
-        // Format scientific notation cleanly for LaTeX
-        const D_latex = D.toExponential(1).replace('e', '\\times 10^{') + '}';
-        const L_latex = L.toExponential(1).replace('e', '\\times 10^{') + '}';
-        
-        const latexText = `
-    \\begin{aligned}
-    &\\text{Fick's Second Law:} \\quad \\frac{\\partial C}{\\partial t} = D \\frac{\\partial^2 C}{\\partial x^2} \\\\[1em]
-    &\\text{Parameters: } D = ${D_latex} \\text{ m}^2/\\text{s}, \\quad L = ${L_mm.toFixed(1)} \\text{ mm} = ${L_latex} \\text{ m} \\\\[1em]
-    &\\tau = \\frac{D \\cdot t}{L^2} = \\frac{(${D_latex}) \\cdot t}{(${L_latex})^2} = \\frac{t}{${(L*L/D).toFixed(0)} \\text{ s}} \\\\[1em]
-    &t_{90} \\approx 0.53 \\frac{L^2}{D} = 0.53 \\frac{(${L_latex})^2}{${D_latex}} = ${formatTime(t_90)}
-    \\end{aligned}
+        container.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; font-size: 16px; font-weight: bold;">
+                <div><strong>Fick's Second Law:</strong> &part;C/&part;t = D &times; &part;<sup>2</sup>C/&part;x<sup>2</sup></div>
+                <div style="margin-top: 6px;"><strong>Parameters:</strong> D = ${D_html} m<sup>2</sup>/s, &nbsp; L = ${L_mm.toFixed(1)} mm = ${L_html} m</div>
+                <div style="margin-top: 6px;">&tau; = (D &times; t) / L<sup>2</sup> = [(${D_html}) &times; t] / (${L_html})<sup>2</sup> = t / ${(L*L/D).toFixed(0)} s</div>
+                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">t<sub>90</sub> &approx; 0.53 &times; L<sup>2</sup> / D = 0.53 &times; (${L_html})<sup>2</sup> / ${D_html} = ${formatTime(t_90)}</div>
+            </div>
         `;
-        
-        try {
-            katex.render(latexText, container, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (e) {
-            container.innerHTML = `<div style="font-family: monospace; font-size:10px;">${latexText}</div>`;
-        }
     }
     
     /**
@@ -5121,33 +5100,23 @@
         const container = document.getElementById('latexFormulaContainer');
         if (!container) return;
         
-        const R_str = R_free === Infinity ? '\\infty' : R_free.toFixed(3) + '\\text{ m}';
-        const delta_str = (delta_free * 1000).toFixed(2) + '\\text{ mm}';
-        const F_str = (F_block * 1000).toFixed(1) + '\\text{ mN}';
-        const W_str = (W * 1000).toFixed(4) + '\\text{ mJ}';
+        const R_str = R_free === Infinity ? '&infin;' : R_free.toFixed(3) + ' m';
+        const delta_str = (delta_free * 1000).toFixed(2) + ' mm';
+        const F_str = (F_block * 1000).toFixed(1) + ' mN';
+        const W_str = (W * 1000).toFixed(4) + ' mJ';
         
-        // Format energy density in scientific notation
-        const U_latex = U_act_J_cm3.toExponential(3).replace('e', '\\times 10^{') + '}';
+        const U_html = U_act_J_cm3.toExponential(3).replace('e', ' &times; 10<sup>') + '</sup>';
         
-        const latexText = `
-    \\begin{aligned}
-    &\\text{Swelling Strain: } \\Delta\\epsilon = \\beta_{\\parallel} \\cdot \\Delta C = ${deltaC.toFixed(4)} \\\\[0.8em]
-    &\\text{Curvature: } \\kappa = \\frac{6 \\Delta\\epsilon (1+m)^2}{h \\cdot \\phi(m,n)} = ${kappa.toFixed(3)} \\text{ m}^{-1} \\\\[0.8em]
-    &\\text{Free Deflection: } \\delta_{\\text{free}} = \\frac{\\kappa \\cdot L^2}{2} = ${delta_str} \\\\[0.8em]
-    &\\text{Blocking Force: } F_{\\text{block}} = \\frac{E_{\\text{eff}} \\cdot h^3 \\cdot b}{6 R_{\\text{free}} \\cdot L} = ${F_str} \\\\[0.8em]
-    &\\text{Work Output: } W = \\frac{1}{2} F_{\\text{block}} \\cdot \\delta_{\\text{free}} = ${W_str} \\\\[0.8em]
-    &\\text{Energy Density: } U_{\\text{act}} = \\frac{W}{\\text{Volume}} = ${U_latex} \\text{ J/cm}^3
-    \\end{aligned}
+        container.innerHTML = `
+            <div style="font-family: inherit; line-height: 1.6; font-size: 16px; font-weight: bold;">
+                <div><strong>Swelling Strain:</strong> &Delta;&epsilon; = &beta;<sub>&parallel;</sub> &times; &Delta;C = ${deltaC.toFixed(4)}</div>
+                <div style="margin-top: 6px;"><strong>Curvature:</strong> &kappa; = [6 &times; &Delta;&epsilon; &times; (1+m)<sup>2</sup>] / [h &times; &phi;(m,n)] = ${kappa.toFixed(3)} m<sup>-1</sup></div>
+                <div style="margin-top: 6px;"><strong>Free Deflection:</strong> &delta;<sub>free</sub> = (&kappa; &times; L<sup>2</sup>) / 2 = ${delta_str}</div>
+                <div style="margin-top: 6px;"><strong>Blocking Force:</strong> F<sub>block</sub> = (E<sub>eff</sub> &times; h<sup>3</sup> &times; b) / (6R<sub>free</sub> &times; L) = ${F_str}</div>
+                <div style="margin-top: 6px;"><strong>Work Output:</strong> W = (1/2) &times; F<sub>block</sub> &times; &delta;<sub>free</sub> = ${W_str}</div>
+                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">Energy Density: U<sub>act</sub> = W / Volume = ${U_html} J/cm<sup>3</sup></div>
+            </div>
         `;
-        
-        try {
-            katex.render(latexText, container, {
-                throwOnError: false,
-                displayMode: true
-            });
-        } catch (e) {
-            container.innerHTML = `<div style="font-family: monospace; font-size:10px;">${latexText}</div>`;
-        }
     }
     
     /**

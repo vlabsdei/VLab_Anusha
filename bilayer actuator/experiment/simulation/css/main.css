@@ -862,21 +862,131 @@ input[type="range"]::-webkit-slider-thumb:hover {
 /* Responsive Grid Rules */
 @media (max-width: 1100px) {
   body {
-    overflow-y: auto;
-    height: auto;
+    overflow-y: auto !important;
+    height: auto !important;
   }
   .app-layout {
-    flex-direction: column;
-    height: auto;
-    overflow: visible;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 15px !important;
+    gap: 15px !important;
+    background: var(--bg-primary) !important;
   }
-  .sidebar, .right-panel {
-    width: 100%;
-    height: auto;
-    border: none;
-    border-top: 1px solid var(--border);
+  
+  .center-content, .right-panel {
+    display: contents !important;
   }
+
+  /* Viewport and Timeline at the top (Graphs & Simulation View) */
+  .viewport-card {
+    order: 1 !important;
+    width: 100% !important;
+  }
+  .timeline-card {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  /* Live Analytics Title */
+  .panel-title {
+    order: 3 !important;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+    text-align: center !important;
+  }
+
+  /* Charts (Graphs) - Stress Profile and Curvature History/Orientation */
+  .right-panel > .analytics-card:not(.equation-card):not(.results-summary-card) {
+    order: 4 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Inputting Section (Sidebar Controls) goes up below the graphs and insights */
+  .sidebar {
+    order: 5 !important;
+    width: 100% !important;
+    height: auto !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--bg-surface) !important;
+    padding: 20px !important;
+    box-shadow: var(--shadow-lg) !important;
+    margin: 0 !important;
+    overflow-y: visible !important;
+  }
+  .sidebar-header {
+    display: none !important;
+  }
+
+  /* Numerical Results Table Card goes below inputs */
+  .right-panel > .analytics-card.results-summary-card {
+    order: 6 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+  .right-panel > .analytics-card:has(#comparisonTable),
+  .right-panel > .analytics-card:has(table) {
+    order: 6 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Governing Equations goes below results */
+  .right-panel > .analytics-card.equation-card {
+    order: 7 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Warnings/Insights go below equations */
+  .safety-box, #safetyWarningsBox, #liveInsight {
+    order: 8 !important;
+    width: 100% !important;
+  }
+
+  /* Navigation at the very bottom */
+  .right-panel > .floating-nav {
+    order: 9 !important;
+    width: 100% !important;
+    margin: 10px 0 20px 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 15px !important;
+  }
+  .floating-nav .btn-nav {
+    width: auto !important;
+    min-width: 200px !important;
+    padding: 12px 30px !important;
+  }
+}
+
+@media (max-width: 768px) {
   .center-content {
-    height: auto;
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+  .viewport-card {
+    padding: 12px !important;
+    min-height: 320px !important;
+  }
+  .control-sections {
+    padding: 16px !important;
+    gap: 16px !important;
+  }
+  .right-panel {
+    padding: 16px !important;
+  }
+  .analytics-card {
+    padding: 16px !important;
+    margin-bottom: 16px !important;
+  }
+  .floating-nav {
+    justify-content: center !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
   }
 }

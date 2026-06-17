@@ -13,7 +13,7 @@ In addition to thermal expansion, materials like wood or cellulose-based composi
 In Fused Deposition Modeling (FDM), the print direction (deposition path angle) acts to program the transformation geometry. The slicer settings are not merely for manufacturing but encode the motion of the part. By altering print angles, the resulting bending can be tuned to produce flat bending, twisting, or helical shapes.
 
 ## 5. Moisture Diffusion Timescale (Fick's Second Law)
-The actuation speed of a moisture-driven bilayer actuator depends on the diffusion timescale. Fick's Second Law governs this moisture diffusion. The characteristic diffusion time scales with the square of the layer thickness ($L^2$), meaning thinner active layers actuate significantly faster.
+The actuation speed of a moisture-driven bilayer actuator depends on the diffusion timescale. Fick's Second Law governs this moisture diffusion. The characteristic diffusion time scales with the square of the layer thickness (L<sup>2</sup>), meaning thinner active layers actuate significantly faster.
 
 ## 6. Blocking Force & Work Output
 The mechanical capability of an actuator is quantified by its blocking force (the force required to prevent bending) and its work output. This connects the mechanics of bending to the thermodynamics of the system, indicating how much energy density the actuator can deliver.
