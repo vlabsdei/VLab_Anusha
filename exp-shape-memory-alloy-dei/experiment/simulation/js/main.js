@@ -804,10 +804,10 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
 // SUB-CALC C: Bench Power Supply & Thermocouple
 // ============================================================
 (function() {
-    const dwEl = document.getElementById('dw');
-    if (!dwEl) return;
-    
     const inputCurrentEl = document.getElementById('inputCurrent');
+    if (!inputCurrentEl) return;
+    
+    const dwEl = document.getElementById('dw');
     const valDwEl = document.getElementById('valDw');
     const valCurrentEl = document.getElementById('valCurrent');
     const btnRun = document.getElementById('btnRun');
