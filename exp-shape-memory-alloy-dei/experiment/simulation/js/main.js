@@ -104,7 +104,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     let isAnimating = false;
     let animTemp = -20;
     let animSpeed = 0.8;
-    let scene, camera, renderer, dscFurnaceMesh;
+    let scene, camera, renderer, dscFurnaceMesh, cellLid;
 
     function calcTemps(atNi) {
         // Duerig Empirical Formula
@@ -297,7 +297,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         scene.background = new THREE.Color(0xfafbfc);
         
         camera = new THREE.PerspectiveCamera(45, 450 / 400, 0.1, 100);
-        camera.position.set(0, 1.8, 4);
+        camera.position.set(0, 2.5, 3.2); // angled top-down view
         
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(450, 400);
@@ -308,52 +308,87 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         
         // Lights
         const light1 = new THREE.DirectionalLight(0xffffff, 1.2);
-        light1.position.set(5, 5, 5);
+        light1.position.set(2, 5, 2);
         scene.add(light1);
-        scene.add(new THREE.AmbientLight(0x505050));
+        scene.add(new THREE.AmbientLight(0x606060));
         
-        // Build DSC Chamber
-        const furnaceBase = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 0.2, 32), new THREE.MeshPhongMaterial({ color: 0x334155, shininess: 30 }));
-        furnaceBase.position.set(0, -0.6, 0);
-        scene.add(furnaceBase);
+        // DSC Cell Body (horizontal plate block)
+        const cellBlock = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.3, 2.0), new THREE.MeshPhongMaterial({ color: 0x475569, metalness: 0.8, roughness: 0.3 }));
+        cellBlock.position.set(0, -0.4, 0);
+        scene.add(cellBlock);
         
-        const furnaceChamber = new THREE.Mesh(
-            new THREE.CylinderGeometry(1.4, 1.4, 0.8, 32, 1, true), 
-            new THREE.MeshPhongMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.3, side: THREE.DoubleSide })
-        );
-        furnaceChamber.position.set(0, -0.2, 0);
-        scene.add(furnaceChamber);
+        // Left Well (Sample)
+        const wellL = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.02, 32), new THREE.MeshPhongMaterial({ color: 0x0f172a }));
+        wellL.position.set(-0.7, -0.24, 0);
+        scene.add(wellL);
         
-        // Pedestals
-        const pedL = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0xe2e8f0 }));
-        pedL.position.set(-0.55, -0.4, 0);
-        scene.add(pedL);
+        // Right Well (Reference)
+        const wellR = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.02, 32), new THREE.MeshPhongMaterial({ color: 0x0f172a }));
+        wellR.position.set(0.7, -0.24, 0);
+        scene.add(wellR);
         
-        const pedR = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0xe2e8f0 }));
-        pedR.position.set(0.55, -0.4, 0);
-        scene.add(pedR);
+        // Left Sensor (Thermopile)
+        const sensorL = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.01, 32), new THREE.MeshPhongMaterial({ color: 0xd97706, metalness: 0.5 }));
+        sensorL.position.set(-0.7, -0.23, 0);
+        scene.add(sensorL);
         
-        // Reference Pan (Plain silver aluminum)
-        const panRef = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.12, 16), new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.2 }));
-        panRef.position.set(0.55, -0.14, 0);
+        // Right Sensor (Thermopile)
+        const sensorR = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.01, 32), new THREE.MeshPhongMaterial({ color: 0xd97706, metalness: 0.5 }));
+        sensorR.position.set(0.7, -0.23, 0);
+        scene.add(sensorR);
+        
+        // Reference Pan (Aluminum)
+        const panRef = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 16), new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.2 }));
+        panRef.position.set(0.7, -0.19, 0);
         scene.add(panRef);
         
-        // Sample Pan (Aluminum pan with sample)
+        // Reference Pan Lid
+        const panRefLid = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.02, 16), new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.2 }));
+        panRefLid.position.set(0, 0.05, 0);
+        panRef.add(panRefLid);
+        
+        // Sample Pan (Aluminum)
         const panSampleMat = new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.2 });
-        const panSample = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.12, 16), panSampleMat);
-        panSample.position.set(-0.55, -0.14, 0);
+        const panSample = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 16), panSampleMat);
+        panSample.position.set(-0.7, -0.19, 0);
         scene.add(panSample);
         
-        // Nitinol wire piece inside/on the sample pan
+        // Sample Pan Lid (tilted to see inside)
+        const panSampleLid = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.02, 16), panSampleMat);
+        panSampleLid.position.set(0.08, 0.06, 0);
+        panSampleLid.rotation.z = 0.35;
+        panSample.add(panSampleLid);
+        
+        // Nitinol sample inside sample pan
         const wireCurve = new THREE.QuadraticBezierCurve3(
-            new THREE.Vector3(-0.1, 0.08, 0),
-            new THREE.Vector3(0, 0.16, 0.08),
-            new THREE.Vector3(0.1, 0.08, 0)
+            new THREE.Vector3(-0.12, 0.01, 0),
+            new THREE.Vector3(0, 0.08, 0.04),
+            new THREE.Vector3(0.12, 0.01, 0)
         );
-        const wireGeo = new THREE.TubeGeometry(wireCurve, 16, 0.02, 8, false);
+        const wireGeo = new THREE.TubeGeometry(wireCurve, 16, 0.025, 8, false);
         const wireMat = new THREE.MeshPhongMaterial({ color: 0x475569 });
         const wirePiece = new THREE.Mesh(wireGeo, wireMat);
         panSample.add(wirePiece);
+        
+        // Purge Gas Inlet Line
+        const purgePipe = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.6, 8), new THREE.MeshPhongMaterial({ color: 0xb87333 }));
+        purgePipe.position.set(0, -0.25, -0.9);
+        purgePipe.rotation.x = Math.PI / 2;
+        scene.add(purgePipe);
+        
+        // Cooling Plates / Heat Sink Rim
+        const coolingFinL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.26, 1.8), new THREE.MeshPhongMaterial({ color: 0x94a3b8 }));
+        coolingFinL.position.set(-1.6, -0.4, 0);
+        scene.add(coolingFinL);
+        
+        const coolingFinR = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.26, 1.8), new THREE.MeshPhongMaterial({ color: 0x94a3b8 }));
+        coolingFinR.position.set(1.6, -0.4, 0);
+        scene.add(coolingFinR);
+        
+        // Removable Lid (Slides back)
+        cellLid = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 0.06, 32), new THREE.MeshPhongMaterial({ color: 0x64748b, metalness: 0.6, roughness: 0.4 }));
+        cellLid.position.set(0, -0.1, 0);
+        scene.add(cellLid);
         
         dscFurnaceMesh = { panSample, panSampleMat, wirePiece, wireMat };
         
@@ -367,16 +402,27 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     function updateThreeScene(temp, xm) {
         if (!dscFurnaceMesh) return;
         
-        // Temperature heat glow (from -20°C (normal) to 100°C (glowing orange-red))
-        const glowRatio = Math.max(0.0, Math.min(1.0, (temp - 20) / 80));
+        // Lid slides away during first 20°C of heating (-20 to 0)
+        const lidProgress = Math.max(0.0, Math.min(1.0, (temp + 20) / 20));
+        cellLid.position.z = -lidProgress * 1.8;
+        cellLid.position.x = -lidProgress * 0.5;
         
-        // Sample pan glows red based on temperature
+        // Temperature heat glow (from -20°C to 100°C)
+        const glowRatio = Math.max(0.0, Math.min(1.0, (temp - 20) / 80));
         dscFurnaceMesh.panSampleMat.emissive.setRGB(glowRatio * 0.5, glowRatio * 0.1, 0.0);
         
-        // Nitinol wire changes color to reflect phase (Austenite is red, Martensite is dark grey)
+        // Nitinol wire phase color
         const austeniteRatio = 1.0 - xm;
         dscFurnaceMesh.wireMat.color.setRGB(0.28 + austeniteRatio * 0.5, 0.33 - austeniteRatio * 0.15, 0.41 - austeniteRatio * 0.25);
         dscFurnaceMesh.wireMat.emissive.setRGB(glowRatio * 0.3 * austeniteRatio, 0.0, 0.0);
+        
+        // Lathe/Pan pulses during phase transformation (latent heat visualization)
+        if (xm > 0.01 && xm < 0.99) {
+            const pulse = 1.0 + 0.05 * Math.sin(Date.now() * 0.015) * (xm * (1.0 - xm) * 4.0);
+            dscFurnaceMesh.panSample.scale.set(pulse, pulse, pulse);
+        } else {
+            dscFurnaceMesh.panSample.scale.set(1.0, 1.0, 1.0);
+        }
     }
 
     btnRun.addEventListener('click', () => {
@@ -385,6 +431,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         btnRun.disabled = true;
         btnRun.innerText = "Heating Cycle...";
         btnRun.style.background = "#475569";
+        atNiEl.disabled = true;
+        testTempEl.disabled = true;
         
         const targetTemp = parseFloat(testTempEl.value);
         animTemp = -20;
@@ -395,6 +443,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                 animTemp = targetTemp;
                 isAnimating = false;
                 btnRun.disabled = false;
+                atNiEl.disabled = false;
+                testTempEl.disabled = false;
                 btnRun.innerText = "Initiate Thermal Cycle";
                 btnRun.style.background = "linear-gradient(135deg, #9f1239, #8A1134)";
                 document.getElementById('btnNextCalc').style.display = 'inline-block';
@@ -440,7 +490,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     let simStep = 0; // 0: Idle, 1: Loading, 2: Unloading
     let simStrain = 0.0;
     let maxStrainVal = 8.0;
-    let scene, camera, renderer, dogboneMesh;
+    let scene, camera, renderer, dogboneMesh, arrow, gaugeCenter, shoulderTop, shoulderBottom;
     
     // Nitinol Constant Properties
     const Af = 18.0; 
@@ -479,19 +529,19 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         let wHyst = 0.0;
         let damping = 0.0;
         if (relTemp < 0) {
-            wHyst = plateauStress * (maxStrain - 1.5) * 1.1; 
+            wHyst = (plateauStress * (maxStrain - 1.5) * 1.1) / 100.0; 
             if (wHyst < 0) wHyst = 0;
-            damping = wHyst / (Math.PI * maxStressVal * maxStrain);
+            damping = wHyst / (Math.PI * maxStressVal * (maxStrain / 100.0));
         } else {
             const recoveryOffset = 120.0; 
-            wHyst = recoveryOffset * (maxStrain - 1.5);
+            wHyst = (recoveryOffset * (maxStrain - 1.5)) / 100.0;
             if (wHyst < 0) wHyst = 0;
-            damping = wHyst / (Math.PI * maxStressVal * maxStrain);
+            damping = wHyst / (Math.PI * maxStressVal * (maxStrain / 100.0));
         }
         
         if (isNaN(damping) || damping < 0) damping = 0;
         
-        resHysteresis.innerText = wHyst.toFixed(1) + " MJ/m³";
+        resHysteresis.innerText = wHyst.toFixed(2) + " MJ/m³";
         resDamping.innerText = damping.toFixed(3);
         resComparison.innerHTML = `Steel: <b>0.001</b> | Rubber: <b>0.100</b><br><span style="color:#8a1134">Nitinol is <b>${(damping / 0.001).toFixed(0)}x</b> higher than structural steel!</span>`;
         
@@ -532,7 +582,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                 </div>
                 <div style="margin-bottom: 8px;"><b>2. Dissipated Hysteresis Work:</b></div>
                 <div style="font-size: 1.15em; background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0; font-family: monospace; font-weight: bold; margin-bottom: 12px; color: #10b981;">
-                    W_hysteresis = Δσ_plateau × (ε_max - 1.5) = 120 × ${(eMax - 1.5).toFixed(1)} = ${W.toFixed(1)} MJ/m³
+                    W_hysteresis = Δσ_plateau × (ε_max - 1.5) / 100 = 120 × ${(eMax - 1.5).toFixed(1)} / 100 = ${W.toFixed(2)} MJ/m³
                 </div>
                 <div style="margin-bottom: 8px;"><b>3. Damping Capacity:</b></div>
                 <div style="font-size: 1.15em; background: #ffffff; padding: 10px 14px; border-radius: 6px; border: 1px solid #e2e8f0; font-family: monospace; font-weight: bold; color: #d97706;">
@@ -542,20 +592,39 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         }
     }
 
-    function calcHysteresis(strain, relTemp, maxStrain) {
-        let plateau = relTemp < 0 ? 120.0 : 150.0 + 7.0 * relTemp;
-        let stress = 0;
-        const E = relTemp < 0 ? 25.0 : 35.0; // GPa
+    function calcHysteresis(strain, relTemp, maxStrain, stepOverride) {
+        const activeStep = stepOverride !== undefined ? stepOverride : simStep;
+        const E_A = 40.0; // GPa (Austenite modulus)
+        const E_M = 25.0; // GPa (Martensite modulus)
         
-        // Loading Curve
+        const E_start = relTemp < 0 ? E_M : E_A;
+        
+        // Plateau stress for loading
+        let sigma_load_plat = 0.0;
+        if (relTemp < 0) {
+            sigma_load_plat = 120.0; // detwinning plateau
+        } else {
+            sigma_load_plat = 150.0 + 7.0 * relTemp; // stress-induced martensite plateau
+            if (sigma_load_plat > 500.0) sigma_load_plat = 500.0; // cap at 500 MPa
+        }
+        
+        // Elastic loading ends at strain e1
+        const e1 = sigma_load_plat / (E_start * 10.0);
+        
+        // Plateau ends at strain e2
+        const e2 = 6.0; 
+        const H_load = 15.0; // hardening slope on plateau
+        
         const loadStress = (eps) => {
-            if (eps < 1.5) return eps * E * 10; 
-            if (eps <= maxStrain - 1.0) {
-                const slopePart = (eps - 1.5) * 15.0;
-                return plateau + slopePart;
+            if (eps < e1) {
+                return eps * E_start * 10.0;
             }
-            const plateauEnd = plateau + (maxStrain - 2.5) * 15.0;
-            return plateauEnd + (eps - (maxStrain - 1.0)) * E * 10 * 0.8;
+            if (eps <= e2) {
+                return sigma_load_plat + H_load * (eps - e1);
+            }
+            // post-transformation elastic loading
+            const sigma2 = sigma_load_plat + H_load * (e2 - e1);
+            return sigma2 + E_M * 10.0 * (eps - e2);
         };
         
         const maxStressVal = loadStress(maxStrain);
@@ -563,99 +632,148 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         // Unloading Curve
         const unloadStress = (eps) => {
             if (relTemp < 0) {
-                const elasticStrain = maxStressVal / (E * 10);
+                // Shape Memory Effect: purely elastic unloading to permanent set
+                const elasticStrain = maxStressVal / (E_M * 10.0);
                 const permSet = maxStrain - elasticStrain;
-                if (eps < permSet) return 0;
-                return (eps - permSet) * E * 10;
+                if (eps <= permSet) return 0.0;
+                return (eps - permSet) * E_M * 10.0;
             } else {
-                const recPlateau = plateau - 120.0 > 50.0 ? plateau - 120.0 : 50.0;
-                if (eps > maxStrain - 1.0) {
-                    return maxStressVal - (maxStrain - eps) * E * 10 * 0.8;
+                // Superelasticity: unloading with lower plateau
+                const sigma_unload_plat_base = Math.max(30.0, sigma_load_plat - 120.0);
+                const H_unload = 10.0; // hardening slope on unloading plateau
+                
+                // Unloading plateau formula: sigma_unload_plat_base + H_unload * (eps - 1.5)
+                // We find the intersection of elastic unloading line and unloading plateau:
+                // maxStressVal - E_M * 10 * (maxStrain - e3) = sigma_unload_plat_base + H_unload * (e3 - 1.5)
+                const denom = E_M * 10.0 - H_unload;
+                const num = sigma_unload_plat_base - 1.5 * H_unload - maxStressVal + E_M * 10.0 * maxStrain;
+                const e3 = num / denom;
+                
+                if (e3 < 1.5 || e3 > maxStrain) {
+                    // fall back to pure elastic unloading if range is invalid
+                    const elasticStrain = maxStressVal / (E_M * 10.0);
+                    const permSet = maxStrain - elasticStrain;
+                    if (eps <= permSet) return 0.0;
+                    return (eps - permSet) * E_M * 10.0;
                 }
-                if (eps >= 1.0) {
-                    const slopePart = (eps - 1.0) * 10.0;
-                    return recPlateau + slopePart;
+                
+                if (eps >= e3) {
+                    return maxStressVal - E_M * 10.0 * (maxStrain - eps);
                 }
-                return eps * recPlateau;
+                if (eps >= 1.5) {
+                    return sigma_unload_plat_base + H_unload * (eps - 1.5);
+                }
+                // final recovery elastic line to 0
+                return eps * (sigma_unload_plat_base / 1.5);
             }
         };
         
-        if (simStep === 1) { 
+        let stress = 0.0;
+        if (activeStep === 1) {
             stress = loadStress(strain);
-        } else if (simStep === 2) { 
+        } else if (activeStep === 2) {
             stress = unloadStress(strain);
         } else {
-            stress = 0;
+            stress = 0.0;
         }
         
         return { currentStress: stress, maxStressVal };
     }
 
     function drawPlots(activeStrain, relTemp, maxStrain) {
-        const { mapX, mapY } = drawGrid(plotCtx, 450, 400, 0, 10, 0, 600, "Strain ε (%)", "Stress σ (MPa)");
-        
-        if (simStep === 0 && activeStrain === 0.0) return; 
-        
-        // Plot full path up to activeStrain
-        plotCtx.strokeStyle = "#8A1134";
-        plotCtx.lineWidth = 3;
-        plotCtx.beginPath();
-        
-        // Draw loading path
-        const step = 0.05;
-        const limit = simStep === 1 ? activeStrain : maxStrain;
-        for (let e = 0; e <= limit; e += step) {
-            simStep = 1;
-            const { currentStress } = calcHysteresis(e, relTemp, maxStrain);
-            const xPos = mapX(e);
-            const yPos = mapY(currentStress);
-            if (e === 0) plotCtx.moveTo(xPos, yPos);
-            else plotCtx.lineTo(xPos, yPos);
-        }
-        
-        // Draw unloading path
+        const { mapX, mapY } = drawGrid(plotCtx, 450, 400, 0, 10, 0, 600, "Strain ε (%)", "Stress σ (MPa)"); 
+
         let limitStrain = 0.0;
         if (relTemp < 0) {
-            const E = 25.0; 
-            const { maxStressVal } = calcHysteresis(maxStrain, relTemp, maxStrain);
+            const E = 25.0; // GPa
+            const { maxStressVal } = calcHysteresis(maxStrain, relTemp, maxStrain, 1);
             limitStrain = maxStrain - maxStressVal / (E * 10);
             if (limitStrain < 0) limitStrain = 0;
         }
-        
-        if (simStep === 2 || activeStrain < maxStrain) {
-            const startStrain = maxStrain;
-            const endStrain = Math.max(limitStrain, activeStrain);
-            for (let e = startStrain; e >= endStrain; e -= step) {
-                simStep = 2;
-                const { currentStress } = calcHysteresis(e, relTemp, maxStrain);
+
+        const step = 0.05;
+
+        // 1. Shading the hysteresis loop (only if relTemp >= 0 and we are in unloading phase or finished)
+        if (relTemp >= 0 && (simStep === 2 || activeStrain === 0.0)) {
+            plotCtx.fillStyle = "rgba(138, 17, 52, 0.08)";
+            plotCtx.beginPath();
+            // Draw loading path up to maxStrain
+            for (let e = 0; e <= maxStrain; e += step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 1);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                if (e === 0) plotCtx.moveTo(xPos, yPos);
+                else plotCtx.lineTo(xPos, yPos);
+            }
+            // Draw unloading path from maxStrain down to 0
+            for (let e = maxStrain; e >= 0; e -= step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 2);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                plotCtx.lineTo(xPos, yPos);
+            }
+            plotCtx.closePath();
+            plotCtx.fill();
+        }
+
+        // 2. Stroke the active path
+        plotCtx.strokeStyle = "#8A1134";
+        plotCtx.lineWidth = 3;
+        plotCtx.beginPath();
+
+        if (simStep === 1) {
+            // We are loading: draw loading curve up to activeStrain
+            for (let e = 0; e <= activeStrain; e += step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 1);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                if (e === 0) plotCtx.moveTo(xPos, yPos);
+                else plotCtx.lineTo(xPos, yPos);
+            }
+        } else if (simStep === 2) {
+            // We are unloading: draw full loading curve up to maxStrain
+            for (let e = 0; e <= maxStrain; e += step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 1);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                if (e === 0) plotCtx.moveTo(xPos, yPos);
+                else plotCtx.lineTo(xPos, yPos);
+            }
+            // and unloading curve from maxStrain down to activeStrain
+            for (let e = maxStrain; e >= activeStrain; e -= step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 2);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                plotCtx.lineTo(xPos, yPos);
+            }
+        } else {
+            // Animation is done: draw full loading and unloading curves
+            for (let e = 0; e <= maxStrain; e += step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 1);
+                const xPos = mapX(e);
+                const yPos = mapY(currentStress);
+                if (e === 0) plotCtx.moveTo(xPos, yPos);
+                else plotCtx.lineTo(xPos, yPos);
+            }
+            for (let e = maxStrain; e >= limitStrain; e -= step) {
+                const { currentStress } = calcHysteresis(e, relTemp, maxStrain, 2);
                 const xPos = mapX(e);
                 const yPos = mapY(currentStress);
                 plotCtx.lineTo(xPos, yPos);
             }
         }
-        
-        // Shading inside loop
-        if (relTemp >= 0 && (simStep === 2 || activeStrain === 0.0)) {
-            plotCtx.fillStyle = "rgba(138, 17, 52, 0.08)";
-            plotCtx.closePath();
-            plotCtx.fill();
-        }
-        
-        // Restore step state
-        if (activeStrain === maxStrain) {
-            simStep = 1;
-        } else if (activeStrain < maxStrain && activeStrain > limitStrain) {
-            simStep = 2;
-        } else {
-            simStep = 0;
-        }
-        
         plotCtx.stroke();
-        
-        // Draw active dot
-        const stateForDot = activeStrain === maxStrain ? 1 : (activeStrain < maxStrain && activeStrain > limitStrain ? 2 : 1);
-        simStep = stateForDot;
-        const { currentStress } = calcHysteresis(activeStrain, relTemp, maxStrain);
+
+        // 3. Draw active dot
+        let currentStep = 1;
+        if (simStep === 1) {
+            currentStep = 1;
+        } else if (simStep === 2) {
+            currentStep = 2;
+        } else {
+            currentStep = (activeStrain > 0 && Math.abs(activeStrain - limitStrain) < 0.1) ? 2 : 1;
+        }
+        const { currentStress } = calcHysteresis(activeStrain, relTemp, maxStrain, currentStep);
         plotCtx.fillStyle = "#d97706";
         plotCtx.beginPath();
         plotCtx.arc(mapX(activeStrain), mapY(currentStress), 6, 0, 2 * Math.PI);
@@ -673,7 +791,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         scene.background = new THREE.Color(0xfafbfc);
         
         camera = new THREE.PerspectiveCamera(45, 450 / 400, 0.1, 100);
-        camera.position.set(0, 0, 7);
+        camera.position.set(0, 0, 6.2);
         
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(450, 400);
@@ -683,37 +801,96 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         orbit.enableZoom = false;
         
         // Lights
-        const light1 = new THREE.DirectionalLight(0xffffff, 1);
+        const light1 = new THREE.DirectionalLight(0xffffff, 1.2);
         light1.position.set(2, 2, 5);
         scene.add(light1);
-        scene.add(new THREE.AmbientLight(0x505050));
+        scene.add(new THREE.AmbientLight(0x606060));
         
-        // UTM Grips
-        const gripTop = new THREE.Mesh(new THREE.BoxGeometry(2, 0.4, 0.8), new THREE.MeshPhongMaterial({ color: 0x475569, shininess: 40 }));
+        // Load Cell Block (silver cylinder at top)
+        const loadCellBlock = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.3, 16), new THREE.MeshPhongMaterial({ color: 0xe2e8f0, metalness: 0.9, roughness: 0.1 }));
+        loadCellBlock.position.set(0, 2.2, 0);
+        scene.add(loadCellBlock);
+        
+        // Upper Wedge Grip Jaw (textured grey block)
+        const gripTop = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 0.6), new THREE.MeshPhongMaterial({ color: 0x475569, shininess: 30 }));
         gripTop.position.set(0, 1.8, 0);
         scene.add(gripTop);
         
-        const gripBottom = new THREE.Mesh(new THREE.BoxGeometry(2, 0.4, 0.8), new THREE.MeshPhongMaterial({ color: 0x475569, shininess: 40 }));
+        // Lower Wedge Grip Jaw (textured grey block)
+        const gripBottom = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.5, 0.6), new THREE.MeshPhongMaterial({ color: 0x475569, shininess: 30 }));
         gripBottom.position.set(0, -1.8, 0);
         scene.add(gripBottom);
         
-        const wireGeo = new THREE.CylinderGeometry(0.1, 0.1, 3.2, 16);
-        const wireMat = new THREE.MeshPhongMaterial({ color: 0x94a3b8, shininess: 80 });
-        const wire = new THREE.Mesh(wireGeo, wireMat);
-        scene.add(wire);
-        
-        // Transparent Fluid/Chamber container
+        // Double-walled transparent Environmental Chamber
         const chamberMat = new THREE.MeshPhongMaterial({
             color: 0x0ea5e9,
             transparent: true,
-            opacity: 0.15,
+            opacity: 0.12,
             depthWrite: false
         });
-        const chamber = new THREE.Mesh(new THREE.BoxGeometry(2.4, 4.0, 1.8), chamberMat);
-        chamber.position.set(0, 0, 0);
-        scene.add(chamber);
+        const chamberOuter = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 2.6, 32, 1, true), chamberMat);
+        chamberOuter.position.set(0, 0, 0);
+        scene.add(chamberOuter);
         
-        dogboneMesh = { wire, gripTop, gripBottom, chamber, chamberMat };
+        // Chamber steel rings
+        const ringTop = new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 0.08, 32), new THREE.MeshPhongMaterial({ color: 0x64748b }));
+        ringTop.position.set(0, 1.3, 0);
+        scene.add(ringTop);
+        
+        const ringBottom = new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 0.08, 32), new THREE.MeshPhongMaterial({ color: 0x64748b }));
+        ringBottom.position.set(0, -1.3, 0);
+        scene.add(ringBottom);
+        
+        // Heater Coils at the base
+        for (let i = 0; i < 3; i++) {
+            const coil = new THREE.Mesh(new THREE.TorusGeometry(0.75, 0.03, 8, 24), new THREE.MeshPhongMaterial({ color: 0xd97706 }));
+            coil.rotation.x = Math.PI / 2;
+            coil.position.set(0, -1.1 + i * 0.12, 0);
+            scene.add(coil);
+        }
+        
+        // K-type Thermocouple Probe
+        const tcProbe = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.6, 8), new THREE.MeshPhongMaterial({ color: 0x94a3b8, metalness: 0.8 }));
+        tcProbe.position.set(0.65, 0, 0);
+        tcProbe.rotation.z = Math.PI / 2;
+        scene.add(tcProbe);
+        
+        // Vertical travel scale rule
+        const ruler = new THREE.Mesh(new THREE.BoxGeometry(0.06, 3.8, 0.1), new THREE.MeshPhongMaterial({ color: 0x94a3b8 }));
+        ruler.position.set(-1.8, 0, 0);
+        scene.add(ruler);
+        
+        // Tick marks on ruler
+        const tickGeo = new THREE.BoxGeometry(0.03, 0.02, 0.02);
+        const tickMat = new THREE.MeshBasicMaterial({ color: 0x1e293b });
+        for (let i = -18; i <= 18; i++) {
+            const tick = new THREE.Mesh(tickGeo, tickMat);
+            tick.position.set(-1.75, i * 0.1, 0.06);
+            scene.add(tick);
+        }
+        
+        // Moving crosshead arrow
+        arrow = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.16, 4), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        arrow.rotation.z = -Math.PI / 2;
+        arrow.position.set(-1.66, 1.8, 0);
+        scene.add(arrow);
+        
+        // Dog-bone Specimen Assembly
+        const wireMat = new THREE.MeshPhongMaterial({ color: 0x94a3b8, shininess: 80 });
+        
+        shoulderTop = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.4, 16), wireMat);
+        shoulderTop.position.set(0, 1.35, 0);
+        scene.add(shoulderTop);
+        
+        shoulderBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.4, 16), wireMat);
+        shoulderBottom.position.set(0, -1.35, 0);
+        scene.add(shoulderBottom);
+        
+        gaugeCenter = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.3, 16), wireMat);
+        gaugeCenter.position.set(0, 0, 0);
+        scene.add(gaugeCenter);
+        
+        dogboneMesh = { wire: gaugeCenter, gripTop, gripBottom, chamber: chamberOuter, chamberMat, wireMat };
         
         function animate() {
             requestAnimationFrame(animate);
@@ -725,27 +902,34 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     function updateThreeScene(strain, stress, relTemp) {
         if (!dogboneMesh) return;
         
-        // Fluid color bath changes
+        // Environmental Chamber color based on temperature
         if (relTemp < 0) {
             dogboneMesh.chamberMat.color.setHex(0x38bdf8);
-            dogboneMesh.chamberMat.opacity = 0.22;
+            dogboneMesh.chamberMat.opacity = 0.18;
         } else {
             dogboneMesh.chamberMat.color.setHex(0xf97316);
             dogboneMesh.chamberMat.opacity = 0.12;
         }
         
-        // Strain stretches specimen
-        const scaleFactor = 1.0 + (strain / 8.0) * 0.3;
-        dogboneMesh.wire.scale.y = scaleFactor;
-        dogboneMesh.wire.position.y = (scaleFactor - 1.0) * 1.6;
-        dogboneMesh.gripTop.position.y = 1.8 + (scaleFactor - 1.0) * 3.2;
+        // Strain stretching specimen: gaugeCenter scale
+        const scaleFactor = 1.0 + (strain / 8.0) * 0.25;
+        gaugeCenter.scale.y = scaleFactor;
+        gaugeCenter.position.y = (scaleFactor - 1.0) * 1.15;
         
-        // Stress changes wire color
+        // Top shoulder and top grip follow displacement
+        const gripOffset = (scaleFactor - 1.0) * 2.3;
+        shoulderTop.position.y = 1.35 + gripOffset;
+        dogboneMesh.gripTop.position.y = 1.8 + gripOffset;
+        
+        // Move travel indicator arrow on ruler
+        arrow.position.y = 1.8 + gripOffset;
+        
+        // Stress changes specimen color
         const stressRatio = Math.min(1.0, stress / 500.0);
         const r = 0.58 + stressRatio * 0.35;
         const g = 0.64 - stressRatio * 0.45;
         const b = 0.72 - stressRatio * 0.55;
-        dogboneMesh.wire.material.color.setRGB(r, g, b);
+        dogboneMesh.wireMat.color.setRGB(r, g, b);
     }
 
     btnRun.addEventListener('click', () => {
@@ -754,6 +938,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         btnRun.disabled = true;
         btnRun.innerText = "Testing...";
         btnRun.style.background = "#475569";
+        relTempEl.disabled = true;
+        maxStrainEl.disabled = true;
         
         simStep = 1;
         simStrain = 0.0;
@@ -783,6 +969,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                     simStep = 0;
                     isAnimating = false;
                     btnRun.disabled = false;
+                    relTempEl.disabled = false;
+                    maxStrainEl.disabled = false;
                     btnRun.innerText = "Run Stress-Strain Test";
                     btnRun.style.background = "linear-gradient(135deg, #9f1239, #8A1134)";
                     document.getElementById('btnNextCalc').style.display = 'inline-block';
@@ -793,8 +981,20 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         }, 40);
     });
 
-    relTempEl.addEventListener('input', updateUI);
-    maxStrainEl.addEventListener('input', updateUI);
+    relTempEl.addEventListener('input', () => {
+        if (!isAnimating) {
+            simStrain = 0.0;
+            simStep = 0;
+        }
+        updateUI();
+    });
+    maxStrainEl.addEventListener('input', () => {
+        if (!isAnimating) {
+            simStrain = 0.0;
+            simStep = 0;
+        }
+        updateUI();
+    });
     
     init3D();
     updateUI();
@@ -941,7 +1141,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     }
 
     function drawPlots() {
-        const { mapX, mapY } = drawGrid(plotCtx, 450, 400, 0, 10, 0, 180, "Time t (s)", "Temperature T (°C)");
+        const { mapX, mapY, plotW, plotH, mLeft, mTop } = drawGrid(plotCtx, 450, 400, 0, 10, 0, 180, "Time t (s)", "Temperature T (°C)");
         
         plotCtx.strokeStyle = "#cbd5e1";
         plotCtx.lineWidth = 1;
@@ -963,6 +1163,12 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         plotCtx.fillText(`As (${As}°C)`, mapX(0.5), mapY(As) - 4);
         plotCtx.fillText(`Af (${Af}°C)`, mapX(0.5), mapY(Af) - 4);
         
+        // Clip drawing to grid area
+        plotCtx.save();
+        plotCtx.beginPath();
+        plotCtx.rect(mLeft, mTop, plotW, plotH);
+        plotCtx.clip();
+        
         plotCtx.strokeStyle = "#8A1134";
         plotCtx.lineWidth = 3;
         plotCtx.beginPath();
@@ -973,6 +1179,21 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
             else plotCtx.lineTo(xPos, yPos);
         }
         plotCtx.stroke();
+        
+        if (timePoints.length > 0) {
+            const lastTime = timePoints[timePoints.length - 1];
+            const lastTemp = tempPoints[tempPoints.length - 1];
+            
+            // Draw active dot
+            plotCtx.fillStyle = "#d97706";
+            plotCtx.beginPath();
+            plotCtx.arc(mapX(lastTime), mapY(lastTemp), 6, 0, 2 * Math.PI);
+            plotCtx.fill();
+            plotCtx.strokeStyle = "#ffffff";
+            plotCtx.lineWidth = 2;
+            plotCtx.stroke();
+        }
+        plotCtx.restore();
     }
 
     function init3D() {
@@ -983,7 +1204,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         scene.background = new THREE.Color(0xfafbfc);
         
         camera = new THREE.PerspectiveCamera(45, 450 / 400, 0.1, 100);
-        camera.position.set(0, 0.4, 4.5);
+        camera.position.set(0, 0.6, 4.2);
         
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(450, 400);
@@ -992,44 +1213,100 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         const orbit = new THREE.OrbitControls(camera, renderer.domElement);
         orbit.enableZoom = false;
         
-        // Terminals
-        const termL = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.8, 0.4), new THREE.MeshPhongMaterial({ color: 0xb87333 }));
-        termL.position.set(-1.6, 0, 0);
+        // Lights
+        scene.add(new THREE.DirectionalLight(0xffffff, 1.2));
+        scene.add(new THREE.AmbientLight(0x606060));
+        
+        // Bench Power Supply Unit (PSU) box in background
+        const psuBox = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.1, 1.2), new THREE.MeshPhongMaterial({ color: 0x1e293b }));
+        psuBox.position.set(0, 0.7, -1.3);
+        scene.add(psuBox);
+        
+        // PSU LED Screen
+        const psuScreen = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.35, 0.02), new THREE.MeshBasicMaterial({ color: 0x0284c7 }));
+        psuScreen.position.set(0, 0.9, -0.69);
+        scene.add(psuScreen);
+        
+        // PSU Knobs
+        const knob1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.1, 12), new THREE.MeshPhongMaterial({ color: 0x64748b }));
+        knob1.position.set(-0.5, 0.5, -0.65);
+        knob1.rotation.x = Math.PI / 2;
+        scene.add(knob1);
+        
+        const knob2 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.1, 12), new THREE.MeshPhongMaterial({ color: 0x64748b }));
+        knob2.position.set(-0.25, 0.5, -0.65);
+        knob2.rotation.x = Math.PI / 2;
+        scene.add(knob2);
+        
+        // PSU Output Terminals (Red and Black pins)
+        const psuTermRed = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 12), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        psuTermRed.position.set(0.3, 0.5, -0.65);
+        psuTermRed.rotation.x = Math.PI / 2;
+        scene.add(psuTermRed);
+        
+        const psuTermBlack = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.12, 12), new THREE.MeshPhongMaterial({ color: 0x0f172a }));
+        psuTermBlack.position.set(0.55, 0.5, -0.65);
+        psuTermBlack.rotation.x = Math.PI / 2;
+        scene.add(psuTermBlack);
+        
+        // Horizontal black anodized mounting rail
+        const rail = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.1, 0.4), new THREE.MeshPhongMaterial({ color: 0x111827 }));
+        rail.position.set(0, -0.7, 0);
+        scene.add(rail);
+        
+        // Ceramic standoffs (white cylinders supporting terminals)
+        const standL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0xf1f5f9, roughness: 0.1 }));
+        standL.position.set(-1.6, -0.5, 0);
+        scene.add(standL);
+        
+        const standR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0xf1f5f9, roughness: 0.1 }));
+        standR.position.set(1.6, -0.5, 0);
+        scene.add(standR);
+        
+        // Coloured Binding Posts (Red L, Black R)
+        const termL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        termL.position.set(-1.6, -0.3, 0);
         scene.add(termL);
         
-        const termR = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.8, 0.4), new THREE.MeshPhongMaterial({ color: 0xb87333 }));
-        termR.position.set(1.6, 0, 0);
+        const termR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.4, 16), new THREE.MeshPhongMaterial({ color: 0x0f172a }));
+        termR.position.set(1.6, -0.3, 0);
         scene.add(termR);
         
-        // Wire
-        const wireGeo = new THREE.CylinderGeometry(0.05, 0.05, 3.2, 16);
+        // Nitinol Wire
+        const wireGeo = new THREE.CylinderGeometry(0.04, 0.04, 3.2, 16);
         const wireMat = new THREE.MeshPhongMaterial({ color: 0x475569, shininess: 80 });
         const wire = new THREE.Mesh(wireGeo, wireMat);
         wire.rotation.z = Math.PI / 2;
         scene.add(wire);
         
-        // Fine thermocouple bead
+        // Thermocouple Bead junction welded at the center
         const tcBead = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshPhongMaterial({ color: 0xffd700, shininess: 100 }));
         tcBead.position.set(0, 0, 0.06);
         scene.add(tcBead);
         
-        // Lead wires
-        const tcWire1 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.8, 8), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
-        tcWire1.position.set(-0.25, 0.8, -0.2);
-        tcWire1.rotation.z = -0.25;
-        tcWire1.rotation.x = -0.2;
+        // Readout Box (grey plastic block)
+        const readoutBox = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.5, 0.6), new THREE.MeshPhongMaterial({ color: 0x334155 }));
+        readoutBox.position.set(1.3, -0.45, 0.7);
+        scene.add(readoutBox);
+        
+        const readoutScreen = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.25, 0.02), new THREE.MeshBasicMaterial({ color: 0x22c55e }));
+        readoutScreen.position.set(1.3, -0.35, 1.01);
+        scene.add(readoutScreen);
+        
+        // Lead wires from bead to readout box
+        const tcWire1 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.4, 8), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        tcWire1.position.set(0.65, -0.22, 0.38);
+        tcWire1.rotation.z = -0.45;
+        tcWire1.rotation.y = 0.5;
         scene.add(tcWire1);
         
-        const tcWire2 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.8, 8), new THREE.MeshPhongMaterial({ color: 0x3b82f6 }));
-        tcWire2.position.set(0.25, 0.8, -0.2);
-        tcWire2.rotation.z = 0.25;
-        tcWire2.rotation.x = -0.2;
+        const tcWire2 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.4, 8), new THREE.MeshPhongMaterial({ color: 0x3b82f6 }));
+        tcWire2.position.set(0.65, -0.22, 0.33);
+        tcWire2.rotation.z = -0.45;
+        tcWire2.rotation.y = 0.55;
         scene.add(tcWire2);
         
         wireMesh = wire;
-        
-        scene.add(new THREE.DirectionalLight(0xffffff, 1.2));
-        scene.add(new THREE.AmbientLight(0x505050));
         
         function animate() {
             requestAnimationFrame(animate);
@@ -1063,6 +1340,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         btnRun.disabled = true;
         btnRun.innerText = "Actuating...";
         btnRun.style.background = "#475569";
+        dwEl.disabled = true;
+        inputCurrentEl.disabled = true;
         
         time = 0.0;
         temp = 20.0;
@@ -1093,6 +1372,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
             if (time >= 10.0) {
                 isAnimating = false;
                 btnRun.disabled = false;
+                dwEl.disabled = false;
+                inputCurrentEl.disabled = false;
                 btnRun.innerText = "Run Electrical Actuation";
                 btnRun.style.background = "linear-gradient(135deg, #9f1239, #8A1134)";
                 document.getElementById('btnNextCalc').style.display = 'inline-block';
@@ -1101,8 +1382,24 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         }, 35);
     });
 
-    dwEl.addEventListener('input', updateUI);
-    inputCurrentEl.addEventListener('input', updateUI);
+    dwEl.addEventListener('input', () => {
+        if (!isAnimating) {
+            timePoints.length = 0;
+            tempPoints.length = 0;
+            temp = 20.0;
+            time = 0.0;
+        }
+        updateUI();
+    });
+    inputCurrentEl.addEventListener('input', () => {
+        if (!isAnimating) {
+            timePoints.length = 0;
+            tempPoints.length = 0;
+            temp = 20.0;
+            time = 0.0;
+        }
+        updateUI();
+    });
     
     init3D();
     updateUI();
@@ -1135,7 +1432,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     
     let isAnimating = false;
     let simProgress = 0.0; 
-    let scene, camera, renderer, gripperMesh;
+    let scene, camera, renderer, gripperMesh, spring, pointer;
     
     function updateUI() {
         const wireLen = parseFloat(wireLenEl.value);
@@ -1225,6 +1522,21 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         plotCtx.stroke();
     }
 
+    function createSpringGeometry(length, turns, radius) {
+        const points = [];
+        const steps = turns * 24;
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const angle = t * turns * Math.PI * 2;
+            const x = (t - 0.5) * length;
+            const y = Math.sin(angle) * radius;
+            const z = Math.cos(angle) * radius;
+            points.push(new THREE.Vector3(x, y, z));
+        }
+        const curve = new THREE.CatmullRomCurve3(points);
+        return new THREE.TubeGeometry(curve, 48, 0.02, 6, false);
+    }
+
     function init3D() {
         const container = document.getElementById('viewport3D');
         if (!container) return;
@@ -1233,7 +1545,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         scene.background = new THREE.Color(0xfafbfc);
         
         camera = new THREE.PerspectiveCamera(45, 450 / 400, 0.1, 100);
-        camera.position.set(0, 1.2, 5);
+        camera.position.set(0, 1.2, 5.0);
         
         renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(450, 400);
@@ -1242,49 +1554,85 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         const orbit = new THREE.OrbitControls(camera, renderer.domElement);
         orbit.enableZoom = false;
         
+        // Base plate
         const base = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.2, 1.2), new THREE.MeshPhongMaterial({ color: 0x475569 }));
         base.position.set(0, -1.0, 0);
         scene.add(base);
         
+        // Fixed wall anchor left
         const uprightL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.2, 0.8), new THREE.MeshPhongMaterial({ color: 0x64748b }));
         uprightL.position.set(-2.0, -0.4, 0);
         scene.add(uprightL);
         
+        // Fixed wall anchor right
         const uprightR = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.2, 0.8), new THREE.MeshPhongMaterial({ color: 0x64748b }));
         uprightR.position.set(2.0, -0.4, 0);
         scene.add(uprightR);
         
-        const loadCell = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshPhongMaterial({ color: 0xe2e8f0 }));
+        // Load Cell Block with Wheatstone bridge circuit decal representation
+        const loadCell = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshPhongMaterial({ color: 0xe2e8f0, metalness: 0.7 }));
         loadCell.position.set(-1.8, 0, 0);
         scene.add(loadCell);
         
+        // Wheatstone bridge indicator LED (green)
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshBasicMaterial({ color: 0x22c55e }));
+        led.position.set(-1.55, 0.12, 0.1);
+        scene.add(led);
+        
+        // BNC output cable from load cell
+        const bncCable = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.0, 8), new THREE.MeshPhongMaterial({ color: 0x0f172a }));
+        bncCable.position.set(-1.8, -0.5, 0.1);
+        bncCable.rotation.x = 0.4;
+        scene.add(bncCable);
+        
+        // Ruler
         const ruler = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.08, 0.2), new THREE.MeshPhongMaterial({ color: 0x94a3b8 }));
         ruler.position.set(0, -0.8, 0.4);
         scene.add(ruler);
         
+        // Scale tick marks
         const tickGeo = new THREE.BoxGeometry(0.02, 0.04, 0.02);
+        const bigTickGeo = new THREE.BoxGeometry(0.03, 0.08, 0.02);
         const tickMat = new THREE.MeshBasicMaterial({ color: 0x1e293b });
+        const bigTickMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+        
         for (let i = -18; i <= 18; i++) {
-            const tick = new THREE.Mesh(tickGeo, tickMat);
-            tick.position.set(i * 0.1, -0.76, 0.5);
+            const isBig = i % 9 === 0;
+            const tick = new THREE.Mesh(isBig ? bigTickGeo : tickGeo, isBig ? bigTickMat : tickMat);
+            tick.position.set(i * 0.1, isBig ? -0.74 : -0.76, 0.5);
             scene.add(tick);
         }
         
+        // Slider clamp
         const clamp = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.6, 0.6), new THREE.MeshPhongMaterial({ color: 0x334155 }));
-        clamp.position.set(1.5, 0, 0);
+        clamp.position.set(0.8, 0, 0);
         scene.add(clamp);
         
+        // Slider rod
         const rodGeo = new THREE.CylinderGeometry(0.04, 0.04, 3.8, 16);
         const rod = new THREE.Mesh(rodGeo, new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.9 }));
         rod.rotation.z = Math.PI / 2;
         rod.position.set(0, -0.4, 0);
         scene.add(rod);
         
+        // SMA Wire
         const wireGeo = new THREE.CylinderGeometry(0.04, 0.04, 1.0, 16);
         const wireMat = new THREE.MeshPhongMaterial({ color: 0x8a1134, shininess: 80 });
         const wire = new THREE.Mesh(wireGeo, wireMat);
         wire.rotation.z = Math.PI / 2;
         scene.add(wire);
+        
+        // Tension Bias Spring on the right
+        const springMat = new THREE.MeshPhongMaterial({ color: 0xcbd5e1, metalness: 0.9, roughness: 0.1 });
+        spring = new THREE.Mesh(createSpringGeometry(1.2, 10, 0.14), springMat);
+        spring.rotation.z = Math.PI / 2;
+        scene.add(spring);
+        
+        // Red cursor pointer pointing at the ruler
+        pointer = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.16, 4), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        pointer.rotation.x = Math.PI;
+        pointer.position.set(0.8, -0.7, 0.4);
+        scene.add(pointer);
         
         gripperMesh = { clamp, wire, wireMat };
         
@@ -1301,15 +1649,27 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     function updateThreeScene(progress) {
         if (!gripperMesh) return;
         
-        const maxStrokeOffset = 1.2;
+        const maxStrokeOffset = 1.0;
         const offset = progress * maxStrokeOffset;
         
-        gripperMesh.clamp.position.x = 1.5 - offset;
+        // Clamp moves left
+        gripperMesh.clamp.position.x = 0.8 - offset;
         
-        const wireLength = (1.5 - offset) - (-1.55);
+        // Wire contracts: scale and position updated
+        const wireLength = (0.8 - offset) - (-1.55);
         gripperMesh.wire.scale.y = wireLength;
         gripperMesh.wire.position.x = -1.55 + wireLength / 2;
         
+        // Red cursor pointer tracks clamp position
+        pointer.position.x = gripperMesh.clamp.position.x;
+        
+        // Spring stretches (between clamp and right wall at x = 2.0)
+        const springLength = 2.0 - gripperMesh.clamp.position.x;
+        spring.geometry.dispose();
+        spring.geometry = createSpringGeometry(springLength, 10, 0.14);
+        spring.position.x = (gripperMesh.clamp.position.x + 2.0) / 2;
+        
+        // Wire color and emissive glow
         const r = 0.28 + progress * 0.72;
         const g = 0.33 - progress * 0.13;
         const b = 0.41 - progress * 0.31;
@@ -1329,6 +1689,9 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         btnRun.disabled = true;
         btnRun.innerText = "Actuating...";
         btnRun.style.background = "#475569";
+        wireLenEl.disabled = true;
+        dwEl.disabled = true;
+        preStrainEl.disabled = true;
         
         simProgress = 0.0;
         
@@ -1338,6 +1701,9 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                 simProgress = 1.0;
                 isAnimating = false;
                 btnRun.disabled = false;
+                wireLenEl.disabled = false;
+                dwEl.disabled = false;
+                preStrainEl.disabled = false;
                 btnRun.innerText = "Execute Actuator Sizing";
                 btnRun.style.background = "linear-gradient(135deg, #9f1239, #8A1134)";
                 document.getElementById('btnNextCalc').style.display = 'inline-block';
@@ -1377,7 +1743,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     
     let isAnimating = false;
     let animCycle = 0;
-    let scene, camera, renderer, wireMesh;
+    let scene, camera, renderer, wireMesh, sleeveL, sleeveR, crack, spindle, collar, weightCable, weight;
     
     function updateUI() {
         const strain = parseFloat(appliedStrainEl.value);
@@ -1469,13 +1835,35 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     }
 
     function createWireGeometry(strainVal) {
-        const bendHeight = (strainVal / 8.0) * 0.45;
-        const curve = new THREE.QuadraticBezierCurve3(
-            new THREE.Vector3(-1.3, 0, 0),
-            new THREE.Vector3(0, bendHeight, 0),
-            new THREE.Vector3(1.3, 0.08, 0)
-        );
-        return new THREE.TubeGeometry(curve, 32, 0.04, 8, false);
+        const points = [];
+        const length = 2.6;
+        const segments = 40;
+        for (let i = 0; i <= segments; i++) {
+            const t = i / segments;
+            const yVal = (t - 0.5) * length;
+            // Hourglass shape: narrow in middle, wide at ends
+            const r = 0.06 + 0.12 * Math.pow(yVal / 1.3, 2);
+            points.push(new THREE.Vector2(r, yVal));
+        }
+        const geom = new THREE.LatheGeometry(points, 32);
+        
+        const bendHeight = (strainVal / 8.0) * 0.35;
+        
+        const position = geom.attributes.position;
+        for (let i = 0; i < position.count; i++) {
+            const x = position.getX(i);
+            const y = position.getY(i);
+            const z = position.getZ(i);
+            
+            // Linear offset from left (0) to right (0.08)
+            const baseline = (y / 2.6 + 0.5) * 0.08;
+            const factor = 1.0 - Math.pow(y / 1.3, 2);
+            const disp = bendHeight * factor + baseline;
+            
+            position.setXYZ(i, y, x + disp, z);
+        }
+        geom.computeVertexNormals();
+        return geom;
     }
 
     function init3D() {
@@ -1495,21 +1883,88 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         const orbit = new THREE.OrbitControls(camera, renderer.domElement);
         orbit.enableZoom = false;
         
-        const chuckL = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.6, 16), new THREE.MeshPhongMaterial({ color: 0x475569 }));
+        // Base plate
+        const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.15, 1.2), new THREE.MeshPhongMaterial({ color: 0x334155 }));
+        baseMesh.position.set(0, -0.9, 0);
+        scene.add(baseMesh);
+        
+        // Motor block on the left
+        const motorMat = new THREE.MeshPhongMaterial({ color: 0x1e293b, metalness: 0.5 });
+        const motor = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), motorMat);
+        motor.position.set(-2.2, 0, 0);
+        scene.add(motor);
+        
+        // Motor Spindle Disc
+        spindle = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.05, 12), new THREE.MeshPhongMaterial({ color: 0x94a3b8 }));
+        spindle.position.set(-2.55, 0, 0);
+        spindle.rotation.z = Math.PI / 2;
+        scene.add(spindle);
+        
+        // Rotation indicator blades on spindle
+        const bladeL = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.04, 0.02), new THREE.MeshPhongMaterial({ color: 0xef4444 }));
+        bladeL.position.set(0, 0, 0);
+        spindle.add(bladeL);
+        
+        // Bearing Blocks supporting the chucks
+        const bearingL = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.8, 0.5), new THREE.MeshPhongMaterial({ color: 0x475569, metalness: 0.7 }));
+        bearingL.position.set(-1.6, -0.1, 0);
+        scene.add(bearingL);
+        
+        const bearingR = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.8, 0.5), new THREE.MeshPhongMaterial({ color: 0x475569, metalness: 0.7 }));
+        bearingR.position.set(1.6, -0.02, 0);
+        scene.add(bearingR);
+        
+        // Chucks
+        const chuckL = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.35, 0.6, 16), new THREE.MeshPhongMaterial({ color: 0x475569, metalness: 0.8 }));
         chuckL.rotation.z = Math.PI / 2;
         chuckL.position.set(-1.6, 0, 0);
         scene.add(chuckL);
         
-        const chuckR = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.6, 16), new THREE.MeshPhongMaterial({ color: 0x475569 }));
+        const chuckR = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, 0.6, 16), new THREE.MeshPhongMaterial({ color: 0x475569, metalness: 0.8 }));
         chuckR.rotation.z = Math.PI / 2;
         chuckR.position.set(1.6, 0.08, 0);
         scene.add(chuckR);
         
+        // Tapered sleeves on the chucks
+        sleeveL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.22, 0.3, 16), new THREE.MeshPhongMaterial({ color: 0x64748b, metalness: 0.8 }));
+        sleeveL.rotation.z = Math.PI / 2;
+        sleeveL.position.set(-1.4, 0, 0);
+        scene.add(sleeveL);
+        
+        sleeveR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.2, 0.3, 16), new THREE.MeshPhongMaterial({ color: 0x64748b, metalness: 0.8 }));
+        sleeveR.rotation.z = Math.PI / 2;
+        sleeveR.position.set(1.4, 0.08, 0);
+        scene.add(sleeveR);
+        
+        // Specimen
         const initialStrain = parseFloat(appliedStrainEl.value);
         const wireGeo = createWireGeometry(initialStrain);
         const wireMat = new THREE.MeshPhongMaterial({ color: 0x8a1134, shininess: 80 });
         const wire = new THREE.Mesh(wireGeo, wireMat);
         scene.add(wire);
+        
+        // Central stationary collar
+        collar = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.03, 8, 24), new THREE.MeshPhongMaterial({ color: 0x64748b, metalness: 0.8 }));
+        const initBendHeight = (initialStrain / 8.0) * 0.35;
+        collar.position.set(0, 0.04 + initBendHeight, 0);
+        scene.add(collar);
+        
+        // Hanging rod
+        weightCable = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.4, 8), new THREE.MeshPhongMaterial({ color: 0x475569 }));
+        weightCable.position.set(0, -0.16 + initBendHeight, 0);
+        scene.add(weightCable);
+        
+        // Suspended Weight Block
+        weight = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), new THREE.MeshPhongMaterial({ color: 0x0f172a, metalness: 0.5 }));
+        weight.position.set(0, -0.51 + initBendHeight, 0);
+        scene.add(weight);
+        
+        // Red Crack Torus inside specimen
+        crack = new THREE.Mesh(new THREE.TorusGeometry(0.065, 0.012, 8, 24), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+        crack.rotation.y = Math.PI / 2;
+        crack.position.set(0, 0.04 + initBendHeight, 0);
+        wire.add(crack);
+        crack.visible = false;
         
         wireMesh = { chuckL, chuckR, wire, wireMat };
         
@@ -1522,6 +1977,9 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                 wireMesh.wire.rotation.x += 0.22;
                 wireMesh.chuckL.rotation.x += 0.22;
                 wireMesh.chuckR.rotation.x += 0.22;
+                sleeveL.rotation.x += 0.22;
+                sleeveR.rotation.x += 0.22;
+                spindle.rotation.y += 0.22;
             }
             renderer.render(scene, camera);
         }
@@ -1534,10 +1992,30 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         wireMesh.wire.geometry.dispose();
         wireMesh.wire.geometry = createWireGeometry(strain);
         
+        const bendHeight = (strain / 8.0) * 0.35;
+        collar.position.y = 0.04 + bendHeight;
+        weightCable.position.y = -0.16 + bendHeight;
+        weight.position.y = -0.51 + bendHeight;
+        
+        crack.position.y = 0.04 + bendHeight;
+        
+        const curCycle = isAnimating ? animCycle : 0;
+        if (curCycle > 4000) {
+            crack.visible = true;
+            const crackProgress = (curCycle - 4000) / 6000;
+            crack.scale.set(1 + crackProgress * 0.4, 1 + crackProgress * 0.4, 1 + crackProgress * 0.4);
+            crack.material.color.setRGB(0.9, 0.1 * (1 - crackProgress), 0.1 * (1 - crackProgress));
+        } else {
+            crack.visible = false;
+        }
+        
         if (!isAnimating) {
             wireMesh.wire.rotation.x = 0;
             wireMesh.chuckL.rotation.x = 0;
             wireMesh.chuckR.rotation.x = 0;
+            sleeveL.rotation.x = 0;
+            sleeveR.rotation.x = 0;
+            spindle.rotation.y = 0;
         }
     }
 
@@ -1547,6 +2025,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         btnRun.disabled = true;
         btnRun.innerText = "Cycling...";
         btnRun.style.background = "#475569";
+        appliedStrainEl.disabled = true;
         
         animCycle = 0;
         
@@ -1557,6 +2036,7 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
                 animCycle = 10000;
                 isAnimating = false;
                 btnRun.disabled = false;
+                appliedStrainEl.disabled = false;
                 btnRun.innerText = "Initiate Fatigue Cycling";
                 btnRun.style.background = "linear-gradient(135deg, #9f1239, #8A1134)";
                 clearInterval(interval);
