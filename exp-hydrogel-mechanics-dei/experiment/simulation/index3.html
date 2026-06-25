@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cartilage Scaffold - 4D Printing Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Printing Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Set the print crosslinking:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Crosslink tightness (loose &rarr; tight)</label>
+                            <input type="range" id="nuInput" min="23" max="26" step="0.05" value="24.5">
+                            <div class="slider-val" id="valNu">10^24.50</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. Set how much it swells in the body:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Swelling ratio Q (dense &rarr; watery)</label>
+                            <input type="range" id="qInput" min="1" max="60" step="1" value="20">
+                            <div class="slider-val" id="valQ">20</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">3. Set the body temperature:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Temperature</label>
+                            <input type="range" id="tInput" min="10" max="60" step="1" value="37">
+                            <div class="slider-val" id="valT">37 &deg;C</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Press the Scaffold</button>
+                    <button type="button" onclick="location.reload()">Reset Scaffold</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">The Cartilage Scaffold</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A tissue scaffold is 4D-printed to replace damaged cartilage. To work, it must <strong>feel as soft as real cartilage</strong> - too stiff and it grinds the joint, too soft and it collapses. A probe presses the scaffold to measure its stiffness: the softer the gel, the <strong>deeper the dent</strong>. Your job: tune the print so its stiffness lands in the cartilage window (0.1-1 MPa).</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Scaffold stiffness: -</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">How stiff the scaffold is vs swelling</div>
+                            <canvas id="plotCanvasMod" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">Does it match real tissue? (stiffness map)</div>
+                            <canvas id="plotCanvasTissue" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box" id="liveInsight">
+                    <strong>Live Insight:</strong> Set the crosslinking, swelling and temperature, then click 'Press the Scaffold' to measure how stiff it feels and which tissue it matches.
+                </div>
+
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">What the scaffold feels like</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Crosslink density:</span><span class="result-val" id="resNu" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Stiffness when dry:</span><span class="result-val" id="resEdry" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Stiffness in the body (swollen):</span><span class="result-val" id="resE" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Feels most like:</span><span class="result-val" id="resMatch" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">In cartilage window (0.1-1 MPa)?:</span><span class="result-val" id="resWindow" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Which tissue does it match?</h3>
+                        <table id="tissueTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
+                            <thead>
+                                <tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;">
+                                    <th style="padding:6px 4px;">Tissue</th>
+                                    <th style="padding:6px 4px;">Stiffness (MPa)</th>
+                                    <th style="padding:6px 4px;text-align:right;">Match</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">The physics behind the stiffness</h3>
+                    <div id="modFormulaContainer" style="padding: 10px; font-size: 14px; overflow-x: auto; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 80px;"></div>
+                </div>
+
+                <div class="floating-nav">
+                    <a href="index2.html" class="btn-nav">&larr; Back</a>
+                    <a href="index4.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

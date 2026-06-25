@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. What is a hydrogel?",
+      "answers": {
+        "a": "A metal alloy that remembers its shape.",
+        "b": "A crosslinked polymer network that absorbs and retains large amounts of water without dissolving.",
+        "c": "A ceramic used in 3D printing.",
+        "d": "A type of conductive ink."
+      },
+      "explanations": {
+        "a": "Incorrect - that describes a shape-memory alloy.",
+        "b": "Correct - a hydrogel is a water-swollen crosslinked polymer network.",
+        "c": "Incorrect - hydrogels are soft polymer networks, not ceramics.",
+        "d": "Incorrect - hydrogels are not defined by electrical conductivity."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. In the Flory-Rehner theory, what does the swelling ratio Q represent?",
+      "answers": {
+        "a": "The ratio of swollen to dry volume, equal to 1/v_p.",
+        "b": "The crosslink density.",
+        "c": "The Flory-Huggins parameter.",
+        "d": "The temperature of the solvent."
+      },
+      "explanations": {
+        "a": "Correct - Q = V_swollen/V_dry = 1/v_p.",
+        "b": "Incorrect - crosslink density is captured by V_e, not Q.",
+        "c": "Incorrect - that is the chi parameter.",
+        "d": "Incorrect - Q is a volume ratio, not a temperature."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q3. A Flory-Huggins parameter chi < 0.5 indicates:",
+      "answers": {
+        "a": "A poor solvent with limited swelling.",
+        "b": "A good solvent that promotes high swelling.",
+        "c": "That the polymer cannot swell at all.",
+        "d": "That the gel is fully crosslinked."
+      },
+      "explanations": {
+        "a": "Incorrect - that is chi > 0.5.",
+        "b": "Correct - chi < 0.5 means favourable mixing and large swelling.",
+        "c": "Incorrect - low chi increases swelling.",
+        "d": "Incorrect - chi describes solvent quality, not crosslink fraction."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q4. Why must the Flory-Rehner equation be solved numerically (e.g. by Newton iteration)?",
+      "answers": {
+        "a": "Because it has no analytical closed-form solution for v_p.",
+        "b": "Because computers are faster.",
+        "c": "Because the answer is always exactly 0.5.",
+        "d": "Because it requires calculus that cannot be done by hand."
+      },
+      "explanations": {
+        "a": "Correct - the equation is implicit in v_p and cannot be rearranged into a closed form.",
+        "b": "Incorrect - speed is not the fundamental reason.",
+        "c": "Incorrect - the solution depends on chi and crosslink density.",
+        "d": "Incorrect - the derivative is straightforward; the issue is the implicit form."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q5. For a weak polyacid hydrogel (e.g. PAA), how does the degree of ionisation change as pH increases above the pKa?",
+      "answers": {
+        "a": "It decreases toward zero.",
+        "b": "It increases toward one (the groups become charged).",
+        "c": "It stays constant.",
+        "d": "It oscillates randomly."
+      },
+      "explanations": {
+        "a": "Incorrect - acidic conditions (low pH) suppress ionisation.",
+        "b": "Correct - alpha = 1/(1 + 10^(pKa - pH)) rises toward 1 as pH exceeds pKa.",
+        "c": "Incorrect - ionisation is strongly pH dependent.",
+        "d": "Incorrect - the relationship is monotonic, not random."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q6. What is the LCST of poly(N-isopropylacrylamide) (PNIPAM)?",
+      "answers": {
+        "a": "About 0 degrees C.",
+        "b": "About 100 degrees C.",
+        "c": "About 32 degrees C, near body temperature.",
+        "d": "PNIPAM has no transition temperature."
+      },
+      "explanations": {
+        "a": "Incorrect - that is the freezing point of water.",
+        "b": "Incorrect - that is the boiling point of water.",
+        "c": "Correct - PNIPAM collapses around 32 degrees C, just below body temperature.",
+        "d": "Incorrect - PNIPAM has a well-known LCST."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q7. Below its LCST, a PNIPAM hydrogel is:",
+      "answers": {
+        "a": "Hydrophobic and collapsed.",
+        "b": "Hydrophilic and swollen.",
+        "c": "Completely dissolved.",
+        "d": "Electrically charged."
+      },
+      "explanations": {
+        "a": "Incorrect - that is the state above the LCST.",
+        "b": "Correct - below the LCST the chains hydrogen-bond with water and the gel is swollen.",
+        "c": "Incorrect - the network is crosslinked and does not dissolve.",
+        "d": "Incorrect - PNIPAM is not a polyelectrolyte."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q8. According to rubber elasticity theory, the shear modulus G of a network is proportional to:",
+      "answers": {
+        "a": "The crosslink density times the absolute temperature (G = nu_e k_B T).",
+        "b": "The inverse of the molecular weight only.",
+        "c": "The colour of the gel.",
+        "d": "The pH of the solvent."
+      },
+      "explanations": {
+        "a": "Correct - G = nu_e k_B T from rubber elasticity.",
+        "b": "Incorrect - molecular weight relates to crosslink spacing but the law is G = nu_e k_B T.",
+        "c": "Incorrect - colour is irrelevant to modulus.",
+        "d": "Incorrect - pH affects ionic swelling, not the rubber elasticity prefactor directly."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q9. In the Korsmeyer-Peppas model M_t/M_inf = k t^n, a diffusion exponent n = 0.5 (thin slab) indicates:",
+      "answers": {
+        "a": "Zero-order (Case-II) release.",
+        "b": "Fickian diffusion-controlled release.",
+        "c": "No release at all.",
+        "d": "Instantaneous burst release."
+      },
+      "explanations": {
+        "a": "Incorrect - that corresponds to n = 1.",
+        "b": "Correct - n = 0.5 indicates classical Fickian diffusion for a slab.",
+        "c": "Incorrect - release still occurs, governed by diffusion.",
+        "d": "Incorrect - burst release is not described by a single power law."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q10. Why is the '4th dimension' relevant to hydrogels in 4D printing?",
+      "answers": {
+        "a": "Because hydrogels are printed in four colours.",
+        "b": "Because a printed hydrogel can change shape over time in response to water, pH, or temperature.",
+        "c": "Because hydrogels are printed only in a vacuum.",
+        "d": "Because hydrogels conduct electricity."
+      },
+      "explanations": {
+        "a": "Incorrect - colour is not the defining feature.",
+        "b": "Correct - the time-dependent, stimulus-driven shape change is the fourth dimension.",
+        "c": "Incorrect - printing environment is not the point.",
+        "d": "Incorrect - conductivity is not why hydrogels are 4D materials."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    }
+  ]
+}

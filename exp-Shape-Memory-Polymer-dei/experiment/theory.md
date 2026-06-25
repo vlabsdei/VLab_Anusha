@@ -26,6 +26,9 @@ Where:
 * C<sub>1</sub> = 17.44 and C<sub>2</sub> = 51.6 K are material empirical constants.
 * For glassy temperatures (T &lt; T<sub>g</sub>), the relaxation time is considered infinite (glassy zone).
 
+<p align="center"><img src="images/subcalc_a.png" alt="Viscoelasticity and the WLF shift factor across the glass transition" width="620"/></p>
+<p align="center"><em>Figure 1: The glass transition governs SMP behaviour - the modulus falls from a glassy ~GPa state to a rubbery ~MPa state across T<sub>g</sub>, and the WLF equation sets the relaxation-time shift factor a<sub>T</sub> (Sub-Calc A).</em></p>
+
 ---
 
 ## 4. Programming Cycle and Strain Fixity (Sub-Calc B)
@@ -40,6 +43,9 @@ During the programming stage, the polymer is heated above T<sub>g</sub> to its r
 
 * **Programmed Strain (&epsilon;<sub>u</sub>):** The resulting temporary shape strain is:
   <div align="center" style="font-size: 1.1em; font-weight: bold;">&epsilon;<sub>u</sub> = &epsilon;<sub>load</sub> &times; R<sub>f</sub></div>
+
+<p align="center"><img src="images/subcalc_b.png" alt="Programming cycle and strain fixity ratio" width="620"/></p>
+<p align="center"><em>Figure 2: The programming cycle - heat above T<sub>g</sub>, load to &epsilon;<sub>load</sub>, then cool to freeze the temporary shape; the strain fixity ratio R<sub>f</sub> rises with the programming-temperature margin (Sub-Calc B).</em></p>
 
 ---
 
@@ -59,6 +65,9 @@ Reheating the polymer triggers relaxation. Depending on the loading conditions, 
   The first-order relaxation time is &tau;(T) = &tau;<sub>ref</sub> &times; a<sub>T</sub>. The time required to achieve 95% of the possible shape recovery is:
   <div align="center" style="font-size: 1.1em; font-weight: bold;">t<sub>95</sub> = &tau;(T) ln(20)</div>
 
+<p align="center"><img src="images/subcalc_c.png" alt="Shape recovery kinetics under opposing stress" width="620"/></p>
+<p align="center"><em>Figure 3: On reheating, the part recovers its permanent shape; an opposing stress leaves a residual strain, so the recovery ratio R<sub>r</sub> and the t<sub>95</sub> timescale follow first-order relaxation kinetics (Sub-Calc C).</em></p>
+
 ---
 
 ## 6. Multi-Shape Memory and Fox Equation (Sub-Calc D)
@@ -69,6 +78,9 @@ Copolymers containing phase-separated domains can memorize multiple temporary sh
   where E<sub>g1,rubbery</sub> = 15 MPa and E<sub>g2,glassy,eff</sub> = 7.5 MPa represent soft/hard phase moduli, and w<sub>1</sub> is the PU weight fraction.
 * **Miscible Blend:** Forms a single phase with a single transition temperature T<sub>g,blend</sub> defined by the **Fox Equation**:
   <div align="center" style="font-size: 1.1em; font-weight: bold;">1 / T<sub>g,blend</sub> = w<sub>1</sub> / (T<sub>g1</sub> + 273.15) + w<sub>2</sub> / (T<sub>g2</sub> + 273.15) &nbsp;&nbsp; (temperatures in Kelvin)</div>
+
+<p align="center"><img src="images/subcalc_d.png" alt="Multi-shape memory and the Fox equation" width="620"/></p>
+<p align="center"><em>Figure 4: Phase-separated blends remember multiple shapes through two distinct T<sub>g</sub>'s, while a miscible blend shows a single Fox-equation T<sub>g</sub> lying between the two components (Sub-Calc D).</em></p>
 
 ---
 
@@ -84,3 +96,6 @@ To actuate against a load, the polymer converts thermal heat input Q into mechan
 * **Thermodynamic Efficiency (&eta;):**
   <div align="center" style="font-size: 1.1em; font-weight: bold;">&eta; = (W / Q) &times; 100%</div>
   Due to the high sensible heat capacity (C<sub>p</sub>) of polymers relative to their elastic strain energy capacity, the thermal-to-mechanical conversion efficiency is typically low (&eta; &sim; 1–4%).
+
+<p align="center"><img src="images/subcalc_e.png" alt="Thermodynamics and thermal-to-mechanical efficiency" width="620"/></p>
+<p align="center"><em>Figure 5: Energy flow during actuation - heat input Q raises the temperature while stored elastic energy is released as mechanical work W against a load, giving the (typically low) thermal-to-mechanical efficiency &eta; (Sub-Calc E).</em></p>

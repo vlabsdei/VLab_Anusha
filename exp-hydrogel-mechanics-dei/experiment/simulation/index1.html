@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The pH-Triggered Drug Capsule - 4D Printing Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Printing Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Choose the capsule polymer:</div>
+                    <div class="form-options">
+                        <div class="option"><input type="radio" name="poly" value="4.8" id="polyPAA" checked><label for="polyPAA">PAA - opens early (pKa 4.8)</label></div>
+                        <div class="option"><input type="radio" name="poly" value="4.3" id="polyPMAA"><label for="polyPMAA">PMAA - opens earliest (pKa 4.3)</label></div>
+                        <div class="option"><input type="radio" name="poly" value="6.0" id="polyCustom"><label for="polyCustom">Custom - opens late (pKa 6.0)</label></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. How many acid groups on the shell:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Ionisable fraction (few &rarr; many)</label>
+                            <input type="range" id="fionInput" min="0.1" max="1.0" step="0.05" value="0.6">
+                            <div class="slider-val" id="valFion">0.60</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">3. Set the surrounding pH:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>pH (stomach acid &rarr; intestine)</label>
+                            <input type="range" id="phInput" min="1" max="8" step="0.1" value="1.8">
+                            <div class="slider-val" id="valPh">1.8</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Swallow the Capsule</button>
+                    <button type="button" onclick="location.reload()">Reset Capsule</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">The pH-Triggered Drug Capsule</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A drug capsule is 4D-printed from a pH-sensitive polymer. In the stomach's acid it stays <strong>sealed shut</strong>; once it reaches the less-acidic intestine the shell <strong>swells and the two halves spring open</strong>, spilling the drug exactly where it's needed. Your job: pick a polymer whose pKa makes it open in the intestine, not the stomach.</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Capsule: sealed (in stomach acid)</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">How far the capsule opens vs pH</div>
+                            <canvas id="plotCanvasPH" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">How charged the shell gets vs pH</div>
+                            <canvas id="plotCanvasAlpha" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box" id="liveInsight">
+                    <strong>Live Insight:</strong> Pick a polymer and acid-group count, then click 'Swallow the Capsule' to follow it from stomach acid into the intestine and watch it open.
+                </div>
+
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">What the capsule does</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Capsule polymer (pKa):</span><span class="result-val" id="resMat" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Shell charge now (ionisation):</span><span class="result-val" id="resAlpha" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Shell swelling Q:</span><span class="result-val" id="resQ" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Springs open at pH ~:</span><span class="result-val" id="resOpenPh" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Releases drug in:</span><span class="result-val" id="resRelease" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Opening window (10-90%):</span><span class="result-val" id="resWindow" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">Which polymer releases where?</h3>
+                        <table id="capsuleTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
+                            <thead>
+                                <tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;">
+                                    <th style="padding:6px 4px;">Polymer (pKa)</th>
+                                    <th style="padding:6px 4px;">Opens at pH</th>
+                                    <th style="padding:6px 4px;text-align:right;">Releases in</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">The physics behind the trigger</h3>
+                    <div id="phFormulaContainer" style="padding: 10px; font-size: 14px; overflow-x: auto; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 80px;"></div>
+                </div>
+
+                <div class="floating-nav">
+                    <a href="index.html" class="btn-nav">&larr; Back</a>
+                    <a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

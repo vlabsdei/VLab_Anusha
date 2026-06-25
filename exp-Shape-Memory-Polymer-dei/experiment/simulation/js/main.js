@@ -1,4 +1,4 @@
-/* global THREE, katex */
+/* global THREE */
 // Combined simulator script for Exp 1
 
 // ============================================================
@@ -2195,12 +2195,23 @@
         inheritedStrainVal.innerText = eps_u.toFixed(2) + " %";
     
         // Dynamic slider cap for opposing stress
-        const maxStressPossible = recoveryStress(E_rubbery, eps_u, eps_u); // E_r * eps_u / 100
+        const minStressLimit = 0.01;
+        const maxStressPossible = Math.max(minStressLimit, recoveryStress(E_rubbery, eps_u, eps_u)); // E_r * eps_u / 100
+        oppStress.min = minStressLimit.toString();
         oppStress.max = maxStressPossible.toFixed(2);
-        if (parseFloat(oppStress.value) > maxStressPossible) {
-            oppStress.value = maxStressPossible.toFixed(2);
-            valOppStress.innerText = maxStressPossible.toFixed(2) + " MPa";
+        oppStress.step = "0.001";
+        
+        let val = parseFloat(oppStress.value);
+        if (isNaN(val)) val = minStressLimit;
+        if (val > maxStressPossible) {
+            val = maxStressPossible;
+            oppStress.value = val.toFixed(2);
         }
+        if (val < minStressLimit) {
+            val = minStressLimit;
+            oppStress.value = val.toFixed(2);
+        }
+        valOppStress.innerText = val.toFixed(2) + " MPa";
     
         const activeTau = relaxationTime(activeTemp, Tg, activeTauRef);
         const epsEq = activeScenario === 'free' ? 0 : epsEqConstrained(eps_u, E_rubbery, activeSigma);

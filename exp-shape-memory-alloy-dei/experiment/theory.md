@@ -30,6 +30,9 @@ The recoverable shape memory strain (e_SMA) corresponds to the fraction of trans
 
 where e_max is the maximum lattice recovery strain (8% for NiTi).
 
+<p align="center"><img src="images/subcalc_a.svg" alt="Martensite-austenite transformation hysteresis and recoverable strain" width="620"/></p>
+<p align="center"><em>Figure 1: NiTi transforms between a low-temperature martensite and a high-temperature austenite; the heating (M&#8594;A) and cooling (A&#8594;M) branches form a hysteresis loop set by M_f, M_s, A_s, A_f, and the recoverable strain follows e_SMA = e_max(1 &#8722; x_M) (Sub-Calc A).</em></p>
+
 ---
 
 ## 2. Stress-Strain Behavior: SME vs Superelasticity (Sub-Calc B)
@@ -56,6 +59,9 @@ The damping capacity (Q<sup>-1</sup>) is evaluated as:
 
 Typical values: structural steel (Q<sup>-1</sup> ≈ 0.001), superelastic SMA (Q<sup>-1</sup> ≈ 0.052), and rubber (Q<sup>-1</sup> ≈ 0.1).
 
+<p align="center"><img src="images/subcalc_b.svg" alt="Shape memory effect versus superelastic stress-strain response" width="620"/></p>
+<p align="center"><em>Figure 2: Below A_f the alloy shows the shape-memory effect (residual strain recovered on heating); above A_f it is superelastic, tracing a closed stress-strain loop whose enclosed area is the dissipated energy W_hys (Sub-Calc B).</em></p>
+
 ---
 
 ## 3. Joule Heating & Electro-Thermal Actuation (Sub-Calc C)
@@ -78,6 +84,9 @@ Where:
 
 Integrating this ODE yields the activation time (t_act) required to heat the wire to A_f.
 
+<p align="center"><img src="images/subcalc_c.svg" alt="Joule heating versus convective cooling and the activation time" width="620"/></p>
+<p align="center"><em>Figure 3: Passing a current Joule-heats the wire while convection cools it; solving the first-order thermal ODE gives the temperature rise and the activation time t_act needed to reach A_f (Sub-Calc C).</em></p>
+
 ---
 
 ## 4. Actuator Stroke & Force Sizing (Sub-Calc D)
@@ -96,6 +105,9 @@ To size an SMA wire for a robotic gripper or actuator:
 
 Comparison: SMP actuators (5 J/kg), pneumatics (100 J/kg), hydraulics (1000 J/kg), and SMA wires (>1000 J/kg).
 
+<p align="center"><img src="images/subcalc_d.svg" alt="Actuator stroke, blocking force and work output" width="620"/></p>
+<p align="center"><em>Figure 4: On heating the wire contracts by a stroke d and can lift a load; the blocking force F_block and the force-displacement work W size the actuator and set its specific work (Sub-Calc D).</em></p>
+
 ---
 
 ## 5. Fatigue Life & Stability (Sub-Calc E)
@@ -111,3 +123,6 @@ Functional fatigue results in a gradual loss of recoverable strain due to accumu
 <div align="center" style="font-size: 1.25em; font-weight: bold; margin: 15px 0;">e_recoverable(N) = e_applied × exp(-0.00001 × N)</div>
 
 For a target fatigue life of N > 100,000 cycles, the applied strain must be strictly limited.
+
+<p align="center"><img src="images/subcalc_e.svg" alt="Structural and functional fatigue of Nitinol" width="620"/></p>
+<p align="center"><em>Figure 5: Structural fatigue life falls steeply as 1/e&#178; (Coffin-Manson), while functional fatigue slowly erodes the recoverable strain with cycle count - both push the design toward a low applied strain (Sub-Calc E).</em></p>

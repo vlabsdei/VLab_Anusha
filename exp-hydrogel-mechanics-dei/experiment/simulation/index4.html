@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Drug-Eluting Implant - 4D Printing Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Printing Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Set the release speed:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Release speed k (slow &rarr; fast)</label>
+                            <input type="range" id="kInput" min="0.05" max="0.40" step="0.01" value="0.15">
+                            <div class="slider-val" id="valK">0.15</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. Set the release shape:</div>
+                    <div class="form-options">
+                        <div class="slider-group">
+                            <label>Release exponent n (diffusion &rarr; steady)</label>
+                            <input type="range" id="nInput" min="0.40" max="1.00" step="0.01" value="0.50">
+                            <div class="slider-val" id="valN">0.50</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Run the Release</button>
+                    <button type="button" onclick="location.reload()">Reset Implant</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">The Drug-Eluting Implant</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A drug-eluting implant is 4D-printed and placed in the body, where it slowly leaks its drug over hours to days. How fast it empties - and whether the dose stays steady - depends on the polymer's <strong>release speed</strong> and a <strong>release-shape exponent</strong>. Your job: pick the shape so the implant gives a steady, long-lasting dose. (The model is only trustworthy up to the first 60% released.)</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Implant: loaded with drug</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">How much drug has been released vs time</div>
+                            <canvas id="plotCanvasKP" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top: 10px; left: 10px; font-size: 11px; padding: 4px 10px;">Reading off the release shape (slope = n)</div>
+                            <canvas id="plotCanvasLog" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box" id="liveInsight">
+                    <strong>Live Insight:</strong> Set the release speed and shape, then click 'Run the Release' to watch the implant empty over time. Watch the 60% line - beyond it the model no longer holds.
+                </div>
+
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">What the implant does</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Release speed k:</span><span class="result-val" id="resK" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Release exponent n:</span><span class="result-val" id="resN" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">How it releases:</span><span class="result-val" id="resMech" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Half the dose by:</span><span class="result-val" id="resT50" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Dose lasts about:</span><span class="result-val" id="resDuration" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">What the release shape means</h3>
+                        <table id="mechTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;">
+                            <thead>
+                                <tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;">
+                                    <th style="padding:6px 4px;">Exponent n</th>
+                                    <th style="padding:6px 4px;text-align:right;">How it releases</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color: #8A1134; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-bottom: 2px solid #fff1f2; padding-bottom: 8px;">The physics behind the release</h3>
+                    <div id="kpFormulaContainer" style="padding: 10px; font-size: 14px; overflow-x: auto; background: #fafbfc; border-radius: 8px; border: 1px solid #e2e8f0; min-height: 80px;"></div>
+                </div>
+
+                <div class="floating-nav">
+                    <a href="index3.html" class="btn-nav">&larr; Back</a>
+                    <a href="index.html" id="btnRestart" class="btn-nav primary" style="display: none;">Restart from the Gripper -></a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

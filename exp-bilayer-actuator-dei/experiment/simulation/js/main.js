@@ -1,4 +1,4 @@
-/* global THREE, katex */
+/* global THREE */
 // Combined simulator script for Exp 2
 
 // ============================================================
@@ -246,7 +246,7 @@
     }
     
     // 5. Physics soft-transition evaluation function
-    function getMaterialProperties(matKey, T, H, t, isThermal) {
+    function getMaterialProperties(matKey, T, H, t) {
         const mat = materials[matKey];
         if (!mat) return null;
         
@@ -373,7 +373,6 @@
         }
     
         // derived geometries
-        const R = Math.abs(kappa) < 1e-6 ? Infinity : 1 / kappa;
         const tipAngleRad = kappa * L;
         const tipAngleDeg = tipAngleRad * 180 / Math.PI;
     
@@ -449,7 +448,7 @@
         if (threejsInitialized) {
             update3DBeam(points, h1, h2, b, L, E1, E2, y_na, eps_th1, eps_th2);
         } else {
-            drawBilayer2D(points, h1, h2);
+            drawBilayer2D(points, h1);
         }
     
         // Draw Analytics Plots
@@ -645,7 +644,7 @@
     }
     
     // 2D Canvas Fallback
-    function drawBilayer2D(points, h1, h2) {
+    function drawBilayer2D(points, h1) {
         const canvas = document.getElementById('simCanvas');
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -692,12 +691,6 @@
         const matProp1 = getMaterialProperties(matActiveSelect.value, T, H, currentSimTime, isThermal);
         const matProp2 = getMaterialProperties(matPassiveSelect.value, T, H, currentSimTime, isThermal);
         
-        let deltaStrain = 0;
-        if (isThermal) {
-            deltaStrain = (matProp2.alpha - matProp1.alpha) * (T - 25.0);
-        } else {
-            deltaStrain = (matProp2.beta - matProp1.beta) * (H - 30.0);
-        }
         
         // Thermal bending moment load
         // M_th = - integral E * strain_th * (y - yc) dA
@@ -1611,7 +1604,7 @@
         if (threejsInitialized) {
             update3DBeam(points, h1, h2, b, L, kx, kxy, epsA.eps_xx);
         } else {
-            drawBilayer2D(points, h1, h2);
+            drawBilayer2D(points, h1);
         }
     
         // Update Analytics Charts
@@ -1770,7 +1763,7 @@
         }
     }
     
-    function updateSpecimen3D(h1, h2, b, L, epsA, activeMat, passiveMat) {
+    function updateSpecimen3D(h1, h2, b, L, epsA) {
         const renderScale = 300;
         const thetaF = parseFloat(slideTheta.value);
         
@@ -1941,12 +1934,11 @@
             if (specimenGroup) specimenGroup.visible = true;
             
             const activeMat = materials[matActiveSelect.value];
-            const passiveMat = materials[matPassiveSelect.value];
             const deltaC_target = parseFloat(slideDC.value);
             const deltaC = getActiveConcentration(currentSimTime, activeMat.D, h1, deltaC_target);
             const epsA = rotateSwellingStrain(activeMat.beta1, activeMat.beta2, deltaC, thetaF);
             
-            updateSpecimen3D(h1, h2, b, L, epsA, activeMat, passiveMat);
+            updateSpecimen3D(h1, h2, b, L, epsA);
             return;
         }
     
@@ -2104,7 +2096,7 @@
     }
     
     // 2D Canvas Fallback
-    function drawBilayer2D(points, h1, h2) {
+    function drawBilayer2D(points, h1) {
         const canvas = document.getElementById('simCanvas');
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -2865,13 +2857,6 @@
     // PHYSICS ENGINE - CTE tensor transformation & Curvature
     // ============================================================
     
-    function getEffectiveAlpha(thetaDegrees) {
-        const rad = thetaDegrees * Math.PI / 180;
-        const cosT = Math.cos(rad);
-        const sinT = Math.sin(rad);
-        return alpha_parallel * cosT * cosT + alpha_transverse * sinT * sinT;
-    }
-    
     function calculateMorphing(tTopDeg, tBotDeg, deltaT) {
         const tTop = tTopDeg * Math.PI / 180;
         const tBot = tBotDeg * Math.PI / 180;
@@ -2894,9 +2879,7 @@
         
         // Classification of deformation mode
         let mode, description, code;
-        const kappaMag = Math.abs(kappa);
-        const twistMag = Math.abs(twistRate);
-        const ratio = twistMag / (kappaMag + 1e-12);
+
         
         if (Math.abs(tTopDeg - tBotDeg) < 3) {
             mode = "Uniform Expansion";
@@ -3089,7 +3072,7 @@
         const nextR = r.clone().add(k1.dr.add(k2.dr.multiplyScalar(2)).add(k3.dr.multiplyScalar(2)).add(k4.dr).multiplyScalar(ds / 6));
         const nextT = T.clone().add(k1.dT.add(k2.dT.multiplyScalar(2)).add(k3.dT.multiplyScalar(2)).add(k4.dT).multiplyScalar(ds / 6));
         const nextN = N.clone().add(k1.dN.add(k2.dN.multiplyScalar(2)).add(k3.dN.multiplyScalar(2)).add(k4.dN).multiplyScalar(ds / 6));
-        const nextB = B.clone().add(k1.dB.add(k2.dB.multiplyScalar(2)).add(k3.dB.multiplyScalar(2)).add(k4.dB).multiplyScalar(ds / 6));
+
     
         nextT.normalize();
         const nextN_proj = nextN.clone().sub(nextT.clone().multiplyScalar(nextN.dot(nextT))).normalize();
@@ -3669,9 +3652,7 @@
         
         const a_top_val = (alphaEffTop * 1e6).toFixed(1);
         const a_bot_val = (alphaEffBot * 1e6).toFixed(1);
-        const s_top_val = (alphaShearTop * 1e6).toFixed(1);
-        const s_bot_val = (alphaShearBot * 1e6).toFixed(1);
-        const dt_val = deltaT.toFixed(0);
+
         const k_val = kappa.toFixed(2);
         const t_val = twistRate.toFixed(2);
         
@@ -4144,7 +4125,7 @@
             liveInsight.innerHTML = `
                 <strong>Design Insight (Diffusion Limited):</strong><br>
                 A thick section of <strong>${L_mm} mm</strong> takes <strong>${t90_str}</strong> to swell. 
-                Moisture diffusion is strictly limited by the quadratic scaling $t \\propto L^2$. 
+                Moisture diffusion is strictly limited by the quadratic scaling <b>t &propto; L<sup>2</sup></b>. 
                 Avoid solid sections this thick. Consider using porous infill meshes or thin parallel laminate panels.
             `;
         } else {
@@ -5100,7 +5081,7 @@
         const container = document.getElementById('latexFormulaContainer');
         if (!container) return;
         
-        const R_str = R_free === Infinity ? '&infin;' : R_free.toFixed(3) + ' m';
+
         const delta_str = (delta_free * 1000).toFixed(2) + ' mm';
         const F_str = (F_block * 1000).toFixed(1) + ' mN';
         const W_str = (W * 1000).toFixed(4) + ' mJ';
@@ -5327,7 +5308,6 @@
         const showGhost = showGhostCheckbox.checked;
         
         let y_tip = 0.0;
-        let x_tip = L_w;
         
         if (showGhost && kappa_w > 0.001) {
             // Build 30 wireframe segments to show curved unconstrained shape
@@ -5366,7 +5346,6 @@
             ghostBeamGroup.add(centerline);
             
             // Save tip coordinates
-            x_tip = Math.sin(theta_tip) / kappa_w;
             y_tip = (1 - Math.cos(theta_tip)) / kappa_w;
         } else if (showGhost) {
             // If kappa is 0, unconstrained coincides with flat
