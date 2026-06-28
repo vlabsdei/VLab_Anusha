@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B: The Self-Closing Gripper Mechanism - Virtual Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Structure Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Number of printed links:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>links n (including the base)</label><input type="range" id="nInput" min="2" max="8" step="1" value="4"><div class="slider-val" id="valN">4</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. Full joints j&#8321; (simple hinges):</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>pin joints that allow one motion</label><input type="range" id="j1Input" min="0" max="10" step="1" value="3"><div class="slider-val" id="valJ1">3</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">3. Half joints j&#8322; (sliding contacts):</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>rolling / sliding contacts</label><input type="range" id="j2Input" min="0" max="6" step="1" value="0"><div class="slider-val" id="valJ2">0</div></div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Test the Gripper</button>
+                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">Sub-Calc B: The Self-Closing Gripper Mechanism</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A 4D-printed gripper closes its jaws when triggered. But it only works if it has the <strong>right number of working joints</strong>. Too few and it stays locked solid; too many and the jaws flop around. Your job: choose links and joints so the gripper has exactly the freedom it needs to open and close on an object.</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Gripper mechanism</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Adding joints changes how freely it moves</div>
+                            <canvas id="plotCanvasDOF" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Locked, working, or floppy?</div>
+                            <canvas id="plotCanvasReg" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the links and joints, then click 'Test the Gripper' to see whether it stays locked, opens and closes, or flops loose.</div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Does the gripper actually work?</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Links n:</span><span class="result-val" id="resN" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Full / half joints:</span><span class="result-val" id="resJ" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Freedom to move F:</span><span class="result-val" id="resF" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Verdict:</span><span class="result-val" id="resReg" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Links needed to work (F=2):</span><span class="result-val" id="resNeed" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">What happens as you add joints</h3>
+                        <table id="dofTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">j&#8321; / j&#8322;</th><th style="padding:6px 4px;">F</th><th style="padding:6px 4px;text-align:right;">Verdict</th></tr></thead><tbody></tbody></table>
+                    </div>
+                </div>
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind it</h3>
+                    <div id="dofFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
+                </div>
+                <div class="floating-nav"><a href="index.html" class="btn-nav">&larr; Back</a><a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

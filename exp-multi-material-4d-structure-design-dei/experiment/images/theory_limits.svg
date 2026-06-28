@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Model Validity Windows &amp; Limitations</text>
+
+  <!-- Row 1: Grubler for compliant mechanisms -->
+  <text x="40" y="78" fill="#1e293b" font-size="13" font-weight="700">1. Grubler-Kutzbach (Sub-Calc B): rigid pin-joint assumption</text>
+  <rect x="40" y="86" width="280" height="30" fill="#dcfce7" stroke="#16a34a"/>
+  <rect x="320" y="86" width="280" height="30" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="180" y="105" fill="#166534" font-size="11" font-weight="700" text-anchor="middle">Thin flexure: DOF valid</text>
+  <text x="460" y="105" fill="#b91c1c" font-size="11" font-weight="700" text-anchor="middle">Distributed: continuum model</text>
+  <g fill="#475569" font-size="9" text-anchor="middle"><text x="40" y="130">0</text><text x="320" y="130">L_hinge / h = 5</text><text x="600" y="130">10</text></g>
+
+  <!-- Row 2: Miura rigid-origami -->
+  <text x="40" y="166" fill="#1e293b" font-size="13" font-weight="700">2. Miura-ori (Sub-Calc D): rigid, zero-thickness panels</text>
+  <rect x="40" y="174" width="187" height="30" fill="#dcfce7" stroke="#16a34a"/>
+  <rect x="227" y="174" width="373" height="30" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="133" y="193" fill="#166534" font-size="11" font-weight="700" text-anchor="middle">Thin panels: valid</text>
+  <text x="413" y="193" fill="#b91c1c" font-size="11" font-weight="700" text-anchor="middle">Thick panels: Tachi-Miura correction</text>
+  <g fill="#475569" font-size="9" text-anchor="middle"><text x="40" y="218">0</text><text x="227" y="218">thickness / length = 5%</text><text x="600" y="218">15%</text></g>
+
+  <!-- Row 3: Basquin for polymers -->
+  <text x="40" y="254" fill="#1e293b" font-size="13" font-weight="700">3. Basquin's Law (Sub-Calc E): derived for metals, not polymers</text>
+  <line x1="40" y1="290" x2="600" y2="290" stroke="#94a3b8" stroke-width="1.5"/>
+  <g fill="#475569" font-size="9" text-anchor="middle"><text x="40" y="306">1e2</text><text x="180" y="306">1e3</text><text x="320" y="306">1e4</text><text x="460" y="306">1e5</text><text x="600" y="306">1e6 cycles</text></g>
+  <line x1="320" y1="282" x2="460" y2="282" stroke="#dc2626" stroke-width="3"/>
+  <line x1="320" y1="278" x2="320" y2="286" stroke="#dc2626" stroke-width="2"/>
+  <line x1="460" y1="278" x2="460" y2="286" stroke="#dc2626" stroke-width="2"/>
+  <text x="390" y="274" fill="#b91c1c" font-size="10" font-weight="700" text-anchor="middle">+/- factor-of-3 band</text>
+  <circle cx="390" cy="282" r="5" fill="#1e293b"/><text x="390" y="262" fill="#1e293b" font-size="9" text-anchor="middle">predicted N</text>
+  <circle cx="250" cy="290" r="6" fill="#16a34a"/><text x="250" y="324" fill="#166534" font-size="10" font-weight="700" text-anchor="middle">design N = N/5 (SF)</text>
+  <path d="M384 286 L262 290" stroke="#16a34a" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#lim5)"/>
+  <defs><marker id="lim5" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#16a34a"/></marker></defs>
+
+  <!-- summary panel -->
+  <rect x="40" y="330" width="560" height="94" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="56" y="353" fill="#8A1134" font-size="13" font-weight="700">Engineering takeaways</text>
+  <text x="56" y="376" fill="#475569" font-size="11">&#8226; Keep flexures short and localised so the rigid-body DOF count stays meaningful.</text>
+  <text x="56" y="397" fill="#475569" font-size="11">&#8226; Below ~5% panel-thickness ratio, rigid-origami area-ratio and Poisson predictions hold.</text>
+  <text x="56" y="418" fill="#475569" font-size="11">&#8226; Apply a safety factor of 5-10 on polymer fatigue life; this lab uses 5.</text>
+</svg>

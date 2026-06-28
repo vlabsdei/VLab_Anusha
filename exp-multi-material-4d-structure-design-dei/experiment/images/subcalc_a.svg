@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc A: Stiffness Contrast &amp; Hinge Design</text>
+
+  <!-- bilayer flat -->
+  <text x="130" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Bilayer (flat)</text>
+  <rect x="55" y="92" width="150" height="14" fill="#475569"/>
+  <rect x="55" y="106" width="150" height="9" fill="#14b8a6"/>
+  <text x="215" y="103" fill="#475569" font-size="9">passive (PLA, 2 GPa)</text>
+  <text x="215" y="116" fill="#0f766e" font-size="9">active (gel, 1 MPa)</text>
+
+  <!-- bent -->
+  <text x="130" y="150" fill="#8A1134" font-size="12" font-weight="700" text-anchor="middle">Heated: folds at soft hinge</text>
+  <path d="M55 175 h70 a26 26 0 0 1 26 26 v40" fill="none" stroke="#475569" stroke-width="13"/>
+  <path d="M125 175 a26 26 0 0 1 26 26" fill="none" stroke="#14b8a6" stroke-width="8"/>
+  <circle cx="125" cy="178" r="6" fill="#8A1134"/>
+  <text x="150" y="250" fill="#8A1134" font-size="10" font-weight="700">hinge</text>
+
+  <!-- L vs h plot -->
+  <text x="470" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">Hinge length L vs thickness h</text>
+  <line x1="360" y1="84" x2="360" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="360" y1="220" x2="615" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="349" y="94" fill="#475569" font-size="10" text-anchor="end">L</text>
+  <text x="615" y="237" fill="#475569" font-size="10" text-anchor="end">h</text>
+  <path d="M362 218 Q450 210 520 165 Q570 120 612 90" fill="none" stroke="#8A1134" stroke-width="2.5"/>
+  <text x="430" y="205" fill="#475569" font-size="9">L &#8733; h&#179; (thinner &#8594; shorter)</text>
+
+  <!-- equation panel -->
+  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
+  <text x="36" y="310" fill="#1e293b" font-size="15" font-weight="700">EI = E &#183; b &#183; h&#179; / 12</text>
+  <text x="300" y="310" fill="#1e293b" font-size="15" font-weight="700">SC = E_passive / E_active</text>
+  <text x="36" y="338" fill="#1e293b" font-size="15" font-weight="700">&#952; = M &#183; L_hinge / (E_active &#183; I)</text>
+  <text x="36" y="366" fill="#0f766e" font-size="12" font-weight="700">Hydrogel/PLA &#8594; SC &#8776; 2000: deformation localises in the soft hinge.</text>
+  <text x="36" y="390" fill="#475569" font-size="12" font-weight="700">SC &gt; 1000 needed for a clean, localised fold; thinner hinge needs shorter L.</text>
+  <text x="36" y="411" fill="#94a3b8" font-size="11">A single material can only bend; stiffness contrast enables programmed folds.</text>
+</svg>

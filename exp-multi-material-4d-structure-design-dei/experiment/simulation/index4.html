@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc E: The Living-Hinge Cycle Life - Virtual Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Structure Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">Hinge thickness:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>h (mm) - thinner is gentler</label><input type="range" id="hInput" min="0.2" max="1.0" step="0.02" value="0.5"><div class="slider-val" id="valH">0.50 mm</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">Fold angle each cycle:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>&theta; (deg)</label><input type="range" id="thetaInput" min="15" max="120" step="5" value="90"><div class="slider-val" id="valTheta">90 deg</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">Hinge length:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>L (mm) - longer spreads the bend</label><input type="range" id="lInput" min="2" max="10" step="0.5" value="5"><div class="slider-val" id="valL">5.0 mm</div></div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Run Cycle Test</button>
+                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">Sub-Calc E: The Living-Hinge Cycle Life</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A 4D-printed living hinge has to open and close again and again. Each fold strains its skin a little, and after enough cycles it <strong>cracks</strong>. The hinge flexes here, coloured green when it works easily and red when it is overstressed. Your job: size the hinge so it survives long, repeated use.</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Cycling hinge</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Cycles before it cracks (S-N curve)</div>
+                            <canvas id="plotCanvasFat" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">How hard the hinge is working</div>
+                            <canvas id="plotCanvasStr" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the hinge thickness, fold angle and length, then click 'Run Cycle Test' to estimate how many open/close cycles it survives.</div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">How long will the hinge last?</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Max strain each fold:</span><span class="result-val" id="resEps" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Peak stress:</span><span class="result-val" id="resSig" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Cycles to crack N:</span><span class="result-val" id="resNlife" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Safe cycles (N/5):</span><span class="result-val" id="resNsafe" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Survives long use?</span><span class="result-val" id="resSurvive" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Thickest hinge that still lasts</h3>
+                        <table id="fatTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">Life target</th><th style="padding:6px 4px;text-align:right;">max h (mm)</th></tr></thead><tbody></tbody></table>
+                    </div>
+                </div>
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind it</h3>
+                    <div id="fatFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
+                </div>
+                <div class="floating-nav"><a href="index3.html" class="btn-nav">&larr; Back</a><a href="index.html" id="btnRestart" class="btn-nav primary" style="display: none;">Restart from Sub-Calc A -></a></div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

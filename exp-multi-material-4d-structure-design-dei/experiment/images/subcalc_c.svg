@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc C: Transformation Kinematics</text>
+
+  <!-- folding chain -->
+  <text x="320" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Open kinematic chain: flat sheet folds to 3D shape</text>
+  <line x1="70" y1="200" x2="170" y2="200" stroke="#8A1134" stroke-width="8"/>
+  <line x1="170" y1="200" x2="245" y2="135" stroke="#2563eb" stroke-width="8"/>
+  <line x1="245" y1="135" x2="270" y2="40" stroke="#14b8a6" stroke-width="8"/>
+  <g fill="#475569"><circle cx="70" cy="200" r="6"/><circle cx="170" cy="200" r="6"/><circle cx="245" cy="135" r="6"/></g>
+  <circle cx="270" cy="40" r="8" fill="#ef4444"/>
+  <text x="282" y="40" fill="#ef4444" font-size="10" font-weight="700">tip (x,y)</text>
+  <text x="120" y="220" fill="#8A1134" font-size="10" font-weight="700">&#952;&#8321;</text>
+  <text x="205" y="160" fill="#2563eb" font-size="10" font-weight="700">&#952;&#8322;</text>
+  <text x="258" y="95" fill="#14b8a6" font-size="10" font-weight="700">&#952;&#8323;</text>
+  <circle cx="360" cy="60" r="9" fill="none" stroke="#10b981" stroke-width="2"/>
+  <text x="374" y="64" fill="#047857" font-size="10" font-weight="700">target (inverse)</text>
+  <path d="M278 44 Q330 40 352 58" stroke="#10b981" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+
+  <!-- equation panel -->
+  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
+  <text x="36" y="312" fill="#1e293b" font-size="14" font-weight="700">Forward:  x_end = &#931; L&#7522; cos(&#931;&#7308;&#8804;&#7522; &#952;&#11388;) ,  y_end = &#931; L&#7522; sin(&#931;&#7308;&#8804;&#7522; &#952;&#11388;)</text>
+  <text x="36" y="344" fill="#1e293b" font-size="14" font-weight="700">Inverse:  &#952;&#7522; = f(x_target, y_target)  &#8212; solved by CCD iteration</text>
+  <text x="36" y="372" fill="#0f766e" font-size="12" font-weight="700">Forward maps hinge angles &#8594; tip position; inverse finds angles to hit a target.</text>
+  <text x="36" y="396" fill="#475569" font-size="12" font-weight="700">Positioning error = | achieved tip &#8722; target | (mm), verified by forward kinematics.</text>
+  <text x="36" y="414" fill="#94a3b8" font-size="11">Connects 4D self-folding directly to robotics and mechanism design.</text>
+</svg>
