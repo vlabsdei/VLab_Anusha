@@ -1,0 +1,178 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. Why does the Beer-Lambert law overestimate light penetration in a heavily pigmented 4D-printed composite?",
+      "answers": {
+        "a": "Because it overestimates absorption.",
+        "b": "Because it ignores scattering, so the real penetration depth is 2-5x shorter in filled resins.",
+        "c": "Because pigments amplify the light.",
+        "d": "Because it only works at night."
+      },
+      "explanations": {
+        "a": "Incorrect - it neglects scattering, not over-counts absorption.",
+        "b": "Correct - Beer-Lambert assumes pure absorption; scattering by fillers shortens penetration by 2-5x.",
+        "c": "Incorrect - pigments attenuate, not amplify, light.",
+        "d": "Incorrect - illumination time of day is irrelevant."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q2. If the UV intensity on an azobenzene sample is doubled, the time to reach 90% trans -> cis conversion:",
+      "answers": {
+        "a": "Doubles.",
+        "b": "Halves, because conversion time is inversely proportional to intensity.",
+        "c": "Stays the same.",
+        "d": "Increases fourfold."
+      },
+      "explanations": {
+        "a": "Incorrect - more light speeds up, not slows, conversion.",
+        "b": "Correct - t90 = ln(10)/(k I), so doubling I halves the time.",
+        "c": "Incorrect - intensity strongly controls the rate.",
+        "d": "Incorrect - the relationship is inverse-linear, not inverse-square."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+
+    {
+      "question": "Q3. In NIR photothermal actuation, raising the laser power lets you use a shorter exposure. What is the benefit for spatial resolution?",
+      "answers": {
+        "a": "The thermal blur grows.",
+        "b": "Because d = 2 sqrt(D_th t_exp), a shorter exposure gives a smaller heated zone (sharper resolution).",
+        "c": "Resolution is unaffected by power.",
+        "d": "The spot cools down."
+      },
+      "explanations": {
+        "a": "Incorrect - shorter exposure shrinks, not grows, the blur.",
+        "b": "Correct - less time for heat to diffuse means a smaller d and more localised activation.",
+        "c": "Incorrect - power sets the heating time and hence the blur.",
+        "d": "Incorrect - higher power heats more strongly, it does not cool."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q4. Why are superparamagnetic nanoparticles (<20 nm) preferred over larger ferromagnetic particles for magnetic composites?",
+      "answers": {
+        "a": "They are cheaper to make.",
+        "b": "They do not agglomerate below their blocking temperature, keeping the torque-per-gram high.",
+        "c": "They are larger and heavier.",
+        "d": "They glow under UV light."
+      },
+      "explanations": {
+        "a": "Incorrect - cost is not the main reason.",
+        "b": "Correct - avoiding dipole-dipole agglomeration preserves dispersion and effective torque.",
+        "c": "Incorrect - they are smaller, which is precisely the point.",
+        "d": "Incorrect - this is unrelated to optical behaviour."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q5. How does particle agglomeration reduce the actuation performance of a magnetic composite?",
+      "answers": {
+        "a": "Clusters increase surface area and spin faster.",
+        "b": "Clusters have a larger effective volume but lower surface area and rotate less freely in the viscous matrix, so torque per gram drops.",
+        "c": "Agglomeration has no effect.",
+        "d": "It increases the saturation magnetisation."
+      },
+      "explanations": {
+        "a": "Incorrect - clusters reduce, not increase, free rotation.",
+        "b": "Correct - agglomerated clusters deliver less usable torque per gram of magnetic material.",
+        "c": "Incorrect - agglomeration is a real, detrimental effect.",
+        "d": "Incorrect - it does not raise M_s; it impairs rotation."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+
+    {
+      "question": "Q6. A composite with 5 vol% particles needs B_crit = 50 mT to bend 45deg. What happens to B_crit if the loading is reduced to 2 vol%?",
+      "answers": {
+        "a": "It decreases below 50 mT.",
+        "b": "It increases, because B_crit scales inversely with volume fraction (less magnetic material needs a stronger field).",
+        "c": "It stays at 50 mT.",
+        "d": "It becomes zero."
+      },
+      "explanations": {
+        "a": "Incorrect - lowering loading raises, not lowers, the required field.",
+        "b": "Correct - with B_crit ~ 1/volume-fraction, a leaner composite needs a stronger field.",
+        "c": "Incorrect - B_crit depends on loading.",
+        "d": "Incorrect - a finite, larger field is required."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q7. Why does the coil power needed for wireless actuation rise so steeply with implant depth?",
+      "answers": {
+        "a": "Because the coil gets heavier.",
+        "b": "Because the field falls off as 1/(R^2+r^2)^(3/2) and is further attenuated by tissue, so much more current (and I^2 R power) is needed.",
+        "c": "Because the battery drains faster.",
+        "d": "Because tissue amplifies the field."
+      },
+      "explanations": {
+        "a": "Incorrect - coil mass is not the cause.",
+        "b": "Correct - the steep geometric falloff plus exponential tissue attenuation demand far more power at depth.",
+        "c": "Incorrect - this concerns the external coil, not a battery.",
+        "d": "Incorrect - tissue attenuates, it does not amplify, the field."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q8. What does the 'crossover depth' identified in the coil-design sub-calc represent?",
+      "answers": {
+        "a": "The depth at which the implant stops working.",
+        "b": "The depth beyond which a battery-powered implant (milliwatts) becomes more practical than wireless coil drive (watts).",
+        "c": "The depth where tissue becomes transparent.",
+        "d": "The coil radius."
+      },
+      "explanations": {
+        "a": "Incorrect - it is a power-economics threshold, not a failure depth.",
+        "b": "Correct - beyond the crossover depth, wireless power demand exceeds the practicality of a battery.",
+        "c": "Incorrect - it is unrelated to optical transparency.",
+        "d": "Incorrect - it is a depth, not a coil dimension."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+
+    {
+      "question": "Q9. Based on the actuation-speed comparison, which mapping of stimulus to application is most appropriate?",
+      "answers": {
+        "a": "Magnetic -> implants; photo -> surgical robots; thermal -> microfluidics.",
+        "b": "Magnetic (ms) -> surgical robots; photo (s) -> microfluidics; thermal (min) -> implants.",
+        "c": "All three are best for the same application.",
+        "d": "Thermal -> surgical robots because it is fastest."
+      },
+      "explanations": {
+        "a": "Incorrect - this mismatches the speeds to the applications.",
+        "b": "Correct - the fastest (magnetic) suits surgical robots, photo suits microfluidics, slow thermal suits implants.",
+        "c": "Incorrect - their very different speeds suit different uses.",
+        "d": "Incorrect - thermal is the slowest, not the fastest."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q10. The coil sub-calc uses delta ~ 50 mm for tissue penetration. Why must this be treated with caution?",
+      "answers": {
+        "a": "Because it is exact for all tissues.",
+        "b": "Because the penetration depth is frequency- and tissue-specific (e.g. ~60 mm in muscle but only ~20 mm in bone), changing the required power.",
+        "c": "Because tissue does not attenuate fields.",
+        "d": "Because 50 mm is always too large."
+      },
+      "explanations": {
+        "a": "Incorrect - it is an average, not a universal constant.",
+        "b": "Correct - delta varies with tissue type and frequency, so deep or bony targets need very different power.",
+        "c": "Incorrect - tissue does attenuate electromagnetic fields.",
+        "d": "Incorrect - the value is a reasonable average, just not universal."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    }
+  ]
+}

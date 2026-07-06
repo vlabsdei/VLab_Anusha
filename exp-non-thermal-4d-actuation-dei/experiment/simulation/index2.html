@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc C: The Magnetic Micro-Gripper / Catheter Tip - Virtual Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Device Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Magnetic particles printed in:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>Particle loading (vol%)</label><input type="range" id="volInput" min="1" max="10" step="0.5" value="5"><div class="slider-val" id="valVol">5.0 vol%</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. External magnet strength:</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>Field B (mT)</label><input type="range" id="bInput" min="0" max="150" step="2" value="50"><div class="slider-val" id="valB">50 mT</div></div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Apply the Magnet</button>
+                    <button type="button" onclick="location.reload()">Reset Tip</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">Sub-Calc C: The Magnetic Micro-Gripper / Catheter Tip</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A flexible tip is 4D-printed with tiny magnetic particles baked in. Bring an <strong>external magnet</strong> close and the tip <strong>bends to steer</strong> - letting a surgeon guide a catheter or close a micro-gripper from outside the body, with no wires. Your job: pick a particle loading that steers with a gentle, safe magnet.</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Tip ready</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Tip bend vs magnet strength</div>
+                            <canvas id="plotCanvasMag" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Magnet needed vs particle content</div>
+                            <canvas id="plotCanvasBcrit" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the particle loading and magnet strength, then click 'Apply the Magnet' to bend the tip and see if it steers.</div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Can it steer?</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Magnetic strength in the tip:</span><span class="result-val" id="resMs" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Twisting force (torque):</span><span class="result-val" id="resTau" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Tip bend:</span><span class="result-val" id="resDef" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Magnet to steer 45&deg;:</span><span class="result-val" id="resB45" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Magnet to steer 90&deg;:</span><span class="result-val" id="resB90" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">More particles, weaker magnet needed</h3>
+                        <table id="magTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">Particles (vol%)</th><th style="padding:6px 4px;text-align:right;">Magnet for 45&deg; (mT)</th></tr></thead><tbody></tbody></table>
+                    </div>
+                </div>
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind the bend</h3>
+                    <div id="magFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
+                </div>
+                <div class="floating-nav"><a href="index1.html" class="btn-nav">&larr; Back</a><a href="index3.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>
