@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc B: pH-Responsive Swelling (Donnan)</text>
+
+  <!-- collapsed gel (acid) -->
+  <text x="100" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Acidic (pH &lt; pKa)</text>
+  <circle cx="100" cy="130" r="40" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
+  <text x="100" y="135" fill="#475569" font-size="11" font-weight="700" text-anchor="middle">COOH</text>
+  <text x="100" y="190" fill="#64748b" font-size="11" text-anchor="middle">collapsed, neutral</text>
+
+  <!-- arrow -->
+  <path d="M150 130 L205 130" stroke="#8A1134" stroke-width="3" marker-end="url(#arrB)"/>
+  <text x="178" y="120" fill="#8A1134" font-size="11" font-weight="700" text-anchor="middle">raise pH</text>
+  <defs><marker id="arrB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8A1134"/></marker></defs>
+
+  <!-- swollen gel (alkaline) -->
+  <text x="290" y="74" fill="#0f766e" font-size="12" font-weight="700" text-anchor="middle">Alkaline (pH &gt; pKa)</text>
+  <circle cx="290" cy="135" r="58" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2"/>
+  <g fill="#ef4444" font-size="10" font-weight="700">
+    <text x="262" y="112" text-anchor="middle">&#8722;</text><text x="318" y="112" text-anchor="middle">&#8722;</text>
+    <text x="262" y="162" text-anchor="middle">&#8722;</text><text x="318" y="162" text-anchor="middle">&#8722;</text>
+    <text x="290" y="100" text-anchor="middle">&#8722;</text><text x="290" y="178" text-anchor="middle">&#8722;</text>
+  </g>
+  <g fill="#2563eb" font-size="9">
+    <text x="278" y="130" text-anchor="middle">+</text><text x="302" y="130" text-anchor="middle">+</text>
+    <text x="290" y="148" text-anchor="middle">+</text><text x="278" y="118" text-anchor="middle">+</text>
+  </g>
+  <text x="290" y="212" fill="#0f766e" font-size="11" text-anchor="middle">swollen: COO&#8722; + counter-ions</text>
+
+  <!-- Q vs pH sigmoid -->
+  <text x="510" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">Q vs pH (sigmoid)</text>
+  <line x1="420" y1="84" x2="420" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="420" y1="210" x2="618" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="409" y="94" fill="#475569" font-size="10" text-anchor="end">Q</text>
+  <text x="618" y="227" fill="#475569" font-size="10" text-anchor="end">pH</text>
+  <line x1="520" y1="84" x2="520" y2="210" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="520" y="96" fill="#b45309" font-size="9" text-anchor="middle" font-weight="700">pKa+1</text>
+  <path d="M428 200 Q500 198 520 150 Q540 96 612 92" fill="none" stroke="#14b8a6" stroke-width="2.5"/>
+
+  <!-- equation panel -->
+  <rect x="20" y="248" width="600" height="172" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="276" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
+  <text x="36" y="306" fill="#1e293b" font-size="15" font-weight="700">&#945; = K_a / (K_a + [H&#8314;]) = 1 / (1 + 10^(pKa &#8722; pH))</text>
+  <text x="36" y="334" fill="#1e293b" font-size="14" font-weight="700">&#960;_ion = R&#183;T&#183;C_ion,total   (Donnan osmotic pressure)</text>
+  <text x="36" y="362" fill="#1e293b" font-size="15" font-weight="700">Q(pH) = Q_neutral &#183; (1 + &#945;&#183;f_ion)^(3/5)</text>
+  <text x="36" y="390" fill="#0f766e" font-size="12" font-weight="700">PAA (pKa 4.8): collapses in acid, swells in alkaline &#8594; intestinal drug-release trigger.</text>
+  <text x="36" y="411" fill="#b91c1c" font-size="11" font-weight="700">For ionic gels the Donnan term must be ADDED to the Flory-Rehner result (Sub-Calc A).</text>
+</svg>

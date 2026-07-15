@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc D: Wireless Remote Actuation (Coil Design)</text>
+
+  <!-- coil + tissue + device -->
+  <text x="150" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">External coil drives sub-dermal device</text>
+  <ellipse cx="150" cy="92" rx="80" ry="16" fill="none" stroke="#b45309" stroke-width="6"/>
+  <text x="245" y="92" fill="#b45309" font-size="10" font-weight="700">coil (n, R)</text>
+  <rect x="55" y="120" width="190" height="110" rx="6" fill="#fecaca" opacity="0.5" stroke="#fca5a5"/>
+  <text x="60" y="138" fill="#b91c1c" font-size="9">tissue</text>
+  <rect x="135" y="195" width="30" height="22" rx="3" fill="#8A1134"/>
+  <text x="150" y="240" fill="#8A1134" font-size="10" font-weight="700" text-anchor="middle">device at depth r</text>
+  <line x1="150" y1="100" x2="150" y2="195" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="160" y="160" fill="#2563eb" font-size="9">r</text>
+
+  <!-- P vs depth -->
+  <text x="490" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">coil power vs depth</text>
+  <line x1="390" y1="84" x2="390" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="390" y1="210" x2="618" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="379" y="94" fill="#475569" font-size="10" text-anchor="end">P</text>
+  <text x="618" y="227" fill="#475569" font-size="10" text-anchor="end">r</text>
+  <line x1="390" y1="185" x2="618" y2="185" stroke="#10b981" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="396" y="181" fill="#047857" font-size="8" font-weight="700">battery (mW)</text>
+  <path d="M398 205 Q480 190 540 130 Q575 95 612 88" fill="none" stroke="#8A1134" stroke-width="2.5"/>
+  <line x1="540" y1="84" x2="540" y2="210" stroke="#f59e0b" stroke-width="1.3" stroke-dasharray="3 3"/>
+  <text x="540" y="96" fill="#b45309" font-size="8" font-weight="700" text-anchor="middle">crossover</text>
+
+  <!-- equation panel -->
+  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
+  <text x="36" y="310" fill="#1e293b" font-size="14" font-weight="700">B = &#956;&#8320; n I R&#178; / (2(R&#178; + r&#178;)^(3/2))</text>
+  <text x="36" y="338" fill="#1e293b" font-size="14" font-weight="700">P_coil = I&#178; R_coil ;   I = B_crit &#183; 2(R&#178;+r&#178;)^(3/2)/(&#956;&#8320; n R&#178;)</text>
+  <text x="36" y="366" fill="#1e293b" font-size="14" font-weight="700">B_tissue = B_surface e^(&#8722;r/&#948;),  &#948; &#8776; 50 mm</text>
+  <text x="36" y="392" fill="#0f766e" font-size="12" font-weight="700">Power rises steeply with depth; beyond the crossover depth a battery beats wireless.</text>
+  <text x="36" y="412" fill="#b91c1c" font-size="11" font-weight="700">&#948; is tissue-specific (~60 mm muscle, ~20 mm bone) &#8212; depth changes the power budget.</text>
+</svg>

@@ -1,0 +1,12 @@
+
+c:\Users\anu85\OneDrive\Desktop\virtual_lab\VLab_Anusha\exp-integrated-4D-design-review-dei\experiment\simulation\js\main.js
+  314:3   warning  'LabGate' is not defined                         no-undef
+  423:3   warning  'LabGate' is not defined                         no-undef
+  433:7   warning  Move function declaration to function body root  no-inner-declarations
+  593:24  warning  'win4d' is defined but never used                no-unused-vars
+  606:3   warning  'LabGate' is not defined                         no-undef
+  703:3   warning  'LabGate' is not defined                         no-undef
+  809:3   warning  'LabGate' is not defined                         no-undef
+
+✖ 7 problems (0 errors, 7 warnings)
+

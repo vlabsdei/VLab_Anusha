@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description">
+    <meta content="" name="author">
+    
+    	<meta name="experiment-short-name" content="hydrogel-mechanics">
+    	<meta name="developer-institute" content="DEI">
+    	<meta name="learning-unit" content="Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft
+    Actuator Sizing">
+    	<meta name="task-name" content="Theory">
+    
+    <!-- For iPhone -->
+    <meta name="msapplication-TileColor" content="#4076e0">
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#4076e0">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#4076e0">
+    <title>Virtual Labs</title>
+    <link rel="shortcut icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" integrity="sha512-Oy18vBnbSJkXTndr2n6lDMO5NN31UljR8e/ICzVPrGpSud4Gkckb8yUpqhKuUNoE+o9gAb4O/rAxxw1ojyUVzg==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&amp;family=Raleway&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/github-markdown.min.css">
+    <link rel="stylesheet" href="./assets/css/vlabs-style.css">
+    <link rel="stylesheet" href="./assets/css/toast.css">
+    <link rel="stylesheet" href="./assets/katex_assets/katex.min.css">
+    
+    <script src="./assets/js/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      h1 {
+      font-size: 1.8rem;
+      }
+      h2 {
+      font-size: 1.4rem;
+      }
+      h3 {
+      font-size: 1.2rem;
+      }
+
+      h2, h3 {
+      font-weight: 800;
+      }
+    </style>
+    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"></head>
+  <body class="p-0 container-fluid vlabs-page d-flex flex-column justify-content-between">
+  
+      <header class="vlabs-header sticky-top bg-white">
+        <nav class="p-0 navbar navbar-light d-flex align-items-stretch">
+          
+          <button class="navbar-toggler px-4" type="button" onclick="toggle()">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="d-flex justify-content-center">        
+            <a href="https://vlab.co.in" class="navbar-brand">
+              <img src="./assets/images/vlabs-color-small-moe.jpg" alt="vlabs logo" class="vlabs-logo">
+            </a>
+          </div>
+          
+          <div id="headerNavbar" class="d-none border-top flex-grow-1 d-lg-flex align-items-center justify-content-end">
+            <div class="svc-rating-display">
+                <rating-display spreadsheetid="1x12nhpp0QvnsA6x-O1sV4IA9SAbfVsq_wiexWkutOmU" sheetname="Experiment-Database" columnname="Experiment Short Name" columnvalue="hydrogel-mechanics" imagesdirectory="./plugins/svc-rating/images/">
+                </rating-display>
+            </div>      <div class="svc-rating-submit">
+                <rating-submit title="Rate" this="" experiment="">
+                </rating-submit>
+            </div>      <bug-report id="bug-report" title="[BUG REPORT] Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft
+      Actuator Sizing" page-type="text" context-info="{&quot;organisation&quot;:&quot;Virtual Labs&quot;,&quot;developer_institute&quot;:&quot;DEI&quot;,&quot;expname&quot;:&quot;Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft\nActuator Sizing&quot;,&quot;labname&quot;:&quot;Virtual Lab&quot;,&quot;phase&quot;:&quot;Testing&quot;}" checkbox-json="{&quot;text&quot;:[&quot;Insufficient Content&quot;],&quot;video&quot;:[&quot;Insufficient Content&quot;],&quot;assesment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;assessment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;simulation&quot;:[&quot;Simulation Not Working&quot;,&quot;Incorrect Results/Observations&quot;,&quot;Insufficient/Incorrect Instructions&quot;],&quot;DEFAULT&quot;:[&quot;Page Not Loading&quot;,&quot;Content Not Visible&quot;,&quot;Incorrect Content&quot;]}" button_style="border: none; color: #fff; background-color: #288ec8; text-align: center; font-size: 1.05rem; border-radius: 1em;padding: 0.6em 1.2em; margin: 0 10px" position="override" custom_button_class="v-button"></bug-report>
+          </div>
+        </nav>
+      </header>
+      <div class="container-fluid flex-fill d-flex flex-column vlabs-page-main">
+        <div class="row d-flex justify-content-between">
+          <div class="flex-column">
+          <div class="row py-4 px-4 breadcrumbs">
+          	<div class="title is-4 tools">Tools</div>
+          	<span class="mx-2">
+          		<i aria-hidden="true" class="fa fa-angle-right"></i>
+          	</span>
+          	<a href="performance-report.html" class="my-2 mx-3" target="_blank">
+          		<button class="v-button">Performance Tool</button>
+          	</a>
+          	<a href="validator-report.html" class="my-2 mx-3" target="_blank">
+          		<button class="v-button">Validation Tool</button>
+          	</a>
+          </div>
+          </div>
+        </div>
+        <div class="row flex-grow-1 d-flex flex-nowrap flex-column flex-lg-row">
+          <div class="modal fade popupmenu" id="popupMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">
+                              <a href="https://vlab.co.in" class="navbar-brand">
+                                  <img src="./assets/images/vlabs-color-small-moe.jpg" alt="vlabs logo" class="vlabs-logo">
+                              </a>
+                          </h5>
+                          <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body nav-menu">
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="index.html" class="p-2 ">
+                                      Aim
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="theory.html" class="p-2  current-item ">
+                                      Theory
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="pretest.html" class="p-2 ">
+                                      Pretest
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="procedure.html" class="p-2 ">
+                                      Procedure
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="simulation.html" class="p-2 ">
+                                      Simulation
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="posttest.html" class="p-2 ">
+                                      Posttest
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="references.html" class="p-2 ">
+                                      References
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="contributors.html" class="p-2 ">
+                                      Contributors
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="d-flex nav-menu-body">
+                                      <a href="feedback.html" class="p-2 ">
+                                      Feedback
+                                      </a>
+                                      
+                                  </div>
+                                  <div id="t-" class="collapse">
+                                      <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                                      </div>
+                                  </div>
+                              </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="nav flex-column sidebar nav-menu flex-shrink-0 px-lg-4 align-items-center align-items-lg-start hidden d-none d-lg-flex" id="menu">
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="index.html" class="p-2 ">
+                        Aim
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="theory.html" class="p-2  current-item ">
+                        Theory
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="pretest.html" class="p-2 ">
+                        Pretest
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="procedure.html" class="p-2 ">
+                        Procedure
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="simulation.html" class="p-2 ">
+                        Simulation
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="posttest.html" class="p-2 ">
+                        Posttest
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="references.html" class="p-2 ">
+                        References
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="contributors.html" class="p-2 ">
+                        Contributors
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex nav-menu-body">
+                        <a href="feedback.html" class="p-2 ">
+                        Feedback
+                        </a>
+                        
+                    </div>
+                    <div id="t-" class="collapse">
+                        <div class="px-3 d-flex flex-column tasks align-items-center align-items-lg-start">
+                        </div>
+                    </div>
+                </div>
+          </div>          <div class="vlabs-page-content px-5 pb-4 flex-grow-1 markdown-body">
+            <div class="text-center fix-spacing">
+              <p>Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft Actuator Sizing</p>
+          
+            </div>
+              <h1 id="theory-hydrogel-mechanics-stimuli-response--soft-actuator-sizing">Theory: Hydrogel Mechanics, Stimuli-Response &amp; Soft Actuator Sizing</h1>
+          <h2 id="1-introduction-hydrogels-as-the-biological-interface-of-4d-printing">1. Introduction: Hydrogels as the Biological Interface of 4D Printing</h2>
+          <p>A <strong>hydrogel</strong> is a three-dimensional crosslinked polymer network that absorbs and retains large volumes of water (often many times its dry mass) without dissolving. Because the degree of swelling can be programmed to respond to stimuli such as solvent quality, <strong>pH</strong>, and <strong>temperature</strong>, hydrogels are the natural "soft" branch of 4D printing: a flat printed sheet can be made to fold, bend, or expand on contact with a physiological environment. This experiment quantifies five physical principles that govern hydrogel behaviour, from the thermodynamics of swelling to the kinetics of drug release.</p>
+          <p align="center"><img src="images/theory_overview.svg" alt="Overview of hydrogel mechanics" width="620"></p>
+          <p align="center"><em>Figure 1: One crosslinked network probed under five stimuli - solvent quality, pH, temperature, crosslink density and time (Sub-Calc A-E).</em></p>
+          
+          <hr>
+          <h2 id="2-flory-rehner-swelling-equilibrium---the-self-folding-gripper-sub-calc-a">2. Flory-Rehner Swelling Equilibrium - The Self-Folding Gripper (Sub-Calc A)</h2>
+          <p>When a dry crosslinked network is placed in a solvent, two opposing free-energy contributions compete:</p>
+          <ul>
+          <li><strong>Mixing</strong> (favourable): polymer chains gain entropy by mixing with solvent, driving swelling.</li>
+          <li><strong>Elastic retraction</strong> (unfavourable): as chains stretch, the network develops an entropic restoring force that resists further swelling.</li>
+          </ul>
+          <p>At equilibrium these balance. The <strong>Flory-Rehner equation</strong> sets the total osmotic pressure to zero:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">ln(1 - v<sub>p</sub>) + v<sub>p</sub> + χ·v<sub>p</sub><sup>2</sup> + (V<sub>1</sub>/V<sub>e</sub>)·(v<sub>p</sub><sup>1/3</sup> - v<sub>p</sub>/2) = 0</div>
+          
+          <p>Where:</p>
+          <ul>
+          <li>v<sub>p</sub> = polymer volume fraction at equilibrium (0 &lt; v<sub>p</sub> ≤ 1).</li>
+          <li>χ = Flory-Huggins polymer-solvent interaction parameter.</li>
+          <li>V<sub>1</sub> = molar volume of solvent (water ≈ 18 cm<sup>3</sup>/mol).</li>
+          <li>V<sub>e</sub> = molar volume of network strand between crosslinks (a measure of crosslink density: small V<sub>e</sub> ⇒ tight network).</li>
+          </ul>
+          <p>The first three terms come from the <strong>mixing</strong> free energy; the last term is the <strong>elastic</strong> contribution. The <strong>equilibrium swelling ratio</strong> is the reciprocal of the polymer volume fraction:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">Q = V<sub>swollen</sub> / V<sub>dry</sub> = 1 / v<sub>p</sub></div>
+          
+          <p align="center"><img src="images/subcalc_a.svg" alt="Flory-Rehner swelling equilibrium" width="600"></p>
+          <p align="center"><em>Figure 2: Mixing (favourable) and elastic retraction (unfavourable) balance to set the equilibrium swelling ratio Q = 1/v_p, solved by Newton iteration.</em></p>
+          
+          <h3 id="21-numerical-solution-guided-newton-iteration">2.1 Numerical Solution (Guided Newton Iteration)</h3>
+          <p>The equation is <strong>implicit</strong> in v<sub>p</sub> and must be solved numerically. Defining f(v<sub>p</sub>) as the left-hand side, the <strong>Newton-Raphson</strong> update is:</p>
+          <div align="center" style="font-size: 1.05em; font-weight: bold;">v<sub>n+1</sub> = v<sub>n</sub> − f(v<sub>n</sub>) / f′(v<sub>n</sub>)</div>
+          
+          <p>with derivative</p>
+          <div align="center" style="font-size: 1.0em;">f′(v<sub>p</sub>) = −1/(1 − v<sub>p</sub>) + 1 + 2χ·v<sub>p</sub> + (V<sub>1</sub>/V<sub>e</sub>)·(⅓v<sub>p</sub><sup>−2/3</sup> − ½)</div>
+          
+          <p>Five iterations from a sensible start (v<sub>0</sub> ≈ 0.1) typically converge to machine precision.</p>
+          <h3 id="22-solvent-quality">2.2 Solvent Quality</h3>
+          <ul>
+          <li>χ &lt; 0.5 ⇒ <strong>good solvent</strong>: strong mixing, high swelling (Q &gt; 20 for loosely crosslinked gels).</li>
+          <li>χ = 0.5 ⇒ <strong>theta solvent</strong> (borderline).</li>
+          <li>χ &gt; 0.5 ⇒ <strong>poor solvent</strong>: limited swelling (Q &lt; 5).</li>
+          </ul>
+          <p>Higher crosslink density (smaller V<sub>e</sub>) always reduces Q because the elastic term grows.</p>
+          <hr>
+          <h2 id="3-ph-responsive-swelling-and-donnan-equilibrium---the-ph-triggered-drug-capsule-sub-calc-b">3. pH-Responsive Swelling and Donnan Equilibrium - The pH-Triggered Drug Capsule (Sub-Calc B)</h2>
+          <p>For a weak <strong>polyacid</strong> hydrogel such as poly(acrylic acid) (PAA, pK<sub>a</sub> ≈ 4.8), the carboxyl groups ionise as the pH rises. The <strong>degree of ionisation</strong> follows the Henderson-Hasselbalch relation:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">α = K<sub>a</sub> / (K<sub>a</sub> + [H<sup>+</sup>]) = 1 / (1 + 10<sup>(pK<sub>a</sub> − pH)</sup>)</div>
+          
+          <p>where K<sub>a</sub> = 10<sup>−pK<sub>a</sub></sup> and [H<sup>+</sup>] = 10<sup>−pH</sup>. Ionisation creates fixed charges on the network. Mobile counter-ions are trapped inside to preserve electroneutrality, producing an extra <strong>Donnan osmotic pressure</strong>:</p>
+          <div align="center" style="font-size: 1.05em; font-weight: bold;">π<sub>ion</sub> = R·T·C<sub>ion,total</sub></div>
+          
+          <p>This ionic osmotic pressure swells the gel far beyond its neutral state. Using the scaling form derived from polyelectrolyte (Dobrynin) theory:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">Q(pH) = Q<sub>neutral</sub> · (1 + α·f<sub>ion</sub>)<sup>3/5</sup></div>
+          
+          <p align="center"><img src="images/subcalc_b.svg" alt="pH-responsive Donnan swelling" width="600"></p>
+          <p align="center"><em>Figure 3: As pH rises through pK<sub>a</sub>, carboxyl groups ionise and trapped counter-ions drive a sigmoidal swelling transition (steepest near pH = pK<sub>a</sub> + 1).</em></p>
+          
+          <p>where f<sub>ion</sub> is the fraction of monomer units bearing an ionisable group. Because α switches sharply around pH = pK<sub>a</sub>, the swelling curve Q vs pH is <strong>sigmoidal</strong>, with the steepest rise near <strong>pH ≈ pK<sub>a</sub> + 1</strong>. A PAA gel therefore <strong>swells in alkaline media and collapses in acid</strong>, a property exploited to trigger drug release in the intestine rather than the stomach.</p>
+          <hr>
+          <h2 id="4-pnipam-thermoresponsive-collapse-the-lcst-transition---the-body-temperature-valve-sub-calc-c">4. PNIPAM Thermoresponsive Collapse: the LCST Transition - The Body-Temperature Valve (Sub-Calc C)</h2>
+          <p>Poly(N-isopropylacrylamide) (PNIPAM) has a <strong>Lower Critical Solution Temperature (LCST)</strong> near <strong>32°C</strong>:</p>
+          <ul>
+          <li><strong>Below LCST:</strong> hydrogen bonding with water dominates, the chains are hydrophilic and the gel is highly swollen (Q<sub>swollen</sub> ≈ 30–50 g/g).</li>
+          <li><strong>Above LCST:</strong> hydrophobic interactions win, water is expelled and the gel collapses (Q<sub>collapsed</sub> ≈ 1.1–1.5 g/g).</li>
+          </ul>
+          <p>The transition is modelled with a logistic (sigmoidal) collapse:</p>
+          <div align="center" style="font-size: 1.05em; font-weight: bold;">Q(T) = Q<sub>collapsed</sub> + (Q<sub>swollen</sub> − Q<sub>collapsed</sub>) / (1 + e<sup>(T − LCST)/w</sup>)</div>
+          
+          <p>The transition sharpness is described by the full width at half maximum (FWHM) of the dQ/dT peak, ΔT<sub>transition</sub> ≈ 3.53·w (≈ 2–5°C for pure PNIPAM). Two performance figures follow:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">VCR = Q<sub>swollen</sub> / Q<sub>collapsed</sub> &nbsp;&nbsp;(typically 20–40×)</div>
+          
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">ε<sub>act</sub> = (Q<sub>swollen</sub><sup>1/3</sup> − Q<sub>collapsed</sub><sup>1/3</sup>) / Q<sub>swollen</sub><sup>1/3</sup></div>
+          
+          <p align="center"><img src="images/subcalc_c.svg" alt="PNIPAM LCST collapse" width="600"></p>
+          <p align="center"><em>Figure 4: Across the 32 C LCST the chains switch from a hydrated swollen coil to a collapsed hydrophobic globule, giving a large volume-change ratio and actuation strain.</em></p>
+          
+          <p>The linear actuation strain ε<sub>act</sub> of a collapsing PNIPAM gel can reach 50–70%, far exceeding the ~8% recoverable strain of shape-memory polymers (SMP) or shape-memory alloys (SMA), which is why thermoresponsive gels enable large-stroke 4D actuators.</p>
+          <hr>
+          <h2 id="5-network-mechanics-shear-and-youngs-modulus---the-cartilage-scaffold-sub-calc-d">5. Network Mechanics: Shear and Young's Modulus - The Cartilage Scaffold (Sub-Calc D)</h2>
+          <p>The stiffness of a swollen network is set by <strong>rubber elasticity theory</strong>. For an ideal network of crosslink (strand) density ν<sub>e</sub> (chains per unit volume):</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">G = ν<sub>e</sub> · k<sub>B</sub> · T</div>
+          
+          <p>with k<sub>B</sub> = 1.38 × 10<sup>−23</sup> J/K. Swelling dilutes the load-bearing strands, so the modulus of the swollen gel is reduced relative to the dry network:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">G<sub>swollen</sub> = G<sub>dry</sub> · v<sub>p</sub><sup>1/3</sup> = G<sub>dry</sub> / Q<sup>1/3</sup></div>
+          
+          <p>Hydrogels are essentially incompressible (Poisson ratio ≈ 0.5), so the <strong>Young's modulus</strong> is:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">E = 3·G</div>
+          
+          <p align="center"><img src="images/subcalc_d.svg" alt="Shear and Young's modulus vs crosslink density" width="600"></p>
+          <p align="center"><em>Figure 5: Rubber elasticity sets G from crosslink density; swelling dilutes the strands so a more swollen gel is softer (G ∝ Q<sup>-1/3</sup>, E = 3G).</em></p>
+          
+          <p>Tuning ν<sub>e</sub> (typically 10<sup>23</sup>–10<sup>26</sup> chains/m<sup>3</sup>) lets a designer hit the modulus window of soft tissues, e.g. cartilage (0.1–1 MPa) and skin (0.1–2 MPa).</p>
+          <hr>
+          <h2 id="6-drug-release-kinetics-the-korsmeyer-peppas-model---the-drug-eluting-implant-sub-calc-e">6. Drug-Release Kinetics: the Korsmeyer-Peppas Model - The Drug-Eluting Implant (Sub-Calc E)</h2>
+          <p>The fraction of a loaded drug released from a swelling matrix follows a power law in time:</p>
+          <div align="center" style="font-size: 1.1em; font-weight: bold;">M<sub>t</sub> / M<sub>∞</sub> = k · t<sup>n</sup></div>
+          
+          <p>where k is the release-rate constant and n is the <strong>diffusion (release) exponent</strong> that classifies the transport mechanism (for a thin slab):</p>
+          <ul>
+          <li>n = 0.5 ⇒ <strong>Fickian diffusion</strong> (concentration-gradient driven).</li>
+          <li>0.5 &lt; n &lt; 1 ⇒ <strong>anomalous (non-Fickian)</strong> transport: diffusion plus polymer relaxation.</li>
+          <li>n = 1 ⇒ <strong>Case-II / zero-order</strong> release (relaxation/erosion controlled).</li>
+          </ul>
+          <p>The <strong>half-release time</strong> is obtained by setting M<sub>t</sub>/M<sub>∞</sub> = 0.5:</p>
+          <div align="center" style="font-size: 1.05em; font-weight: bold;">t<sub>50</sub> = (0.5 / k)<sup>1/n</sup></div>
+          
+          <p align="center"><img src="images/subcalc_e.svg" alt="Korsmeyer-Peppas drug release" width="600"></p>
+          <p align="center"><em>Figure 6: Cumulative drug release follows a power law in time; the diffusion exponent n classifies the transport mechanism, valid only below the 60% cutoff.</em></p>
+          
+          <p>A log-log plot of M<sub>t</sub>/M<sub>∞</sub> versus t is a straight line of slope n and intercept log(k). <strong>The model is only valid for M<sub>t</sub>/M<sub>∞</sub> &lt; 0.6</strong>; beyond that the "infinite reservoir" boundary condition fails, so the fit must be restricted to early-time data (see Section 7).</p>
+          <hr>
+          <h2 id="7-contradictions-and-limitations">7. Contradictions and Limitations</h2>
+          <p align="center"><img src="images/theory_limits.svg" alt="Model validity windows and limitations" width="620"></p>
+          <p align="center"><em>Figure 7: Validity windows for the three modelling limitations - ionic correction, Gaussian-chain limit, and the 60% release cutoff.</em></p>
+          
+          <p><strong>Contradiction 1 - Flory-Rehner ignores electrostatics.</strong> The classical Flory-Rehner equation (Sub-Calc A) treats chains as ideal Gaussian coils and contains <strong>no</strong> electrostatic term. For ionic gels (PAA, PAAm) the Donnan osmotic pressure (Sub-Calc B) must be <strong>added</strong> to the Flory-Rehner balance; the simple version underestimates the swelling of polyelectrolyte gels by a factor of 2–5×. <strong>Sub-Calc A is valid only for non-ionic gels</strong>, and its result must not be applied directly to PAA. In this lab the student explicitly computes the Donnan correction and adds it to the Flory-Rehner result for an ionic gel.</p>
+          <p><strong>Contradiction 2 - Rubber elasticity fails at high swelling.</strong> G = ν<sub>e</sub>k<sub>B</sub>T assumes <strong>Gaussian</strong> chain statistics. At very high swelling (Q &gt; 50) the strands approach full extension and enter the <strong>non-Gaussian</strong> regime, where the Arruda-Boyce (8-chain) model is required. For Q &lt; 30 rubber elasticity is accurate to about ±10%.</p>
+          <p><strong>Contradiction 3 - Korsmeyer-Peppas validity window.</strong> The power law holds only for M<sub>t</sub>/M<sub>∞</sub> &lt; 0.6. Beyond 60% release the finite drug reservoir invalidates the assumption, so the simulation marks a <strong>60% validity cutoff</strong> and the log-log fit uses only points below it. Thick-panel and burst-release effects are outside this model's scope.</p>
+          <hr>
+          <h2 id="8-relevance">8. Relevance</h2>
+          <p>Hydrogel science is the biological interface of 4D printing and underpins drug-delivery devices, soft robots, and tissue scaffolds. The Flory-Rehner and Korsmeyer-Peppas models are standard in Pharmaceutical Sciences and Biomedical Engineering curricula, and Sub-Calc E connects directly to India's large generic-pharmaceutical manufacturing sector, linking 4D printing to real industrial applications.</p>
+          
+          </div>
+          <div class="bug-report-mobile">
+              <bug-report id="bug-report" title="[BUG REPORT] Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft
+          Actuator Sizing" page-type="text" context-info="{&quot;organisation&quot;:&quot;Virtual Labs&quot;,&quot;developer_institute&quot;:&quot;DEI&quot;,&quot;expname&quot;:&quot;Hydrogel Mechanics: Flory-Rehner Swelling Theory, pH/Thermo Response &amp; Soft\nActuator Sizing&quot;,&quot;labname&quot;:&quot;Virtual Lab&quot;,&quot;phase&quot;:&quot;Testing&quot;}" checkbox-json="{&quot;text&quot;:[&quot;Insufficient Content&quot;],&quot;video&quot;:[&quot;Insufficient Content&quot;],&quot;assesment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;assessment&quot;:[&quot;Incorrect Options&quot;,&quot;Incorrect Answer&quot;,&quot;Incorrect Question&quot;],&quot;simulation&quot;:[&quot;Simulation Not Working&quot;,&quot;Incorrect Results/Observations&quot;,&quot;Insufficient/Incorrect Instructions&quot;],&quot;DEFAULT&quot;:[&quot;Page Not Loading&quot;,&quot;Content Not Visible&quot;,&quot;Incorrect Content&quot;]}" position="override" button_style="
+                          position: fixed; 
+                          bottom: 20px;
+                          right: 20px;
+                          z-index: 1;
+                          font-size: 0;
+                          padding: 25px;
+                          border-radius: 50%;
+                          border: none;
+                          background-color: #0fc0ff;
+                          background-image: url(data:image/png;base64,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);
+                          background-repeat: no-repeat;
+                          background-position: center;
+                          background-size: 30px;
+                          filter: invert(1);">
+              </bug-report>
+          </div>        </div>
+      </div>
+      <footer class="text-light pt-2 vlabs-footer d-flex flex-column">
+        <div class="row px-5 mx-0">
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Community Links</span>
+            <a href="https://www.sakshat.ac.in/" class="text-light">Sakshat Portal</a>
+            <a href="http://outreach.vlabs.ac.in/" class="text-light">Outreach Portal</a>
+            <a href="https://vlab.co.in/faq" class="text-light">FAQ: Virtual Labs</a>
+          </div>
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Contact Us</span>
+            <span> Phone: General Information: 011-26582050 </span>
+            <span> Email: support@vlabs.ac.in </span>
+          </div>
+          <div class="col d-flex flex-column">
+            <span class="font-weight-bold vlabs-footer-sect-name pb-2 mb-3">Follow Us</span>
+            <div class="social-links">
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #55acee;" href="https://twitter.com/TheVirtualLabs">
+      	  <i class="fab fa-twitter"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #3b5998;" href="https://www.facebook.com/Virtual-Labs-IIT-Delhi-301510159983871/">
+      	  <i class="fab fa-facebook"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #e52d27;" href="https://www.youtube.com/watch?v=asxRaOgk6a0">
+      	  <i class="fab fa-youtube"></i>
+      	</a>
+      	<a class="p-2 mt-1 mr-2 d-inline-flex justify-content-center align-items-center" style="background: #2867B2;" href="https://in.linkedin.com/in/virtual-labs-008ba9136">
+      	  <i class="fab fa-linkedin"></i>
+      	</a>
+            </div>
+          </div>
+        </div>
+        <div class="m-0 py-2 text-center" style="font-family: &quot;Open Sans&quot;, sans-serif; background: #212121;">
+          <a class="text-primary font-weight-bold" href="https://www.gnu.org/licenses/agpl-3.0.en.html"> AGPL 3.0 </a>
+          &nbsp;&amp;&nbsp;
+          <a class="text-primary font-weight-bold" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"> Creative Commons (CC BY-NC-SA 4.0) </a>
+        </div>
+      </footer>
+    <script src="./assets/js/toggleSidebar.js"></script>
+    <script src="./assets/js/event-handler.js"></script>
+
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("sw.js");
+        });
+      }
+    </script>
+  
+
+<script type="module" src="https://virtual-labs.github.io/svc-bug-report/client/src/bug-report.js"></script><script type="module" src="plugins\svc-rating\index.js"></script><script type="module" src="plugins\svc-rating\config.js"></script><script type="module" src="https://apis.google.com/js/api.js"></script></body></html>

@@ -218,7 +218,7 @@
         container.innerHTML = '';
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(2.2, 1.6, 2.8);
@@ -286,7 +286,7 @@
         const softness = isRubbery ? Math.min((T - Tg) / 40, 1.0) : 0.0;
     
         const colorGlassy = new THREE.Color(0x64748b);
-        const colorRubbery = new THREE.Color(0x881337);
+        const colorRubbery = new THREE.Color(0xE2570F);
         const currentColor = new THREE.Color().copy(colorGlassy).lerp(colorRubbery, softness);
     
         time += 0.05;
@@ -460,7 +460,7 @@
             ctx.setLineDash([]);
     
             // Draw vertical reference line at T = Tg
-            ctx.strokeStyle = "#6366f1";
+            ctx.strokeStyle = "#3B6FD8";
             ctx.lineWidth = 1.5;
             ctx.setLineDash([4, 4]);
             ctx.beginPath();
@@ -497,13 +497,13 @@
             ctx.translate(15, padTop + h / 2);
             ctx.rotate(-Math.PI / 2);
             ctx.textAlign = "center";
-            ctx.fillStyle = "#881337";
+            ctx.fillStyle = "#E2570F";
             ctx.font = "bold 10px sans-serif";
             ctx.fillText("log(a_T)", 0, 0);
             ctx.restore();
     
             // Draw WLF curve (only defined for T >= Tg)
-            ctx.strokeStyle = "#881337";
+            ctx.strokeStyle = "#E2570F";
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             let started = false;
@@ -524,7 +524,7 @@
     
             // Intersection point marker (open circle at (Tg, 0))
             ctx.fillStyle = "#ffffff";
-            ctx.strokeStyle = "#881337";
+            ctx.strokeStyle = "#E2570F";
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(xTg, getY(0), 4.5, 0, Math.PI * 2);
@@ -549,7 +549,7 @@
             ctx.fillStyle = "#475569";
     
             // WLF Line legend
-            ctx.strokeStyle = "#881337";
+            ctx.strokeStyle = "#E2570F";
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(legX + 8, legY + 22);
@@ -559,7 +559,7 @@
     
             // Reference point circle legend
             ctx.fillStyle = "#ffffff";
-            ctx.strokeStyle = "#881337";
+            ctx.strokeStyle = "#E2570F";
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.arc(legX + 16, legY + 34, 3, 0, Math.PI * 2);
@@ -569,7 +569,7 @@
             ctx.fillText("Ref: a_T = 1 at T = T_g", legX + 30, legY + 37);
     
             // Tg line legend
-            ctx.strokeStyle = "#6366f1";
+            ctx.strokeStyle = "#3B6FD8";
             ctx.lineWidth = 1.5;
             ctx.setLineDash([2, 2]);
             ctx.beginPath();
@@ -672,7 +672,7 @@
             }
     
             // Draw vertical reference line at T = Tg (DSC inflection)
-            ctx.strokeStyle = "#6366f1";
+            ctx.strokeStyle = "#3B6FD8";
             ctx.lineWidth = 1.5;
             ctx.setLineDash([4, 4]);
             ctx.beginPath();
@@ -683,13 +683,13 @@
     
             // Draw inflection point marker dot exactly on the DSC sigmoid curve at T = Tg
             const yInflection = getYDSC(0.15); // Cp = 0.15 at Tg
-            ctx.fillStyle = "#2563eb";
+            ctx.fillStyle = "#1E40AF";
             ctx.beginPath();
             ctx.arc(xTg, yInflection, 4, 0, Math.PI * 2);
             ctx.fill();
     
             // Label: "T_g (DSC inflection)"
-            ctx.fillStyle = "#6366f1";
+            ctx.fillStyle = "#3B6FD8";
             ctx.font = "bold 9px sans-serif";
             ctx.textAlign = "left";
             ctx.fillText("T_g (DSC inflection)", xTg + 8, yInflection + 3);
@@ -722,13 +722,13 @@
             ctx.translate(15, padTop + h / 2);
             ctx.rotate(-Math.PI / 2);
             ctx.textAlign = "center";
-            ctx.fillStyle = "#2563eb";
+            ctx.fillStyle = "#1E40AF";
             ctx.font = "bold 10px sans-serif";
             ctx.fillText("C_p (J/g°C)", 0, 0);
             ctx.restore();
     
             // Draw DSC Cp curve
-            ctx.strokeStyle = "#2563eb";
+            ctx.strokeStyle = "#1E40AF";
             ctx.lineWidth = 2.5;
             ctx.beginPath();
             for (let temp = T_min; temp <= T_max; temp += 0.5) {
@@ -786,7 +786,7 @@
             if (isActive) {
                 tr.style.background = "rgba(138, 17, 52, 0.08)";
                 tr.style.fontWeight = "bold";
-                tr.style.borderLeft = "4px solid #8A1134";
+                tr.style.borderLeft = "4px solid #E2570F";
             } else {
                 tr.style.borderLeft = "4px solid transparent";
             }
@@ -870,25 +870,25 @@
         } else {
             if (resWLF) {
                 resWLF.innerText = logVal.toFixed(2);
-                resWLF.style.color = "#881337";
+                resWLF.style.color = "#E2570F";
             }
             if (resVisc) {
                 resVisc.innerText = formatViscosityRatio(viscVal);
-                resVisc.style.color = "#881337";
+                resVisc.style.color = "#E2570F";
             }
             if (resRegime) {
                 resRegime.innerText = "Rubbery (T >= Tg)";
-                resRegime.style.color = "#881337";
+                resRegime.style.color = "#E2570F";
             }
             stateLabel.innerText = "State: Rubbery (Viscoelastic)";
             stateLabel.style.color = "#ffffff";
-            stateLabel.style.background = "#881337";
+            stateLabel.style.background = "#E2570F";
         }
     
         if (resDeltaT) {
             const deltaVal = currentT - Tg;
             resDeltaT.innerText = (deltaVal >= 0 ? "+" : "") + deltaVal.toFixed(1) + " °C";
-            resDeltaT.style.color = deltaVal >= 0 ? "#881337" : "#475569";
+            resDeltaT.style.color = deltaVal >= 0 ? "#E2570F" : "#475569";
         }
     
         // Insight banner content generator (without emojis)
@@ -978,7 +978,7 @@
     function stopAnimation() {
         isAnimating = false;
         btnRun.innerText = "Run Thermal Cycle";
-        btnRun.style.background = "#8A1134";
+        btnRun.style.background = "#E2570F";
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
             animationFrameId = null;
@@ -1109,7 +1109,7 @@
         container.innerHTML = '';
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(0, 1.2, 2.4);
@@ -1183,7 +1183,7 @@
         // Temperature color coding
         const softness = activeT >= Tg ? Math.min((activeT - Tg) / 40.0, 1.0) : 0.0;
         const colorGlassy = new THREE.Color(0x64748b);
-        const colorRubbery = new THREE.Color(0x881337);
+        const colorRubbery = new THREE.Color(0xE2570F);
         specimenMesh.material.color.copy(colorGlassy).lerp(colorRubbery, softness);
     }
     
@@ -1251,7 +1251,7 @@
         plotCtx.translate(15, padTop + h / 2);
         plotCtx.rotate(-Math.PI / 2);
         plotCtx.textAlign = "center";
-        plotCtx.fillStyle = "#881337";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 10px sans-serif";
         plotCtx.fillText("Applied Stress σ (MPa)", 0, 0);
         plotCtx.restore();
@@ -1263,7 +1263,7 @@
     
         // Plot Loop History
         if (historyPlot.length > 1) {
-            plotCtx.strokeStyle = "#881337";
+            plotCtx.strokeStyle = "#E2570F";
             plotCtx.lineWidth = 2.5;
             plotCtx.beginPath();
             plotCtx.moveTo(historyPlot[0].x, historyPlot[0].y);
@@ -1351,7 +1351,7 @@
         fixityCtx.restore();
     
         // Plot full curve
-        fixityCtx.strokeStyle = "#8A1134";
+        fixityCtx.strokeStyle = "#E2570F";
         fixityCtx.lineWidth = 2;
         fixityCtx.beginPath();
         let started = false;
@@ -1420,7 +1420,7 @@
             if (isActive) {
                 tr.style.background = "rgba(138, 17, 52, 0.08)";
                 tr.style.fontWeight = "bold";
-                tr.style.borderLeft = "4px solid #8A1134";
+                tr.style.borderLeft = "4px solid #E2570F";
             } else {
                 tr.style.borderLeft = "4px solid transparent";
             }
@@ -1507,7 +1507,7 @@
         T_prog = parseFloat(progTemp.value);
         // Remove active styling on presets if custom T is selected
         document.querySelectorAll('.btn-preset').forEach(b => {
-            b.style.background = "#fafbfc";
+            b.style.background = "#FAFAF9";
             b.style.color = "#475569";
         });
         updateUI();
@@ -1536,13 +1536,13 @@
     
     function setActivePresetStyle(btn) {
         document.querySelectorAll('.btn-preset').forEach(b => {
-            b.style.background = "#fafbfc";
+            b.style.background = "#FAFAF9";
             b.style.color = "#475569";
             b.style.borderColor = "#cbd5e1";
         });
-        btn.style.background = "#8A1134";
+        btn.style.background = "#E2570F";
         btn.style.color = "#ffffff";
-        btn.style.borderColor = "#8A1134";
+        btn.style.borderColor = "#E2570F";
     }
     
     // Cycle execution timeline
@@ -1645,7 +1645,7 @@
                 isAnimating = false;
                 btnRun.disabled = false;
                 btnRun.innerText = "Execute Programming Cycle";
-                btnRun.style.background = "#8A1134";
+                btnRun.style.background = "#E2570F";
                 btnNextCalc.style.display = "block";
     
                 // Enforce exact mathematical end state values in readouts
@@ -1863,7 +1863,7 @@
         container.innerHTML = '';
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(0, 1.2, 2.4);
@@ -1910,7 +1910,7 @@
         specimenGeom.rotateZ(Math.PI / 2);
     
         const specimenMat = new THREE.MeshStandardMaterial({
-            color: 0x881337, // starts rubbery/programmed red
+            color: 0xE2570F, // starts rubbery/programmed red
             roughness: 0.3,
             metalness: 0.1
         });
@@ -1950,7 +1950,7 @@
     
         // Color transition (turns colder/greyer as strain relaxes to recovery shape)
         const normalizedRec = Math.min(recoveryRatio(eps_u, activeStrain) / 100.0, 1.0);
-        const colorProgrammed = new THREE.Color(0x881337); // rubbery burgundy
+        const colorProgrammed = new THREE.Color(0xE2570F); // rubbery burgundy
         const colorRecovered = new THREE.Color(0x475569);  // neutral slate grey
         specimenMesh.material.color.copy(colorProgrammed).lerp(colorRecovered, normalizedRec);
     
@@ -2067,7 +2067,7 @@
         // Curve 2: Constrained Recovery (Solid)
         const activeSigma = parseFloat(oppStress.value);
         const epsEq = epsEqConstrained(eps_u, E_rubbery, activeSigma);
-        plotCtx.strokeStyle = "#8A1134";
+        plotCtx.strokeStyle = "#E2570F";
         plotCtx.lineWidth = 2.5;
         plotCtx.setLineDash([]);
         plotCtx.beginPath();
@@ -2123,7 +2123,7 @@
             if (sc.isCurrent) {
                 tr.style.background = "rgba(138, 17, 52, 0.08)";
                 tr.style.fontWeight = "bold";
-                tr.style.borderLeft = "4px solid #8A1134";
+                tr.style.borderLeft = "4px solid #E2570F";
             } else {
                 tr.style.borderLeft = "4px solid transparent";
             }
@@ -2263,7 +2263,7 @@
                 isAnimating = false;
                 btnRun.disabled = false;
                 btnRun.innerText = "Initiate Heating Cycle";
-                btnRun.style.background = "#8A1134";
+                btnRun.style.background = "#E2570F";
                 return;
             }
     
@@ -2289,7 +2289,7 @@
                 isAnimating = false;
                 btnRun.disabled = false;
                 btnRun.innerText = "Initiate Heating Cycle";
-                btnRun.style.background = "#8A1134";
+                btnRun.style.background = "#E2570F";
                 btnNextCalc.style.display = "block";
     
                 // Clamp exactly to equilibrium end state values
@@ -2338,17 +2338,17 @@
     
     function setActiveScenarioStyle(activeId) {
         if (activeId === 'scenarioFree') {
-            scenarioFree.style.background = "#8A1134";
+            scenarioFree.style.background = "#E2570F";
             scenarioFree.style.color = "#ffffff";
-            scenarioFree.style.borderColor = "#8A1134";
-            scenarioConstrained.style.background = "#fafbfc";
+            scenarioFree.style.borderColor = "#E2570F";
+            scenarioConstrained.style.background = "#FAFAF9";
             scenarioConstrained.style.color = "#475569";
             scenarioConstrained.style.borderColor = "#cbd5e1";
         } else {
-            scenarioConstrained.style.background = "#8A1134";
+            scenarioConstrained.style.background = "#E2570F";
             scenarioConstrained.style.color = "#ffffff";
-            scenarioConstrained.style.borderColor = "#8A1134";
-            scenarioFree.style.background = "#fafbfc";
+            scenarioConstrained.style.borderColor = "#E2570F";
+            scenarioFree.style.background = "#FAFAF9";
             scenarioFree.style.color = "#475569";
             scenarioFree.style.borderColor = "#cbd5e1";
         }
@@ -2519,7 +2519,7 @@
         container.innerHTML = '';
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(0, 1.2, 2.4);
@@ -2630,7 +2630,7 @@
         const f2 = transitionFraction(T, Tg2);
     
         const cSoft = new THREE.Color(0x6366f1);
-        const cHard = new THREE.Color(0x881337);
+        const cHard = new THREE.Color(0xE2570F);
         const cMixed = new THREE.Color(0x4c1d95);
         const cGrey = new THREE.Color(0x64748b);
     
@@ -2730,7 +2730,7 @@
     
         
         
-        plotCtx.strokeStyle = "#8A1134";
+        plotCtx.strokeStyle = "#E2570F";
         plotCtx.lineWidth = 2.5;
         plotCtx.beginPath();
     
@@ -2946,7 +2946,7 @@
                 isRunning = false;
                 btnRun.disabled = false;
                 btnRun.innerText = "Initiate Heating Cycle";
-                btnRun.style.background = "#8A1134";
+                btnRun.style.background = "#E2570F";
                 btnNextCalc.style.display = "block";
                 blendSlider.disabled = false;
     
@@ -3070,7 +3070,7 @@
         container.innerHTML = '';
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         camera.position.set(0, 1.2, 2.4);
@@ -3129,7 +3129,7 @@
     
         // loadMesh: Load block representation
         const loadGeom = new THREE.BoxGeometry(0.3, 0.3, 0.3);
-        const loadMat = new THREE.MeshStandardMaterial({ color: 0x8a1134, roughness: 0.5 });
+        const loadMat = new THREE.MeshStandardMaterial({ color: 0xE2570F, roughness: 0.5 });
         loadMesh = new THREE.Mesh(loadGeom, loadMat);
         scene.add(loadMesh);
     }
@@ -3153,7 +3153,7 @@
         // Temperature-driven color lerping (Cold/glassy = grey-blue, Hot/rubbery = burgundy)
         const tempFrac = Math.min(Math.max((tempNow - T_AMBIENT) / DT, 0), 1);
         const cCold = new THREE.Color(0x64748b);
-        const cHot  = new THREE.Color(0x8a1134);
+        const cHot  = new THREE.Color(0xE2570F);
         muscleMesh.material.color.copy(cCold).lerp(cHot, tempFrac);
     
         // Emissive heat glow ramping up with temperature fraction
@@ -3197,7 +3197,7 @@
         plotCtx.fillRect(20, 20, 410, 360);
         
         // 1. Geometry & Mass
-        plotCtx.fillStyle = "#8A1134";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 13px Arial";
         plotCtx.fillText("1. Geometry & Mass:", 30, 45);
         plotCtx.fillStyle = "#333";
@@ -3206,7 +3206,7 @@
         plotCtx.fillText(`Mass (m) = V * d = ${vol.toFixed(1)} * ${d} = ${mass.toFixed(1)} g`, 45, 80);
         
         // 2. Energy Stored (Programming)
-        plotCtx.fillStyle = "#8A1134";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 13px Arial";
         plotCtx.fillText("2. Energy Stored, Programming (U_stored):", 30, 110);
         plotCtx.fillStyle = "#333";
@@ -3215,7 +3215,7 @@
         plotCtx.fillText(`U_stored = 0.5 * 15 * 1.0² * ${vol.toFixed(1)} = ${uStored.toFixed(2)} J  (1 MPa = 1 J/cm³)`, 45, 145);
         
         // 3. Thermal Energy In (Q_trigger)
-        plotCtx.fillStyle = "#8A1134";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 13px Arial";
         plotCtx.fillText("3. Thermal Energy In (Q_trigger):", 30, 175);
         plotCtx.fillStyle = "#333";
@@ -3224,7 +3224,7 @@
         plotCtx.fillText(`Q = ${mass.toFixed(1)} * ${cpVal.toFixed(1)} * 25 = ${activeThermal.toFixed(2)} J`, 45, 210);
         
         // 4. Mechanical Work Out (W_mech)
-        plotCtx.fillStyle = "#8A1134";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 13px Arial";
         plotCtx.fillText("4. Mechanical Work Out (W_mech):", 30, 240);
         plotCtx.fillStyle = "#333";
@@ -3233,7 +3233,7 @@
         plotCtx.fillText(`W = 1.5 * ${e_recovered.toFixed(2)} * ${vol.toFixed(1)} = ${activeWork.toFixed(2)} mJ`, 45, 275);
         
         // 5. Efficiency (η_SMP)
-        plotCtx.fillStyle = "#8A1134";
+        plotCtx.fillStyle = "#E2570F";
         plotCtx.font = "bold 13px Arial";
         plotCtx.fillText("5. Overall Thermal Efficiency (η_SMP):", 30, 305);
         plotCtx.fillStyle = "#333";

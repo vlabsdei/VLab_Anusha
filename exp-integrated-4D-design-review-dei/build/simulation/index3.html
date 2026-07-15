@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · Scalability — Integrated 4D Design Review</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 10</div>
+            <div class="rail__title">Integrated 4D Design Review</div>
+            <div class="rail__meta">Ashby · Shape check · Energy · Scalability · TRL</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">which material?</span><span class="subcalc__desc">Ashby selection</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">does it verify?</span><span class="subcalc__desc">Shape κ_pred vs κ_sim</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">is it worth the energy?</span><span class="subcalc__desc">Lifecycle budget</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">does it scale?</span><span class="subcalc__desc">Cost vs volume</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">is it ready?</span><span class="subcalc__desc">TRL roadmap</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Scalability</span>
+            <h1 class="stage__title">Lab &rarr; Manufacturing</h1>
+            <p class="stage__obj">Compare cost-per-part for 4D-printing (flat &mdash; no tooling, no economy of scale) against injection moulding (a high fixed mould amortized over N parts). They cross at a break-even N: 4D wins for customised, low-volume work; moulding wins at high volume.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set part volume, production volume, and mould cost, then read the cost-per-part crossover.</section>
+
+        <div class="sim-viewport-fluid">
+            <div style="position:relative;">
+                <div class="sim-label">Cost per part vs production volume (break-even)</div>
+                <canvas id="plotCanvasScale" width="450" height="400"></canvas>
+            </div>
+            <div style="position:relative;">
+                <div class="sim-label">Print time vs part volume</div>
+                <canvas id="plotCanvasScaleT" width="450" height="400"></canvas>
+            </div>
+        </div>
+
+        <p class="model-note"><strong>Model note:</strong> a simplified cost model &mdash; volumetric FDM rate &asymp; 4&nbsp;mm&sup3;/s, injection marginal cost lumps material + labour at $0.40/part, and mould-tooling amortization is treated as a single fixed cost.</p>
+
+        <div class="datacard">
+            <h3>Cost per part across production volume</h3>
+            <table id="scaleTable">
+                <thead><tr><th>N (parts)</th><th>4D-print $/part</th><th>Mould $/part</th><th style="text-align:right;">Winner</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind scalability</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Part volume</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>V_part (cm&sup3;)</label><input type="range" id="volInput" aria-label="vol" min="1" max="100" step="1" value="10"><div class="slider-val" id="valVol">10 cm³</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Production volume N (log)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>N = 10^x, 1 &ndash; 10&#8308;</label><input type="range" id="nInput" aria-label="N" min="0" max="4" step="0.02" value="2"><div class="slider-val" id="valN">100</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Mould tooling cost</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>C_mould ($)</label><input type="range" id="mouldInput" aria-label="mould" min="1000" max="50000" step="500" value="8000"><div class="slider-val" id="valMould">$8,000</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Machine rate</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>rate ($/hr)</label><input type="range" id="rateInput" aria-label="rate" min="5" max="120" step="5" value="30"><div class="slider-val" id="valRate">$30/hr</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Compute Crossover</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Scalability verdict</h3>
+                        <div class="result-row"><span class="result-label">Print time t_print</span><span class="result-val" id="resTprint">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Mould $/part @ N=10</span><span class="result-val" id="resC10">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Mould $/part @ N=10&#8308;</span><span class="result-val" id="resC10000">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Break-even N_break</span><span class="result-val" id="resNbreak">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Winner @ N</span><span class="result-val" id="resVerdict">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

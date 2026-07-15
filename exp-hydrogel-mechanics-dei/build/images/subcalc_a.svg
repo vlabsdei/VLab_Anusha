@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc A: Flory-Rehner Swelling Equilibrium</text>
+
+  <!-- DRY NETWORK -->
+  <text x="95" y="78" fill="#475569" font-size="13" font-weight="700" text-anchor="middle">Dry network</text>
+  <rect x="45" y="88" width="100" height="100" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <g stroke="#64748b" stroke-width="2">
+    <line x1="65" y1="108" x2="105" y2="108"/><line x1="65" y1="148" x2="105" y2="148"/>
+    <line x1="65" y1="108" x2="65" y2="148"/><line x1="105" y1="108" x2="105" y2="148"/>
+    <line x1="65" y1="128" x2="105" y2="128"/><line x1="85" y1="108" x2="85" y2="148"/>
+  </g>
+  <g fill="#64748b">
+    <circle cx="65" cy="108" r="5"/><circle cx="85" cy="108" r="5"/><circle cx="105" cy="108" r="5"/>
+    <circle cx="65" cy="128" r="5"/><circle cx="85" cy="128" r="5"/><circle cx="105" cy="128" r="5"/>
+    <circle cx="65" cy="148" r="5"/><circle cx="85" cy="148" r="5"/><circle cx="105" cy="148" r="5"/>
+  </g>
+
+  <!-- arrow -->
+  <path d="M155 138 L215 138" stroke="#8A1134" stroke-width="3" marker-end="url(#arrA)"/>
+  <text x="185" y="128" fill="#8A1134" font-size="11" font-weight="700" text-anchor="middle">+ solvent</text>
+  <defs><marker id="arrA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8A1134"/></marker></defs>
+
+  <!-- SWOLLEN NETWORK -->
+  <text x="290" y="78" fill="#2563eb" font-size="13" font-weight="700" text-anchor="middle">Swollen network (Q = 1/v_p)</text>
+  <rect x="225" y="88" width="130" height="130" rx="6" fill="#eff6ff" stroke="#93c5fd"/>
+  <g stroke="#2563eb" stroke-width="2">
+    <line x1="248" y1="111" x2="332" y2="111"/><line x1="248" y1="153" x2="332" y2="153"/><line x1="248" y1="195" x2="332" y2="195"/>
+    <line x1="248" y1="111" x2="248" y2="195"/><line x1="290" y1="111" x2="290" y2="195"/><line x1="332" y1="111" x2="332" y2="195"/>
+  </g>
+  <g fill="#2563eb">
+    <circle cx="248" cy="111" r="6"/><circle cx="290" cy="111" r="6"/><circle cx="332" cy="111" r="6"/>
+    <circle cx="248" cy="153" r="6"/><circle cx="290" cy="153" r="6"/><circle cx="332" cy="153" r="6"/>
+    <circle cx="248" cy="195" r="6"/><circle cx="290" cy="195" r="6"/><circle cx="332" cy="195" r="6"/>
+  </g>
+  <g fill="#38bdf8" opacity="0.7">
+    <circle cx="269" cy="132" r="3"/><circle cx="311" cy="132" r="3"/><circle cx="269" cy="174" r="3"/><circle cx="311" cy="174" r="3"/>
+  </g>
+
+  <!-- Q vs chi mini plot -->
+  <text x="510" y="78" fill="#0f172a" font-size="13" font-weight="700" text-anchor="middle">Q vs &#967;</text>
+  <line x1="420" y1="90" x2="420" y2="215" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="420" y1="215" x2="615" y2="215" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="408" y="100" fill="#475569" font-size="10" text-anchor="end">Q</text>
+  <text x="615" y="232" fill="#475569" font-size="10" text-anchor="end">&#967;</text>
+  <line x1="500" y1="90" x2="500" y2="215" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="500" y="100" fill="#6366f1" font-size="9" text-anchor="middle" font-weight="700">&#952; 0.5</text>
+  <path d="M428 100 Q470 130 500 165 Q540 200 610 210" fill="none" stroke="#8A1134" stroke-width="2.5"/>
+  <text x="450" y="120" fill="#2563eb" font-size="9" font-weight="700">good solvent</text>
+  <text x="545" y="205" fill="#b45309" font-size="9" font-weight="700">poor solvent</text>
+
+  <!-- equation panel -->
+  <rect x="20" y="248" width="600" height="172" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="276" fill="#8A1134" font-size="14" font-weight="700">Governing equation (solved by Newton iteration)</text>
+  <text x="36" y="306" fill="#1e293b" font-size="15" font-weight="700">ln(1 &#8722; v_p) + v_p + &#967;&#183;v_p&#178; + (V&#8321;/V&#8337;)&#183;(v_p^(1/3) &#8722; v_p/2) = 0</text>
+  <text x="36" y="334" fill="#1e293b" font-size="14" font-weight="700">Swelling ratio:  Q = V_swollen / V_dry = 1 / v_p</text>
+  <text x="36" y="362" fill="#475569" font-size="12">v_(n+1) = v_n &#8722; f(v_n)/f&#8242;(v_n)   &#8212;   converges in ~5 steps</text>
+  <text x="36" y="388" fill="#2563eb" font-size="12" font-weight="700">&#967; &lt; 0.5: good solvent, high swelling</text>
+  <text x="330" y="388" fill="#b45309" font-size="12" font-weight="700">&#967; &gt; 0.5: poor solvent, limited swelling</text>
+  <text x="36" y="410" fill="#94a3b8" font-size="11">Higher crosslink density (smaller V_e) lowers Q. Valid for non-ionic gels only.</text>
+</svg>

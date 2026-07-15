@@ -3,90 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub-Calc C: Folding a Flat Sheet into a Target Shape - Virtual Lab</title>
+    <title>Sub-Calc C · Folding a Flat Sheet into a Target Shape — Multi-Material 4D Structure Design</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <nav class="sidebar">
-            <div class="sidebar-logo">4D Structure Lab</div>
-            <div class="form-container">
-                <div class="form-row">
-                    <div class="form-label">Design approach:</div>
-                    <div class="form-options">
-                        <div class="option"><input type="radio" name="mode" value="fwd" id="modeFwd" checked><label for="modeFwd">Set the fold angles, see where it lands</label></div>
-                        <div class="option"><input type="radio" name="mode" value="inv" id="modeInv">&nbsp;<label for="modeInv">Set a target, solve the fold angles</label></div>
-                    </div>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will the fold stay crisp?</span><span class="subcalc__desc">Stiffness contrast</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">right joints?</span><span class="subcalc__desc">Kutzbach-Gr&uuml;bler mobility</span></span></a>
+            <a class="subcalc is-active" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">what fold angles?</span><span class="subcalc__desc">Forward / inverse kinematics</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">how small does it pack?</span><span class="subcalc__desc">Miura-ori tessellation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">folds before it cracks?</span><span class="subcalc__desc">S-N fatigue life</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>3</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index1.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index3.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc C · Chained-Hinge Kinematics</span>
+            <h1 class="stage__title">Folding a Flat Sheet into a Target Shape</h1>
+            <p class="stage__obj">A strip of rigid panels linked by hinges is a serial kinematic chain: cumulative rotation at each hinge places the tip at a specific (x, y). Run it forward (set angles &rarr; find tip) or inverse (set a target &rarr; solve for the angles).</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Choose forward or inverse, set the inputs, then click 'Fold the Sheet' to watch the strip fold to its shape.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Folding strip</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">The folded sheet and where its tip lands</div>
+                    <canvas id="plotCanvasKin" width="450" height="240"></canvas>
                 </div>
-                <div class="form-row" id="rowFwd">
-                    <div class="form-label">Hinge fold angles (deg):</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>hinge 1</label><input type="range" id="t1Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT1">40</div></div>
-                        <div class="slider-group"><label>hinge 2</label><input type="range" id="t2Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT2">40</div></div>
-                        <div class="slider-group"><label>hinge 3</label><input type="range" id="t3Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT3">40</div></div>
-                    </div>
-                </div>
-                <div class="form-row" id="rowInv" style="display:none;">
-                    <div class="form-label">Target point for the tip (mm):</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>target x</label><input type="range" id="txInput" min="-30" max="30" step="1" value="20"><div class="slider-val" id="valTx">20</div></div>
-                        <div class="slider-group"><label>target y</label><input type="range" id="tyInput" min="0" max="30" step="1" value="15"><div class="slider-val" id="valTy">15</div></div>
-                    </div>
-                </div>
-                <div class="buttons">
-                    <button type="button" id="btnRun">Fold the Sheet</button>
-                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Fold angle at each hinge</div>
+                    <canvas id="plotCanvasAng" width="450" height="160"></canvas>
                 </div>
             </div>
-        </nav>
+        </div>
 
-        <main class="content-area">
-            <div class="content-container">
-                <h1 class="title">Sub-Calc C: Folding a Flat Sheet into a Target Shape</h1>
-                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A flat printed strip has three soft hinges. As they fold, its tip traces out a 3D shape. <strong>Forward</strong>: you set the fold angles and watch where the tip lands. <strong>Inverse</strong>: you place a target and the lab solves the fold angles needed to reach it - exactly the angles you would print into the hinges.</p>
+        <div class="datacard">
+            <h3>Fold angle at each hinge</h3>
+            <table id="kinTable">
+                <thead><tr><th>Hinge</th><th>fold (deg)</th><th style="text-align:right;">cumulative</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
-                <div class="sim-viewport">
-                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
-                        <div class="sim-label" id="stateLabel">Folding strip</div>
-                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
-                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">The folded sheet and where its tip lands</div>
-                            <canvas id="plotCanvasKin" width="450" height="240"></canvas>
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind it</button>
+            <div class="derivation-content"><div id="kinFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Design approach</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="mode" value="fwd" id="modeFwd" checked><label for="modeFwd">Set the fold angles, see where it lands</label></div>
+                            <div class="option"><input type="radio" name="mode" value="inv" id="modeInv"><label for="modeInv">Set a target, solve the fold angles</label></div>
                         </div>
-                        <div style="position: relative; height: 160px;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Fold angle at each hinge</div>
-                            <canvas id="plotCanvasAng" width="450" height="160"></canvas>
+                    </div>
+                    <div class="form-row" id="rowFwd">
+                        <div class="form-label">Hinge fold angles (deg)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>hinge 1</label><input type="range" id="t1Input" aria-label="T1 Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT1">40</div></div>
+                            <div class="slider-group"><label>hinge 2</label><input type="range" id="t2Input" aria-label="T2 Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT2">40</div></div>
+                            <div class="slider-group"><label>hinge 3</label><input type="range" id="t3Input" aria-label="T3 Input" min="-90" max="90" step="1" value="40"><div class="slider-val" id="valT3">40</div></div>
                         </div>
                     </div>
-                </div>
-                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Choose forward or inverse, set the inputs, then click 'Fold the Sheet' to watch the strip fold to its shape.</div>
-                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Where does the fold end up?</h3>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Mode:</span><span class="result-val" id="resMode" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Tip lands at (x, y):</span><span class="result-val" id="resEnd" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Target (x, y):</span><span class="result-val" id="resTgt" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Fold angles to print:</span><span class="result-val" id="resAng" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Positioning error:</span><span class="result-val" id="resErr" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Reaches target?</span><span class="result-val" id="resReach" style="font-weight:700;color:#1e293b;">-</span></div>
+                    <div class="form-row" id="rowInv" style="display:none;">
+                        <div class="form-label">Target point for the tip (mm)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>target x</label><input type="range" id="txInput" aria-label="Tx Input" min="-30" max="30" step="1" value="20"><div class="slider-val" id="valTx">20</div></div>
+                            <div class="slider-group"><label>target y</label><input type="range" id="tyInput" aria-label="Ty Input" min="0" max="30" step="1" value="15"><div class="slider-val" id="valTy">15</div></div>
+                        </div>
                     </div>
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Fold angle at each hinge</h3>
-                        <table id="kinTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">Hinge</th><th style="padding:6px 4px;">fold (deg)</th><th style="padding:6px 4px;text-align:right;">cumulative</th></tr></thead><tbody></tbody></table>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Fold the Sheet</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
                     </div>
                 </div>
-                <div class="premium-card" style="margin-top: 20px;">
-                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind it</h3>
-                    <div id="kinFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
-                </div>
-                <div class="floating-nav"><a href="index1.html" class="btn-nav">&larr; Back</a><a href="index3.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
             </div>
-        </main>
-    </div>
-    <script src="js/main.js"></script>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Where does the fold end up?</h3>
+                        <div class="result-row"><span class="result-label">Mode</span><span class="result-val" id="resMode">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Tip lands at (x, y)</span><span class="result-val" id="resEnd">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Target (x, y)</span><span class="result-val" id="resTgt">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Fold angles to print</span><span class="result-val" id="resAng">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Positioning error</span><span class="result-val" id="resErr">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Reaches target?</span><span class="result-val" id="resReach">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index3.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
 </body>
 </html>

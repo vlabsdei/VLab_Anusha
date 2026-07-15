@@ -3,85 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub-Calc D: The Wireless Coil Driving an In-Body Robot - Virtual Lab</title>
+    <title>Sub-Calc D · The Wireless Coil Driving an In-Body Robot — Non-Thermal 4D Actuation</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <nav class="sidebar">
-            <div class="sidebar-logo">4D Device Lab</div>
-            <div class="form-container">
-                <div class="form-row">
-                    <div class="form-label">1. Coil turns:</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>Number of turns n</label><input type="range" id="turnsInput" min="50" max="2000" step="50" value="500"><div class="slider-val" id="valTurns">500</div></div>
-                    </div>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">how fast does it bend?</span><span class="subcalc__desc">Azobenzene photoswitch</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">through skin?</span><span class="subcalc__desc">NIR plasmonic heating</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">what magnet steers it?</span><span class="subcalc__desc">Magnetic torque</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">wireless or battery?</span><span class="subcalc__desc">Coil field &amp; power</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">which stimulus fastest?</span><span class="subcalc__desc">Response-time comparison</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Near-Field Coil Coupling</span>
+            <h1 class="stage__title">The Wireless Coil Driving an In-Body Robot</h1>
+            <p class="stage__obj">An external coil's magnetic field falls off steeply with distance (dipole field &prop; 1/r&sup3;), so powering a deep implant wirelessly costs sharply more current and power the deeper it sits &mdash; eventually a battery becomes the more practical choice.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the coil turns, radius and implant depth, then click 'Power the Coil' to check the field, current and power budget.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Coil &amp; in-body robot</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Coil power needed vs depth (vs battery)</div>
+                    <canvas id="plotCanvasCoil" width="450" height="240"></canvas>
                 </div>
-                <div class="form-row">
-                    <div class="form-label">2. Coil radius:</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>Coil radius R (mm)</label><input type="range" id="radInput" min="20" max="120" step="5" value="50"><div class="slider-val" id="valRad">50 mm</div></div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-label">3. How deep is the implant?</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>Implant depth r (mm)</label><input type="range" id="distInput" min="10" max="150" step="5" value="60"><div class="slider-val" id="valDist">60 mm</div></div>
-                    </div>
-                </div>
-                <div class="buttons">
-                    <button type="button" id="btnRun">Power the Coil</button>
-                    <button type="button" onclick="location.reload()">Reset Coil</button>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Field reaching the device vs depth</div>
+                    <canvas id="plotCanvasField" width="450" height="160"></canvas>
                 </div>
             </div>
-        </nav>
+        </div>
 
-        <main class="content-area">
-            <div class="content-container">
-                <h1 class="title">Sub-Calc D: The Wireless Coil Driving an In-Body Robot</h1>
-                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A printed robot is implanted in the body and driven <strong>wirelessly</strong> by a magnetic field from an <strong>external coil</strong>. The deeper the implant, the harder the coil must work because tissue soaks up the field. Your job: design a coil that delivers enough field at the implant's depth without drawing too much power - and spot when a tiny on-board battery would be smarter.</p>
+        <div class="datacard">
+            <h3>Deeper implants cost more power</h3>
+            <table id="coilTable">
+                <thead><tr><th>Depth r (mm)</th><th style="text-align:right;">Coil power (W)</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
-                <div class="sim-viewport">
-                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
-                        <div class="sim-label" id="stateLabel">Coil &amp; in-body robot</div>
-                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
-                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Coil power needed vs depth (vs battery)</div>
-                            <canvas id="plotCanvasCoil" width="450" height="240"></canvas>
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the field</button>
+            <div class="derivation-content"><div id="coilFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Coil turns</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Number of turns n</label><input type="range" id="turnsInput" aria-label="Turns Input" min="50" max="2000" step="50" value="500"><div class="slider-val" id="valTurns">500</div></div>
                         </div>
-                        <div style="position: relative; height: 160px;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Field reaching the device vs depth</div>
-                            <canvas id="plotCanvasField" width="450" height="160"></canvas>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Coil radius</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Coil radius R (mm)</label><input type="range" id="radInput" aria-label="Rad Input" min="20" max="120" step="5" value="50"><div class="slider-val" id="valRad">50 mm</div></div>
                         </div>
                     </div>
-                </div>
-                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the coil turns, radius and implant depth, then click 'Power the Coil' to check the field, current and power budget.</div>
-                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Can the coil reach it?</h3>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Field at the device:</span><span class="result-val" id="resBd" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Field after the tissue:</span><span class="result-val" id="resBt" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Current the coil needs:</span><span class="result-val" id="resI" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Coil power:</span><span class="result-val" id="resP" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Crossover depth (battery wins past here):</span><span class="result-val" id="resCross" style="font-weight:700;color:#1e293b;">-</span></div>
+                    <div class="form-row">
+                        <div class="form-label">3. How deep is the implant?</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Implant depth r (mm)</label><input type="range" id="distInput" aria-label="Dist Input" min="10" max="150" step="5" value="60"><div class="slider-val" id="valDist">60 mm</div></div>
+                        </div>
                     </div>
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Deeper implants cost more power</h3>
-                        <table id="coilTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">Depth r (mm)</th><th style="padding:6px 4px;text-align:right;">Coil power (W)</th></tr></thead><tbody></tbody></table>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Power the Coil</button>
+                        <button type="button" onclick="location.reload()">Reset Coil</button>
                     </div>
                 </div>
-                <div class="premium-card" style="margin-top: 20px;">
-                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind the field</h3>
-                    <div id="coilFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
-                </div>
-                <div class="floating-nav"><a href="index2.html" class="btn-nav">&larr; Back</a><a href="index4.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
             </div>
-        </main>
-    </div>
-    <script src="js/main.js"></script>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Can the coil reach it?</h3>
+                        <div class="result-row"><span class="result-label">Field reaching the device</span><span class="result-val" id="resBd">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Tissue loss (magnetic fields pass through)</span><span class="result-val" id="resBt">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Current the coil needs</span><span class="result-val" id="resI">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Coil power</span><span class="result-val" id="resP">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Crossover depth (battery wins past here)</span><span class="result-val" id="resCross">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index4.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
 </body>
 </html>

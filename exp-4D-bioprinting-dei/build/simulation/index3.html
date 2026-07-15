@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · Scaffold Degradation — 4D Bioprinting</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will it print?</span><span class="subcalc__desc">Power-law rheology</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">will it set in time?</span><span class="subcalc__desc">Avrami gelation</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">will the cells live?</span><span class="subcalc__desc">Shear-stress viability</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">when does it dissolve?</span><span class="subcalc__desc">Scaffold degradation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">design the stent</span><span class="subcalc__desc">4D tracheal capstone</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Hydrolytic Degradation</span>
+            <h1 class="stage__title">Scaffold Degradation &amp; Mechanical Lifetime</h1>
+            <p class="stage__obj">A tissue scaffold must dissolve as native tissue grows in &mdash; too fast and it fails early, too slow and it blocks regeneration. Mass decays as M = M&#8320;e<sup>&minus;kt</sup>, and because a porous strut network scales as E &prop; M<sup>4/3</sup>, stiffness falls faster than mass.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Pick a polymer and the tissue's stiffness threshold, then read when the scaffold drops below load-bearing.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Porous scaffold eroding</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Modulus E vs time (3 polymers)</div>
+                    <canvas id="plotCanvasDeg" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Mass remaining vs time</div>
+                    <canvas id="plotCanvasMass" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Time to mechanical failure by polymer</h3>
+            <table id="degTable">
+                <thead><tr><th>Polymer</th><th>k_deg</th><th style="text-align:right;">t_fail</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind degradation</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Scaffold polymer</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="mat" value="PLGA" id="matPLGA" checked><label for="matPLGA">PLGA &ndash; fast (weeks)</label></div>
+                            <div class="option"><input type="radio" name="mat" value="PLA" id="matPLA"><label for="matPLA">PLA &ndash; medium (months)</label></div>
+                            <div class="option"><input type="radio" name="mat" value="PCL" id="matPCL"><label for="matPCL">PCL &ndash; slow (years)</label></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Initial porous modulus E&#8320;</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>E₀ (MPa) &ndash; as-printed stiffness</label><input type="range" id="e0Input" aria-label="E0" min="0.3" max="5" step="0.1" value="1.0"><div class="slider-val" id="valE0">1.00 MPa</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Tissue stiffness threshold E_min</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>E_min (MPa) &ndash; load-bearing floor</label><input type="range" id="eminInput" aria-label="Emin" min="0.02" max="1.0" step="0.01" value="0.10"><div class="slider-val" id="valEmin">0.10 MPa</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Run Degradation</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>When does it stop bearing load?</h3>
+                        <div class="result-row"><span class="result-label">Degradation constant k_deg</span><span class="result-val" id="resK">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Modulus at 90 days</span><span class="result-val" id="resE90">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Time to mechanical failure</span><span class="result-val" id="resTfail">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Best-matched tissue</span><span class="result-val" id="resMatch">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Mass half-life</span><span class="result-val" id="resHalf">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

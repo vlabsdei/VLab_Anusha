@@ -3,278 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub-Calc A: Timoshenko Bimetal Formula - Virtual Lab</title>
-    <!-- Premium Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-    <link rel="stylesheet" href="css/main.css?v=2">
-    <!-- Three.js for 3D Viewport -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <title>Sub-Calc A · Timoshenko Bimetal — Bilayer Actuator Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <!-- LEFT COLUMN: SIDEBAR CONTROLS -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">4D Printing Lab</div>
-                <div class="sidebar-subtitle">Bilayer Actuator Simulator</div>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc is-active" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Timoshenko Bimetal</span><span class="subcalc__desc">Bending curvature &amp; stress</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Hygroscopic Swelling</span><span class="subcalc__desc">Anisotropic expansion</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Print Path Programming</span><span class="subcalc__desc">Raster angle &amp; twist</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Diffusion Timescale</span><span class="subcalc__desc">Fickian moisture transport</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuator Work Output</span><span class="subcalc__desc">Blocking force &amp; energy</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>1</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow is-disabled" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index1.html" title="Next sub-calc">&rsaquo;</a>
             </div>
-            
-            <div class="control-sections">
-                <!-- Section 1: Physics Model Settings -->
-                <div class="control-group">
-                    <h3 class="section-title">1. Solver Model</h3>
-                    <div class="select-wrapper">
-                        <select id="solverModel">
-                            <option value="timoshenko" selected>Timoshenko (1925) - Linear</option>
-                            <option value="suohutchinson">Suo & Hutchinson - Transformed Section</option>
-                            <option value="elastica">Nonlinear Elastica - Large Deflections</option>
-                            <option value="fem">1D Euler-Bernoulli Beam FEM</option>
-                        </select>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc A · Bimetallic Beam Theory</span>
+            <h1 class="stage__title">Timoshenko Bimetal Formula</h1>
+            <p class="stage__obj">Model a 4D-printed bilayer cantilever under a thermal or moisture stimulus. Compare four solver models — linear Timoshenko, Suo &amp; Hutchinson transformed section, nonlinear elastica, and Euler&ndash;Bernoulli FEM — and read the resulting curvature and bending stress.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Setup your parameters and click 'Run Simulation' to begin.</section>
+
+        <div id="safetyWarningsBox" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+        <div class="sim-viewport-fluid">
+            <div class="viewport-card">
+                <div class="viewport-header">
+                    <span id="stateLabel" class="state-indicator flat">State: Flat Cantilever</span>
+                    <div class="viewport-actions">
+                        <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
                     </div>
                 </div>
+                <div class="canvas-3d-wrapper">
+                    <div id="viewport3D"></div>
+                    <canvas id="simCanvas" width="500" height="400" style="display:none;"></canvas>
+                    <div class="legend-box">
+                        <div class="legend-title">Bending Stress &sigma; (MPa)</div>
+                        <div class="legend-bar"></div>
+                        <div class="legend-labels">
+                            <span>Comp (&minus;)</span>
+                            <span>0</span>
+                            <span>Tens (+)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="viewport-overlay-controls">
+                    <label><input type="checkbox" id="showMeshNodes" checked> Show FEM Nodes</label>
+                    <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Grid</label>
+                </div>
+            </div>
 
-                <!-- Section 2: Materials Configuration -->
-                <div class="control-group">
-                    <h3 class="section-title">2. Material Settings</h3>
-                    <div class="input-row">
-                        <label for="matActive">Active Layer (Top)</label>
+            <div class="timeline-card">
+                <div class="timeline-row">
+                    <button id="btnPlayPause" class="btn-play">Play</button>
+                    <div class="timeline-slider-wrapper">
+                        <input type="range" id="timeScrubber" aria-label="Time Scrubber" min="0" max="20" step="0.1" value="0" style="width: 100%;">
+                    </div>
+                    <div class="time-readout"><span id="timeVal">0.0</span> s / 20s</div>
+                </div>
+                <div class="timeline-stats-row">
+                    <div class="stat-badge">Temp: <strong id="timelineTemp">25.0 &deg;C</strong></div>
+                    <div class="stat-badge">Hum: <strong id="timelineHum">30 %</strong></div>
+                    <div class="stat-badge">Curvature &kappa;: <strong id="timelineCurv">0.00 m&#8315;&sup1;</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="viz">
+            <div><div class="sim-label">Through-thickness bending stress &sigma;(y)</div><canvas id="stressChartCanvas" width="450" height="320"></canvas></div>
+            <div><div class="sim-label">Curvature history &kappa;(t)</div><canvas id="historyChartCanvas" width="450" height="320"></canvas></div>
+        </div>
+
+        <div class="datacard">
+            <h3>Bending solution readouts</h3>
+            <table>
+                <thead><tr><th>Modulus ratio m = E&#8321;/E&#8322;</th><th>Neutral axis y&#8345;&#8345;&#8345;&#8345;</th><th>Curvature &kappa;</th><th>Tip angle</th><th style="text-align:right;">Strain energy</th></tr></thead>
+                <tbody><tr>
+                    <td id="resM">&mdash;</td><td id="resNA">&mdash;</td><td id="resCurv">&mdash;</td><td id="resAngle">&mdash;</td><td id="resEnergy" style="text-align:right;">&mdash;</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="control-sections">
+                    <div class="control-group">
+                        <h3 class="section-title">1. Solver Model</h3>
                         <div class="select-wrapper">
-                            <select id="matActive">
-                                <option value="active_pla_4D" selected>4D-Print PLA (Tg = 55°C)</option>
-                                <option value="hydrogel_PNIPAM">PNIPAM Hydrogel (LCST = 32°C)</option>
-                                <option value="shape_memory_polymer">SMP Veriflex (Tg = 60°C)</option>
-                                <option value="elastomer_PDMS">PDMS (Sylgard 184)</option>
+                            <select id="solverModel">
+                                <option value="timoshenko" selected>Timoshenko (1925) - Linear</option>
+                                <option value="suohutchinson">Suo &amp; Hutchinson - Transformed Section</option>
+                                <option value="elastica">Nonlinear Elastica - Large Deflections</option>
+                                <option value="fem">1D Euler-Bernoulli Beam FEM</option>
                             </select>
                         </div>
                     </div>
-                    <div class="input-row">
-                        <label for="matPassive">Passive Layer (Bottom)</label>
-                        <div class="select-wrapper">
-                            <select id="matPassive">
-                                <option value="pla_standard" selected>Standard PLA (E = 3.5 GPa)</option>
-                                <option value="abs">ABS Plastic (E = 2.2 GPa)</option>
-                                <option value="petg">PETG Plastic (E = 2.1 GPa)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Section 3: Geometry Sliders -->
-                <div class="control-group">
-                    <h3 class="section-title">3. Geometry Settings</h3>
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Active Thickness (h₁)</span>
-                            <span id="valH1" class="value-badge">0.50 mm</span>
+                    <div class="control-group">
+                        <h3 class="section-title">2. Material Settings</h3>
+                        <div class="input-row">
+                            <label for="matActive">Active Layer (Top)</label>
+                            <div class="select-wrapper">
+                                <select id="matActive">
+                                    <option value="active_pla_4D" selected>4D-Print PLA (Tg = 55&deg;C)</option>
+                                    <option value="hydrogel_PNIPAM">PNIPAM Hydrogel (LCST = 32&deg;C)</option>
+                                    <option value="shape_memory_polymer">SMP Veriflex (Tg = 60&deg;C)</option>
+                                    <option value="elastomer_PDMS">PDMS (Sylgard 184)</option>
+                                </select>
+                            </div>
                         </div>
-                        <input type="range" id="h1" min="0.1" max="2.0" step="0.05" value="0.50">
-                    </div>
-                    
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Passive Thickness (h₂)</span>
-                            <span id="valH2" class="value-badge">0.50 mm</span>
-                        </div>
-                        <input type="range" id="h2" min="0.1" max="2.0" step="0.05" value="0.50">
-                    </div>
-                    
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Total Length (L)</span>
-                            <span id="valLen" class="value-badge">50.00 mm</span>
-                        </div>
-                        <input type="range" id="len" min="10" max="100" step="1" value="50">
-                    </div>
-                    
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Beam Width (b)</span>
-                            <span id="valWidth" class="value-badge">10.00 mm</span>
-                        </div>
-                        <input type="range" id="beamWidth" min="2" max="20" step="0.5" value="10">
-                    </div>
-                </div>
-
-                <!-- Section 4: Stimulus configuration -->
-                <div class="control-group">
-                    <h3 class="section-title">4. Stimulus Setup</h3>
-                    <div class="input-row">
-                        <label>Stimulus Type</label>
-                        <div class="tab-pill-container">
-                            <button type="button" class="tab-pill active" id="stimThermalBtn">Thermal</button>
-                            <button type="button" class="tab-pill" id="stimMoistureBtn">Moisture</button>
+                        <div class="input-row">
+                            <label for="matPassive">Passive Layer (Bottom)</label>
+                            <div class="select-wrapper">
+                                <select id="matPassive">
+                                    <option value="pla_standard" selected>Standard PLA (E = 3.5 GPa)</option>
+                                    <option value="abs">ABS Plastic (E = 2.2 GPa)</option>
+                                    <option value="petg">PETG Plastic (E = 2.1 GPa)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Thermal inputs -->
-                    <div id="thermalInputs">
+                    <div class="control-group">
+                        <h3 class="section-title">3. Geometry Settings</h3>
                         <div class="slider-wrapper">
-                            <div class="slider-header">
-                                <span>Target Temp Change (ΔT)</span>
-                                <span id="valDT" class="value-badge">50.00 °C</span>
-                            </div>
-                            <input type="range" id="deltaT" min="0" max="100" step="1" value="50">
+                            <div class="slider-header"><span>Active Thickness (h&#8321;)</span><span id="valH1" class="value-badge">0.50 mm</span></div>
+                            <input type="range" id="h1" aria-label="H1" min="0.1" max="2.0" step="0.05" value="0.50">
                         </div>
-                    </div>
-
-                    <!-- Moisture inputs -->
-                    <div id="moistureInputs" style="display: none;">
                         <div class="slider-wrapper">
-                            <div class="slider-header">
-                                <span>Relative Humidity Change (ΔH)</span>
-                                <span id="valDH" class="value-badge">40.00 %</span>
-                            </div>
-                            <input type="range" id="deltaH" min="0" max="100" step="1" value="40">
+                            <div class="slider-header"><span>Passive Thickness (h&#8322;)</span><span id="valH2" class="value-badge">0.50 mm</span></div>
+                            <input type="range" id="h2" aria-label="H2" min="0.1" max="2.0" step="0.05" value="0.50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Total Length (L)</span><span id="valLen" class="value-badge">50.00 mm</span></div>
+                            <input type="range" id="len" aria-label="Len" min="10" max="100" step="1" value="50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Beam Width (b)</span><span id="valWidth" class="value-badge">10.00 mm</span></div>
+                            <input type="range" id="beamWidth" aria-label="Beam Width" min="2" max="20" step="0.5" value="10">
                         </div>
                     </div>
 
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Stimulus Ramp Rate</span>
-                            <span id="valRampRate" class="value-badge">5.00 °/s</span>
-                        </div>
-                        <input type="range" id="rampRate" min="1" max="20" step="0.5" value="5">
-                    </div>
-                </div>
-
-                <!-- Run / Reset Buttons -->
-                <div class="sidebar-buttons">
-                    <button type="button" id="btnRun" class="btn btn-primary">Run Simulation</button>
-                    <button type="button" id="btnReset" class="btn btn-secondary">Reset Lab</button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- CENTER COLUMN: MAIN VIEWPORT & TIMELINE -->
-        <main class="center-content">
-            <!-- Viewport View -->
-            <div id="viewportContainer" style="display: flex; flex-direction: column; flex: 1;">
-                <div class="viewport-card">
-                    <div class="viewport-header">
-                        <span id="stateLabel" class="state-indicator flat">State: Flat Cantilever</span>
-                        <div class="viewport-actions">
-                            <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
-                        </div>
-                    </div>
-                    
-                    <!-- 3D Render Area -->
-                    <div class="canvas-3d-wrapper">
-                        <div id="viewport3D"></div>
-                        <!-- Fallback 2D Canvas if Three.js fails -->
-                        <canvas id="simCanvas" width="500" height="400" style="display:none;"></canvas>
-                        
-                        <!-- Stress Heatmap Legend -->
-                        <div class="legend-box">
-                            <div class="legend-title">Bending Stress σ (MPa)</div>
-                            <div class="legend-bar"></div>
-                            <div class="legend-labels">
-                                <span>Comp (-)</span>
-                                <span>0</span>
-                                <span>Tens (+)</span>
+                    <div class="control-group">
+                        <h3 class="section-title">4. Stimulus Setup</h3>
+                        <div class="input-row">
+                            <label>Stimulus Type</label>
+                            <div class="tab-pill-container">
+                                <button type="button" class="tab-pill active" id="stimThermalBtn">Thermal</button>
+                                <button type="button" class="tab-pill" id="stimMoistureBtn">Moisture</button>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Visibility control overlays -->
-                    <div class="viewport-overlay-controls">
-                        <label><input type="checkbox" id="showMeshNodes" checked> Show FEM Nodes</label>
-                        <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Grid</label>
-                    </div>
-                </div>
-
-                <!-- Viscoelastic Playback Timeline scrubber -->
-                <div class="timeline-card">
-                    <div class="timeline-row">
-                        <button id="btnPlayPause" class="btn-play">Play</button>
-                        <div class="timeline-slider-wrapper">
-                            <input type="range" id="timeScrubber" min="0" max="20" step="0.1" value="0" style="width: 100%;">
+                        <div id="thermalInputs">
+                            <div class="slider-wrapper">
+                                <div class="slider-header"><span>Target Temp Change (&Delta;T)</span><span id="valDT" class="value-badge">50.00 &deg;C</span></div>
+                                <input type="range" id="deltaT" aria-label="Delta T" min="0" max="100" step="1" value="50">
+                            </div>
                         </div>
-                        <div class="time-readout">
-                            <span id="timeVal">0.0</span> s / 20s
+                        <div id="moistureInputs" style="display: none;">
+                            <div class="slider-wrapper">
+                                <div class="slider-header"><span>Relative Humidity Change (&Delta;H)</span><span id="valDH" class="value-badge">40.00 %</span></div>
+                                <input type="range" id="deltaH" aria-label="Delta H" min="0" max="100" step="1" value="40">
+                            </div>
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Stimulus Ramp Rate</span><span id="valRampRate" class="value-badge">5.00 &deg;/s</span></div>
+                            <input type="range" id="rampRate" aria-label="Ramp Rate" min="1" max="20" step="0.5" value="5">
                         </div>
                     </div>
-                    <div class="timeline-stats-row">
-                        <div class="stat-badge">Temp: <strong id="timelineTemp">25.0 °C</strong></div>
-                        <div class="stat-badge">Hum: <strong id="timelineHum">30 %</strong></div>
-                        <div class="stat-badge">Curvature κ: <strong id="timelineCurv">0.00 m⁻¹</strong></div>
+
+                    <div class="sidebar-buttons">
+                        <button type="button" id="btnRun" class="btn btn-primary">Run Simulation</button>
+                        <button type="button" id="btnReset" class="btn btn-secondary">Reset Lab</button>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </aside>
 
-        <!-- RIGHT COLUMN: ANALYTICS & EQUATION PANELS -->
-        <aside class="right-panel">
-            <h2 class="panel-title">Live Analytics</h2>
-
-            <!-- Analytics Plots -->
-            <div class="analytics-card">
-                <div class="chart-header">
-                    <h3>Stress Profile σ(y)</h3>
-                    <span class="chart-subtitle">Through-Thickness Stress</span>
-                </div>
-                <canvas id="stressChartCanvas" width="300" height="200" style="width: 100%; height: auto;"></canvas>
-            </div>
-
-            <div class="analytics-card">
-                <div class="chart-header">
-                    <h3>Curvature History κ(t)</h3>
-                    <span class="chart-subtitle">Deflection vs Time</span>
-                </div>
-                <canvas id="historyChartCanvas" width="300" height="180" style="width: 100%; height: auto;"></canvas>
-            </div>
-
-            <!-- Mathematical Equation Live Panel -->
-            <div class="analytics-card equation-card">
-                <div class="chart-header">
-                    <h3>Governing Equations</h3>
-                    <span class="chart-subtitle">Live Math Substituted</span>
-                </div>
-                <div id="latexFormulaContainer" class="katex-formula-block">
-                    <!-- Formulas rendered by script_a.js using KaTeX -->
-                </div>
-            </div>
-
-            <!-- Quantitative Output Table -->
-            <div class="analytics-card results-summary-card">
-                <h3>Numerical Output</h3>
-                <table class="results-table">
-                    <tr>
-                        <td>Thickness Ratio (m):</td>
-                        <td id="resM" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Neutral Axis (ȳ):</td>
-                        <td id="resNA" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Max Curvature (κ):</td>
-                        <td id="resCurv" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Bending Angle (θ):</td>
-                        <td id="resAngle" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Strain Energy (U):</td>
-                        <td id="resEnergy" class="res-bold">-</td>
-                    </tr>
-                </table>
-            </div>
-
-
-            <!-- Safety Constraints Warnings -->
-            <div id="safetyWarningsBox" class="safety-box">
-                <!-- Warnings injected here dynamically (von Mises yield, delamination, buckling) -->
-            </div>
-            
-            <div class="floating-nav">
-                <a href="index1.html" class="btn-nav primary">Next Experiment -></a>
-            </div>
-        </aside>
-    </div>
-
-    <!-- Script loading -->
-    <script src="js/main.js"></script>
+</div>
+<script defer src="js/main.js"></script>
 </body>
 </html>

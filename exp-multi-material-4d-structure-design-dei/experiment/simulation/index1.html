@@ -3,85 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub-Calc B: The Self-Closing Gripper Mechanism - Virtual Lab</title>
+    <title>Sub-Calc B · The Self-Closing Gripper Mechanism — Multi-Material 4D Structure Design</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <nav class="sidebar">
-            <div class="sidebar-logo">4D Structure Lab</div>
-            <div class="form-container">
-                <div class="form-row">
-                    <div class="form-label">1. Number of printed links:</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>links n (including the base)</label><input type="range" id="nInput" min="2" max="8" step="1" value="4"><div class="slider-val" id="valN">4</div></div>
-                    </div>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will the fold stay crisp?</span><span class="subcalc__desc">Stiffness contrast</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">right joints?</span><span class="subcalc__desc">Kutzbach-Gr&uuml;bler mobility</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">what fold angles?</span><span class="subcalc__desc">Forward / inverse kinematics</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">how small does it pack?</span><span class="subcalc__desc">Miura-ori tessellation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">folds before it cracks?</span><span class="subcalc__desc">S-N fatigue life</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · Mechanism Mobility</span>
+            <h1 class="stage__title">The Self-Closing Gripper Mechanism</h1>
+            <p class="stage__obj">The Kutzbach&ndash;Gr&uuml;bler criterion F = 3(n&minus;1) &minus; 2j&#8321; &minus; j&#8322; predicts whether a printed linkage is locked solid, moves with one controlled degree of freedom (F=2, a working gripper), or is an underconstrained mechanism.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the links and joints, then click 'Test the Gripper' to see whether it stays locked, opens and closes, or flops loose.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Gripper mechanism</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Adding joints changes how freely it moves</div>
+                    <canvas id="plotCanvasDOF" width="450" height="240"></canvas>
                 </div>
-                <div class="form-row">
-                    <div class="form-label">2. Full joints j&#8321; (simple hinges):</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>pin joints that allow one motion</label><input type="range" id="j1Input" min="0" max="10" step="1" value="3"><div class="slider-val" id="valJ1">3</div></div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-label">3. Half joints j&#8322; (sliding contacts):</div>
-                    <div class="form-options">
-                        <div class="slider-group"><label>rolling / sliding contacts</label><input type="range" id="j2Input" min="0" max="6" step="1" value="0"><div class="slider-val" id="valJ2">0</div></div>
-                    </div>
-                </div>
-                <div class="buttons">
-                    <button type="button" id="btnRun">Test the Gripper</button>
-                    <button type="button" onclick="location.reload()">Reset Setup</button>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Locked, working, or floppy?</div>
+                    <canvas id="plotCanvasReg" width="450" height="160"></canvas>
                 </div>
             </div>
-        </nav>
+        </div>
 
-        <main class="content-area">
-            <div class="content-container">
-                <h1 class="title">Sub-Calc B: The Self-Closing Gripper Mechanism</h1>
-                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A 4D-printed gripper closes its jaws when triggered. But it only works if it has the <strong>right number of working joints</strong>. Too few and it stays locked solid; too many and the jaws flop around. Your job: choose links and joints so the gripper has exactly the freedom it needs to open and close on an object.</p>
+        <div class="datacard">
+            <h3>What happens as you add joints</h3>
+            <table id="dofTable">
+                <thead><tr><th>j&#8321; / j&#8322;</th><th>F</th><th style="text-align:right;">Verdict</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
-                <div class="sim-viewport">
-                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
-                        <div class="sim-label" id="stateLabel">Gripper mechanism</div>
-                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
-                    </div>
-                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
-                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Adding joints changes how freely it moves</div>
-                            <canvas id="plotCanvasDOF" width="450" height="240"></canvas>
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind it</button>
+            <div class="derivation-content"><div id="dofFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Number of printed links</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>links n (including the base)</label><input type="range" id="nInput" aria-label="N Input" min="2" max="8" step="1" value="4"><div class="slider-val" id="valN">4</div></div>
                         </div>
-                        <div style="position: relative; height: 160px;">
-                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Locked, working, or floppy?</div>
-                            <canvas id="plotCanvasReg" width="450" height="160"></canvas>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Full joints j&#8321; (simple hinges)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>pin joints that allow one motion</label><input type="range" id="j1Input" aria-label="J1 Input" min="0" max="10" step="1" value="3"><div class="slider-val" id="valJ1">3</div></div>
                         </div>
                     </div>
-                </div>
-                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the links and joints, then click 'Test the Gripper' to see whether it stays locked, opens and closes, or flops loose.</div>
-                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Does the gripper actually work?</h3>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Links n:</span><span class="result-val" id="resN" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Full / half joints:</span><span class="result-val" id="resJ" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Freedom to move F:</span><span class="result-val" id="resF" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Verdict:</span><span class="result-val" id="resReg" style="font-weight:700;color:#1e293b;">-</span></div>
-                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Links needed to work (F=2):</span><span class="result-val" id="resNeed" style="font-weight:700;color:#1e293b;">-</span></div>
+                    <div class="form-row">
+                        <div class="form-label">3. Half joints j&#8322; (sliding contacts)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>rolling / sliding contacts</label><input type="range" id="j2Input" aria-label="J2 Input" min="0" max="6" step="1" value="0"><div class="slider-val" id="valJ2">0</div></div>
+                        </div>
                     </div>
-                    <div class="result-box premium-card" style="margin-bottom: 0;">
-                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">What happens as you add joints</h3>
-                        <table id="dofTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">j&#8321; / j&#8322;</th><th style="padding:6px 4px;">F</th><th style="padding:6px 4px;text-align:right;">Verdict</th></tr></thead><tbody></tbody></table>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Test the Gripper</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
                     </div>
                 </div>
-                <div class="premium-card" style="margin-top: 20px;">
-                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind it</h3>
-                    <div id="dofFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
-                </div>
-                <div class="floating-nav"><a href="index.html" class="btn-nav">&larr; Back</a><a href="index2.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
             </div>
-        </main>
-    </div>
-    <script src="js/main.js"></script>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Does the gripper actually work?</h3>
+                        <div class="result-row"><span class="result-label">Links n</span><span class="result-val" id="resN">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Full / half joints</span><span class="result-val" id="resJ">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Freedom to move F</span><span class="result-val" id="resF">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Verdict</span><span class="result-val" id="resReg">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Links needed to work (F=2)</span><span class="result-val" id="resNeed">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index2.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
 </body>
 </html>

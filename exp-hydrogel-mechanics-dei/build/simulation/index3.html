@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · The Cartilage Scaffold — Hydrogel Mechanics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">how much will it swell?</span><span class="subcalc__desc">Flory-Rehner swelling</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">where will it open?</span><span class="subcalc__desc">pH / Donnan equilibrium</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">how big is the snap?</span><span class="subcalc__desc">LCST thermoresponse</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">is it as soft as the tissue?</span><span class="subcalc__desc">Swollen modulus</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">how fast is the dose?</span><span class="subcalc__desc">Korsmeyer-Peppas release</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Rubber Elasticity</span>
+            <h1 class="stage__title">The Cartilage Scaffold</h1>
+            <p class="stage__obj">Crosslink density sets a hydrogel's dry shear modulus; swelling dilutes the network and softens it further (affine rubber-elasticity theory). Tune both to land the scaffold's swollen stiffness inside real cartilage's 0.1&ndash;1&nbsp;MPa range.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the crosslinking, swelling and temperature, then click 'Press the Scaffold' to measure how stiff it feels and which tissue it matches.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Scaffold stiffness: &mdash;</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How stiff the scaffold is vs swelling</div>
+                    <canvas id="plotCanvasMod" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Does it match real tissue? (stiffness map)</div>
+                    <canvas id="plotCanvasTissue" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Which tissue does it match?</h3>
+            <table id="tissueTable">
+                <thead><tr><th>Tissue</th><th>Stiffness (MPa)</th><th style="text-align:right;">Match</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the stiffness</button>
+            <div class="derivation-content"><div id="modFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Set the print crosslinking</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Crosslink tightness (loose &rarr; tight)</label>
+                                <input type="range" id="nuInput" aria-label="Nu Input" min="23" max="26" step="0.05" value="24.5">
+                                <div class="slider-val" id="valNu">10^24.50</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Set how much it swells in the body</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Swelling ratio Q (dense &rarr; watery)</label>
+                                <input type="range" id="qInput" aria-label="Q Input" min="1" max="60" step="1" value="20">
+                                <div class="slider-val" id="valQ">20</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Set the body temperature</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Temperature</label>
+                                <input type="range" id="tInput" aria-label="T Input" min="10" max="60" step="1" value="37">
+                                <div class="slider-val" id="valT">37 &deg;C</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Press the Scaffold</button>
+                        <button type="button" onclick="location.reload()">Reset Scaffold</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>What the scaffold feels like</h3>
+                        <div class="result-row"><span class="result-label">Crosslink density</span><span class="result-val" id="resNu">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Stiffness when dry</span><span class="result-val" id="resEdry">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Stiffness in the body (swollen)</span><span class="result-val" id="resE">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Feels most like</span><span class="result-val" id="resMatch">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">In cartilage window (0.1-1 MPa)?</span><span class="result-val" id="resWindow">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index4.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+
+c:\Users\anu85\OneDrive\Desktop\virtual_lab\VLab_Anusha\exp-4D-print-process-engineering-dei\experiment\simulation\js\main.js
+  268:3   warning  'LabGate' is not defined                         no-undef
+  273:26  warning  'GAP' is assigned a value but never used         no-unused-vars
+  413:3   warning  'LabGate' is not defined                         no-undef
+  542:3   warning  'LabGate' is not defined                         no-undef
+  557:13  warning  'e' is assigned a value but never used           no-unused-vars
+  687:3   warning  'LabGate' is not defined                         no-undef
+  699:5   warning  Move function declaration to function body root  no-inner-declarations
+  859:3   warning  'LabGate' is not defined                         no-undef
+
+✖ 8 problems (0 errors, 8 warnings)
+

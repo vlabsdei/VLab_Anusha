@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. In the power-law model η(γ̇) = K·γ̇^(n−1), what does a flow index n < 1 reveal about the ink's rheology?",
+      "answers": {
+        "a": "The ink is dilatant (thickens under shear).",
+        "b": "The ink is shear-thinning, and the log–log plot of η vs γ̇ has slope n−1 < 0.",
+        "c": "The ink is Newtonian regardless of shear rate.",
+        "d": "The consistency index K must be negative."
+      },
+      "explanations": {
+        "a": "Incorrect — Dilatancy requires n > 1.",
+        "b": "Correct — For n < 1, the exponent (n−1) is negative, so viscosity decreases with increasing shear rate on a line of slope (n−1).",
+        "c": "Incorrect — Newtonian behavior is n = 1.",
+        "d": "Incorrect — K is always positive; it sets the magnitude of viscosity."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q2. After extrusion, bioink thixotropy is modeled as η(t) = η₀(1 − e^(−t/τ)). Why is the recovery time t₉₀ = τ·ln(10) particularly important for multi-layer printing?",
+      "answers": {
+        "a": "It ensures 90% structural recovery before the next layer lands, preventing layer collapse.",
+        "b": "It is the total time the ink stays in the nozzle.",
+        "c": "It is the time the ink spends at maximum viscosity.",
+        "d": "It measures the gel point."
+      },
+      "explanations": {
+        "a": "Correct — If the next layer is deposited before t₉₀, the bottom layer is still too soft and deforms.",
+        "b": "Incorrect — That is residence time t_res, a different quantity.",
+        "c": "Incorrect — Maximum viscosity is η₀ at t = 0.",
+        "d": "Incorrect — Gelation kinetics use Avrami, not thixotropy."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q3. The Avrami exponent m ranges from 1–4 and reflects the nucleation and growth dimensionality. What does m = 2 typically represent in the context of collagen gelation?",
+      "answers": {
+        "a": "One-dimensional needle-like crystal growth.",
+        "b": "Three-dimensional isotropic growth with limited nucleation sites.",
+        "c": "Two-dimensional surface nucleation followed by two-dimensional growth.",
+        "d": "Purely linear chain polymerization with no branching."
+      },
+      "explanations": {
+        "a": "Incorrect — m = 1 is one-dimensional growth.",
+        "b": "Incorrect — m = 3 or 4 represents three-dimensional scenarios.",
+        "c": "Correct — m = 2 describes nucleation on surfaces or one-dimensional growth of two-dimensional objects.",
+        "d": "Incorrect — Avrami exponent is geometric, not about chain structure."
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q4. The gel point time is t_gel = (ln 2 / k_Av)^(1/m). Temperature shifts k_Av via Arrhenius law: k_Av(T) = k_Av(T_ref)·exp[−(E_a/R)(1/T − 1/T_ref)]. For E_a ≈ 62 kJ/mol, how does a 10°C rise from 27°C to 37°C affect t_gel?",
+      "answers": {
+        "a": "t_gel increases because the rate constant decreases.",
+        "b": "t_gel decreases substantially (roughly halves) because higher T accelerates gelation exponentially.",
+        "c": "t_gel remains unchanged; temperature does not affect Avrami kinetics.",
+        "d": "t_gel doubles exactly every 10°C."
+      },
+      "explanations": {
+        "a": "Incorrect — Higher T raises k_Av, lowering t_gel.",
+        "b": "Correct — The Arrhenius exponent with E_a = 62 kJ/mol gives a strong temperature dependence; ~10°C spans roughly a 2× rate change.",
+        "c": "Incorrect — Temperature strongly affects k_Av and thus t_gel.",
+        "d": "Incorrect — Temperature dependence is exponential via Arrhenius, not linear."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q5. The wall shear rate at the nozzle exit is γ̇_wall = 4v/R. If you decrease nozzle radius from 400 µm to 200 µm while keeping print speed v constant, γ̇_wall changes by what factor?",
+      "answers": {
+        "a": "It doubles.",
+        "b": "It halves.",
+        "c": "It remains constant because R cancels with other factors.",
+        "d": "It quadruples."
+      },
+      "explanations": {
+        "a": "Incorrect — The change is larger than 2×.",
+        "b": "Incorrect — Narrowing the nozzle increases shear rate, not decreases it.",
+        "c": "Incorrect — R is in the denominator of the shear rate formula.",
+        "d": "Correct — γ̇_wall is inversely proportional to R, so halving R quadruples γ̇."
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q6. Cell survival follows S = exp(−k_kill·τ_wall·t_res) where t_res = L_nozzle/v_print. Explain the resolution–viability trade-off: why can't you simultaneously print fine features (narrow nozzle) and keep S > 85%?",
+      "answers": {
+        "a": "Fine nozzles increase wall shear stress τ_wall steeply; while finer resolution is possible, the exponential shear-kill term outweighs the benefit.",
+        "b": "Fine nozzles require slower printing, extending t_res and increasing shear damage.",
+        "c": "Narrow nozzles reduce ink viscosity, which kills cells faster.",
+        "d": "Fine nozzles operate at higher k_kill values due to material properties."
+      },
+      "explanations": {
+        "a": "Correct — τ_wall ∝ 1/R³, so the exponent in the survival term grows as R³ decreases, causing exponential cell loss.",
+        "b": "Incorrect — Faster printing actually worsens shear damage (τ_wall ∝ v).",
+        "c": "Incorrect — Nozzle diameter doesn't change ink viscosity; ink viscosity is an input.",
+        "d": "Incorrect — k_kill is a constant for a given cell type, independent of nozzle geometry."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q7. Scaffold modulus decays as E(t) = E₀·exp(−(4/3)k_deg·t), not as E(t) = E₀·exp(−k_deg·t). What is the physical origin of the 4/3 exponent?",
+      "answers": {
+        "a": "It is an arbitrary empirical fitting constant.",
+        "b": "It is the ratio of three-dimensional geometry to one-dimensional fiber strength.",
+        "c": "It arises from the Gibson–Ashby scaling E ∝ ρ^(4/3) for porous materials, where mass ρ decays as exp(−k_deg·t).",
+        "d": "It comes from the Poisson ratio of the polymer."
+      },
+      "explanations": {
+        "a": "Incorrect — The 4/3 is a model-derived constant, not empirical.",
+        "b": "Incorrect — Geometry is captured in the porosity model, not this exponent.",
+        "c": "Correct — For porous scaffolds, the modulus scales with mass density to the 4/3 power; as M decays exponentially, E decays faster.",
+        "d": "Incorrect — Poisson ratio does not enter the degradation kinetics."
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q8. Three polymers are ranked by degradation rate: PLGA (0.02/day), PLA (0.002/day), PCL (0.0005/day). Given tissue regeneration times of skin ~21 d, bone ~90 d, and cartilage ~150 d, which pairing is most appropriate to prevent premature mechanical failure?",
+      "answers": {
+        "a": "PLGA for cartilage, PLA for bone, PCL for skin.",
+        "b": "PLGA for skin, PLA for bone, PCL for cartilage.",
+        "c": "PLA for all tissues — one size fits all.",
+        "d": "PCL for cartilage, PLA for bone, PLGA for skin."
+      },
+      "explanations": {
+        "a": "Incorrect — PLGA (weeks) is too fast for cartilage (months); PCL (years) is far too slow for skin.",
+        "b": "Incorrect — PCL degrades over years, far too slow for a cartilage scaffold (months), and PLGA (weeks) is mismatched to the other tissues.",
+        "c": "Incorrect — PLA is too fast for cartilage and too slow for skin.",
+        "d": "Correct — Match timescales: PLGA fails in ~weeks (skin 21 d ✓), PLA in ~months (bone 90 d ✓), PCL in ~years (cartilage 150 d ✓)."
+      },
+      "correctAnswer": "d",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q9. For a bilayer tracheal stent, the Timoshenko formula gives h = 6·Δε·(1+m)² / (κ_printed·φ) where m = h₁/h₂ and φ = 3(1+m)² + (1+mn)(m² + 1/(mn)). If you want to increase the printed curvature κ_printed without changing mismatch strain Δε, what design change accomplishes this?",
+      "answers": {
+        "a": "Increase the total bilayer thickness h.",
+        "b": "Decrease the total bilayer thickness h to increase curvature.",
+        "c": "Increase the stiffness ratio n = E₁/E₂.",
+        "d": "Keep both h and m constant; κ_printed cannot be tuned."
+      },
+      "explanations": {
+        "a": "Incorrect — Thicker bilayer produces *lower* curvature (h in denominator).",
+        "b": "Correct — A thinner bilayer bends more sharply for the same mismatch strain; κ is inversely proportional to h.",
+        "c": "Incorrect — The modulus ratio n affects φ but not in a simple monotonic way; the thinnest approach is direct.",
+        "d": "Incorrect — κ_printed can be tuned via Δε, layer thickness h, and geometry m."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q10. The three deployment safety gates for a printed stent are R_f > 95%, R_r > 90%, and T_g = 45–50°C. PLA-SMP passes all three (T_g = 58°C, R_f = 97%, R_r = 92%). Which gate would a hypothetical polyester-SMP with T_g = 48°C, R_f = 94%, and R_r = 93% fail?",
+      "answers": {
+        "a": "R_f gate only (94% < 95% required).",
+        "b": "None — all gates are satisfied.",
+        "c": "T_g gate only (48°C is too close to 37°C body temperature).",
+        "d": "Both R_f and T_g gates are marginal but acceptable."
+      },
+      "explanations": {
+        "a": "Correct — Shape fixity must be ≥ 95%; at 94%, the stent risks unwanted shape drift during storage.",
+        "b": "Incorrect — R_f = 94% falls short of the 95% requirement.",
+        "c": "Incorrect — T_g = 48°C is within the safe 45–50°C window (compare to T_g = 58°C for PLA, which has a larger margin).",
+        "d": "Incorrect — The R_f gate is not marginal; it is objectively unmet."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    }
+  ]
+}

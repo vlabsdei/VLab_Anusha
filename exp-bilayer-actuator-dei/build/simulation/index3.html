@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · Diffusion Timescale — Bilayer Actuator Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Timoshenko Bimetal</span><span class="subcalc__desc">Bending curvature &amp; stress</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Hygroscopic Swelling</span><span class="subcalc__desc">Anisotropic expansion</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Print Path Programming</span><span class="subcalc__desc">Raster angle &amp; twist</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Diffusion Timescale</span><span class="subcalc__desc">Fickian moisture transport</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuator Work Output</span><span class="subcalc__desc">Blocking force &amp; energy</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Fickian Transport</span>
+            <h1 class="stage__title">Diffusion &amp; Swelling Timescale</h1>
+            <p class="stage__obj">Moisture actuation is diffusion-limited: response time scales with the square of layer thickness (Fourier number &tau; = Dt/L&sup2;). Compare diffusivities across materials and see why halving thickness quarters the response time.</p>
+        </header>
+
+        <section id="liveInsight" class="safety-box"><strong>Live Insight:</strong> Choose a material and thickness, then simulate diffusion.</section>
+
+        <div class="sim-viewport-fluid">
+            <div class="viewport-card">
+                <div class="viewport-header">
+                    <span id="stateLabel" class="state-indicator flat">State: Ready</span>
+                </div>
+                <div class="canvas-3d-wrapper" style="display:flex; align-items:center; justify-content:center;">
+                    <canvas id="simCanvas" width="450" height="400" style="display:block; max-width:100%; height:auto;"></canvas>
+                    <div class="legend-box" style="width:150px; bottom:15px; left:15px; right:auto;">
+                        <div class="legend-title">Concentration C</div>
+                        <div class="legend-bar" style="background: linear-gradient(to right, #ecf0f1, #1E40AF); height:10px; border-radius:2px; margin-top:4px;"></div>
+                        <div class="legend-labels"><span>Dry (0)</span><span>Wet (1)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-card">
+                <div class="timeline-row">
+                    <button id="btnPlayPause" class="btn-play">Play</button>
+                    <div class="timeline-slider-wrapper">
+                        <input type="range" id="timeScrubber" aria-label="Time Scrubber" min="0" max="100" step="1" value="0" style="width: 100%;">
+                    </div>
+                    <div class="time-readout"><span id="timeVal">0</span>% Diffused</div>
+                </div>
+                <div class="timeline-stats-row">
+                    <div class="stat-badge">Material: <strong id="timelineMat">Cellulose</strong></div>
+                    <div class="stat-badge">Thickness L: <strong id="timelineL">0.5 mm</strong></div>
+                    <div class="stat-badge">Fourier Time &tau;: <strong id="timelineTau">0.000</strong></div>
+                    <div class="stat-badge">Slab Moisture: <strong id="timelineAvgC">0.0%</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Fickian diffusion readouts</h3>
+            <table>
+                <thead><tr><th>Layer thickness L</th><th>Characteristic time t<sub>diff</sub></th><th>Time to 90% (t&#8329;&#8320;)</th><th style="text-align:right;">Penetration depth</th></tr></thead>
+                <tbody><tr>
+                    <td id="resL">&mdash;</td><td id="resTdiff">&mdash;</td><td id="resT90">&mdash;</td><td id="resDepth" style="text-align:right;">&mdash;</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="control-sections">
+                    <div class="control-group">
+                        <h3 class="section-title">1. Active Material</h3>
+                        <div class="select-wrapper">
+                            <select id="matDiff">
+                                <option value="cellulose" selected>Cellulose (D = 5&times;10&#8315;&sup1;&sup2; m&sup2;/s)</option>
+                                <option value="pva_hydrogel">PVA Hydrogel (D = 8&times;10&#8315;&sup1;&sup1; m&sup2;/s)</option>
+                                <option value="pnipam">PNIPAM (D = 1&times;10&#8315;&sup1;&#8304; m&sup2;/s)</option>
+                                <option value="hydrogel">Hydrogel (D = 2&times;10&#8315;&sup1;&#8304; m&sup2;/s)</option>
+                            </select>
+                        </div>
+                        <div class="material-chips" style="flex-direction:column;">
+                            <span id="labelDValue" class="value-badge" style="text-align:left;">D = 5.0e-12 m&sup2;/s</span>
+                            <span id="labelMatDesc" class="value-badge" style="text-align:left;">Semi-crystalline cellulose network</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">2. Preset Thicknesses</h3>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+                            <button type="button" class="btn btn-secondary" id="preset1Btn">0.2 mm</button>
+                            <button type="button" class="btn btn-secondary" id="preset2Btn">0.5 mm</button>
+                            <button type="button" class="btn btn-secondary" id="preset3Btn">1.0 mm</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">3. Custom Thickness</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Layer Thickness (L)</span><span id="valL" class="value-badge">0.5 mm</span></div>
+                            <input type="range" id="layerL" aria-label="Layer L" min="0.1" max="2.0" step="0.1" value="0.5">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-buttons">
+                        <button type="button" id="btnRun" class="btn btn-primary">Simulate Diffusion</button>
+                        <button type="button" id="btnReset" class="btn btn-secondary">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

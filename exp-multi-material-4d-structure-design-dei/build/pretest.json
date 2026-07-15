@@ -1,0 +1,178 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. What allows a single flat 4D-printed sheet to fold into a complex 3D shape?",
+      "answers": {
+        "a": "Printing it in many colours.",
+        "b": "Combining materials of different stiffness so deformation localises in soft hinges.",
+        "c": "Using only one very stiff material.",
+        "d": "Making it perfectly rigid everywhere."
+      },
+      "explanations": {
+        "a": "Incorrect - colour does not drive folding.",
+        "b": "Correct - stiffness contrast between active and passive materials localises the bending into hinge regions.",
+        "c": "Incorrect - a single stiff material cannot program complex folds.",
+        "d": "Incorrect - a fully rigid sheet cannot transform."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. The flexural rigidity EI of a rectangular cross-section is proportional to which power of the thickness h?",
+      "answers": {
+        "a": "h (first power).",
+        "b": "h squared.",
+        "c": "h cubed.",
+        "d": "the square root of h."
+      },
+      "explanations": {
+        "a": "Incorrect - bending stiffness rises faster than linearly with thickness.",
+        "b": "Incorrect - the area moment of inertia scales as h cubed, not squared.",
+        "c": "Correct - I = b h^3/12, so EI is proportional to h cubed.",
+        "d": "Incorrect - thicker beams are much stiffer, not less."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+
+    {
+      "question": "Q3. The stiffness contrast ratio SC is defined as:",
+      "answers": {
+        "a": "E_active / E_passive.",
+        "b": "E_passive / E_active.",
+        "c": "The sum of the two moduli.",
+        "d": "The thickness ratio of the layers."
+      },
+      "explanations": {
+        "a": "Incorrect - this inverts the definition.",
+        "b": "Correct - SC = E_passive/E_active; a high value localises bending in the soft layer.",
+        "c": "Incorrect - SC is a ratio, not a sum.",
+        "d": "Incorrect - SC compares moduli, not thicknesses."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. What does the Grubler-Kutzbach criterion compute for a planar mechanism?",
+      "answers": {
+        "a": "Its mass.",
+        "b": "Its mobility (number of degrees of freedom).",
+        "c": "Its electrical resistance.",
+        "d": "Its melting temperature."
+      },
+      "explanations": {
+        "a": "Incorrect - it is a kinematic, not a mass, calculation.",
+        "b": "Correct - F = 3(n-1) - 2 j1 - j2 gives the number of independent motions.",
+        "c": "Incorrect - it is unrelated to electrical properties.",
+        "d": "Incorrect - it is unrelated to thermal properties."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q5. A planar mechanism computed to have mobility F = 0 is:",
+      "answers": {
+        "a": "Free to move with one degree of freedom.",
+        "b": "A rigid, over-constrained structure that cannot move.",
+        "c": "Floppy with too many motions.",
+        "d": "Always the correct design."
+      },
+      "explanations": {
+        "a": "Incorrect - F = 0 means no mobility.",
+        "b": "Correct - F = 0 is a statically determinate, locked structure.",
+        "c": "Incorrect - floppy corresponds to F greater than the target.",
+        "d": "Incorrect - F = 0 is wrong if motion is required."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+
+    {
+      "question": "Q6. Forward kinematics of a folding strip maps:",
+      "answers": {
+        "a": "A target tip position to the required hinge angles.",
+        "b": "The hinge angles to the resulting end-effector position.",
+        "c": "Temperature to colour.",
+        "d": "Stress to fatigue life."
+      },
+      "explanations": {
+        "a": "Incorrect - that is inverse kinematics.",
+        "b": "Correct - forward kinematics accumulates the hinge rotations to give the tip position.",
+        "c": "Incorrect - unrelated to kinematics.",
+        "d": "Incorrect - that is fatigue analysis."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q7. The Miura-ori origami pattern is famous for exhibiting:",
+      "answers": {
+        "a": "A positive Poisson's ratio only.",
+        "b": "A negative (auxetic) Poisson's ratio - it expands laterally when stretched.",
+        "c": "No change in shape when folded.",
+        "d": "Electrical conductivity."
+      },
+      "explanations": {
+        "a": "Incorrect - the in-plane behaviour is auxetic.",
+        "b": "Correct - the Miura fold is auxetic, with a negative in-plane Poisson's ratio.",
+        "c": "Incorrect - folding strongly changes its footprint.",
+        "d": "Incorrect - the property is mechanical, not electrical."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q8. An area ratio A_ratio < 1 for a folded Miura sheet means:",
+      "answers": {
+        "a": "The folded footprint is larger than the flat sheet.",
+        "b": "The folded footprint is smaller than the flat sheet (it contracts).",
+        "c": "The sheet does not fold.",
+        "d": "The sheet tears."
+      },
+      "explanations": {
+        "a": "Incorrect - a ratio below 1 means a smaller footprint.",
+        "b": "Correct - A_ratio < 1 means the folded sheet occupies less area, enabling compact deployment.",
+        "c": "Incorrect - folding is exactly what produces the contraction.",
+        "d": "Incorrect - the ratio describes area, not failure."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+
+    {
+      "question": "Q9. Which law is used to predict the fatigue life of a repeatedly folded hinge from its stress?",
+      "answers": {
+        "a": "Hooke's Law.",
+        "b": "Basquin's Law (the S-N power law).",
+        "c": "Ohm's Law.",
+        "d": "Beer-Lambert Law."
+      },
+      "explanations": {
+        "a": "Incorrect - Hooke's Law relates stress and strain elastically, not fatigue life.",
+        "b": "Correct - Basquin's Law N = (sigma_f/sigma_max)^(1/b) predicts cycles to failure.",
+        "c": "Incorrect - Ohm's Law is electrical.",
+        "d": "Incorrect - Beer-Lambert is for light absorption."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q10. Why does a thinner flexure hinge generally survive many more actuation cycles?",
+      "answers": {
+        "a": "Because it is heavier.",
+        "b": "Because a thinner hinge has a lower peak bending strain and stress, and fatigue life rises steeply as stress falls.",
+        "c": "Because it changes colour.",
+        "d": "Because it conducts heat better."
+      },
+      "explanations": {
+        "a": "Incorrect - mass is not the factor.",
+        "b": "Correct - epsilon_max = h/(2R), so smaller h lowers stress, and N ~ sigma^(-1/b) rises dramatically.",
+        "c": "Incorrect - colour is irrelevant.",
+        "d": "Incorrect - thermal conduction does not set fatigue life here."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    }
+  ]
+}

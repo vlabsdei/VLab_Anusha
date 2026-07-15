@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc A · The Self-Folding Gripper — Hydrogel Mechanics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc is-active" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">how much will it swell?</span><span class="subcalc__desc">Flory-Rehner swelling</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">where will it open?</span><span class="subcalc__desc">pH / Donnan equilibrium</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">how big is the snap?</span><span class="subcalc__desc">LCST thermoresponse</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">is it as soft as the tissue?</span><span class="subcalc__desc">Swollen modulus</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">how fast is the dose?</span><span class="subcalc__desc">Korsmeyer-Peppas release</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>1</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow is-disabled" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index1.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc A · Flory-Rehner Swelling</span>
+            <h1 class="stage__title">The Self-Folding Gripper</h1>
+            <p class="stage__obj">A printed hydrogel gripper swells in water. The Flory&ndash;Rehner theory ties solvent affinity (&chi;) and crosslink density to the swelling ratio Q, and geometry converts that swelling into the finger fold angle that closes the gripper.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Pick a material and print crosslinking, then click 'Submerge in Water' to watch the printed gripper fold shut.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Gripper: flat (just printed, dry)</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How much it swells vs material (Q vs &chi;)</div>
+                    <canvas id="plotCanvasFR" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How far the fingers fold vs swelling</div>
+                    <canvas id="plotCanvasConv" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Which material closes it? (same crosslinking)</h3>
+            <table id="matTable">
+                <thead><tr><th>Material (&chi;)</th><th>Q</th><th style="text-align:right;">Gripper</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the fold</button>
+            <div class="derivation-content"><div id="frFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Choose the print material</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="mat" value="0.40" id="matAlg" checked><label for="matAlg">Alginate &ndash; loves water (&chi;=0.40)</label></div>
+                            <div class="option"><input type="radio" name="mat" value="0.45" id="matPEG"><label for="matPEG">PEG-DA &ndash; balanced (&chi;=0.45)</label></div>
+                            <div class="option"><input type="radio" name="mat" value="0.48" id="matPNI"><label for="matPNI">PNIPAM @25&deg;C (&chi;=0.48)</label></div>
+                            <div class="option"><input type="radio" name="mat" value="0.55" id="matHEMA"><label for="matHEMA">pHEMA &ndash; water-shy (&chi;=0.55)</label></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Set the print crosslink density</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>UV-cure crosslinking (loose &rarr; tight)</label>
+                                <input type="range" id="xlinkInput" aria-label="Xlink Input" min="0.0003" max="0.01" step="0.0001" value="0.0008">
+                                <div class="slider-val" id="valXlink">loose (0.0008)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Submerge in Water</button>
+                        <button type="button" onclick="location.reload()">Reset Gripper</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>What the gripper does</h3>
+                        <div class="result-row"><span class="result-label">Material (solvent affinity &chi;)</span><span class="result-val" id="resMat">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Swelling ratio Q (gets this much bigger)</span><span class="result-val" id="resQ">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Water content when swollen</span><span class="result-val" id="resWater">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Finger fold angle</span><span class="result-val" id="resFold">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Gripper state</span><span class="result-val" id="resState">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index1.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+<script src="..\assets\js\iframeResize.js"></script></body>
+</html>

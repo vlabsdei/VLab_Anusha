@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc A: The Light-Driven Actuator Strip - Virtual Lab</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <nav class="sidebar">
+            <div class="sidebar-logo">4D Device Lab</div>
+            <div class="form-container">
+                <div class="form-row">
+                    <div class="form-label">1. Pick the light colour:</div>
+                    <div class="form-options">
+                        <div class="option"><input type="radio" name="wl" value="365" id="wlUV" checked><label for="wlUV">365 nm UV - makes it bend</label></div>
+                        <div class="option"><input type="radio" name="wl" value="450" id="wlVis"><label for="wlVis">450 nm visible - lets it relax</label></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">2. How bright is the light?</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>Light brightness I&#8320; (mW/cm&sup2;)</label><input type="range" id="intInput" min="5" max="60" step="1" value="10"><div class="slider-val" id="valInt">10 mW/cm&sup2;</div></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">3. How much dye in the strip?</div>
+                    <div class="form-options">
+                        <div class="slider-group"><label>Dye loading C (mmol/L)</label><input type="range" id="concInput" min="1" max="30" step="1" value="8"><div class="slider-val" id="valConc">8 mmol/L</div></div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" id="btnRun">Shine the Light</button>
+                    <button type="button" onclick="location.reload()">Reset Strip</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            <div class="content-container">
+                <h1 class="title">Sub-Calc A: The Light-Driven Actuator Strip</h1>
+                <p style="color:#475569;font-size:14px;margin:-6px 0 14px;">A flat strip is 4D-printed with a light-sensitive azobenzene dye. Shine <strong>UV (365 nm)</strong> on it and it <strong>bends toward the light</strong>; switch to <strong>visible (450 nm)</strong> and it relaxes flat - a tiny actuator with no motor and no wires. Your job: pick a light recipe that bends it fast.</p>
+
+                <div class="sim-viewport">
+                    <div style="position: relative; width: 450px; height: 400px; background: #fafbfc; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden;">
+                        <div class="sim-label" id="stateLabel">Strip: relaxed (flat)</div>
+                        <div id="viewport3D" style="width: 100%; height: 100%;"></div>
+                    </div>
+                    <div style="position: relative; width: 450px; height: 400px; display: flex; flex-direction: column; gap: 0; background: #fafbfc;">
+                        <div style="position: relative; height: 240px; border-bottom: 1px solid #cbd5e1;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">How far it has bent over time</div>
+                            <canvas id="plotCanvasAzo" width="450" height="240"></canvas>
+                        </div>
+                        <div style="position: relative; height: 160px;">
+                            <div class="sim-label" style="top:10px;left:10px;font-size:11px;padding:4px 10px;">Actuation time vs light brightness</div>
+                            <canvas id="plotCanvasBL" width="450" height="160"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Pick a light colour, set the brightness and dye loading, then click 'Shine the Light' to watch the printed strip bend.</div>
+                <div id="resultsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">What the actuator does</h3>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Light colour / effect:</span><span class="result-val" id="resWl" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Light reaching the strip:</span><span class="result-val" id="resIabs" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">How much the dye switches:</span><span class="result-val" id="resCis" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;"><span style="color:#64748b;font-weight:500;">Bend angle:</span><span class="result-val" id="resBend" style="font-weight:700;color:#1e293b;">-</span></div>
+                        <div class="result-row" style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:#64748b;font-weight:500;">Time to actuate (t90):</span><span class="result-val" id="resT90" style="font-weight:700;color:#1e293b;">-</span></div>
+                    </div>
+                    <div class="result-box premium-card" style="margin-bottom: 0;">
+                        <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">Brighter light bends it faster</h3>
+                        <table id="azoTable" style="width:100%;border-collapse:collapse;font-size:12px;text-align:left;"><thead><tr style="border-bottom:1px solid #cbd5e1;color:#475569;font-weight:600;"><th style="padding:6px 4px;">Brightness I&#8320; (mW/cm&sup2;)</th><th style="padding:6px 4px;text-align:right;">Actuate time t90 (s)</th></tr></thead><tbody></tbody></table>
+                    </div>
+                </div>
+                <div class="premium-card" style="margin-top: 20px;">
+                    <h3 style="color:#8A1134;margin-bottom:15px;font-size:18px;font-weight:700;border-bottom:2px solid #fff1f2;padding-bottom:8px;">The physics behind the bend</h3>
+                    <div id="azoFormulaContainer" style="padding:10px;font-size:14px;overflow-x:auto;background:#fafbfc;border-radius:8px;border:1px solid #e2e8f0;min-height:80px;"></div>
+                </div>
+                <div class="floating-nav"><a href="index1.html" id="btnNextCalc" class="btn-nav primary" style="display: none;">Next Experiment -></a></div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+<script src="..\assets\js\iframeResize.js"></script></body>
+</html>

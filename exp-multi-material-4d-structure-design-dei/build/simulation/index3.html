@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · The Deployable Solar Panel (Miura Fold) — Multi-Material 4D Structure Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will the fold stay crisp?</span><span class="subcalc__desc">Stiffness contrast</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">right joints?</span><span class="subcalc__desc">Kutzbach-Gr&uuml;bler mobility</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">what fold angles?</span><span class="subcalc__desc">Forward / inverse kinematics</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">how small does it pack?</span><span class="subcalc__desc">Miura-ori tessellation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">folds before it cracks?</span><span class="subcalc__desc">S-N fatigue life</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Origami Tessellation</span>
+            <h1 class="stage__title">The Deployable Solar Panel / Stent (Miura Fold)</h1>
+            <p class="stage__obj">The Miura-ori crease pattern packs flat and deploys in one rigid motion, with a built-in negative (auxetic) Poisson's ratio &mdash; it expands in both directions as you pull it open, ideal for solar arrays and stents that must pack small and deploy reliably.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the crease pattern and fold amount, then click 'Deploy the Panel' to fold it compact and pop it open.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Miura panel</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How compact it packs vs how far it folds</div>
+                    <canvas id="plotCanvasMiura" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Auxetic: expands both ways (negative Poisson)</div>
+                    <canvas id="plotCanvasNu" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Pack ratio at different fold amounts</h3>
+            <table id="miuraTable">
+                <thead><tr><th>&phi; (deg)</th><th>packs to</th><th style="text-align:right;">&nu;</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind it</button>
+            <div class="derivation-content"><div id="miuraFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Crease pattern (sector angle)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&alpha; (deg) &ndash; sharper zigzag &rarr;</label><input type="range" id="alphaInput" aria-label="Alpha Input" min="20" max="75" step="1" value="45"><div class="slider-val" id="valAlpha">45 deg</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">How far it folds up</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&phi; (deg) &ndash; 0 open &rarr; 85 packed</label><input type="range" id="phiInput" aria-label="Phi Input" min="5" max="85" step="1" value="60"><div class="slider-val" id="valPhi">60 deg</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Deploy the Panel</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>How well does it pack and deploy?</h3>
+                        <div class="result-row"><span class="result-label">Sector / fold angle</span><span class="result-val" id="resAng">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Mountain-valley crease angle</span><span class="result-val" id="resThetaM">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Pack ratio (folded area)</span><span class="result-val" id="resAratio">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Poisson's ratio &nu;</span><span class="result-val" id="resNu">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Behaviour</span><span class="result-val" id="resAux">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index4.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

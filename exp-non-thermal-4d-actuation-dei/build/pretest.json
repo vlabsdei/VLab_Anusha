@@ -1,0 +1,178 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. What is the key advantage of non-thermal actuation (light or magnetic) over thermal actuation in 4D printing?",
+      "answers": {
+        "a": "It is always cheaper.",
+        "b": "It can be remote, spatially precise, and biocompatible in ways heat cannot easily provide.",
+        "c": "It does not require any energy.",
+        "d": "It only works in a vacuum."
+      },
+      "explanations": {
+        "a": "Incorrect - cost is not the defining advantage.",
+        "b": "Correct - light and magnetic stimuli allow remote, localised, biocompatible actuation.",
+        "c": "Incorrect - all actuation requires an energy input.",
+        "d": "Incorrect - these methods work in normal environments, including inside the body."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. Azobenzene molecules switch between which two configurations under light?",
+      "answers": {
+        "a": "Solid and liquid.",
+        "b": "trans (extended) and cis (bent).",
+        "c": "Hot and cold.",
+        "d": "Charged and neutral."
+      },
+      "explanations": {
+        "a": "Incorrect - this is a molecular isomerisation, not a phase change.",
+        "b": "Correct - UV light drives trans -> cis and visible light reverses it.",
+        "c": "Incorrect - the switch is photochemical, not thermal.",
+        "d": "Incorrect - azobenzene isomerisation is not an ionisation."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+
+    {
+      "question": "Q3. The Beer-Lambert law I(x) = I0 e^(-eps C x) describes:",
+      "answers": {
+        "a": "How a magnetic field decays with distance.",
+        "b": "How light intensity decreases with depth into an absorbing medium.",
+        "c": "How temperature rises with time.",
+        "d": "How stress relates to strain."
+      },
+      "explanations": {
+        "a": "Incorrect - that is a magnetostatics relation.",
+        "b": "Correct - Beer-Lambert gives the exponential attenuation of light with depth.",
+        "c": "Incorrect - that is a heating equation.",
+        "d": "Incorrect - that is Hooke's Law."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q4. Which wavelength is typically used to drive the trans -> cis isomerisation of azobenzene?",
+      "answers": {
+        "a": "Ultraviolet, around 365 nm.",
+        "b": "Visible blue, around 450 nm.",
+        "c": "Microwave.",
+        "d": "Radio waves."
+      },
+      "explanations": {
+        "a": "Correct - UV (~365 nm) drives trans -> cis; visible (~450 nm) reverses it.",
+        "b": "Incorrect - 450 nm drives the cis -> trans back-reaction.",
+        "c": "Incorrect - microwaves are not used for azobenzene isomerisation.",
+        "d": "Incorrect - radio waves do not drive this transition."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q5. In NIR photothermal actuation, what is the role of the embedded nanoparticles?",
+      "answers": {
+        "a": "They store electricity.",
+        "b": "They absorb near-infrared light and convert it into localised heat.",
+        "c": "They make the material transparent.",
+        "d": "They generate a magnetic field."
+      },
+      "explanations": {
+        "a": "Incorrect - they are optical absorbers, not capacitors.",
+        "b": "Correct - NIR-absorbing nanoparticles act as nanoscale heaters to trigger the transition.",
+        "c": "Incorrect - they absorb, not transmit, light.",
+        "d": "Incorrect - photothermal particles produce heat, not a field."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+
+    {
+      "question": "Q6. The magnetic torque on an embedded particle in a field B is given by:",
+      "answers": {
+        "a": "tau = m B sin(theta), where m = M_s V_particle.",
+        "b": "tau = m / B.",
+        "c": "tau = B / m.",
+        "d": "tau = m + B."
+      },
+      "explanations": {
+        "a": "Correct - the torque on a magnetic moment in a field is m B sin(theta).",
+        "b": "Incorrect - torque is a product, not a ratio.",
+        "c": "Incorrect - this is dimensionally wrong.",
+        "d": "Incorrect - torque is not a sum of moment and field."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q7. How does the critical field B_crit to bend a magnetic composite beam depend on particle volume fraction?",
+      "answers": {
+        "a": "It increases with volume fraction.",
+        "b": "It scales inversely - a more highly loaded composite bends in a weaker field.",
+        "c": "It is independent of loading.",
+        "d": "It is zero at all loadings."
+      },
+      "explanations": {
+        "a": "Incorrect - higher loading lowers, not raises, the required field.",
+        "b": "Correct - B_crit scales inversely with particle volume fraction.",
+        "c": "Incorrect - loading strongly affects B_crit.",
+        "d": "Incorrect - a finite field is always needed."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. The on-axis magnetic field of a coil at distance r falls off as:",
+      "answers": {
+        "a": "1/(R^2 + r^2)^(3/2).",
+        "b": "Linearly with r.",
+        "c": "It does not decrease.",
+        "d": "It increases with r."
+      },
+      "explanations": {
+        "a": "Correct - B = mu0 n I R^2 / (2 (R^2 + r^2)^(3/2)), which decays rapidly with distance.",
+        "b": "Incorrect - the falloff is faster than linear.",
+        "c": "Incorrect - the field clearly weakens with distance.",
+        "d": "Incorrect - the field decreases, not increases, with r."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+
+    {
+      "question": "Q9. Which of the three actuation stimuli is the fastest?",
+      "answers": {
+        "a": "Thermal (minutes).",
+        "b": "Photo (seconds).",
+        "c": "Magnetic (milliseconds).",
+        "d": "They are all equally fast."
+      },
+      "explanations": {
+        "a": "Incorrect - thermal actuation is the slowest.",
+        "b": "Incorrect - photo is intermediate.",
+        "c": "Correct - magnetic actuation responds in milliseconds, far faster than photo or thermal.",
+        "d": "Incorrect - they differ by orders of magnitude."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q10. Why is near-infrared (NIR) light preferred over UV for triggering actuation inside the body?",
+      "answers": {
+        "a": "Because UV is invisible.",
+        "b": "Because NIR penetrates tissue much more deeply than UV.",
+        "c": "Because NIR is cheaper.",
+        "d": "Because UV cannot carry energy."
+      },
+      "explanations": {
+        "a": "Incorrect - visibility is not the reason.",
+        "b": "Correct - NIR sits in the tissue 'optical window' and penetrates far deeper than UV.",
+        "c": "Incorrect - cost is not the deciding factor.",
+        "d": "Incorrect - UV carries energy but is strongly absorbed/scattered near the surface."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc C · Shape Recovery — Shape Memory Polymers</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Glass Transition</span><span class="subcalc__desc">T&#8339; &amp; WLF viscoelasticity</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Strain Fixity</span><span class="subcalc__desc">Programming &amp; R&#8348;</span></span></a>
+            <a class="subcalc is-active" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Shape Recovery</span><span class="subcalc__desc">R&#7523;, recovery stress, t&#8329;&#8325;</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Multi-Shape Memory</span><span class="subcalc__desc">Blends &amp; Fox equation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuation Energy</span><span class="subcalc__desc">Work, heat &amp; efficiency</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>3</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index1.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index3.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc C · Recovery Kinetics</span>
+            <h1 class="stage__title">Shape Recovery</h1>
+            <p class="stage__obj">Reheat the programmed specimen above T&#8339; and track recovery over time. Measure the relaxation time &tau;, the <b>shape recovery ratio R&#7523;</b>, the blocking stress under constraint, and the time to reach 95% recovery (t&#8329;&#8325;).</p>
+        </header>
+
+        <section class="insight" id="liveInsight">
+            <strong>Live Insight:</strong> The programmed polymer is locked in its temporary shape. Select a scenario and recovery temperature, then click &lsquo;Initiate Heating Cycle&rsquo;.
+        </section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">State: Idle</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div>
+                <div class="sim-label">Strain recovery &epsilon;(t) vs time</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Free vs constrained recovery</h3>
+            <table id="scenarioTable">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>&epsilon;&#8337;&#8340;</th>
+                        <th>R&#7523; (%)</th>
+                        <th>&sigma;&#8341;&#8337;&#8339;</th>
+                        <th style="text-align:right;">t&#8329;&#8325;</th>
+                    </tr>
+                </thead>
+                <tbody><!-- injected --></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content">
+                <div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:140px;"><!-- rendered --></div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Active Material (inherited)</div>
+                        <div class="premium-card-small" id="matInheritedCard" style="background:var(--rust-050); border:1px solid var(--rust-100); padding:11px 12px; border-radius:8px;">
+                            <div style="font-family:var(--mono); font-weight:600; color:var(--rust-700); font-size:14px;" id="inheritedMatName">PLA-SMP</div>
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:4px;" id="inheritedMatSpecs">T_g = 60.0&deg;C | X_c = 0.70</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Programmed Strain (inherited)</div>
+                        <div class="premium-card-small" style="background:#EEF2F7; border:1px solid #DCE4EE; padding:11px 12px; border-radius:8px;">
+                            <div style="font-family:var(--mono); font-weight:600; color:var(--navy-700); font-size:14px;" id="inheritedStrainVal">13.3 %</div>
+                            <div style="font-size:11px; color:var(--ink-2); margin-top:4px;">Fixed shape strain &epsilon;&#7524;</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Recovery Scenario</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                            <button type="button" class="btn-preset" id="scenarioFree">Free Recovery</button>
+                            <button type="button" class="btn-preset" id="scenarioConstrained">Constrained</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Simulation Variables</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Recovery Temp (&deg;C)</label>
+                                <input type="range" id="recTemp" aria-label="Rec Temp" min="60" max="100" value="75">
+                                <div class="slider-val" id="valRecTemp">75 &deg;C</div>
+                            </div>
+                            <div class="slider-group" id="oppStressGroup" style="display:none;">
+                                <label>Opposing Load &sigma;&#8338;&#8346;&#8346; (MPa)</label>
+                                <input type="range" id="oppStress" aria-label="Opp Stress" min="0.1" max="2.0" value="0.5" step="0.05">
+                                <div class="slider-val" id="valOppStress">0.5 MPa</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Reference Time &tau;&#8341;&#8337;&#8342; (s)</label>
+                                <input type="range" id="tauRef" aria-label="Tau Ref" min="100" max="2000" value="1000" step="50">
+                                <div class="slider-val" id="valTauRef">1000 s</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Initiate Heating Cycle</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Recovery kinetics</h3>
+                        <div class="result-row"><span class="result-label">Relaxation time &tau;</span><span class="result-val" id="resTau">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Shape recovery ratio R&#7523;</span><span class="result-val" id="resRr">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Generated recovery stress</span><span class="result-val" id="resRecStress">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Time to 95% recovery t&#8329;&#8325;</span><span class="result-val" id="resT95">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index3.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

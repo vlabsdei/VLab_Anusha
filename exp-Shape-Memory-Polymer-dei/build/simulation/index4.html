@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc E · Actuation Energy — Shape Memory Polymers</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Glass Transition</span><span class="subcalc__desc">T&#8339; &amp; WLF viscoelasticity</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Strain Fixity</span><span class="subcalc__desc">Programming &amp; R&#8348;</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Shape Recovery</span><span class="subcalc__desc">R&#7523;, recovery stress, t&#8329;&#8325;</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Multi-Shape Memory</span><span class="subcalc__desc">Blends &amp; Fox equation</span></span></a>
+            <a class="subcalc is-active" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuation Energy</span><span class="subcalc__desc">Work, heat &amp; efficiency</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>5</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index3.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-disabled" title="End of simulation">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc E · Thermodynamics</span>
+            <h1 class="stage__title">Actuation Energy &amp; Efficiency</h1>
+            <p class="stage__obj">Size a shape-memory actuator. Heating from ambient to the recovery temperature converts input heat Q&#8348;&#7523;&#8323;&#8341;&#8341;&#8341;&#8341; into mechanical work W&#8344;&#8337;&#8339;&#8341;, releasing stored programming energy U&#8342;&#8348;&#8338;&#8341;&#8337;&#8380;. Read the overall thermal <b>actuation efficiency &eta;</b>.</p>
+        </header>
+
+        <section class="insight" id="liveInsight">
+            <strong>Live Insight:</strong> Adjust geometry and C&#7527;. Heating the specimen from T_ambient (20&deg;C) to T_recovery (45&deg;C) triggers the recovery stroke, converting input heat (Q_trigger) into physical work (W_mech) while releasing the energy originally invested in programming (U_stored).
+        </section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Robotic Actuator Mechanics</div>
+                <div id="viewport3D"></div>
+                <div class="viewport-legend" style="position:absolute; bottom:12px; left:12px; background:rgba(255,255,255,.9); backdrop-filter:blur(4px); padding:9px 12px; border-radius:8px; border:1px solid var(--line); font-family:var(--mono); font-size:10.5px; display:flex; flex-direction:column; gap:5px; z-index:10; pointer-events:none;">
+                    <div style="font-weight:600; color:var(--navy-700);">Actuator states</div>
+                    <div style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:#3B6FD8;"></span><span style="color:var(--ink-2);">Programmed / cold (20&deg;C)</span></div>
+                    <div style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:#E2570F;"></span><span style="color:var(--ink-2);">Actuated / hot (45&deg;C)</span></div>
+                    <div style="border-top:1px solid var(--line); padding-top:5px; margin-top:1px; font-weight:600; color:var(--navy-700);">Live temp: <span id="lblLiveTemp">20.0 &deg;C</span></div>
+                    <div style="font-weight:600; color:var(--navy-700);">Recovered strain: <span id="lblLiveStrain">0.00</span></div>
+                </div>
+            </div>
+            <div>
+                <div class="sim-label">Energy balance</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Geometry &amp; Material</div>
+                        <div class="form-options" style="display:grid; grid-template-columns:1fr 1fr; gap:16px 14px;">
+                            <div class="slider-group">
+                                <label>Length (cm)</label>
+                                <input type="range" id="len" aria-label="Len" min="1" max="20" value="10">
+                                <div class="slider-val" id="valLen">10 cm</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Specific Heat C&#7527; (J/g&deg;C)</label>
+                                <input type="range" id="cp" aria-label="Cp" min="0.5" max="3.0" value="1.5" step="0.1">
+                                <div class="slider-val" id="valCp">1.5 J/g&deg;C</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Thickness (cm)</label>
+                                <input type="range" id="thi" aria-label="Thi" min="0.1" max="2.0" value="0.5" step="0.1">
+                                <div class="slider-val" id="valThi">0.5 cm</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Density (g/cm&sup3;)</label>
+                                <input type="range" id="den" aria-label="Den" min="0.5" max="2.0" value="1.2" step="0.1">
+                                <div class="slider-val" id="valDen">1.2 g/cm&sup3;</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Material &amp; Thermal Constants</div>
+                        <div class="model-note" style="display:flex; flex-direction:column; gap:5px;">
+                            <div style="display:flex; justify-content:space-between;"><span>E_rubbery (PU modulus)</span> <strong>15 MPa</strong></div>
+                            <div style="display:flex; justify-content:space-between;"><span>&epsilon;_u (programmed strain)</span> <strong>100% (1.0)</strong></div>
+                            <div style="display:flex; justify-content:space-between;"><span>&sigma;_recovery (opposing stress)</span> <strong>1.5 MPa</strong></div>
+                            <div style="display:flex; justify-content:space-between;"><span>T_ambient</span> <strong>20&deg;C</strong></div>
+                            <div style="display:flex; justify-content:space-between;"><span>T_recovery (trigger)</span> <strong>45&deg;C</strong></div>
+                            <div style="display:flex; justify-content:space-between; border-top:1px solid var(--line-strong); padding-top:5px; margin-top:1px;"><span>&Delta;T (actuation delta)</span> <strong>25&deg;C</strong></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Trigger Thermodynamic Actuation</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Work &amp; energy profile</h3>
+                        <div class="result-row"><span class="result-label">Total mass m</span><span class="result-val" id="resMass">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Energy stored, programming U&#8342;&#8348;&#8338;&#8341;&#8337;&#8380;</span><span class="result-val" id="resUstored">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Thermal energy to trigger Q&#8348;&#7523;&#8323;</span><span class="result-val" id="resThermal">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Mechanical work output W&#8344;&#8337;&#8339;&#8341;</span><span class="result-val" id="resWork">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Overall thermal efficiency &eta;</span><span class="result-val" id="resEff">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

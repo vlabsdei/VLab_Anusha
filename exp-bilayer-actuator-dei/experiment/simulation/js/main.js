@@ -465,7 +465,7 @@
         if (!container) return;
         
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xfafbfc);
+        scene.background = new THREE.Color(0xF4F5F3);
         
         camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
         camera.position.set(35, 20, 50);
@@ -488,11 +488,11 @@
         dirLight1.castShadow = true;
         scene.add(dirLight1);
         
-        const dirLight2 = new THREE.DirectionalLight(0x0ea5e9, 0.15); // blue bounce
+        const dirLight2 = new THREE.DirectionalLight(0x1E40AF, 0.15); // blue bounce
         dirLight2.position.set(-20, -50, -30);
         scene.add(dirLight2);
         
-        gridHelper = new THREE.GridHelper(80, 20, 0x8a1134, 0xe2e8f0);
+        gridHelper = new THREE.GridHelper(80, 20, 0xE2570F, 0xe2e8f0);
         gridHelper.position.y = -8;
         scene.add(gridHelper);
         
@@ -1034,7 +1034,7 @@
         ctx.setLineDash([]);
     
         // Draw Stress Profile Line
-        ctx.strokeStyle = '#8a1134';
+        ctx.strokeStyle = '#E2570F';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         stressPoints.forEach((pt, idx) => {
@@ -1103,7 +1103,7 @@
         maxK = maxK * 1.15;
     
         // Draw plot curve
-        ctx.strokeStyle = '#0ea5e9';
+        ctx.strokeStyle = '#1E40AF';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         historyData.forEach((pt, idx) => {
@@ -1116,7 +1116,7 @@
     
         // Draw current scrubbing time indicator line
         const currX = padLeft + (t / maxSimTime) * w;
-        ctx.strokeStyle = '#8a1134';
+        ctx.strokeStyle = '#E2570F';
         ctx.lineWidth = 1;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
@@ -1155,7 +1155,7 @@
                 <div>m = ${m.toFixed(3)}, &nbsp; n = ${n.toFixed(3)}</div>
                 <div style="margin-top: 4px;">&phi;(m,n) = 3(1+m)<sup>2</sup> + (1 + mn)(m<sup>2</sup> + 1/(mn))</div>
                 <div style="margin-top: 8px;">Substitution: &kappa; = [6 &times; (${strain_exp}) &times; (1 + ${m.toFixed(2)})<sup>2</sup>] / [${h_mm} mm &times; &phi;(m, n)]</div>
-                <div style="margin-top: 8px; font-weight: bold; color: #8A1134;">Result: &kappa; = ${k_val} m<sup>-1</sup></div>
+                <div style="margin-top: 8px; font-weight: bold; color: #E2570F;">Result: &kappa; = ${k_val} m<sup>-1</sup></div>
             </div>
         `;
     }
@@ -1624,7 +1624,7 @@
         if (!container) return;
         
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xfafbfc);
+        scene.background = new THREE.Color(0xF4F5F3);
         
         camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
         camera.position.set(25, 25, 35);
@@ -1647,11 +1647,11 @@
         dirLight1.castShadow = true;
         scene.add(dirLight1);
         
-        const dirLight2 = new THREE.DirectionalLight(0x0ea5e9, 0.15); // blue bounce
+        const dirLight2 = new THREE.DirectionalLight(0x1E40AF, 0.15); // blue bounce
         dirLight2.position.set(-20, -50, -30);
         scene.add(dirLight2);
         
-        gridHelper = new THREE.GridHelper(80, 20, 0x8a1134, 0xe2e8f0);
+        gridHelper = new THREE.GridHelper(80, 20, 0xE2570F, 0xe2e8f0);
         gridHelper.position.y = -8;
         scene.add(gridHelper);
         
@@ -1863,7 +1863,7 @@
             const dummyOrigin = new THREE.Vector3(0, arrowY, 0);
             
             fiberArrowParallel = new THREE.ArrowHelper(dummyDir, dummyOrigin, arrowLength, 0xef4444, arrowLength * 0.25, arrowLength * 0.15);
-            fiberArrowTransverse = new THREE.ArrowHelper(dummyDir, dummyOrigin, arrowLength, 0x3b82f6, arrowLength * 0.25, arrowLength * 0.15);
+            fiberArrowTransverse = new THREE.ArrowHelper(dummyDir, dummyOrigin, arrowLength, 0x1E40AF, arrowLength * 0.25, arrowLength * 0.15);
             
             specimenGroup.add(fiberArrowParallel);
             specimenGroup.add(fiberArrowTransverse);
@@ -2336,7 +2336,7 @@
         ctx.setLineDash([]);
     
         // Draw Stress profile
-        ctx.strokeStyle = '#8a1134';
+        ctx.strokeStyle = '#E2570F';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         stressPoints.forEach((pt, idx) => {
@@ -2393,8 +2393,8 @@
             return { x, y };
         };
     
-        // Plot Bending Angle (solid Crimson `#8a1134`)
-        ctx.strokeStyle = '#8a1134';
+        // Plot Bending Angle (solid Crimson `#E2570F`)
+        ctx.strokeStyle = '#E2570F';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         sweep.forEach((pt, idx) => {
@@ -2404,8 +2404,8 @@
         });
         ctx.stroke();
     
-        // Plot Twist Angle (dashed Blue `#0ea5e9`)
-        ctx.strokeStyle = '#0ea5e9';
+        // Plot Twist Angle (dashed Blue `#1E40AF`)
+        ctx.strokeStyle = '#1E40AF';
         ctx.lineWidth = 2.0;
         ctx.setLineDash([4, 3]);
         ctx.beginPath();
@@ -2419,7 +2419,7 @@
     
         // Current operating orientation line
         const curX = padLeft + (currentTheta / 90) * w;
-        ctx.strokeStyle = '#8a1134';
+        ctx.strokeStyle = '#E2570F';
         ctx.lineWidth = 1;
         ctx.setLineDash([2, 2]);
         ctx.beginPath();
@@ -2442,9 +2442,9 @@
         const dotB = toPx(currentTheta, activeBendDeg);
         const dotT = toPx(currentTheta, activeTwistDeg);
     
-        ctx.fillStyle = '#8a1134';
+        ctx.fillStyle = '#E2570F';
         ctx.beginPath(); ctx.arc(dotB.x, dotB.y, 4.5, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = '#0ea5e9';
+        ctx.fillStyle = '#1E40AF';
         ctx.beginPath(); ctx.arc(dotT.x, dotT.y, 4.5, 0, Math.PI*2); ctx.fill();
     
         // Axes
@@ -2488,7 +2488,7 @@
                 <div>&epsilon;<sub>&perp;</sub> = &beta;<sub>&perp;</sub> &times; &Delta;C = ${b2_val} &times; ${dc_val} = ${et_val}%</div>
                 <div style="margin-top: 4px;">&epsilon;<sub>xx</sub>(&theta;) = &epsilon;<sub>&parallel;</sub> cos<sup>2</sup>&theta; + &epsilon;<sub>&perp;</sub> sin<sup>2</sup>&theta; = ${exx_val}%</div>
                 <div>&epsilon;<sub>xy</sub>(&theta;) = (&epsilon;<sub>&parallel;</sub> - &epsilon;<sub>&perp;</sub>) sin&theta; cos&theta; = ${exy_val}%</div>
-                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">
+                <div style="margin-top: 6px; font-weight: bold; color: #E2570F;">
                     &kappa; = [6 &times; &Delta;&epsilon;<sub>xx</sub> &times; (1+m)<sup>2</sup>] / [h &times; &phi;(m,n)] = ${kx_val} m<sup>-1</sup>
                 </div>
             </div>
@@ -2962,7 +2962,7 @@
         if (!container) return;
     
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xfafbfc);
+        scene.background = new THREE.Color(0xF4F5F3);
     
         camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
         camera.position.set(0, 15, 20);
@@ -2986,7 +2986,7 @@
         dirLight1.castShadow = true;
         scene.add(dirLight1);
     
-        const dirLight2 = new THREE.DirectionalLight(0x3b82f6, 0.15); // blue fill
+        const dirLight2 = new THREE.DirectionalLight(0x1E40AF, 0.15); // blue fill
         dirLight2.position.set(-10, -20, -10);
         scene.add(dirLight2);
     
@@ -3381,8 +3381,8 @@
             const topLinesGeo = buildPrintLinesGeometry(h1_render + 0.01, L_render, W_render, parseFloat(slideThetaTop.value), kappa_render, tau_render);
             const botLinesGeo = buildPrintLinesGeometry(-h2_render - 0.01, L_render, W_render, parseFloat(slideThetaBot.value), kappa_render, tau_render);
             
-            const topLinesMat = new THREE.LineBasicMaterial({ color: 0x1e3a8a, linewidth: 2.5 });
-            const botLinesMat = new THREE.LineBasicMaterial({ color: 0xe11d48, linewidth: 2.5 });
+            const topLinesMat = new THREE.LineBasicMaterial({ color: 0x1E40AF, linewidth: 2.5 });
+            const botLinesMat = new THREE.LineBasicMaterial({ color: 0xE2570F, linewidth: 2.5 });
             
             topLines = new THREE.LineSegments(topLinesGeo, topLinesMat);
             botLines = new THREE.LineSegments(botLinesGeo, botLinesMat);
@@ -3580,7 +3580,7 @@
         const yMax = maxK * 1.15;
         
         // Draw Curvature curve (crimson)
-        ctxPlot.strokeStyle = '#8a1134';
+        ctxPlot.strokeStyle = '#E2570F';
         ctxPlot.lineWidth = 2.5;
         ctxPlot.beginPath();
         for (let i = 0; i < dataPoints.length; i++) {
@@ -3592,7 +3592,7 @@
         ctxPlot.stroke();
         
         // Draw Twist rate curve (dashed blue)
-        ctxPlot.strokeStyle = '#0ea5e9';
+        ctxPlot.strokeStyle = '#1E40AF';
         ctxPlot.lineWidth = 2.0;
         ctxPlot.setLineDash([4, 3]);
         ctxPlot.beginPath();
@@ -3607,7 +3607,7 @@
         
         // Operating line marker
         const curX = padLeft + (currentDT / 100) * plotW;
-        ctxPlot.strokeStyle = '#8a1134';
+        ctxPlot.strokeStyle = '#E2570F';
         ctxPlot.lineWidth = 1;
         ctxPlot.setLineDash([2, 2]);
         ctxPlot.beginPath();
@@ -3624,9 +3624,9 @@
         const dotK_y = padTop + plotH - (currK / yMax) * plotH;
         const dotT_y = padTop + plotH - (currT / yMax) * plotH;
         
-        ctxPlot.fillStyle = '#8a1134';
+        ctxPlot.fillStyle = '#E2570F';
         ctxPlot.beginPath(); ctxPlot.arc(curX, dotK_y, 4, 0, Math.PI * 2); ctxPlot.fill();
-        ctxPlot.fillStyle = '#0ea5e9';
+        ctxPlot.fillStyle = '#1E40AF';
         ctxPlot.beginPath(); ctxPlot.arc(curX, dotT_y, 4, 0, Math.PI * 2); ctxPlot.fill();
         
         // Labels
@@ -4062,7 +4062,7 @@
             if (isCurrent) {
                 tr.style.background = '#eff6ff'; // Light slate blue highlight
                 tr.style.fontWeight = '600';
-                tr.style.borderLeft = '3px solid #3b82f6';
+                tr.style.borderLeft = '3px solid #1E40AF';
             } else {
                 tr.style.borderLeft = '3px solid transparent';
                 tr.style.background = 'transparent';
@@ -4101,7 +4101,7 @@
                 <div><strong>Fick's Second Law:</strong> &part;C/&part;t = D &times; &part;<sup>2</sup>C/&part;x<sup>2</sup></div>
                 <div style="margin-top: 6px;"><strong>Parameters:</strong> D = ${D_html} m<sup>2</sup>/s, &nbsp; L = ${L_mm.toFixed(1)} mm = ${L_html} m</div>
                 <div style="margin-top: 6px;">&tau; = (D &times; t) / L<sup>2</sup> = [(${D_html}) &times; t] / (${L_html})<sup>2</sup> = t / ${(L*L/D).toFixed(0)} s</div>
-                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">t<sub>90</sub> &approx; 0.53 &times; L<sup>2</sup> / D = 0.53 &times; (${L_html})<sup>2</sup> / ${D_html} = ${formatTime(t_90)}</div>
+                <div style="margin-top: 6px; font-weight: bold; color: #E2570F;">t<sub>90</sub> &approx; 0.53 &times; L<sup>2</sup> / D = 0.53 &times; (${L_html})<sup>2</sup> / ${D_html} = ${formatTime(t_90)}</div>
             </div>
         `;
     }
@@ -4148,7 +4148,7 @@
         
         // 1. Create Scene & Background
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc); // Premium light slate grey background
+        scene.background = new THREE.Color(0xF4F5F3); // Premium light slate grey background
         
         // 2. Camera Setup (Adjusted to look front-on with slight 3/4 tilt to optimize wall visibility)
         camera = new THREE.PerspectiveCamera(40, canvasElement.clientWidth / canvasElement.clientHeight, 0.1, 100);
@@ -4183,7 +4183,7 @@
         dirLight.castShadow = true;
         scene.add(dirLight);
         
-        const pointLight = new THREE.PointLight(0x3b82f6, 0.5, 15);
+        const pointLight = new THREE.PointLight(0x1E40AF, 0.5, 15);
         pointLight.position.set(-4, 3, -4);
         scene.add(pointLight);
         
@@ -4212,7 +4212,7 @@
         contactGeom.rotateY(Math.PI / 2); // Rotate to lie in Y-Z plane
         
         const contactMat = new THREE.MeshBasicMaterial({
-            color: 0x2563eb,
+            color: 0x1E40AF,
             transparent: true,
             opacity: 0.4,
             side: THREE.DoubleSide
@@ -4331,8 +4331,8 @@
         const positionAttribute = slabGeom.getAttribute('position');
         const colors = [];
         const color = new THREE.Color();
-        const dryColor = new THREE.Color(0xf8fafc); // Slate 50 (dry, C=0)
-        const wetColor = new THREE.Color(0x2563eb); // Blue 600 (saturated, C=1)
+        const dryColor = new THREE.Color(0xF4F5F3); // Slate 50 (dry, C=0)
+        const wetColor = new THREE.Color(0x1E40AF); // Blue 600 (saturated, C=1)
         
         for (let i = 0; i < positionAttribute.count; i++) {
             const x = positionAttribute.getX(i);
@@ -4516,7 +4516,7 @@
         ctxPlot.fill();
         
         // Draw line
-        ctxPlot.strokeStyle = '#3b82f6';
+        ctxPlot.strokeStyle = '#1E40AF';
         ctxPlot.lineWidth = 2.5;
         ctxPlot.beginPath();
         dataPoints.forEach((pt, idx) => {
@@ -5056,7 +5056,7 @@
             if (isCurrent) {
                 tr.style.background = '#eff6ff'; // Light slate blue highlight
                 tr.style.fontWeight = '600';
-                tr.style.borderLeft = '3px solid #3b82f6';
+                tr.style.borderLeft = '3px solid #1E40AF';
             } else {
                 tr.style.borderLeft = '3px solid transparent';
                 tr.style.background = 'transparent';
@@ -5095,7 +5095,7 @@
                 <div style="margin-top: 6px;"><strong>Free Deflection:</strong> &delta;<sub>free</sub> = (&kappa; &times; L<sup>2</sup>) / 2 = ${delta_str}</div>
                 <div style="margin-top: 6px;"><strong>Blocking Force:</strong> F<sub>block</sub> = (E<sub>eff</sub> &times; h<sup>3</sup> &times; b) / (6R<sub>free</sub> &times; L) = ${F_str}</div>
                 <div style="margin-top: 6px;"><strong>Work Output:</strong> W = (1/2) &times; F<sub>block</sub> &times; &delta;<sub>free</sub> = ${W_str}</div>
-                <div style="margin-top: 6px; font-weight: bold; color: #8A1134;">Energy Density: U<sub>act</sub> = W / Volume = ${U_html} J/cm<sup>3</sup></div>
+                <div style="margin-top: 6px; font-weight: bold; color: #E2570F;">Energy Density: U<sub>act</sub> = W / Volume = ${U_html} J/cm<sup>3</sup></div>
             </div>
         `;
     }
@@ -5132,7 +5132,7 @@
         
         // 1. Create Scene & Background
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf8fafc);
+        scene.background = new THREE.Color(0xF4F5F3);
         
         // 2. Camera Setup (Positioned side-on/3/4 view to emphasize thin dimension L and deflection)
         camera = new THREE.PerspectiveCamera(40, canvasElement.clientWidth / canvasElement.clientHeight, 0.1, 100);
@@ -5167,7 +5167,7 @@
         dirLight.castShadow = true;
         scene.add(dirLight);
         
-        const pointLight = new THREE.PointLight(0x3b82f6, 0.45, 15);
+        const pointLight = new THREE.PointLight(0x1E40AF, 0.45, 15);
         pointLight.position.set(-4, 3, -4);
         scene.add(pointLight);
         
@@ -5215,7 +5215,7 @@
         
         // Initialize global materials for reuse to prevent memory leaks (wireframe MeshBasicMaterial for a clear ghost/dashed outline)
         ghostMaterial = new THREE.MeshBasicMaterial({
-            color: 0x2563eb,
+            color: 0x1E40AF,
             transparent: true,
             opacity: 0.65,
             wireframe: true,
@@ -5223,7 +5223,7 @@
         });
         
         ghostLineMaterial = new THREE.LineBasicMaterial({
-            color: 0x2563eb
+            color: 0x1E40AF
         });
     
         // 9. Ghost (Curved) Beam Group
@@ -5587,7 +5587,7 @@
             
             // Draw finer subdivisions
             if (dec < maxLog) {
-                ctx.strokeStyle = '#f8fafc';
+                ctx.strokeStyle = '#F4F5F3';
                 for (let sub = 2; sub <= 9; sub++) {
                     const subVal = dec + Math.log10(sub);
                     const subX = padLeft + ((subVal - minLog) / decades) * w;
@@ -5600,7 +5600,7 @@
         // 2. Data bounds
         const data = [
             { label: 'SMA', val: 1.0, color: '#ef4444' }, // Shape Memory Alloys: ~1.0 J/cm³
-            { label: 'Bilayer', val: U_act_J_cm3, color: '#3b82f6' }, // Hydro-bilayer (computed)
+            { label: 'Bilayer', val: U_act_J_cm3, color: '#1E40AF' }, // Hydro-bilayer (computed)
             { label: 'SMP', val: 0.1, color: '#eab308' }  // Shape Memory Polymers: ~0.1 J/cm³
         ];
         

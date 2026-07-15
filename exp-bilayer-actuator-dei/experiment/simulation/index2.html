@@ -3,218 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sub-Calc C: Print Path Programming - Virtual Lab</title>
-    <!-- Premium Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-    <link rel="stylesheet" href="css/main.css?v=2">
-    <!-- Three.js for 3D Viewport -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <title>Sub-Calc C · Print Path Programming — Bilayer Actuator Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
-    <div class="app-layout">
-        <!-- LEFT COLUMN: SIDEBAR CONTROLS -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">4D Printing Lab</div>
-                <div class="sidebar-subtitle">Print Path Shape Programmer</div>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Timoshenko Bimetal</span><span class="subcalc__desc">Bending curvature &amp; stress</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Hygroscopic Swelling</span><span class="subcalc__desc">Anisotropic expansion</span></span></a>
+            <a class="subcalc is-active" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Print Path Programming</span><span class="subcalc__desc">Raster angle &amp; twist</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Diffusion Timescale</span><span class="subcalc__desc">Fickian moisture transport</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuator Work Output</span><span class="subcalc__desc">Blocking force &amp; energy</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>3</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index1.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index3.html" title="Next sub-calc">&rsaquo;</a>
             </div>
-            
-            <div class="control-sections">
-                <!-- Section 1: Presets -->
-                <div class="control-group">
-                    <h3 class="section-title">1. Print Path Presets</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px;">
-                        <button type="button" class="btn btn-secondary" id="preset1Btn" style="font-size: 11px; padding: 6px 4px; height: auto;">0°/90° (Bend)</button>
-                        <button type="button" class="btn btn-secondary" id="preset2Btn" style="font-size: 11px; padding: 6px 4px; height: auto;">45°/-45° (Twist)</button>
-                        <button type="button" class="btn btn-secondary" id="preset3Btn" style="font-size: 11px; padding: 6px 4px; height: auto;">0°/45° (Helix)</button>
-                        <button type="button" class="btn btn-secondary" id="preset4Btn" style="font-size: 11px; padding: 6px 4px; height: auto;">45°/90° (Helix)</button>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc C · Print-Path Anisotropy</span>
+            <h1 class="stage__title">Print Path Programming &amp; Anisotropy</h1>
+            <p class="stage__obj">The FDM raster angle in each printed layer sets its thermal-expansion axis. Program the top and bottom raster angles independently &mdash; matched (0&deg;/90&deg;) gives pure bending, offset (45&deg;/&minus;45&deg;) gives twist, in between gives a programmable helix.</p>
+        </header>
+
+        <section id="liveInsight" class="safety-box"><strong>Live Insight:</strong> Adjust the raster angles and thermal load, then simulate actuation.</section>
+
+        <div class="sim-viewport-fluid">
+            <div class="viewport-card">
+                <div class="viewport-header" style="justify-content: space-between;">
+                    <span id="stateLabel" class="state-indicator flat">State: Idle &mdash; Room Temp</span>
+                    <div class="viewport-actions">
+                        <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
                     </div>
                 </div>
-
-                <!-- Section 2: Raster Settings -->
-                <div class="control-group">
-                    <h3 class="section-title">2. Slicer Paths</h3>
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Top Layer Raster (θ_top)</span>
-                            <span id="valTop" class="value-badge">0°</span>
-                        </div>
-                        <input type="range" id="thetaTop" min="-90" max="90" step="5" value="0">
-                    </div>
-                    
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Bottom Layer Raster (θ_bot)</span>
-                            <span id="valBot" class="value-badge">90°</span>
-                        </div>
-                        <input type="range" id="thetaBot" min="-90" max="90" step="5" value="90">
+                <div class="canvas-3d-wrapper">
+                    <div id="viewport3D"></div>
+                    <div class="legend-box" style="width:180px;">
+                        <div class="legend-title">Local Curvature &kappa; (m&#8315;&sup1;)</div>
+                        <div class="legend-bar" style="background: linear-gradient(to right, #1E40AF, #ffffff, #E2570F); height:10px; border-radius:2px; margin-top:4px;"></div>
+                        <div class="legend-labels"><span>Flat</span><span>0</span><span>Max</span></div>
                     </div>
                 </div>
-
-                <!-- Section 3: Actuation Settings -->
-                <div class="control-group">
-                    <h3 class="section-title">3. Stimulus Settings</h3>
-                    <div class="slider-wrapper">
-                        <div class="slider-header">
-                            <span>Thermal Load (ΔT)</span>
-                            <span id="valDT" class="value-badge">50 °C</span>
-                        </div>
-                        <input type="range" id="deltaT" min="0" max="100" step="1" value="50">
-                    </div>
-                </div>
-
-                <!-- Section 4: Material settings -->
-                <div class="control-group">
-                    <h3 class="section-title">4. Material Constants</h3>
-                    <div class="material-chips" style="display: flex; gap: 6px; margin-top: 4px;">
-                        <span class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px;">α_∥ = 10 × 10⁻⁶ /K</span>
-                        <span class="value-badge" style="background: #f1f5f9; color: var(--text-secondary); font-size: 11px;">α_⊥ = 100 × 10⁻⁶ /K</span>
-                    </div>
-                </div>
-
-                <!-- Run / Reset Buttons -->
-                <div class="sidebar-buttons">
-                    <button type="button" id="btnRun" class="btn btn-primary">Simulate Actuation</button>
-                    <button type="button" id="btnReset" class="btn btn-secondary">Reset Setup</button>
+                <div class="viewport-overlay-controls">
+                    <label><input type="checkbox" id="showPrintLines" checked> Show Print Lines</label>
+                    <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Bed</label>
                 </div>
             </div>
-        </aside>
 
-        <!-- CENTER COLUMN: MAIN VIEWPORT & TIMELINE -->
-        <main class="center-content">
-            <div id="viewportContainer" style="display: flex; flex-direction: column; flex: 1;">
-                <div class="viewport-card">
-                    <div class="viewport-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span id="stateLabel" class="state-indicator flat" style="margin-right: auto;">State: Idle — Room Temp</span>
-                        <div class="viewport-actions">
-                            <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
-                        </div>
+            <div class="timeline-card">
+                <div class="timeline-row">
+                    <button id="btnPlayPause" class="btn-play">Play</button>
+                    <div class="timeline-slider-wrapper">
+                        <input type="range" id="timeScrubber" aria-label="Time Scrubber" min="0" max="100" step="1" value="50" style="width: 100%;">
                     </div>
-                    
-                    <!-- 3D Render Area -->
-                    <div class="canvas-3d-wrapper">
-                        <div id="viewport3D"></div>
-                        
-                        <!-- Curvature Legend -->
-                        <div class="legend-box" style="width: 180px; padding: 10px; background: rgba(255,255,255,0.95); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                            <div class="legend-title" style="font-weight: 700; color: var(--text-primary); font-size: 11px;">Local Curvature κ (m⁻¹)</div>
-                            <div class="legend-bar" style="background: linear-gradient(to right, #3b82f6, #ffffff, #ef4444); height: 10px; border-radius: 2px; margin-top: 4px;"></div>
-                            <div class="legend-labels" style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-secondary); margin-top: 2px;">
-                                <span>Flat (Blue)</span>
-                                <span>0</span>
-                                <span>Max (Red)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Visibility control overlays -->
-                    <div class="viewport-overlay-controls">
-                        <label><input type="checkbox" id="showPrintLines" checked> Show Print Lines</label>
-                        <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Bed</label>
-                    </div>
+                    <div class="time-readout"><span id="timeVal">50</span> &deg;C / 100&deg;C</div>
                 </div>
+                <div class="timeline-stats-row">
+                    <div class="stat-badge">Top Raster (&theta;_top): <strong id="timelineTop">0&deg;</strong></div>
+                    <div class="stat-badge">Bottom Raster (&theta;_bot): <strong id="timelineBot">90&deg;</strong></div>
+                    <div class="stat-badge">Curvature: <strong id="timelineKappa">0.00 m&#8315;&sup1;</strong></div>
+                    <div class="stat-badge">Twist Rate: <strong id="timelineTwist">0.00 rad/m</strong></div>
+                </div>
+            </div>
+        </div>
 
-                <!-- Playback Scrubber scrubber -->
-                <div class="timeline-card">
-                    <div class="timeline-row">
-                        <button id="btnPlayPause" class="btn-play">Play</button>
-                        <div class="timeline-slider-wrapper">
-                            <input type="range" id="timeScrubber" min="0" max="100" step="1" value="50" style="width: 100%;">
-                        </div>
-                        <div class="time-readout">
-                            <span id="timeVal">50</span> °C / 100°C
+        <div class="datacard">
+            <h3>Effective expansion &amp; curvature readouts</h3>
+            <table>
+                <thead><tr><th>&alpha;&#8342;&#8347;&#8347;,top</th><th>&alpha;&#8342;&#8347;&#8347;,bottom</th><th>Curvature &kappa;</th><th style="text-align:right;">Deformation mode</th></tr></thead>
+                <tbody><tr>
+                    <td id="resAlphaTop">&mdash;</td><td id="resAlphaBot">&mdash;</td><td id="resKappa">&mdash;</td><td id="resMode" style="text-align:right;">&mdash;</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="control-sections">
+                    <div class="control-group">
+                        <h3 class="section-title">1. Print Path Presets</h3>
+                        <div style="display: grid; grid-template-columns:1fr 1fr; gap:8px;">
+                            <button type="button" class="btn btn-secondary" id="preset1Btn">0&deg;/90&deg; (Bend)</button>
+                            <button type="button" class="btn btn-secondary" id="preset2Btn">45&deg;/-45&deg; (Twist)</button>
+                            <button type="button" class="btn btn-secondary" id="preset3Btn">0&deg;/45&deg; (Helix)</button>
+                            <button type="button" class="btn btn-secondary" id="preset4Btn">45&deg;/90&deg; (Helix)</button>
                         </div>
                     </div>
-                    <div class="timeline-stats-row">
-                        <div class="stat-badge">Top Raster (θ_top): <strong id="timelineTop">0°</strong></div>
-                        <div class="stat-badge">Bottom Raster (θ_bot): <strong id="timelineBot">90°</strong></div>
-                        <div class="stat-badge">Curvature: <strong id="timelineKappa">0.00 m⁻¹</strong></div>
-                        <div class="stat-badge">Twist Rate: <strong id="timelineTwist">0.00 rad/m</strong></div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">2. Slicer Paths</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Top Layer Raster (&theta;_top)</span><span id="valTop" class="value-badge">0&deg;</span></div>
+                            <input type="range" id="thetaTop" aria-label="Theta Top" min="-90" max="90" step="5" value="0">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Bottom Layer Raster (&theta;_bot)</span><span id="valBot" class="value-badge">90&deg;</span></div>
+                            <input type="range" id="thetaBot" aria-label="Theta Bot" min="-90" max="90" step="5" value="90">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">3. Stimulus Settings</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Thermal Load (&Delta;T)</span><span id="valDT" class="value-badge">50 &deg;C</span></div>
+                            <input type="range" id="deltaT" aria-label="Delta T" min="0" max="100" step="1" value="50">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">4. Material Constants</h3>
+                        <div class="material-chips">
+                            <span class="value-badge">&alpha;&#8741; = 10 &times; 10&#8315;&#8310; /K</span>
+                            <span class="value-badge">&alpha;&perp; = 100 &times; 10&#8315;&#8310; /K</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-buttons">
+                        <button type="button" id="btnRun" class="btn btn-primary">Simulate Actuation</button>
+                        <button type="button" id="btnReset" class="btn btn-secondary">Reset Setup</button>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+    </aside>
 
-        <!-- RIGHT COLUMN: ANALYTICS & EQUATION PANELS -->
-        <aside class="right-panel">
-            <h2 class="panel-title">Live Analytics</h2>
-
-            <!-- Curvature Plot -->
-            <div class="analytics-card">
-                <div class="chart-header">
-                    <h3>Curvature Plot</h3>
-                    <span class="chart-subtitle">Curvature & Twist vs ΔT</span>
-                </div>
-                <canvas id="plotCanvas" width="300" height="180" style="width: 100%; height: auto;"></canvas>
-            </div>
-
-            <!-- Comparison Table Panel -->
-            <div class="analytics-card" style="padding: 12px;">
-                <h3 style="margin-bottom: 8px;">Auto-Computed Comparisons</h3>
-                <table class="results-table" id="comparisonTable" style="width: 100%; font-size: 10px; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid #e2e8f0; font-weight: 600;">
-                            <th style="padding: 4px; text-align: left;">Combo</th>
-                            <th style="padding: 4px; text-align: right;">α_top</th>
-                            <th style="padding: 4px; text-align: right;">α_bot</th>
-                            <th style="padding: 4px; text-align: right;">κ</th>
-                            <th style="padding: 4px; text-align: right;">twist</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Injected dynamically in script_c.js -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Governing Equations -->
-            <div class="analytics-card equation-card">
-                <div class="chart-header">
-                    <h3>Governing Equations</h3>
-                    <span class="chart-subtitle">Live Print Path Substitutions</span>
-                </div>
-                <div id="latexFormulaContainer" class="katex-formula-block">
-                    <!-- Formulas rendered by KaTeX -->
-                </div>
-            </div>
-
-            <!-- Quantitative Output Table -->
-            <div class="analytics-card results-summary-card">
-                <h3>Numerical Output</h3>
-                <table class="results-table">
-                    <tr>
-                        <td>Effective CTE Top (α_eff_top):</td>
-                        <td id="resAlphaTop" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Effective CTE Bottom (α_eff_bot):</td>
-                        <td id="resAlphaBot" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Programmed Curvature (κ):</td>
-                        <td id="resKappa" class="res-bold">-</td>
-                    </tr>
-                    <tr>
-                        <td>Predicted Shape Mode:</td>
-                        <td id="resMode" class="res-bold">-</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- Live warning / insights box -->
-            <div id="liveInsight" class="safety-box">
-                <!-- Warnings injected here dynamically -->
-            </div>
-            
-            <!-- Floating navigation at bottom of right panel -->
-            <div class="floating-nav">
-                <a href="index1.html" class="btn-nav"><- Back</a>
-                <a href="index3.html" class="btn-nav primary">Next Experiment -></a>
-            </div>
-        </aside>
-    </div>
-    
-    <script src="js/main.js"></script>
+</div>
+<script defer src="js/main.js"></script>
 </body>
 </html>

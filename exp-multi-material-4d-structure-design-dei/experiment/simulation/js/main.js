@@ -118,7 +118,7 @@ HG.scene3D = function (containerId, camPos) {
     if (!c) return null;
     c.innerHTML = '';
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf6f8fb);
+    scene.background = new THREE.Color(0xF4F5F3);
     const camera = new THREE.PerspectiveCamera(45, c.clientWidth / c.clientHeight, 0.1, 100);
     camera.position.set(camPos[0], camPos[1], camPos[2]);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -220,7 +220,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
             for (let i = 0; i < KS; i++) {
                 const kind = i < NB ? 'base' : (i < NB + NH ? 'hinge' : 'wall');
                 const thk = kind === 'hinge' ? 0.05 : 0.09;
-                const col = kind === 'hinge' ? 0x8A1134 : 0x64748b;
+                const col = kind === 'hinge' ? 0xE2570F : 0x64748b;
                 const m = new THREE.Mesh(new THREE.BoxGeometry(1, thk, DEPTH), new THREE.MeshStandardMaterial({ color: col, roughness: 0.5, metalness: 0.05 }));
                 m.castShadow = true; m.receiveShadow = true; S.scene.add(m);
                 plates.push({ mesh: m, kind: kind });
@@ -253,7 +253,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
             for (let i = 0; i < KS; i++) {
                 const pl = plates[idx++];
                 placePlate(pl.mesh, pts[i], pts[i + 1]);
-                pl.mesh.material.color.copy(pl.kind === 'hinge' ? new THREE.Color(0x8A1134) : wallCol);
+                pl.mesh.material.color.copy(pl.kind === 'hinge' ? new THREE.Color(0xE2570F) : wallCol);
             }
         });
     }
@@ -264,20 +264,20 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const yMax = Math.max(5, Math.ceil(Lhinge(2.0, thetaDeg, Ea) / 10) * 10);
         const pts = [];
         for (let hh = 0.2; hh <= 2.001; hh += 0.02) pts.push({ x: hh, y: Lhinge(hh, thetaDeg, Ea) });
-        const fr = HG.frame(ctxSC, W, H, { xMin: 0.2, xMax: 2.0, yMin: 0, yMax: yMax, xTicks: 6, yTicks: 5, xLabel: 'Hinge thickness h (mm)', yLabel: 'Hinge length needed (mm)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(1), yFmt: (v) => v.toFixed(0) });
-        HG.curve(ctxSC, fr, pts, '#8A1134', 2.6);
+        const fr = HG.frame(ctxSC, W, H, { xMin: 0.2, xMax: 2.0, yMin: 0, yMax: yMax, xTicks: 6, yTicks: 5, xLabel: 'Hinge thickness h (mm)', yLabel: 'Hinge length needed (mm)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(1), yFmt: (v) => v.toFixed(0) });
+        HG.curve(ctxSC, fr, pts, '#E2570F', 2.6);
         HG.tracker(ctxSC, fr, h, Lhinge(h, thetaDeg, Ea), 'L=' + Lhinge(h, thetaDeg, Ea).toFixed(1) + ' mm', '#ef4444');
-        HG.legend(ctxSC, fr.pl + 8, fr.pt + 6, [{ color: '#8A1134', text: 'L for ' + thetaDeg.toFixed(0) + ' deg fold (L ~ h cubed)' }, { color: '#ef4444', text: 'Your hinge' }]);
+        HG.legend(ctxSC, fr.pl + 8, fr.pt + 6, [{ color: '#E2570F', text: 'L for ' + thetaDeg.toFixed(0) + ' deg fold (L ~ h cubed)' }, { color: '#ef4444', text: 'Your hinge' }]);
     }
     function drawLocPlot() {
         const W = plotLoc.width, H = plotLoc.height;
         const pts = [];
         for (let lx = 0; lx <= 4.001; lx += 0.04) { const sc = Math.pow(10, lx); pts.push({ x: lx, y: localisation(sc) * 100 }); }
-        const fr = HG.frame(ctxLoc, W, H, { padT: 14, padB: 26, xMin: 0, xMax: 4, yMin: 0, yMax: 100, xTicks: 4, yTicks: 5, xLabel: 'Stiffness contrast SC (panel vs hinge)', yLabel: '% fold in hinge', axisColor: '#2563eb', xFmt: (v) => '1e' + v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxLoc, W, H, { padT: 14, padB: 26, xMin: 0, xMax: 4, yMin: 0, yMax: 100, xTicks: 4, yTicks: 5, xLabel: 'Stiffness contrast SC (panel vs hinge)', yLabel: '% fold in hinge', axisColor: '#1E40AF', xFmt: (v) => '1e' + v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.shadeX(ctxLoc, fr, 3, 4, 'rgba(16,185,129,0.10)');
         HG.vLine(ctxLoc, fr, 3, '#16a34a', 'SC=1000');
         HG.hLine(ctxLoc, fr, 90, '#cbd5e1', '90%');
-        HG.curve(ctxLoc, fr, pts, '#2563eb', 2.4);
+        HG.curve(ctxLoc, fr, pts, '#1E40AF', 2.4);
         const SC = Ep / Ea;
         HG.tracker(ctxLoc, fr, Math.log10(SC), localisation(SC) * 100, (localisation(SC) * 100).toFixed(0) + '%', '#ef4444');
     }
@@ -310,7 +310,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- self-folding animation ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; dispFold = 0; btnRun.innerText = 'Folding...'; btnRun.style.background = '#475569'; stateLabel.innerText = 'Folding the sheet...'; stateLabel.style.background = '#dbeafe'; stateLabel.style.color = '#1e40af'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Fold the Box'; btnRun.style.background = '#8A1134'; targFold = 1; if (done) { dispFold = 1; const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } refresh(); }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Fold the Box'; btnRun.style.background = '#E2570F'; targFold = 1; if (done) { dispFold = 1; const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } refresh(); }
 
     // ---------- events ----------
     document.querySelectorAll('input[name="act"]').forEach((rd) => rd.addEventListener('change', () => { if (sweeping) stopRun(); Ea = parseFloat(document.querySelector('input[name="act"]:checked').value); refresh(); }));
@@ -374,7 +374,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     function regime(F) {
         if (F < 0) return { txt: 'Locked (jammed solid)', col: '#dc2626', amp: 0 };
         if (F === 0) return { txt: 'Rigid (will not move)', col: '#ea580c', amp: 0 };
-        if (F === 1) return { txt: 'One motion only', col: '#2563eb', amp: 0.5 };
+        if (F === 1) return { txt: 'One motion only', col: '#1E40AF', amp: 0.5 };
         if (F === 2) return { txt: 'Opens & closes (works!)', col: '#16a34a', amp: 1.0 };
         return { txt: 'Floppy (too loose)', col: '#b45309', amp: 1.5 };
     }
@@ -428,13 +428,13 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const yMax = Math.ceil((fHi + 1) / 2) * 2, yMin = Math.floor((fLo - 1) / 2) * 2;
         const pts = [];
         for (let jj = 0; jj <= 10.001; jj += 0.2) pts.push({ x: jj, y: mobility(n, jj, j2) });
-        const fr = HG.frame(ctxDOF, W, H, { xMin: 0, xMax: 10, yMin: yMin, yMax: yMax, xTicks: 5, yTicks: 6, xLabel: 'Working joints j1 added to the gripper', yLabel: 'Freedom to move (F)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxDOF, W, H, { xMin: 0, xMax: 10, yMin: yMin, yMax: yMax, xTicks: 5, yTicks: 6, xLabel: 'Working joints j1 added to the gripper', yLabel: 'Freedom to move (F)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.shadeYBand(ctxDOF, fr, yMin, 0, 'rgba(220,38,38,0.08)');
         HG.hLine(ctxDOF, fr, 2, '#16a34a', 'F=2 works');
         HG.hLine(ctxDOF, fr, 0, '#ea580c', 'F=0 locked');
-        HG.curve(ctxDOF, fr, pts, '#8A1134', 2.6);
+        HG.curve(ctxDOF, fr, pts, '#E2570F', 2.6);
         HG.tracker(ctxDOF, fr, j1, mobility(n, j1, j2), 'F=' + mobility(n, j1, j2), '#ef4444');
-        HG.legend(ctxDOF, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'F at n=' + n + ', j2=' + j2 }, { color: '#16a34a', dash: true, text: 'Gripper works at F=2' }, { color: '#ea580c', dash: true, text: 'Locked solid at F=0' }]);
+        HG.legend(ctxDOF, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'F at n=' + n + ', j2=' + j2 }, { color: '#16a34a', dash: true, text: 'Gripper works at F=2' }, { color: '#ea580c', dash: true, text: 'Locked solid at F=0' }]);
     }
     function drawRegPlot() {
         const W = plotReg.width, H = plotReg.height, ctx = ctxReg;
@@ -487,7 +487,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- joint-count sweep ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepJ1 = 0; btnRun.innerText = 'Testing...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Test the Gripper'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Test the Gripper'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) {
         sweepJ1 += dt * 1.7;
         j1 = Math.min(10, Math.round(sweepJ1));
@@ -581,7 +581,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         if (!S) return;
         const gp = new THREE.Mesh(new THREE.BoxGeometry(5, 0.04, 2.2), new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.9 })); gp.position.y = -1.2; gp.receiveShadow = true; S.scene.add(gp);
         for (let i = 0; i < 4; i++) { const m = new THREE.Mesh(new THREE.SphereGeometry(0.1, 14, 14), new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4 })); m.castShadow = true; S.scene.add(m); joints.push(m); }
-        const cols = [0x8A1134, 0xb91c4a, 0xd6336c];
+        const cols = [0xE2570F, 0xb91c4a, 0xd6336c];
         for (let i = 0; i < 3; i++) { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 0.08, PANELW), new THREE.MeshStandardMaterial({ color: cols[i], roughness: 0.45, metalness: 0.05 })); m.castShadow = true; S.scene.add(m); panels.push(m); }
         endMesh = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 16), new THREE.MeshStandardMaterial({ color: 0xef4444, emissive: 0x7f1d1d, emissiveIntensity: 0.3 })); S.scene.add(endMesh);
         tgtMesh = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), new THREE.MeshStandardMaterial({ color: 0x16a34a, transparent: true, opacity: 0.5 })); S.scene.add(tgtMesh);
@@ -608,14 +608,14 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     function drawKinPlot() {
         const W = plotKin.width, H = plotKin.height;
         const f = fk(ang);
-        const fr = HG.frame(ctxKin, W, H, { xMin: -32, xMax: 32, yMin: -8, yMax: 32, xTicks: 8, yTicks: 5, xLabel: 'x (mm)', yLabel: 'y (mm)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxKin, W, H, { xMin: -32, xMax: 32, yMin: -8, yMax: 32, xTicks: 8, yTicks: 5, xLabel: 'x (mm)', yLabel: 'y (mm)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         ctxKin.strokeStyle = 'rgba(148,163,184,0.5)'; ctxKin.setLineDash([3, 3]); ctxKin.beginPath();
         for (let a = -10; a <= 100; a += 4) { const x = 30 * Math.cos(rad(a)), y = 30 * Math.sin(rad(a)); const px = fr.gx(x), py = fr.gy(y); a === -10 ? ctxKin.moveTo(px, py) : ctxKin.lineTo(px, py); } ctxKin.stroke(); ctxKin.setLineDash([]);
-        HG.curve(ctxKin, fr, f.pts.map((p) => ({ x: p.x, y: p.y })), '#8A1134', 3);
+        HG.curve(ctxKin, fr, f.pts.map((p) => ({ x: p.x, y: p.y })), '#E2570F', 3);
         f.pts.forEach((p, i) => { ctxKin.fillStyle = i === 0 ? '#334155' : '#64748b'; ctxKin.beginPath(); ctxKin.arc(fr.gx(p.x), fr.gy(p.y), 4, 0, 7); ctxKin.fill(); });
         ctxKin.fillStyle = '#ef4444'; ctxKin.beginPath(); ctxKin.arc(fr.gx(f.end.x), fr.gy(f.end.y), 5.5, 0, 7); ctxKin.fill();
         if (mode === 'inv') { const px = fr.gx(tx), py = fr.gy(ty); ctxKin.strokeStyle = '#16a34a'; ctxKin.lineWidth = 2; ctxKin.beginPath(); ctxKin.moveTo(px - 6, py); ctxKin.lineTo(px + 6, py); ctxKin.moveTo(px, py - 6); ctxKin.lineTo(px, py + 6); ctxKin.stroke(); ctxKin.fillStyle = '#16a34a'; ctxKin.font = 'bold 9px sans-serif'; ctxKin.textAlign = 'left'; ctxKin.fillText('target', px + 8, py); }
-        HG.legend(ctxKin, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'Folded sheet (3 panels)' }, { color: '#ef4444', text: 'Tip of the sheet' }, { color: '#16a34a', text: 'Target shape point' }]);
+        HG.legend(ctxKin, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'Folded sheet (3 panels)' }, { color: '#ef4444', text: 'Tip of the sheet' }, { color: '#16a34a', text: 'Target shape point' }]);
     }
     function drawAngPlot() {
         const W = plotAng.width, H = plotAng.height, ctx = ctxAng;
@@ -626,7 +626,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         ctx.fillStyle = '#475569'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
         [-90, -45, 0, 45, 90].forEach((v) => { const y = mid - v / 90 * (h / 2); ctx.fillText(v.toString(), pl - 5, y + 3); });
         ctx.save(); ctx.translate(12, mid); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillStyle = '#7c3aed'; ctx.font = 'bold 10px sans-serif'; ctx.fillText('fold angle (deg)', 0, 0); ctx.restore();
-        const cols = ['#8A1134', '#b91c4a', '#d6336c'];
+        const cols = ['#E2570F', '#b91c4a', '#d6336c'];
         for (let i = 0; i < 3; i++) {
             const a = deg(ang[i]); const bx = pl + (i + 0.5) * (w / 3) - 16; const bh = -a / 90 * (h / 2);
             ctx.fillStyle = cols[i]; ctx.fillRect(bx, mid, 32, bh);
@@ -669,7 +669,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- fold animation ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; dispFold = 0; btnRun.innerText = 'Folding...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Fold the Sheet'; btnRun.style.background = '#8A1134'; targFold = 1; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Fold the Sheet'; btnRun.style.background = '#E2570F'; targFold = 1; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
 
     // ---------- events ----------
     document.querySelectorAll('input[name="mode"]').forEach((r) => r.addEventListener('change', () => { if (sweeping) stopRun(); mode = document.querySelector('input[name="mode"]:checked').value; rowFwd.style.display = mode === 'fwd' ? '' : 'none'; rowInv.style.display = mode === 'inv' ? '' : 'none'; recompute(); }));
@@ -753,7 +753,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         if (!S) return;
         const geom = new THREE.BufferGeometry();
         geom.setAttribute('position', new THREE.BufferAttribute(new Float32Array(NC * NR * 18), 3));
-        sheet = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: 0x8A1134, roughness: 0.45, metalness: 0.1, side: THREE.DoubleSide, flatShading: true }));
+        sheet = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: 0xE2570F, roughness: 0.45, metalness: 0.1, side: THREE.DoubleSide, flatShading: true }));
         sheet.castShadow = true; S.scene.add(sheet);
         sheet.add(new THREE.LineSegments(new THREE.WireframeGeometry(geom), new THREE.LineBasicMaterial({ color: 0xfecdd3, transparent: true, opacity: 0.35 })));
     }
@@ -779,11 +779,11 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const a = rad(alpha);
         const pts = [];
         for (let pd = 5; pd <= 85.001; pd += 1) pts.push({ x: pd, y: Aratio(a, rad(pd)) * 100 });
-        const fr = HG.frame(ctxM, W, H, { xMin: 5, xMax: 85, yMin: 0, yMax: 100, xTicks: 8, yTicks: 5, xLabel: 'Fold angle phi (deg) - more folded ->', yLabel: 'Folded area (% of flat)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxM, W, H, { xMin: 5, xMax: 85, yMin: 0, yMax: 100, xTicks: 8, yTicks: 5, xLabel: 'Fold angle phi (deg) - more folded ->', yLabel: 'Folded area (% of flat)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.hLine(ctxM, fr, 100, '#94a3b8', 'flat = 100%');
-        HG.curve(ctxM, fr, pts, '#8A1134', 2.6);
+        HG.curve(ctxM, fr, pts, '#E2570F', 2.6);
         HG.tracker(ctxM, fr, phi, Aratio(a, rad(phi)) * 100, (Aratio(a, rad(phi)) * 100).toFixed(0) + '%', '#ef4444');
-        HG.legend(ctxM, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'Pack ratio at alpha=' + alpha.toFixed(0) + ' deg' }, { color: '#ef4444', text: 'Current fold' }]);
+        HG.legend(ctxM, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'Pack ratio at alpha=' + alpha.toFixed(0) + ' deg' }, { color: '#ef4444', text: 'Current fold' }]);
     }
     function drawNuPlot() {
         const W = plotNu.width, H = plotNu.height;
@@ -792,17 +792,17 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const pts = [];
         for (let pd = 5; pd <= 85.001; pd += 1) { const v = poisson(a, rad(pd)); pts.push({ x: pd, y: v }); if (v < lo) lo = v; }
         lo = Math.floor(lo * 2) / 2;
-        const fr = HG.frame(ctxNu, W, H, { padT: 14, padB: 26, xMin: 5, xMax: 85, yMin: lo, yMax: 0.3, xTicks: 8, yTicks: 4, xLabel: 'phi (deg)', yLabel: 'Poisson nu_x', axisColor: '#2563eb', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(1) });
+        const fr = HG.frame(ctxNu, W, H, { padT: 14, padB: 26, xMin: 5, xMax: 85, yMin: lo, yMax: 0.3, xTicks: 8, yTicks: 4, xLabel: 'phi (deg)', yLabel: 'Poisson nu_x', axisColor: '#1E40AF', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(1) });
         HG.shadeYBand(ctxNu, fr, lo, 0, 'rgba(16,185,129,0.10)');
         HG.hLine(ctxNu, fr, 0, '#dc2626', 'nu=0');
-        HG.curve(ctxNu, fr, pts, '#2563eb', 2.4);
+        HG.curve(ctxNu, fr, pts, '#1E40AF', 2.4);
         HG.tracker(ctxNu, fr, phi, poisson(a, rad(phi)), 'nu=' + poisson(a, rad(phi)).toFixed(2), '#ef4444');
         ctxNu.fillStyle = '#16a34a'; ctxNu.font = 'bold 8px sans-serif'; ctxNu.textAlign = 'left'; ctxNu.fillText('auxetic (nu < 0): expands both ways', fr.pl + 6, fr.pt + 11);
     }
     function fillMiura() {
         if (!miuraBody) return;
         const a = rad(alpha), phis = [30, 45, 60, 75];
-        miuraBody.innerHTML = phis.map((pd) => { const near = Math.abs(pd - phi) < 8; return '<tr style="' + (near ? 'background:rgba(138,17,52,0.08);font-weight:bold;' : '') + '"><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;">' + pd + '</td><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;">' + (Aratio(a, rad(pd)) * 100).toFixed(0) + '%</td><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;text-align:right;color:#2563eb;">' + poisson(a, rad(pd)).toFixed(2) + '</td></tr>'; }).join('');
+        miuraBody.innerHTML = phis.map((pd) => { const near = Math.abs(pd - phi) < 8; return '<tr style="' + (near ? 'background:rgba(138,17,52,0.08);font-weight:bold;' : '') + '"><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;">' + pd + '</td><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;">' + (Aratio(a, rad(pd)) * 100).toFixed(0) + '%</td><td style="padding:6px 4px;border-bottom:1px solid #e2e8f0;text-align:right;color:#1E40AF;">' + poisson(a, rad(pd)).toFixed(2) + '</td></tr>'; }).join('');
     }
 
     function updateEq() {
@@ -816,7 +816,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const a = rad(alpha), p = rad(phi), nu = poisson(a, p), pack = Aratio(a, p);
         HG.put(resAng, alpha.toFixed(0) + ' / ' + phi.toFixed(0) + ' deg');
         HG.put(resThetaM, deg(thetaM(a, p)).toFixed(1) + ' deg');
-        HG.put(resAratio, (pack * 100).toFixed(0) + '% of flat', '#8A1134');
+        HG.put(resAratio, (pack * 100).toFixed(0) + '% of flat', '#E2570F');
         HG.put(resNu, nu.toFixed(2), nu < 0 ? '#16a34a' : '#dc2626');
         HG.put(resAux, nu < 0 ? 'Auxetic (nu < 0)' : 'Non-auxetic', nu < 0 ? '#16a34a' : '#dc2626');
         const deployed = dispFold > 0.5;
@@ -829,7 +829,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- deploy animation ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; dispFold = 0; btnRun.innerText = 'Deploying...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Deploy the Panel'; btnRun.style.background = '#8A1134'; targFold = 1; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Deploy the Panel'; btnRun.style.background = '#E2570F'; targFold = 1; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
 
     // ---------- events ----------
     alphaInput.addEventListener('input', () => { if (sweeping) stopRun(); alpha = parseFloat(alphaInput.value); valAlpha.innerText = alpha.toFixed(0) + ' deg'; refresh(); });
@@ -937,14 +937,14 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const W = plotFat.width, H = plotFat.height;
         const pts = [];
         for (let ln = 0; ln <= 7.001; ln += 0.1) { const N = Math.pow(10, ln); pts.push({ x: ln, y: SIG_F * Math.pow(N, -BEXP) }); }
-        const fr = HG.frame(ctxFat, W, H, { xMin: 0, xMax: 7, yMin: 0, yMax: 70, xTicks: 7, yTicks: 7, xLabel: 'Open/close cycles before cracking, N', yLabel: 'Stress per cycle (MPa)', axisColor: '#8A1134', xFmt: (v) => '1e' + v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxFat, W, H, { xMin: 0, xMax: 7, yMin: 0, yMax: 70, xTicks: 7, yTicks: 7, xLabel: 'Open/close cycles before cracking, N', yLabel: 'Stress per cycle (MPa)', axisColor: '#E2570F', xFmt: (v) => '1e' + v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.vLine(ctxFat, fr, 3, '#16a34a', 'N=1e3');
-        HG.vLine(ctxFat, fr, 5, '#2563eb', 'N=1e5');
+        HG.vLine(ctxFat, fr, 5, '#1E40AF', 'N=1e5');
         HG.hLine(ctxFat, fr, SIG_F, '#94a3b8', 'sig_f');
-        HG.curve(ctxFat, fr, pts, '#8A1134', 2.6);
+        HG.curve(ctxFat, fr, pts, '#E2570F', 2.6);
         const sig = sigMax(h, L, thetaDeg), N = Nlife(sig);
         HG.tracker(ctxFat, fr, Math.max(0, Math.min(7, Math.log10(Math.max(N, 1)))), Math.min(sig, 69), 'N=' + fmtN(N), '#ef4444');
-        HG.legend(ctxFat, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'Basquin S-N (sig_f N^-b)' }, { color: '#ef4444', text: 'Your hinge' }]);
+        HG.legend(ctxFat, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'Basquin S-N (sig_f N^-b)' }, { color: '#ef4444', text: 'Your hinge' }]);
     }
     function drawStrPlot() {
         const W = plotStr.width, H = plotStr.height, ctx = ctxStr;
@@ -994,7 +994,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- thickness sweep (thinning improves life) ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; h = 1.0; btnRun.innerText = 'Cycling...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Run Cycle Test'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Run Cycle Test'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) { sweepT += dt; h = Math.max(0.2, 1.0 - sweepT * 0.13); hInput.value = h; valH.innerText = h.toFixed(2) + ' mm'; refresh(); if (h <= 0.2) { h = 0.2; stopRun(true); } }
 
     // ---------- events ----------

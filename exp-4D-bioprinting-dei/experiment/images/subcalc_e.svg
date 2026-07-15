@@ -1,0 +1,89 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #334155; }
+      .label { font-family: Arial, sans-serif; font-size: 11px; fill: #334155; }
+      .annotation { font-family: Arial, sans-serif; font-size: 10px; fill: #334155; }
+      .gate-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #E2570F; }
+      .gate-pass { font-family: Arial, sans-serif; font-size: 9px; fill: #1E40AF; }
+      .dimension-line { stroke: #334155; stroke-width: 1; }
+      .arrow { stroke: #E2570F; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .flat-layer { stroke: #334155; stroke-width: 1.5; }
+      .active-layer { fill: #E2570F; opacity: 0.3; stroke: #E2570F; stroke-width: 1.5; }
+      .passive-layer { fill: #1E40AF; opacity: 0.2; stroke: #1E40AF; stroke-width: 1.5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#E2570F"/>
+    </marker>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" class="title" text-anchor="middle">4D Tracheal Stent: Flat Print → Deployed Shape</text>
+
+  <!-- LEFT: Flat-printed bilayer -->
+  <text x="100" y="70" class="label" text-anchor="middle" font-weight="bold">Flat (Programmed)</text>
+
+  <!-- Flat bilayer layers -->
+  <rect x="40" y="85" width="120" height="8" class="active-layer"/>
+  <text x="50" y="98" class="annotation">Active (SMP)</text>
+
+  <rect x="40" y="93" width="120" height="8" class="passive-layer"/>
+  <text x="50" y="108" class="annotation">Passive</text>
+
+  <!-- Dimension arrow for flat bilayer -->
+  <line x1="165" y1="89" x2="165" y2="101" class="dimension-line"/>
+  <line x1="160" y1="89" x2="170" y2="89" class="dimension-line"/>
+  <line x1="160" y1="101" x2="170" y2="101" class="dimension-line"/>
+  <text x="180" y="97" class="annotation">h (total)</text>
+
+  <!-- Bilayer parameters -->
+  <text x="100" y="125" class="annotation" text-anchor="middle" font-size="9">Mismatch strain Δε</text>
+
+  <!-- CENTER: Transition arrow -->
+  <path d="M 180 100 Q 220 80, 260 100" class="arrow" stroke-width="2.5"/>
+  <text x="220" y="75" class="annotation" text-anchor="middle" font-weight="bold">Deploy at 37°C</text>
+
+  <!-- RIGHT: Deployed curved stent in trachea -->
+  <text x="480" y="70" class="label" text-anchor="middle" font-weight="bold">Deployed (In Airway)</text>
+
+  <!-- Target tracheal airway (circle) -->
+  <circle cx="480" cy="150" r="60" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="3,2"/>
+  <text x="480" y="155" class="annotation" text-anchor="middle" font-size="9">Trachea</text>
+
+  <!-- Deployed curved bilayer inside trachea -->
+  <path d="M 430 140 Q 445 95, 480 85 Q 515 95, 530 140 L 530 160 Q 515 165, 480 175 Q 445 165, 430 160 Z"
+        fill="#E2570F" opacity="0.4" stroke="#E2570F" stroke-width="1.5"/>
+
+  <text x="480" y="200" class="annotation" text-anchor="middle" font-size="9">Stent seated firmly</text>
+
+  <!-- Curvature annotation -->
+  <path d="M 420 120 Q 440 100, 460 120" fill="none" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="2,1"/>
+  <text x="420" y="110" class="annotation" fill="#E2570F">κ_printed</text>
+
+  <!-- Deployment Safety Gates (bottom) -->
+  <text x="310" y="260" class="gate-text" text-anchor="middle" font-weight="bold">DEPLOYMENT SAFETY GATES</text>
+
+  <!-- Gate 1: Shape Fixity -->
+  <rect x="50" y="280" width="150" height="60" fill="none" stroke="#E2570F" stroke-width="1.5" rx="3"/>
+  <text x="125" y="298" class="gate-text" text-anchor="middle">R_f > 95%</text>
+  <text x="125" y="315" class="annotation" text-anchor="middle" font-size="9">Shape holds</text>
+  <text x="125" y="327" class="gate-pass" text-anchor="middle">PLA: 97% ✓</text>
+
+  <!-- Gate 2: Shape Recovery -->
+  <rect x="235" y="280" width="150" height="60" fill="none" stroke="#E2570F" stroke-width="1.5" rx="3"/>
+  <text x="310" y="298" class="gate-text" text-anchor="middle">R_r > 90%</text>
+  <text x="310" y="315" class="annotation" text-anchor="middle" font-size="9">Full deployment</text>
+  <text x="310" y="327" class="gate-pass" text-anchor="middle">PLA: 92% ✓</text>
+
+  <!-- Gate 3: Glass Transition -->
+  <rect x="420" y="280" width="150" height="60" fill="none" stroke="#E2570F" stroke-width="1.5" rx="3"/>
+  <text x="495" y="298" class="gate-text" text-anchor="middle">T_g 45–50°C</text>
+  <text x="495" y="315" class="annotation" text-anchor="middle" font-size="9">Safe margin from 37°C</text>
+  <text x="495" y="327" class="gate-pass" text-anchor="middle">PLA: 58°C ✓</text>
+
+  <!-- Bottom annotation -->
+  <text x="310" y="355" class="annotation" text-anchor="middle" font-style="italic">Timoshenko bilayer: κ = 6·Δε·(1+m)²/(h·φ)</text>
+</svg>

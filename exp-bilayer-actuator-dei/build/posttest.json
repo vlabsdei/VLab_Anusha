@@ -1,0 +1,175 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "Q1. According to Timoshenko's formula, what thickness ratio (m = h1/h2) maximizes curvature for layers with equal Young's Modulus (n = E1/E2 = 1)?",
+      "answers": {
+        "a": "m = 0.1",
+        "b": "m = 1.0",
+        "c": "m = 2.0",
+        "d": "Curvature is independent of thickness ratio."
+      },
+      "explanations": {
+        "a": "Incorrect — Very thin active layers produce negligible bending force.",
+        "b": "Correct — When elastic moduli are equal (n=1), the maximum curvature is obtained exactly at a thickness ratio of m = h1/h2 = 1.0.",
+        "c": "Incorrect — At m=2, the passive layer becomes too thin to optimally resist and transfer strain, reducing curvature.",
+        "d": "Incorrect — Curvature depends heavily on the thickness ratio."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q2. In Sub-Calc C, if you program a bilayer with a top print angle of 45° and a bottom print angle of -45°, what deformation mode is primarily observed upon heating?",
+      "answers": {
+        "a": "Pure flat bending along the longitudinal axis.",
+        "b": "Torsional twisting (torsion) along the beam axis.",
+        "c": "Uniform isotropic expansion without out-of-plane motion.",
+        "d": "Uncontrollable local buckling."
+      },
+      "explanations": {
+        "a": "Incorrect — Orthogonal symmetric angle combinations like 0°/90° lead to flat bending.",
+        "b": "Correct — Antisymmetric angle combinations like 45°/-45° align the principal expansion axes diagonally, producing pure twisting.",
+        "c": "Incorrect — The mismatch in shear strains leads to out-of-plane twisting.",
+        "d": "Incorrect — The deformation is a stable torsional twist, not random buckling."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q3. If the active layer thickness of a moisture-driven actuator is doubled (from 0.5 mm to 1.0 mm), how does the time to reach 90% swelling equilibrium (t90) change?",
+      "answers": {
+        "a": "It doubles (increases by 2×).",
+        "b": "It quadruples (increases by 4×).",
+        "c": "It is halved (decreases by 2×).",
+        "d": "It remains unchanged because the diffusion coefficient is constant."
+      },
+      "explanations": {
+        "a": "Incorrect — Diffusion time does not scale linearly with thickness.",
+        "b": "Correct — Since t90 ∝ L², doubling the thickness (2L) increases the diffusion time by a factor of 2² = 4.",
+        "c": "Incorrect — Thicker layers take longer to reach equilibrium, not less time.",
+        "d": "Incorrect — Diffusion time depends strongly on layer thickness."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q4. Under what condition does the small-deflection Timoshenko linear assumption fail, requiring the use of a Nonlinear Elastica solver?",
+      "answers": {
+        "a": "When the temperature change (ΔT) is negative.",
+        "b": "When the product of curvature and length (κL) exceeds 0.3.",
+        "c": "When the Young's modulus ratio (n) is less than 1.0.",
+        "d": "When the width of the beam is greater than the length."
+      },
+      "explanations": {
+        "a": "Incorrect — Negative ΔT simply reverses the bending direction, which can still be linear.",
+        "b": "Correct — The linear beam assumption requires small deflections; once κL > 0.3, geometric nonlinearities become significant and require Nonlinear Elastica solvers.",
+        "c": "Incorrect — Modulus ratio has no bearing on the validity of small-deflection geometric assumptions.",
+        "d": "Incorrect — Beam width relates to plate behavior, not the geometric deflection limit."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q5. How does the blocking force (Fblock) scale with the total thickness (h) of a bilayer actuator cantilever?",
+      "answers": {
+        "a": "Inversely proportional to thickness (Fblock ∝ 1/h).",
+        "b": "Proportional to thickness (Fblock ∝ h).",
+        "c": "Proportional to the square of thickness (Fblock ∝ h²).",
+        "d": "Proportional to the cube of thickness (Fblock ∝ h³)."
+      },
+      "explanations": {
+        "a": "Incorrect — Thicker beams are stiffer and generate much higher forces.",
+        "b": "Incorrect — The scaling is much stronger than linear.",
+        "c": "Incorrect — Scaling is cubic, not quadratic.",
+        "d": "Correct — The bending stiffness of a cantilever scales with the cube of its thickness (h³), directly scaling the blocking force by h³."
+      },
+      "correctAnswer": "d",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q6. Why does a 0°/90° print raster combination produce maximum out-of-plane bending rather than twisting?",
+      "answers": {
+        "a": "Because the shear coupling term (η_xy) for both layers is zero, preventing twist.",
+        "b": "Because the materials used have no shear modulus.",
+        "c": "Because the temperature change cancels out the shear strains.",
+        "d": "Because the print lines are oriented along the diagonals."
+      },
+      "explanations": {
+        "a": "Correct — At 0° and 90°, the principal expansion axes align perfectly with the longitudinal and transverse axes, making shear strain coupling zero and preventing twisting.",
+        "b": "Incorrect — All solid materials have a shear modulus.",
+        "c": "Incorrect — Temperature changes drive the strain; they do not cancel shear strains unless aligned properly.",
+        "d": "Incorrect — The lines are parallel/perpendicular to the boundaries, not diagonal."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q7. An actuator has a blocking force of 20 mN and a free deflection of 4 mm. What is its work output under linear assumptions?",
+      "answers": {
+        "a": "80 μJ",
+        "b": "40 μJ",
+        "c": "20 μJ",
+        "d": "5 μJ"
+      },
+      "explanations": {
+        "a": "Incorrect — Work is 0.5 × Fblock × delta_free, not the simple product.",
+        "b": "Correct — 0.5 × 20 mN × 4 mm = 40 μJ.",
+        "c": "Incorrect — Underestimated by half.",
+        "d": "Incorrect — Incorrect formula applied."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. In hygroscopic swelling of cellulose composites, what role does the Swelling Anisotropy Ratio (As) play in determining curvature?",
+      "answers": {
+        "a": "A higher As (with fibers transverse to length) yields greater out-of-plane curvature because the transverse strain mismatch is larger.",
+        "b": "A higher As reduces bending because the fibers restrict all motion.",
+        "c": "As only changes the temperature at which swelling starts.",
+        "d": "It has no effect; only total moisture uptake matters."
+      },
+      "explanations": {
+        "a": "Correct — A high swelling anisotropy means that when fibers are oriented at 90° (transverse), they expand much more along the beam length than the passive layer, creating a larger strain mismatch and greater bending.",
+        "b": "Incorrect — Anisotropy enables, rather than restricts, curvature programming by orienting the high-expansion direction.",
+        "c": "Incorrect — Swelling is driven by moisture, not temperature, and As is a strain ratio.",
+        "d": "Incorrect — Isotropic swelling creates spherical curvature, while anisotropic swelling allows directional bending."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q9. How does the diffusion coefficient (D) of the active material affect the response speed of a bilayer actuator?",
+      "answers": {
+        "a": "A larger D decreases the diffusion speed, making actuation slower.",
+        "b": "A larger D increases the diffusion speed, making actuation faster.",
+        "c": "D only affects the maximum deflection, not the speed.",
+        "d": "D is always zero in solid actuators."
+      },
+      "explanations": {
+        "a": "Incorrect — A larger diffusion coefficient speeds up the transport, making it faster.",
+        "b": "Correct — The characteristic diffusion time tdiff ∝ L² / D, so a larger D results in a smaller tdiff (faster response).",
+        "c": "Incorrect — D governs kinetic rate, not thermodynamic swelling limit.",
+        "d": "Incorrect — Polymeric and hydrogel solid materials have non-zero diffusion coefficients for solvents."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q10. What is the main design trade-off when reducing active layer thickness (L) to speed up a moisture-driven actuator?",
+      "answers": {
+        "a": "It increases the cost of materials significantly.",
+        "b": "Thinner active layers actuate faster but generate less blocking force and lower work output.",
+        "c": "Thinner layers will completely prevent any bending from occurring.",
+        "d": "Thinner layers decrease the diffusion coefficient."
+      },
+      "explanations": {
+        "a": "Incorrect — Thinner layers actually use less material, reducing cost.",
+        "b": "Correct — While thinning the layer reduces diffusion time (speeding up response), it also decreases the bending stiffness and the generated force (Fblock ∝ h³), reducing total work output.",
+        "c": "Incorrect — Bending still occurs, but the structural force generated is weaker.",
+        "d": "Incorrect — The diffusion coefficient is a material property, independent of thickness."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    }
+  ]
+}

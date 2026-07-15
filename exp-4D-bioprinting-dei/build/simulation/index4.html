@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc E · 4D Tracheal-Stent Capstone — 4D Bioprinting</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will it print?</span><span class="subcalc__desc">Power-law rheology</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">will it set in time?</span><span class="subcalc__desc">Avrami gelation</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">will the cells live?</span><span class="subcalc__desc">Shear-stress viability</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">when does it dissolve?</span><span class="subcalc__desc">Scaffold degradation</span></span></a>
+            <a class="subcalc is-active" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">design the stent</span><span class="subcalc__desc">4D tracheal capstone</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>5</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index3.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-disabled" title="End of simulation">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc E · Capstone (integrates Exp 1 + Exp 2)</span>
+            <h1 class="stage__title">The 4D Self-Deploying Tracheal Stent</h1>
+            <p class="stage__obj">Design a flat-printed bilayer that curls into a tracheal stent at body temperature. It must over-curve 20% past the target radius (κ<sub>printed</sub> = 1.2 κ<sub>target</sub>), and the shape-memory polymer must clear deployment gates: R<sub>f</sub> &gt; 95%, R<sub>r</sub> &gt; 90%, and T<sub>g</sub> = 45&ndash;50 °C for safe handling.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Choose the trachea size and SMP, then read the back-calculated bilayer thickness and whether it passes the deployment safety gates.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Flat sheet &rarr; tube</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Printed strip vs target tracheal Ø</div>
+                    <canvas id="plotCanvasStent" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Curvature vs bilayer thickness</div>
+                    <canvas id="plotCanvasKappa" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Deployment safety gates</h3>
+            <table id="stentTable">
+                <thead><tr><th>Criterion</th><th>Value</th><th style="text-align:right;">Status</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the capstone</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Trachea radius</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>R_tube (mm)</label><input type="range" id="rtubeInput" aria-label="Rtube" min="5" max="14" step="0.5" value="9"><div class="slider-val" id="valRtube">9.0 mm</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Layer thickness ratio m = h₁/h₂</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>m &ndash; active / passive split</label><input type="range" id="ratioInput" aria-label="ratio" min="0.2" max="3" step="0.05" value="1.0"><div class="slider-val" id="valRatio">1.00</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Programmed mismatch strain Δε</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Δε &ndash; recovery strain (fraction)</label><input type="range" id="epsInput" aria-label="eps" min="0.05" max="0.4" step="0.01" value="0.19"><div class="slider-val" id="valEps">19 %</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Shape-memory polymer (from Exp 1)</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="smp" value="PLA" id="smpPLA" checked><label for="smpPLA">PLA-SMP (Tg 58°C, R_f 97%)</label></div>
+                            <div class="option"><input type="radio" name="smp" value="PU" id="smpPU"><label for="smpPU">PU-SMP (Tg 45°C, R_f 96%)</label></div>
+                            <div class="option"><input type="radio" name="smp" value="PCL" id="smpPCL"><label for="smpPCL">PCL-SMP (Tg 35°C ⚠, R_f 94%)</label></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Design &amp; Deploy Stent</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Stent design verdict</h3>
+                        <div class="result-row"><span class="result-label">Target curvature κ_target</span><span class="result-val" id="resKtarget">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Printed curvature κ_printed</span><span class="result-val" id="resKprinted">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Bilayer thickness h</span><span class="result-val" id="resHtot">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Active / passive layers</span><span class="result-val" id="resHlayers">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">SMP glass transition Tg</span><span class="result-val" id="resTg">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Deployment verdict</span><span class="result-val" id="resVerdict">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

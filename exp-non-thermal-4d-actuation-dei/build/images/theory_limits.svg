@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Model Validity Windows &amp; Limitations</text>
+
+  <!-- Row 1: Beer-Lambert scattering -->
+  <text x="40" y="78" fill="#1e293b" font-size="13" font-weight="700">1. Beer-Lambert (Sub-Calc A): assumes pure absorption</text>
+  <rect x="40" y="86" width="280" height="30" fill="#dcfce7" stroke="#16a34a"/>
+  <rect x="320" y="86" width="280" height="30" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="180" y="105" fill="#166534" font-size="11" font-weight="700" text-anchor="middle">Transparent, C &lt; 0.01 mol/L</text>
+  <text x="460" y="105" fill="#b91c1c" font-size="11" font-weight="700" text-anchor="middle">Pigmented: 2-5x shorter (scattering)</text>
+
+  <!-- Row 2: magnetic particle agglomeration -->
+  <text x="40" y="156" fill="#1e293b" font-size="13" font-weight="700">2. Magnetic torque (Sub-Calc C): assumes dispersed particles</text>
+  <rect x="40" y="164" width="187" height="30" fill="#dcfce7" stroke="#16a34a"/>
+  <rect x="227" y="164" width="93" height="30" fill="#fef9c3" stroke="#b45309"/>
+  <rect x="320" y="164" width="280" height="30" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="133" y="183" fill="#166534" font-size="10" font-weight="700" text-anchor="middle">&lt;20 nm: superparamagnetic</text>
+  <text x="273" y="183" fill="#92400e" font-size="9" font-weight="700" text-anchor="middle">20-30</text>
+  <text x="460" y="183" fill="#b91c1c" font-size="10" font-weight="700" text-anchor="middle">&gt;30 nm: agglomerates, less torque</text>
+  <g fill="#475569" font-size="9" text-anchor="middle"><text x="40" y="208">0</text><text x="227" y="208">20</text><text x="320" y="208">30</text><text x="600" y="208">particle size = 60 nm</text></g>
+
+  <!-- Row 3: tissue penetration depth -->
+  <text x="40" y="246" fill="#1e293b" font-size="13" font-weight="700">3. Coil drive (Sub-Calc D): penetration depth is tissue-specific</text>
+  <rect x="40" y="254" width="467" height="30" fill="#dcfce7" stroke="#16a34a"/>
+  <rect x="507" y="254" width="93" height="30" fill="#fee2e2" stroke="#dc2626"/>
+  <line x1="133" y1="248" x2="133" y2="290" stroke="#7c3aed" stroke-width="2"/>
+  <line x1="320" y1="248" x2="320" y2="290" stroke="#2563eb" stroke-width="2"/>
+  <text x="133" y="304" fill="#7c3aed" font-size="9" font-weight="700" text-anchor="middle">bone &#948;~20</text>
+  <text x="320" y="304" fill="#2563eb" font-size="9" font-weight="700" text-anchor="middle">muscle &#948;~60</text>
+  <text x="553" y="273" fill="#b91c1c" font-size="10" font-weight="700" text-anchor="middle">&gt;100: battery</text>
+  <text x="250" y="273" fill="#166534" font-size="10" font-weight="700" text-anchor="middle">wireless feasible</text>
+  <g fill="#475569" font-size="9" text-anchor="middle"><text x="40" y="318">0</text><text x="507" y="318">100</text><text x="600" y="318">depth = 120 mm</text></g>
+
+  <!-- summary panel -->
+  <rect x="40" y="330" width="560" height="94" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="56" y="353" fill="#8A1134" font-size="13" font-weight="700">Engineering takeaways</text>
+  <text x="56" y="376" fill="#475569" font-size="11">&#8226; Add a scattering term to Beer-Lambert for filled/pigmented resins.</text>
+  <text x="56" y="397" fill="#475569" font-size="11">&#8226; Prefer superparamagnetic (&lt;20 nm) particles to avoid agglomeration and torque loss.</text>
+  <text x="56" y="418" fill="#475569" font-size="11">&#8226; Beyond the crossover depth (here ~100 mm) a mW battery beats a watt-scale coil.</text>
+</svg>

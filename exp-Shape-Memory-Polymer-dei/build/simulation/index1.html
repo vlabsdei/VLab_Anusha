@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · Strain Fixity — Shape Memory Polymers</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Glass Transition</span><span class="subcalc__desc">T&#8339; &amp; WLF viscoelasticity</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Strain Fixity</span><span class="subcalc__desc">Programming &amp; R&#8348;</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Shape Recovery</span><span class="subcalc__desc">R&#7523;, recovery stress, t&#8329;&#8325;</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Multi-Shape Memory</span><span class="subcalc__desc">Blends &amp; Fox equation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuation Energy</span><span class="subcalc__desc">Work, heat &amp; efficiency</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · Viscoelastic Programming</span>
+            <h1 class="stage__title">Strain Fixity</h1>
+            <p class="stage__obj">Load the specimen above T&#8339;, cool under stress, and unload. Measure the loading strain, the frozen strain retained after unloading, and the resulting <b>strain fixity ratio R&#8348;</b> as a function of programming temperature.</p>
+        </header>
+
+        <section class="insight" id="liveInsight">
+            <strong>Live Insight:</strong> The polymer is mounted in the UTM clamps. Select a programming temperature preset and click &lsquo;Execute Programming Cycle&rsquo;.
+        </section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">UTM Phase: Idle</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label">Stress &sigma; vs strain &epsilon; loop</div>
+                    <canvas id="plotCanvas" width="450" height="250"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label">Shape fixity R&#8348; vs &Delta;T (T&#8342;&#8342;&#8341; &minus; T&#8339;)</div>
+                    <canvas id="fixityCanvas" width="450" height="175"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Programming presets comparison</h3>
+            <table id="presetComparisonTable">
+                <thead>
+                    <tr>
+                        <th>T&#8339;&#8342;&#8342;&#8341;</th>
+                        <th>T&#8342;&#8342;&#8341; &minus; T&#8339;</th>
+                        <th>&epsilon;&#8343;&#8338;&#8336;&#8324; (%)</th>
+                        <th>R&#8348; (%)</th>
+                        <th style="text-align:right;">&epsilon;&#7524; (%)</th>
+                    </tr>
+                </thead>
+                <tbody><!-- injected --></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content">
+                <div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:90px; margin-bottom:12px;"><!-- rendered --></div>
+                <div class="model-note"><strong>Model note:</strong> Shape fixity R&#8348; is computed with a saturating exponential model &prop; (1 &minus; e<sup>&minus;&Delta;T/&Delta;T_char</sup>) derived from crystallization kinetics, rather than the simplified elastic ratio &epsilon;<sub>frozen</sub>/&epsilon;<sub>load</sub> which can produce unphysical values &gt; 100%.</div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Active Material (inherited)</div>
+                        <div class="premium-card-small" id="matInheritedCard" style="background:var(--rust-050); border:1px solid var(--rust-100); padding:11px 12px; border-radius:8px;">
+                            <div style="font-family:var(--mono); font-weight:600; color:var(--rust-700); font-size:14px;" id="inheritedMatName">PLA-SMP</div>
+                            <div style="font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:4px;" id="inheritedMatSpecs">T_g = 60.0&deg;C | X_c = 0.70</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Programming Temp Preset</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+                            <button type="button" class="btn-preset" id="presetTg10">T&#8339; + 10&deg;</button>
+                            <button type="button" class="btn-preset" id="presetTg30">T&#8339; + 30&deg;</button>
+                            <button type="button" class="btn-preset" id="presetTg60">T&#8339; + 60&deg;</button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Simulation Variables</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Programming Temp (&deg;C)</label>
+                                <input type="range" id="progTemp" aria-label="Prog Temp" min="40" max="120" value="70">
+                                <div class="slider-val" id="valPtemp">70 &deg;C</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Applied Stress &sigma; (MPa)</label>
+                                <input type="range" id="appStress" aria-label="App Stress" min="0.5" max="4" value="2" step="0.1">
+                                <div class="slider-val" id="valStress">2 MPa</div>
+                            </div>
+                            <div class="slider-group">
+                                <label>Cooling Rate (&deg;C/min)</label>
+                                <input type="range" id="coolingRate" aria-label="Cooling Rate" min="5" max="30" value="15">
+                                <div class="slider-val" id="valCooling">15 &deg;C/min</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Execute Programming Cycle</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Shape fixity analysis</h3>
+                        <div class="result-row"><span class="result-label">Applied programming stress</span><span class="result-val" id="resStress">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Max loading strain &epsilon;&#8343;&#8338;&#8336;&#8324;</span><span class="result-val" id="resMaxStrain">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Fixed strain &epsilon;&#7524;</span><span class="result-val" id="resFixed">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Shape fixity ratio R&#8348;</span><span class="result-val" id="resFixity">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index2.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

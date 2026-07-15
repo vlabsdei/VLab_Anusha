@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc C · Crawling Locomotion — 4D-Printed Soft Robots</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 09</div>
+            <div class="rail__title">4D-Printed Soft Robots</div>
+            <div class="rail__meta">Pneumatic bending · SMP locking · Crawling · Grasping · PID control</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will it bend?</span><span class="subcalc__desc">Pneumatic actuation</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">will it hold?</span><span class="subcalc__desc">SMP stiffness lock</span></span></a>
+            <a class="subcalc is-active" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">will it crawl?</span><span class="subcalc__desc">Friction-asymmetry gait</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">will it grip?</span><span class="subcalc__desc">Grasp &amp; force closure</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">will it settle?</span><span class="subcalc__desc">Pressure–position PID</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>3</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index1.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index3.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc C · Friction-Asymmetry Gait</span>
+            <h1 class="stage__title">Earthworm Crawling Locomotion</h1>
+            <p class="stage__obj">A peristaltic worm nets displacement only from friction asymmetry: &delta;_net = &delta;_ext&middot;(1 &minus; 1/&mu;_asym) with &mu;_asym = &mu;_back/&mu;_fwd. When &mu;_asym = 1 the robot just stretches and recoils in place; below 1 it crawls backward.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the segment strain and directional friction, then run the gait to watch the worm advance, stall, or reverse.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Worm at rest</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Net displacement per cycle vs friction asymmetry</div>
+                    <canvas id="plotCanvasCrawl" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Body position vs time</div>
+                    <canvas id="plotCanvasPos" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Gait outcome across surface types</h3>
+            <table id="crawlTable">
+                <thead><tr><th>Surface</th><th>&mu;_asym</th><th>&delta;_net</th><th style="text-align:right;">Speed</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <div class="model-note" style="margin-top:12px;"><strong>Contradiction:</strong> a smooth 4D-printed surface has &mu;_fwd &asymp; &mu;_back, so &mu;_asym &asymp; 1 and there is <strong>no net motion</strong> &mdash; the robot oscillates in place. Directional travel needs printed surface features or angled legs to break the friction symmetry.</div>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind crawling</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Segment strain &epsilon;_active</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&epsilon;_active (%) &ndash; peristaltic stroke</label><input type="range" id="epsInput" aria-label="eps" min="5" max="40" step="1" value="20"><div class="slider-val" id="valEps">20 %</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Forward friction &mu;_fwd</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&mu;_forward &ndash; slip when advancing</label><input type="range" id="mufInput" aria-label="muf" min="0.1" max="1.0" step="0.02" value="0.3"><div class="slider-val" id="valMuf">0.30</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Backward friction &mu;_back</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&mu;_backward &ndash; grip when anchoring</label><input type="range" id="mubInput" aria-label="mub" min="0.1" max="1.2" step="0.02" value="0.6"><div class="slider-val" id="valMub">0.60</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Actuation frequency f</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>f (Hz) &ndash; cycles per second</label><input type="range" id="fInput" aria-label="f" min="0.1" max="1.5" step="0.05" value="0.8"><div class="slider-val" id="valF">0.80 Hz</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Run the Gait</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Which way does it go?</h3>
+                        <div class="result-row"><span class="result-label">Extension stroke &delta;_ext</span><span class="result-val" id="resDeltaExt">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Net displacement &delta;_net</span><span class="result-val" id="resDeltaNet">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Friction asymmetry &mu;_asym</span><span class="result-val" id="resAsym">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Crawl speed v</span><span class="result-val" id="resSpeed">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Direction</span><span class="result-val" id="resDir">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .axis-line { stroke: #334155; stroke-width: 2; }
+      .grid-line { stroke: #E2E8F0; stroke-width: 1; }
+      .curve { stroke: #1E40AF; stroke-width: 2.5; fill: none; }
+      .target-line { stroke: #E2570F; stroke-width: 2; stroke-dasharray: 3,3; }
+      .axis-label { font-family: Arial, sans-serif; font-size: 12px; fill: #334155; }
+      .title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #334155; }
+      .tick-label { font-family: Arial, sans-serif; font-size: 10px; fill: #334155; }
+      .marker { stroke: #E2570F; stroke-width: 2.5; fill: #E2570F; }
+      .marker-label { font-family: Arial, sans-serif; font-size: 11px; fill: #E2570F; font-weight: bold; }
+      .danger-zone { fill: #E2570F; opacity: 0.05; }
+      .safe-zone { fill: #1E40AF; opacity: 0.05; }
+    </style>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" class="title" text-anchor="middle">Cell Viability vs Wall Shear Stress: Resolution–Viability Trade-Off</text>
+
+  <!-- Axes -->
+  <line x1="70" y1="290" x2="570" y2="290" class="axis-line"/>
+  <line x1="70" y1="50" x2="70" y2="290" class="axis-line"/>
+
+  <!-- Safe and danger zones -->
+  <rect x="70" y="50" width="500" height="130" class="safe-zone"/>
+  <rect x="70" y="180" width="500" height="110" class="danger-zone"/>
+
+  <!-- Grid lines -->
+  <line x1="120" y1="290" x2="120" y2="50" class="grid-line"/>
+  <line x1="170" y1="290" x2="170" y2="50" class="grid-line"/>
+  <line x1="220" y1="290" x2="220" y2="50" class="grid-line"/>
+  <line x1="270" y1="290" x2="270" y2="50" class="grid-line"/>
+  <line x1="320" y1="290" x2="320" y2="50" class="grid-line"/>
+  <line x1="370" y1="290" x2="370" y2="50" class="grid-line"/>
+  <line x1="420" y1="290" x2="420" y2="50" class="grid-line"/>
+  <line x1="470" y1="290" x2="470" y2="50" class="grid-line"/>
+  <line x1="520" y1="290" x2="520" y2="50" class="grid-line"/>
+
+  <line x1="70" y1="240" x2="570" y2="240" class="grid-line"/>
+  <line x1="70" y1="190" x2="570" y2="190" class="grid-line"/>
+  <line x1="70" y1="140" x2="570" y2="140" class="grid-line"/>
+  <line x1="70" y1="90" x2="570" y2="90" class="grid-line"/>
+
+  <!-- Exponential cell survival decay: S = exp(-k·τ) -->
+  <path d="M 70 70 Q 150 95, 220 130 Q 280 160, 350 200 Q 420 240, 500 280 L 570 290" class="curve"/>
+
+  <!-- 85% survival target line -->
+  <line x1="70" y1="128" x2="570" y2="128" class="target-line"/>
+  <text x="55" y="133" class="tick-label" text-anchor="end" fill="#E2570F" font-weight="bold">S = 85%</text>
+
+  <!-- Three nozzle operating points -->
+  <!-- 200 µm nozzle (fine, high stress, low survival) -->
+  <circle cx="380" cy="205" r="4" class="marker"/>
+  <line x1="380" y1="205" x2="380" y2="310" class="target-line" stroke-width="1" opacity="0.5"/>
+  <text x="380" y="325" class="marker-label" text-anchor="middle">200 µm</text>
+  <text x="380" y="340" class="tick-label" text-anchor="middle" fill="#E2570F">High stress</text>
+
+  <!-- 400 µm nozzle (medium) -->
+  <circle cx="260" cy="165" r="4" class="marker"/>
+  <line x1="260" y1="165" x2="260" y2="310" class="target-line" stroke-width="1" opacity="0.5"/>
+  <text x="260" y="325" class="marker-label" text-anchor="middle">400 µm</text>
+
+  <!-- 610 µm nozzle (coarse, low stress, high survival) -->
+  <circle cx="150" cy="110" r="4" class="marker"/>
+  <line x1="150" y1="110" x2="150" y2="310" class="target-line" stroke-width="1" opacity="0.5"/>
+  <text x="150" y="325" class="marker-label" text-anchor="middle">610 µm</text>
+  <text x="150" y="340" class="tick-label" text-anchor="middle" fill="#1E40AF">Low stress</text>
+
+  <!-- Axis labels -->
+  <text x="320" y="330" class="axis-label" text-anchor="middle">Wall Shear Stress τ_wall (Pa)</text>
+  <text x="25" y="170" class="axis-label" text-anchor="middle" transform="rotate(-90 25 170)">Cell Survival S (−)</text>
+
+  <!-- Tick marks -->
+  <line x1="65" y1="290" x2="75" y2="290" class="axis-line"/>
+  <line x1="65" y1="240" x2="75" y2="240" class="axis-line"/>
+  <line x1="65" y1="190" x2="75" y2="190" class="axis-line"/>
+  <line x1="65" y1="140" x2="75" y2="140" class="axis-line"/>
+  <line x1="65" y1="90" x2="75" y2="90" class="axis-line"/>
+
+  <line x1="70" y1="295" x2="70" y2="305" class="axis-line"/>
+  <line x1="170" y1="295" x2="170" y2="305" class="axis-line"/>
+  <line x1="270" y1="295" x2="270" y2="305" class="axis-line"/>
+  <line x1="370" y1="295" x2="370" y2="305" class="axis-line"/>
+  <line x1="470" y1="295" x2="470" y2="305" class="axis-line"/>
+
+  <!-- Axis tick labels -->
+  <text x="70" y="320" class="tick-label" text-anchor="middle">0</text>
+  <text x="170" y="320" class="tick-label" text-anchor="middle">100</text>
+  <text x="270" y="320" class="tick-label" text-anchor="middle">200</text>
+  <text x="370" y="320" class="tick-label" text-anchor="middle">300</text>
+  <text x="470" y="320" class="tick-label" text-anchor="middle">400</text>
+
+  <text x="50" y="295" class="tick-label" text-anchor="end">0</text>
+  <text x="50" y="245" class="tick-label" text-anchor="end">0.25</text>
+  <text x="50" y="195" class="tick-label" text-anchor="end">0.50</text>
+  <text x="50" y="145" class="tick-label" text-anchor="end">0.75</text>
+  <text x="50" y="95" class="tick-label" text-anchor="end">1.0</text>
+
+  <!-- Zone labels -->
+  <text x="520" y="80" class="tick-label" fill="#1E40AF" font-weight="bold">✓ Safe</text>
+  <text x="520" y="230" class="tick-label" fill="#E2570F" font-weight="bold">✗ Danger</text>
+</svg>

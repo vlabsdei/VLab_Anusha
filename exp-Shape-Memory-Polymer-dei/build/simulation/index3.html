@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · Multi-Shape Memory — Shape Memory Polymers</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Glass Transition</span><span class="subcalc__desc">T&#8339; &amp; WLF viscoelasticity</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Strain Fixity</span><span class="subcalc__desc">Programming &amp; R&#8348;</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Shape Recovery</span><span class="subcalc__desc">R&#7523;, recovery stress, t&#8329;&#8325;</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Multi-Shape Memory</span><span class="subcalc__desc">Blends &amp; Fox equation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuation Energy</span><span class="subcalc__desc">Work, heat &amp; efficiency</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Copolymer Blends</span>
+            <h1 class="stage__title">Multi-Shape Memory &amp; the Fox Equation</h1>
+            <p class="stage__obj">Blend two SMPs and choose a morphology. A miscible blend gives one averaged T&#8339; (Fox equation) and dual-shape memory; a phase-separated blend keeps two transitions (T&#8339;&#8321;, T&#8339;&#8322;) enabling triple-shape recovery.</p>
+        </header>
+
+        <section class="insight" id="liveInsight">
+            <strong>Live Insight:</strong> Adjust the blend ratio and memory mode, then initiate the heating cycle to observe the recovery steps.
+        </section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">State: Idle</div>
+                <div id="viewport3D"></div>
+                <div class="viewport-legend" style="position:absolute; bottom:12px; left:12px; background:rgba(255,255,255,.9); backdrop-filter:blur(4px); padding:9px 12px; border-radius:8px; border:1px solid var(--line); font-family:var(--mono); font-size:10.5px; display:flex; flex-direction:column; gap:5px; z-index:10; pointer-events:none;">
+                    <div style="font-weight:600; color:var(--navy-700);">Specimen phase domains</div>
+                    <div id="legendPU" style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:#3B6FD8;"></span><span style="color:var(--ink-2);">PU soft phase (T&#8339;&#8321; = 45&deg;C)</span></div>
+                    <div id="legendPMMA" style="display:flex; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:#E2570F;"></span><span style="color:var(--ink-2);">PMMA hard phase (T&#8339;&#8322; = 90&deg;C)</span></div>
+                    <div id="legendMiscible" style="display:none; align-items:center; gap:6px;"><span style="width:11px; height:11px; border-radius:3px; background:#7B6E8F;"></span><span style="color:var(--ink-2);">Miscible phase (unified T&#8339;)</span></div>
+                </div>
+            </div>
+            <div>
+                <div class="sim-label">Strain recovery &epsilon; vs temperature</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Shape sequence verification</h3>
+            <table id="verificationTable">
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Temperature</th>
+                        <th>Strain (%)</th>
+                        <th style="text-align:right;">Status</th>
+                    </tr>
+                </thead>
+                <tbody><!-- injected --></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content">
+                <div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:120px;"><!-- rendered --></div>
+            </div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">PU / PMMA Blend Ratio</div>
+                        <div class="slider-group">
+                            <input type="range" id="blendSlider" aria-label="Blend Slider" min="0" max="100" value="50">
+                            <div style="display:flex; justify-content:space-between; margin-top:8px; font-family:var(--mono); font-weight:600; color:var(--rust-700); font-size:12px;">
+                                <span id="lblPU">50% PU</span>
+                                <span id="lblPMMA">50% PMMA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">Shape Memory Mode</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" id="modeDual" name="morphology" value="miscible"><label for="modeDual">Dual-Shape (miscible blend)</label></div>
+                            <div class="option"><input type="radio" id="modeTriple" name="morphology" value="immiscible" checked><label for="modeTriple">Triple-Shape (phase-separated, T&#8339;&#8321;=45&deg;C, T&#8339;&#8322;=90&deg;C)</label></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Initiate Heating Cycle</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Multi-shape blend results</h3>
+                        <div class="result-row"><span class="result-label">PU weight fraction w&#8321;</span><span class="result-val" id="resW1">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">PMMA weight fraction w&#8322;</span><span class="result-val" id="resW2">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Calculated T&#8339; (Fox eq.)</span><span class="result-val" id="resTg">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Observed recoveries</span><span class="result-val" id="resObs">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index4.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

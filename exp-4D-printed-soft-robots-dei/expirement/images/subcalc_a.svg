@@ -1,0 +1,104 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" font-size="16" font-weight="bold" fill="#334155" text-anchor="middle">Pneumatic Bending: Pressure vs Angle</text>
+
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 30" fill="none" stroke="#E2E8F0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect x="60" y="50" width="520" height="260" fill="url(#grid)" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- Axes -->
+  <line x1="60" y1="310" x2="580" y2="310" stroke="#334155" stroke-width="2"/>
+  <line x1="60" y1="310" x2="60" y2="50" stroke="#334155" stroke-width="2"/>
+
+  <!-- Axis labels -->
+  <text x="570" y="330" font-size="13" fill="#334155" text-anchor="end">P (kPa)</text>
+  <text x="40" y="60" font-size="13" fill="#334155">θ (°)</text>
+
+  <!-- Axis ticks and values -->
+  <text x="55" y="320" font-size="11" fill="#334155" text-anchor="end">0</text>
+  <text x="55" y="240" font-size="11" fill="#334155" text-anchor="end">30</text>
+  <text x="55" y="160" font-size="11" fill="#334155" text-anchor="end">60</text>
+  <text x="55" y="80" font-size="11" fill="#334155" text-anchor="end">90</text>
+
+  <text x="80" y="325" font-size="11" fill="#334155" text-anchor="middle">0</text>
+  <text x="180" y="325" font-size="11" fill="#334155" text-anchor="middle">20</text>
+  <text x="280" y="325" font-size="11" fill="#334155" text-anchor="middle">40</text>
+  <text x="380" y="325" font-size="11" fill="#334155" text-anchor="middle">60</text>
+  <text x="480" y="325" font-size="11" fill="#334155" text-anchor="middle">80</text>
+  <text x="580" y="325" font-size="11" fill="#334155" text-anchor="middle">100</text>
+
+  <!-- Minor tick marks -->
+  <line x1="60" y1="308" x2="60" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="80" y1="308" x2="80" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="100" y1="308" x2="100" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="120" y1="308" x2="120" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="140" y1="308" x2="140" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="160" y1="308" x2="160" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="180" y1="308" x2="180" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="200" y1="308" x2="200" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="220" y1="308" x2="220" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="240" y1="308" x2="240" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="260" y1="308" x2="260" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="280" y1="308" x2="280" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="300" y1="308" x2="300" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="320" y1="308" x2="320" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="340" y1="308" x2="340" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="360" y1="308" x2="360" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="380" y1="308" x2="380" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="400" y1="308" x2="400" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="420" y1="308" x2="420" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="440" y1="308" x2="440" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="460" y1="308" x2="460" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="480" y1="308" x2="480" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="500" y1="308" x2="500" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="520" y1="308" x2="520" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="540" y1="308" x2="540" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="560" y1="308" x2="560" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="580" y1="308" x2="580" y2="312" stroke="#334155" stroke-width="1"/>
+
+  <!-- Dashed linear line θ_lin = κL (dashed) -->
+  <polyline points="60,310 120,284 180,258 240,232 300,206 360,180 420,154 480,128 540,102 580,90"
+    stroke="#334155" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+  <!-- Real curve with saturation/rolloff (red/highlight) -->
+  <path d="M 60,310 Q 200,250 320,160 T 580,95"
+    stroke="#E2570F" stroke-width="2.5" fill="none"/>
+
+  <!-- Annotation: linear region -->
+  <text x="240" y="185" font-size="11" fill="#334155" font-style="italic">θ_lin</text>
+
+  <!-- Annotation: saturation region -->
+  <text x="470" y="70" font-size="11" fill="#E2570F" font-weight="bold">saturation</text>
+  <line x1="465" y1="75" x2="445" y2="100" stroke="#E2570F" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <!-- Reference points: 20 kPa → 28°, 80 kPa → 94° -->
+  <circle cx="140" cy="249" r="2.5" fill="#E2570F"/>
+  <text x="145" y="235" font-size="9" fill="#334155">20 kPa, 28°</text>
+
+  <circle cx="500" cy="105" r="2.5" fill="#E2570F"/>
+  <text x="505" y="100" font-size="9" fill="#334155">80 kPa, 94°</text>
+
+  <!-- Legend -->
+  <g>
+    <line x1="420" y1="330" x2="450" y2="330" stroke="#334155" stroke-width="2" stroke-dasharray="5,5"/>
+    <text x="455" y="335" font-size="11" fill="#334155">Linear (θ_lin = κL)</text>
+  </g>
+
+  <g>
+    <line x1="420" y1="350" x2="450" y2="350" stroke="#E2570F" stroke-width="2.5"/>
+    <text x="455" y="355" font-size="11" fill="#334155">Real (with stiffening)</text>
+  </g>
+
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#E2570F"/>
+    </marker>
+  </defs>
+</svg>

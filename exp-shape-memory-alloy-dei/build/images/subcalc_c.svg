@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
+  <rect width="640" height="440" fill="#ffffff"/>
+  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
+  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc C: Joule Heating &amp; Electro-Thermal Actuation</text>
+
+  <!-- wire + current + cooling -->
+  <text x="180" y="74" fill="#0f172a" font-size="13" font-weight="700" text-anchor="middle">SMA wire: I&#178;R heating vs convective loss</text>
+  <line x1="70" y1="130" x2="300" y2="130" stroke="#dc2626" stroke-width="8" stroke-linecap="round"/>
+  <path d="M55 130 L70 130" stroke="#1e293b" stroke-width="2" marker-end="url(#arC)"/>
+  <path d="M300 130 L315 130" stroke="#1e293b" stroke-width="2"/>
+  <text x="185" y="120" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">I &#8594; (Joule heat)</text>
+  <defs><marker id="arC" markerWidth="10" markerHeight="10" refX="2" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6 Z" fill="#1e293b"/></marker></defs>
+  <!-- convective cooling arrows -->
+  <g stroke="#2563eb" stroke-width="1.6">
+    <path d="M110 150 l-8 22" marker-end="url(#arD)"/><path d="M160 150 l-8 22" marker-end="url(#arD)"/>
+    <path d="M210 150 l-8 22" marker-end="url(#arD)"/><path d="M260 150 l-8 22" marker-end="url(#arD)"/>
+  </g>
+  <defs><marker id="arD" markerWidth="9" markerHeight="9" refX="4" refY="7" orient="auto"><path d="M0,0 L8,0 L4,8 Z" fill="#2563eb"/></marker></defs>
+  <text x="185" y="190" fill="#2563eb" font-size="10" font-weight="700" text-anchor="middle">h&#183;A&#183;(T &#8722; T_amb)  convective loss</text>
+
+  <!-- T vs t plot -->
+  <text x="490" y="74" fill="#0f172a" font-size="13" font-weight="700" text-anchor="middle">Temperature vs time</text>
+  <line x1="380" y1="210" x2="610" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="380" y1="210" x2="380" y2="86" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="372" y="96" fill="#475569" font-size="10" text-anchor="end">T</text>
+  <text x="610" y="226" fill="#475569" font-size="10" text-anchor="end">t</text>
+  <line x1="380" y1="120" x2="610" y2="120" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="606" y="115" fill="#16a34a" font-size="9" font-weight="700" text-anchor="end">A_f (activate)</text>
+  <path d="M380 210 Q450 130 520 122 Q560 120 610 119" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+  <line x1="500" y1="210" x2="500" y2="122" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="500" y="224" fill="#1e293b" font-size="9" text-anchor="middle" font-weight="700">t_act</text>
+
+  <!-- equation panel -->
+  <rect x="20" y="248" width="600" height="172" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
+  <text x="36" y="276" fill="#8A1134" font-size="14" font-weight="700">Governing equations (first-order thermal ODE)</text>
+  <text x="36" y="304" fill="#1e293b" font-size="14" font-weight="700">dT/dt = [ I&#178;&#183;R(T) &#8722; h&#183;A_surf&#183;(T &#8722; T_amb) ] / (m&#183;Cp)</text>
+  <text x="36" y="330" fill="#1e293b" font-size="14" font-weight="700">R(T) = R_aust + (R_mart &#8722; R_aust) &#215; x_M(T)</text>
+  <text x="36" y="356" fill="#475569" font-size="12">&#961;_A = 82&#215;10&#8315;&#8312; &#937;m, &#961;_M = 100&#215;10&#8315;&#8312; &#937;m;  h = 25 W/(m&#178;&#183;&#176;C);  Cp = 320 J/(kg&#183;&#176;C).</text>
+  <text x="36" y="380" fill="#475569" font-size="12">Integrate to find t_act, the time to heat the wire to A_f.</text>
+  <text x="36" y="404" fill="#94a3b8" font-size="11">R drops ~20% on M&#8594;A; higher current heats faster but convection sets the steady temperature.</text>
+</svg>

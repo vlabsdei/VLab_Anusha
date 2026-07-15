@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · SMP Stiffness Lock — 4D-Printed Soft Robots</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 09</div>
+            <div class="rail__title">4D-Printed Soft Robots</div>
+            <div class="rail__meta">Pneumatic bending · SMP locking · Crawling · Grasping · PID control</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will it bend?</span><span class="subcalc__desc">Pneumatic actuation</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">will it hold?</span><span class="subcalc__desc">SMP stiffness lock</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">will it crawl?</span><span class="subcalc__desc">Friction-asymmetry gait</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">will it grip?</span><span class="subcalc__desc">Grasp &amp; force closure</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">will it settle?</span><span class="subcalc__desc">Pressure–position PID</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · 4D Lock-and-Hold</span>
+            <h1 class="stage__title">Shape-Memory Stiffness Switching</h1>
+            <p class="stage__obj">The real 4D trick: bend the finger warm (soft), cool it below T_g to vitrify (E jumps 100&ndash;1000&times;), then release pressure. If it crossed T_g the shape holds at zero actuation energy; if it stayed warm it springs straight back.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the hold temperature and material, then run the cycle to see whether the finger locks its bent shape or springs back.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Warm &amp; soft</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Modulus E vs temperature (T_g switch)</div>
+                    <canvas id="plotCanvasStiff" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Bending angle across the lock cycle</div>
+                    <canvas id="plotCanvasCycle" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Lock-and-hold state timeline</h3>
+            <table id="stiffTable">
+                <thead><tr><th>State</th><th>Modulus E</th><th>Bend &theta;</th><th style="text-align:right;">Hold power</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <div class="model-note" style="margin-top:12px;"><strong>Model note:</strong> E(T) uses an empirical sigmoid straddling T_g = 40&deg;C between E_active (slider) and E_passive = 1.5 GPa. Locked angle &theta;_held = R_f&middot;&theta;_bent (shape fixity from Exp 1). Below T_g the SMP-locked hold power is <strong>exactly 0 W</strong>; pneumatic hold leaks continuously.</div>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind stiffness switching</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Hold temperature T</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>T (&deg;C) &ndash; sweep across T_g = 40&deg;C</label><input type="range" id="tInput" aria-label="T" min="20" max="70" step="1" value="25"><div class="slider-val" id="valT">25 &deg;C</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Active (warm) modulus</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>E_active (MPa) &ndash; rubbery stiffness</label><input type="range" id="eaInput" aria-label="Ea" min="1" max="10" step="0.1" value="3"><div class="slider-val" id="valEa">3.0 MPa</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Bending pressure P_bend</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>P_bend (kPa) &ndash; sets warm bend angle</label><input type="range" id="pbInput" aria-label="Pb" min="0" max="100" step="1" value="60"><div class="slider-val" id="valPb">60 kPa</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Shape fixity R_f</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>R_f (%) &ndash; fraction of bend retained</label><input type="range" id="rfInput" aria-label="Rf" min="70" max="100" step="1" value="97"><div class="slider-val" id="valRf">97 %</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Run Lock Cycle</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Does the shape lock?</h3>
+                        <div class="result-row"><span class="result-label">Active modulus E_active</span><span class="result-val" id="resEactive">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Passive modulus E_passive</span><span class="result-val" id="resEpassive">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Stiffness ratio SR</span><span class="result-val" id="resSR">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Held angle &theta;_held</span><span class="result-val" id="resThetaHeld">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Hold power saved</span><span class="result-val" id="resEnergySaved">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

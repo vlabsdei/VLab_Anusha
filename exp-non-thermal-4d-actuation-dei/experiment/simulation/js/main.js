@@ -116,7 +116,7 @@ HG.scene3D = function (containerId, camPos) {
     if (!c) return null;
     c.innerHTML = '';
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf6f8fb);
+    scene.background = new THREE.Color(0xF4F5F3);
     const camera = new THREE.PerspectiveCamera(45, c.clientWidth / c.clientHeight, 0.1, 100);
     camera.position.set(camPos[0], camPos[1], camPos[2]);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -256,10 +256,10 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const pts = [];
         for (let I = 5; I <= 60.001; I += 1) { const t = t90(I, C); pts.push({ x: I, y: t }); if (t > yMax) yMax = t; }
         yMax = Math.ceil(yMax / 20) * 20;
-        const fr = HG.frame(ctxBL, W, H, { padT: 14, padB: 26, xMin: 5, xMax: 60, yMin: 0, yMax: yMax, xTicks: 5, yTicks: 4, xLabel: 'Light brightness I0 (mW/cm2)', yLabel: 'Time to actuate t90 (s)', axisColor: '#2563eb', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
-        HG.curve(ctxBL, fr, pts, '#2563eb', 2.4);
+        const fr = HG.frame(ctxBL, W, H, { padT: 14, padB: 26, xMin: 5, xMax: 60, yMin: 0, yMax: yMax, xTicks: 5, yTicks: 4, xLabel: 'Light brightness I0 (mW/cm2)', yLabel: 'Time to actuate t90 (s)', axisColor: '#1E40AF', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        HG.curve(ctxBL, fr, pts, '#1E40AF', 2.4);
         HG.tracker(ctxBL, fr, I0, t90(I0, C), t90(I0, C).toFixed(0) + 's', '#ef4444');
-        ctxBL.fillStyle = '#2563eb'; ctxBL.font = 'bold 8px sans-serif'; ctxBL.textAlign = 'left'; ctxBL.fillText('Brighter light = faster bend (t90 ~ 1/I)', fr.pl + 8, fr.pt + 11);
+        ctxBL.fillStyle = '#1E40AF'; ctxBL.font = 'bold 8px sans-serif'; ctxBL.textAlign = 'left'; ctxBL.fillText('Brighter light = faster bend (t90 ~ 1/I)', fr.pl + 8, fr.pt + 11);
     }
     function fillAzo() {
         if (!azoBody) return;
@@ -297,7 +297,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- shine-the-light animation ----------
     function startRun() { if (running) { stopRun(); return; } running = true; tau = 0; dispCis = 0; btnRun.innerText = 'Pause'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { running = false; btnRun.innerText = 'Shine the Light'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { running = false; btnRun.innerText = 'Shine the Light'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) { tau += dt * (tEnd / 6); targCis = cisAt(tau, I0, C, wl); if (tau >= tEnd) { tau = tEnd; refresh(tau); stopRun(true); return; } refresh(tau); }
 
     // ---------- events ----------
@@ -411,22 +411,22 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const W = plotNIR.width, H = plotNIR.height;
         const pts = [];
         for (let p = 0.1; p <= 6.001; p += 0.1) { const d = dRes(p, load); pts.push({ x: p, y: isFinite(d) ? d : NaN }); }
-        const fr = HG.frame(ctxNIR, W, H, { xMin: 0, xMax: 6, yMin: 0, yMax: 3, xTicks: 6, yTicks: 6, xLabel: 'Laser power P (W)', yLabel: 'Heated-zone size d (mm)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(1) });
+        const fr = HG.frame(ctxNIR, W, H, { xMin: 0, xMax: 6, yMin: 0, yMax: 3, xTicks: 6, yTicks: 6, xLabel: 'Laser power P (W)', yLabel: 'Heated-zone size d (mm)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(1) });
         HG.shadeYBand(ctxNIR, fr, 0, 0.5, 'rgba(16,185,129,0.10)');
         HG.hLine(ctxNIR, fr, 0.5, '#16a34a', 'stays local < 0.5 mm');
-        const pmin = pMinForRes(load, 0.5); if (pmin >= 0.1 && pmin <= 6) HG.vLine(ctxNIR, fr, pmin, '#2563eb', 'P_min');
-        HG.curve(ctxNIR, fr, pts, '#8A1134', 2.6);
+        const pmin = pMinForRes(load, 0.5); if (pmin >= 0.1 && pmin <= 6) HG.vLine(ctxNIR, fr, pmin, '#1E40AF', 'P_min');
+        HG.curve(ctxNIR, fr, pts, '#E2570F', 2.6);
         const dc = dRes(P, load); if (isFinite(dc)) HG.tracker(ctxNIR, fr, P, dc, 'd=' + dc.toFixed(2), '#ef4444');
-        HG.legend(ctxNIR, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'Hot-zone size vs power' }, { color: '#16a34a', dash: true, text: 'Localised < 0.5 mm' }, { color: '#2563eb', dash: true, text: 'Min power needed' }]);
+        HG.legend(ctxNIR, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'Hot-zone size vs power' }, { color: '#16a34a', dash: true, text: 'Localised < 0.5 mm' }, { color: '#1E40AF', dash: true, text: 'Min power needed' }]);
     }
     function drawTempPlot() {
         const W = plotTemp.width, H = plotTemp.height;
         const yMax = Math.max(40, Math.ceil(DTss(6, load) / 20) * 20);
         const pts = [];
         for (let p = 0.1; p <= 6.001; p += 0.1) pts.push({ x: p, y: Math.min(DTss(p, load), yMax) });
-        const fr = HG.frame(ctxTemp, W, H, { padT: 14, padB: 26, xMin: 0, xMax: 6, yMin: 0, yMax: yMax, xTicks: 6, yTicks: 4, xLabel: 'Laser power P (W)', yLabel: 'Temperature rise (C)', axisColor: '#2563eb', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxTemp, W, H, { padT: 14, padB: 26, xMin: 0, xMax: 6, yMin: 0, yMax: yMax, xTicks: 6, yTicks: 4, xLabel: 'Laser power P (W)', yLabel: 'Temperature rise (C)', axisColor: '#1E40AF', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.hLine(ctxTemp, fr, DT_REQ, '#16a34a', 'switch-on +25C');
-        HG.curve(ctxTemp, fr, pts, '#2563eb', 2.4);
+        HG.curve(ctxTemp, fr, pts, '#1E40AF', 2.4);
         HG.tracker(ctxTemp, fr, P, Math.min(DTss(P, load), yMax), DTss(P, load).toFixed(0) + 'C', '#ef4444');
     }
     function fillNIR() {
@@ -461,7 +461,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- fire-the-laser animation ----------
     function startRun() { if (running) { stopRun(); return; } running = true; tau = 0; dispHeat = 0; btnRun.innerText = 'Pause'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { running = false; btnRun.innerText = 'Fire the Laser'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { running = false; btnRun.innerText = 'Fire the Laser'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) { const t = tAct(P, load); tEnd = isFinite(t) ? t * 1.4 : 40; tau += dt * (tEnd / 6); targHeat = 1 - Math.exp(-tau / TAU_H); if (tau >= tEnd) { tau = tEnd; refresh(); stopRun(true); return; } refresh(); }
 
     // ---------- events ----------
@@ -563,22 +563,22 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const W = plotMag.width, H = plotMag.height;
         const pts = [];
         for (let b = 0; b <= 150.001; b += 2) pts.push({ x: b, y: deflection(b, phi) });
-        const fr = HG.frame(ctxMag, W, H, { xMin: 0, xMax: 150, yMin: 0, yMax: 7, xTicks: 5, yTicks: 7, xLabel: 'External magnet strength B (mT)', yLabel: 'Tip bend (mm)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxMag, W, H, { xMin: 0, xMax: 150, yMin: 0, yMax: 7, xTicks: 5, yTicks: 7, xLabel: 'External magnet strength B (mT)', yLabel: 'Tip bend (mm)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         const b45 = Bcrit(45, phi), b90 = Bcrit(90, phi);
-        if (b45 <= 150) HG.vLine(ctxMag, fr, b45, '#2563eb', 'steer 45');
+        if (b45 <= 150) HG.vLine(ctxMag, fr, b45, '#1E40AF', 'steer 45');
         if (b90 <= 150) HG.vLine(ctxMag, fr, b90, '#16a34a', 'steer 90');
-        HG.curve(ctxMag, fr, pts, '#8A1134', 2.6);
+        HG.curve(ctxMag, fr, pts, '#E2570F', 2.6);
         HG.tracker(ctxMag, fr, B, deflection(B, phi), deflection(B, phi).toFixed(1) + 'mm', '#ef4444');
-        HG.legend(ctxMag, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#8A1134', text: 'Tip bend vs magnet' }, { color: '#2563eb', dash: true, text: 'Field to steer 45 deg' }, { color: '#16a34a', dash: true, text: 'Field to steer 90 deg' }]);
+        HG.legend(ctxMag, fr.pl + fr.w - 158, fr.pt + 6, [{ color: '#E2570F', text: 'Tip bend vs magnet' }, { color: '#1E40AF', dash: true, text: 'Field to steer 45 deg' }, { color: '#16a34a', dash: true, text: 'Field to steer 90 deg' }]);
     }
     function drawBcPlot() {
         const W = plotBc.width, H = plotBc.height;
         const pts = [];
         for (let v = 1; v <= 10.001; v += 0.2) pts.push({ x: v, y: Bcrit(45, v) });
-        const fr = HG.frame(ctxBc, W, H, { padT: 14, padB: 26, xMin: 1, xMax: 10, yMin: 0, yMax: 260, xTicks: 9, yTicks: 4, xLabel: 'Particles printed in (vol%)', yLabel: 'Magnet for 45 deg (mT)', axisColor: '#2563eb', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
-        HG.curve(ctxBc, fr, pts, '#2563eb', 2.4);
+        const fr = HG.frame(ctxBc, W, H, { padT: 14, padB: 26, xMin: 1, xMax: 10, yMin: 0, yMax: 260, xTicks: 9, yTicks: 4, xLabel: 'Particles printed in (vol%)', yLabel: 'Magnet for 45 deg (mT)', axisColor: '#1E40AF', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        HG.curve(ctxBc, fr, pts, '#1E40AF', 2.4);
         HG.tracker(ctxBc, fr, phi, Bcrit(45, phi), Bcrit(45, phi).toFixed(0) + 'mT', '#ef4444');
-        ctxBc.fillStyle = '#2563eb'; ctxBc.font = 'bold 8px sans-serif'; ctxBc.textAlign = 'left'; ctxBc.fillText('More particles = weaker magnet needed', fr.pl + 8, fr.pt + 11);
+        ctxBc.fillStyle = '#1E40AF'; ctxBc.font = 'bold 8px sans-serif'; ctxBc.textAlign = 'left'; ctxBc.fillText('More particles = weaker magnet needed', fr.pl + 8, fr.pt + 11);
     }
     function fillMag() {
         if (!magBody) return;
@@ -596,8 +596,8 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         if (!sweeping) targAng = rad(th);
         HG.put(resMs, mEff(phi).toExponential(2) + ' A/m');
         HG.put(resTau, (torque(B, phi) * 1e6).toFixed(2) + ' uN.m');
-        HG.put(resDef, df.toFixed(2) + ' mm @ ' + th.toFixed(0) + ' deg', '#8A1134');
-        HG.put(resB45, Bcrit(45, phi).toFixed(0) + ' mT', '#2563eb');
+        HG.put(resDef, df.toFixed(2) + ' mm @ ' + th.toFixed(0) + ' deg', '#E2570F');
+        HG.put(resB45, Bcrit(45, phi).toFixed(0) + ' mT', '#1E40AF');
         HG.put(resB90, Bcrit(90, phi).toFixed(0) + ' mT', '#16a34a');
         const steers = th >= 45;
         stateLabel.innerText = steers ? 'Tip steered ' + th.toFixed(0) + ' deg (enough)' : 'Tip bent ' + th.toFixed(0) + ' deg (not yet)';
@@ -611,7 +611,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- apply-the-magnet sweep ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepB = 0; btnRun.innerText = 'Pause Sweep'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Apply the Magnet'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Apply the Magnet'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) { sweepB += dt * 28; B = Math.min(150, sweepB); bInput.value = B; valB.innerText = B.toFixed(0) + ' mT'; targAng = rad(thetaDeg(B, phi)); refresh(); if (sweepB >= 150) { B = 150; stopRun(true); } }
 
     // ---------- events ----------
@@ -670,7 +670,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     // ---------- physics (on-axis solenoid field) ----------
     const m2 = (mm) => (mm / 1000) * (mm / 1000);
     const Baxis = (n, R, r, I) => MU0 * n * I * m2(R) / (2 * Math.pow(m2(R) + m2(r), 1.5));        // Tesla
-    const Btissue = (n, R, r, I) => Baxis(n, R, r, I) * Math.exp(-r / DELTA);
+    // Biological tissue has relative magnetic permeability ~= 1 (weakly diamagnetic) at these
+    // field strengths/frequencies, so it does NOT absorb a magnetostatic field the way it absorbs
+    // light or RF power. The only real loss is the coil's own geometric 1/r^3 falloff, already
+    // captured by Baxis — so the field "after tissue" equals the field at the device, not a
+    // further exponential decay.
+    const Btissue = (n, R, r, I) => Baxis(n, R, r, I);
     const Ireq = (n, R, r) => B_CRIT * 2 * Math.pow(m2(R) + m2(r), 1.5) / (MU0 * n * m2(R));        // A to reach B_crit at r
     const Pcoil = (n, R, r) => { const I = Ireq(n, R, r); return I * I * RHO * n; };                 // W
     function crossover(n, R) { for (let r = 10; r <= 250; r += 0.5) if (Pcoil(n, R, r) > P_MAX) return r; return 250; }
@@ -711,25 +716,24 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const W = plotCoil.width, H = plotCoil.height;
         const pts = [];
         for (let rr = 10; rr <= 150.001; rr += 1) pts.push({ x: rr, y: Math.min(Pcoil(n, R, rr), 1000) });
-        const fr = HG.frame(ctxCoil, W, H, { xMin: 10, xMax: 150, yMin: 0, yMax: 1000, xTicks: 7, yTicks: 5, xLabel: 'Implant depth r (mm)', yLabel: 'Coil power needed (W)', axisColor: '#8A1134', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const fr = HG.frame(ctxCoil, W, H, { xMin: 10, xMax: 150, yMin: 0, yMax: 1000, xTicks: 7, yTicks: 5, xLabel: 'Implant depth r (mm)', yLabel: 'Coil power needed (W)', axisColor: '#E2570F', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         const cr = crossover(n, R);
         HG.shadeX(ctxCoil, fr, cr, 150, 'rgba(239,68,68,0.08)', 'rgba(239,68,68,0.14)');
         HG.hLine(ctxCoil, fr, P_MAX, '#16a34a', 'wireless budget');
         if (cr <= 150) HG.vLine(ctxCoil, fr, cr, '#dc2626', 'crossover');
-        HG.curve(ctxCoil, fr, pts, '#8A1134', 2.6);
+        HG.curve(ctxCoil, fr, pts, '#E2570F', 2.6);
         HG.tracker(ctxCoil, fr, r, Math.min(Pcoil(n, R, r), 1000), Pcoil(n, R, r).toFixed(0) + 'W', '#ef4444');
-        HG.legend(ctxCoil, fr.pl + 8, fr.pt + 6, [{ color: '#8A1134', text: 'Power to reach the device' }, { color: '#16a34a', dash: true, text: 'Practical wireless budget' }, { color: '#dc2626', dash: true, text: 'Battery wins beyond' }]);
+        HG.legend(ctxCoil, fr.pl + 8, fr.pt + 6, [{ color: '#E2570F', text: 'Power to reach the device' }, { color: '#16a34a', dash: true, text: 'Practical wireless budget' }, { color: '#dc2626', dash: true, text: 'Battery wins beyond' }]);
     }
     function drawFieldPlot() {
         const W = plotField.width, H = plotField.height;
-        const ax = [], ti = [];
-        for (let rr = 10; rr <= 150.001; rr += 2) { ax.push({ x: rr, y: Baxis(n, R, rr, I_FIX) * 1000 }); ti.push({ x: rr, y: Btissue(n, R, rr, I_FIX) * 1000 }); }
-        const fr = HG.frame(ctxField, W, H, { padT: 14, padB: 26, xMin: 10, xMax: 150, yMin: 0, yMax: 120, xTicks: 7, yTicks: 4, xLabel: 'Depth r (mm)', yLabel: 'Field reaching it (mT)', axisColor: '#2563eb', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
+        const ax = [];
+        for (let rr = 10; rr <= 150.001; rr += 2) { ax.push({ x: rr, y: Baxis(n, R, rr, I_FIX) * 1000 }); }
+        const fr = HG.frame(ctxField, W, H, { padT: 14, padB: 26, xMin: 10, xMax: 150, yMin: 0, yMax: 120, xTicks: 7, yTicks: 4, xLabel: 'Depth r (mm)', yLabel: 'Field reaching it (mT)', axisColor: '#1E40AF', xFmt: (v) => v.toFixed(0), yFmt: (v) => v.toFixed(0) });
         HG.hLine(ctxField, fr, B_CRIT * 1000, '#16a34a', 'needs 50mT');
-        HG.curve(ctxField, fr, ax, '#2563eb', 2.4);
-        ctxField.setLineDash([5, 4]); HG.curve(ctxField, fr, ti, '#dc2626', 2); ctxField.setLineDash([]);
+        HG.curve(ctxField, fr, ax, '#1E40AF', 2.4);
         HG.tracker(ctxField, fr, r, Baxis(n, R, r, I_FIX) * 1000, '', '#ef4444');
-        ctxField.fillStyle = '#dc2626'; ctxField.font = 'bold 8px sans-serif'; ctxField.textAlign = 'left'; ctxField.fillText('dashed = after tissue soaks it up', fr.pl + 8, fr.pt + 11);
+        ctxField.fillStyle = '#475569'; ctxField.font = 'bold 8px sans-serif'; ctxField.textAlign = 'left'; ctxField.fillText('field falls off geometrically as 1/r' + String.fromCharCode(179) + ' (tissue does not absorb it)', fr.pl + 8, fr.pt + 11);
     }
     function fillCoil() {
         if (!coilBody) return;
@@ -740,12 +744,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         formula.innerHTML = '<div style="line-height:1.7;color:#1e293b;font-size:15px;font-weight:bold;">' +
             '<div><strong>Field from the coil:</strong> B = &mu;<sub>0</sub> n I R&sup2; / (2(R&sup2;+r&sup2;)<sup>3/2</sup>)</div>' +
             '<div style="margin-left:18px;font-style:italic;color:#475569;font-size:0.95em;">Current to reach 50 mT: I = B_crit&middot;2(R&sup2;+r&sup2;)<sup>3/2</sup>/(&mu;<sub>0</sub> n R&sup2;) = ' + Ireq(n, R, r).toFixed(1) + ' A &rArr; P = I&sup2;R_coil = ' + Pcoil(n, R, r).toFixed(0) + ' W</div>' +
-            '<div style="margin-top:6px;"><strong>Tissue soaks up field:</strong> B_tissue = B_surface e<sup>-r/&delta;</sup>, &delta; &asymp; 50 mm &rArr; ' + (Btissue(n, R, r, I_FIX) * 1000).toFixed(1) + ' mT at ' + r.toFixed(0) + ' mm (20 A)</div></div>';
+            '<div style="margin-top:6px;"><strong>Tissue is magnetically transparent:</strong> unlike light or RF, biological tissue has relative permeability &approx; 1, so B is not absorbed &mdash; it only falls off geometrically as B &prop; 1/r&sup3; &rArr; ' + (Baxis(n, R, r, I_FIX) * 1000).toFixed(1) + ' mT at ' + r.toFixed(0) + ' mm (20 A)</div></div>';
     }
     function refresh() {
         const cr = crossover(n, R), P = Pcoil(n, R, r);
         HG.put(resBd, (Baxis(n, R, r, I_FIX) * 1000).toFixed(1) + ' mT');
-        HG.put(resBt, (Btissue(n, R, r, I_FIX) * 1000).toFixed(1) + ' mT');
+        HG.put(resBt, 'None (~0%) — tissue is magnetically transparent');
         HG.put(resI, Ireq(n, R, r).toFixed(1) + ' A');
         HG.put(resP, P.toFixed(0) + ' W', P <= P_MAX ? '#16a34a' : '#dc2626');
         HG.put(resCross, cr.toFixed(0) + ' mm');
@@ -753,7 +757,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         stateLabel.innerText = ok ? 'Wireless powering works' : 'Too deep - use a battery';
         stateLabel.style.background = ok ? '#dcfce7' : '#fee2e2'; stateLabel.style.color = ok ? '#166534' : '#b91c1c';
         liveInsight.innerHTML = '<strong>Live Insight:</strong> To drive the implanted robot at ' + r.toFixed(0) + ' mm depth, a ' + n + '-turn, ' + R.toFixed(0) + ' mm coil must push <strong>' + Ireq(n, R, r).toFixed(1) + ' A</strong>, drawing <strong>' + P.toFixed(0) + ' W</strong>. ' +
-            'Tissue soaks up the field (roughly half every 50 mm), so at 20 A only ' + (Btissue(n, R, r, I_FIX) * 1000).toFixed(1) + ' mT reaches the device and deeper implants need far more power. ' +
+            'The field itself is not absorbed by tissue (magnetic permeability &approx; 1) &mdash; it only falls off geometrically as 1/r&sup3; with the coil-to-implant distance, so deeper implants need far more current and power. ' +
             'Past the crossover depth of <strong>' + cr.toFixed(0) + ' mm</strong> the coil exceeds the ' + P_MAX + ' W budget, so a mW-scale on-board battery becomes the better choice. ' +
             '<em>Design rule: power climbs steeply with depth - wireless wins when shallow, battery wins when deep.</em>';
         drawCoilPlot(); drawFieldPlot(); fillCoil(); updateEq();
@@ -761,7 +765,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- power-the-coil depth sweep ----------
     function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepR = 10; btnRun.innerText = 'Pause Sweep'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Power the Coil'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stopRun(done) { sweeping = false; btnRun.innerText = 'Power the Coil'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) { sweepR += dt * 26; r = Math.min(150, sweepR); distInput.value = r; valDist.innerText = r.toFixed(0) + ' mm'; refresh(); if (sweepR >= 150) { r = 150; stopRun(true); } }
 
     // ---------- events ----------
@@ -822,7 +826,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     const tTherm = (tau) => tau;                 // thermal diffusion time constant
     function fmtT(s) { return s < 1 ? (s * 1000).toFixed(0) + ' ms' : (s < 60 ? s.toFixed(1) + ' s' : (s / 60).toFixed(1) + ' min'); }
     const STIM = [
-        { key: 'Magnetic', col: 0x2563eb, app: 'Surgical robots' },
+        { key: 'Magnetic', col: 0x1E40AF, app: 'Surgical robots' },
         { key: 'Photo', col: 0x7c3aed, app: 'Microfluidics' },
         { key: 'Thermal', col: 0xdc2626, app: 'Implants' }
     ];
@@ -845,7 +849,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         S = HG.scene3D('viewport3D', [0.0, 0.4, 4.8]);
         if (!S) return;
         const gp = new THREE.Mesh(new THREE.BoxGeometry(5, 0.05, 2), new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.9 })); gp.position.y = -1.15; gp.receiveShadow = true; S.scene.add(gp);
-        strips = [buildStrip(-1.4, 0x2563eb), buildStrip(0, 0x7c3aed), buildStrip(1.4, 0xdc2626)];
+        strips = [buildStrip(-1.4, 0x1E40AF), buildStrip(0, 0x7c3aed), buildStrip(1.4, 0xdc2626)];
     }
     function update3D() {
         if (!S) return;
@@ -870,7 +874,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const labs = ['1ms', '10ms', '0.1s', '1s', '10s', '100s', '1000s'];
         ctx.font = '9px sans-serif';
         for (let L = L0; L <= L1; L++) { const y = ly(L); ctx.strokeStyle = '#eef2f7'; ctx.beginPath(); ctx.moveTo(pl, y); ctx.lineTo(pl + w, y); ctx.stroke(); ctx.fillStyle = '#475569'; ctx.textAlign = 'right'; ctx.fillText(labs[L - L0], pl - 5, y + 3); }
-        ctx.save(); ctx.translate(13, pt + h / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillStyle = '#8A1134'; ctx.font = 'bold 10px sans-serif'; ctx.fillText('Response time (log scale)', 0, 0); ctx.restore();
+        ctx.save(); ctx.translate(13, pt + h / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center'; ctx.fillStyle = '#E2570F'; ctx.font = 'bold 10px sans-serif'; ctx.fillText('Response time (log scale)', 0, 0); ctx.restore();
         const ts = [tMag(B), tPhoto(I), tTherm(tau)];
         ts.forEach((t, k) => {
             const bx = pl + (k + 0.5) * (w / 3) - 26, top = ly(Math.max(L0, Math.log10(t)));
@@ -906,7 +910,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
     function refresh() {
         const t1 = tMag(B), t2 = tPhoto(I), t3 = tTherm(tau);
-        HG.put(resMag, fmtT(t1), '#2563eb');
+        HG.put(resMag, fmtT(t1), '#1E40AF');
         HG.put(resPhoto, fmtT(t2), '#7c3aed');
         HG.put(resTherm, fmtT(t3), '#dc2626');
         HG.put(resR1, (t2 / t1).toFixed(0) + ' x');
@@ -922,7 +926,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     // ---------- race animation ----------
     function startRun() { if (running) { stopRun(); return; } running = true; animT = 0; disp = [0, 0, 0]; btnRun.innerText = 'Pause'; btnRun.style.background = '#475569'; refresh(); }
-    function stopRun(done) { running = false; btnRun.innerText = 'Race the Actuators'; btnRun.style.background = '#8A1134'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } refresh(); }
+    function stopRun(done) { running = false; btnRun.innerText = 'Race the Actuators'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } refresh(); }
 
     // ---------- events ----------
     bInput.addEventListener('input', () => { if (running) stopRun(); B = parseFloat(bInput.value); valB.innerText = B.toFixed(0) + ' mT'; refresh(); });

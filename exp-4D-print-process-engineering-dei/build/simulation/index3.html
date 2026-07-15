@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc D · Print Anisotropy — 4D Print Process Engineering</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 08</div>
+            <div class="rail__title">4D Print Process Engineering</div>
+            <div class="rail__meta">Bonding · Crystallinity · Residual Stress · Anisotropy · Tolerance</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">will it weld?</span><span class="subcalc__desc">Reptation layer bonding</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">will it crystallise?</span><span class="subcalc__desc">Cooling &amp; X_c</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">will it warp?</span><span class="subcalc__desc">Residual stress</span></span></a>
+            <a class="subcalc is-active" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">which way is weak?</span><span class="subcalc__desc">Raster anisotropy</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">will it hold spec?</span><span class="subcalc__desc">Tolerance stack-up</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>4</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index2.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index4.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc D · Tsai-Hill Off-Axis Strength</span>
+            <h1 class="stage__title">Print Anisotropy (Raster Angle)</h1>
+            <p class="stage__obj">FDM is a unidirectional composite: Tsai-Hill gives off-axis strength &sigma;_&theta;. Strength is lowest near 45&ndash;55&deg; where roads shear apart, not at 90&deg; &mdash; the anisotropy that governs where a 4D part folds.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Choose a material and raster angle, then read the off-axis strength, anisotropy ratio, and the weakest angle.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Tensile bar with raster</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:1; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Off-axis strength &sigma;(&theta;) &mdash; polar</div>
+                    <canvas id="plotCanvasPolar" width="450" height="200"></canvas>
+                </div>
+                <div style="position:relative; flex:1; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Strength &sigma; vs raster angle &theta;</div>
+                    <canvas id="plotCanvasAniso" width="450" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Strength at key raster angles</h3>
+            <table id="anisoTable">
+                <thead><tr><th>Raster &theta;</th><th>&sigma;_&theta; (MPa)</th><th>vs applied load</th><th style="text-align:right;">Result</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <p class="model-note"><strong>Model note:</strong> Tsai-Hill treats each printed layer as an idealised unidirectional lamina with strengths &sigma;_L (along road), &sigma;_T (across the inter-road bond, inherited from sub-calc A) and shear &tau;_LT. Real parts add porosity and raster-crossing effects not in this closed form.</p>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind anisotropy</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Material (&sigma;_L / &sigma;_T presets)</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="mat" value="PLA" id="matPLA" checked><label for="matPLA">PLA &ndash; stiff, brittle</label></div>
+                            <div class="option"><input type="radio" name="mat" value="ABS" id="matABS"><label for="matABS">ABS &ndash; tough, weaker bond</label></div>
+                            <div class="option"><input type="radio" name="mat" value="PETG" id="matPETG"><label for="matPETG">PETG &ndash; strong inter-road bond</label></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Raster angle</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&theta; (&deg;) &ndash; road vs load axis</label><input type="range" id="thetaInput" aria-label="theta" min="0" max="90" step="1" value="45"><div class="slider-val" id="valTheta">45 &deg;</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Applied tensile load</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&sigma;_applied (MPa)</label><input type="range" id="loadInput" aria-label="load" min="5" max="50" step="1" value="25"><div class="slider-val" id="valLoad">25 MPa</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Pull to Failure</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>How strong at this angle?</h3>
+                        <div class="result-row"><span class="result-label">Off-axis strength &sigma;_&theta;</span><span class="result-val" id="resSigmaTheta">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Along-road strength &sigma;_L</span><span class="result-val" id="resSigmaL">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Across-road strength &sigma;_T</span><span class="result-val" id="resSigmaT">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Anisotropy ratio &sigma;_L/&sigma;_T</span><span class="result-val" id="resAR">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Weakest angle &theta;_min</span><span class="result-val" id="resThetaMin">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

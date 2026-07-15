@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. Derive the relationship between the healing degree D_b, reptation time t_rep, and available dwell time t_avail.",
+      "answers": {
+        "a": "D_b = t_rep / t_avail up to a maximum of 1.",
+        "b": "D_b = min(1, (t_avail / t_rep)^1/4); the ¼-power law follows from reptation scaling.",
+        "c": "D_b = e^−t_avail/t_rep; an exponential decay of weld quality.",
+        "d": "D_b = √(t_avail / t_rep) with a ½-power scaling from thermal diffusion."
+      },
+      "explanations": {
+        "a": "Incorrect — The actual formula includes the ¼-power from reptation theory.",
+        "b": "Correct — The (t_avail/t_rep)^1/4 scaling emerges from the reptation-diffusion length scale in polymer physics.",
+        "c": "Incorrect — Exponential decay does not match the physics of chain-crossing kinetics.",
+        "d": "Incorrect — The exponent is 1/4, not 1/2; this reflects the reptation mechanism, not thermal diffusion."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q2. In Sub-Calc A, the Arrhenius activation energy is E_a = 60 kJ/mol. Why is this value so high compared to simple diffusion?",
+      "answers": {
+        "a": "Reptation requires chains to escape entanglements, a high-energy process involving collective motion.",
+        "b": "The value includes the melting enthalpy of the polymer, not just segment motion.",
+        "c": "It reflects the bond-breaking energy of the polymer backbone, making it material-specific.",
+        "d": "The high value is an empirical fit and has no physical basis."
+      },
+      "explanations": {
+        "a": "Correct — Reptation-diffusion requires the entire chain to wriggle through the entanglement network, a collective process far more activated than monomer hopping.",
+        "b": "Incorrect — Melting enthalpy appears in crystallisation rates, not in chain-level reptation.",
+        "c": "Incorrect — The backbone bonds are much stronger and break only at degradation temperatures.",
+        "d": "Incorrect — The 60 kJ/mol value is grounded in reptation theory and matches experimental PLA data."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q3. The Avrami exponent for crystallisation is n ≈ 1.93, close to the spherulitic limit of 2. What does this tell you about the crystal-growth mechanism?",
+      "answers": {
+        "a": "Crystallisation is limited by nucleation rate and follows first-order kinetics.",
+        "b": "The polymer is an amorphous glass and does not truly crystallise.",
+        "c": "Crystals grow as spherulites in three dimensions at a controlled rate, with a small edge correction.",
+        "d": "The crystallisation is diffusion-limited rather than kinetically controlled."
+      },
+      "explanations": {
+        "a": "Incorrect — An exponent of 2 is not characteristic of nucleation-limited growth; n≈1 appears there.",
+        "b": "Incorrect — PLA is semi-crystalline; the Avrami fit itself proves crystals form measurably.",
+        "c": "Correct — For 3D spherulitic growth at constant rate, the Avrami law gives exactly n=2; 1.93 suggests slightly surface-affected growth.",
+        "d": "Incorrect — Diffusion-limited growth at constant rate also gives n=2; the exponent alone does not distinguish the rate-limiting step."
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q4. In Sub-Calc B, increased crystallinity X_c stiffens the amorphous phase (E = E_a(1 + k·X_c)). How does this affect 4D shape-memory actuation?",
+      "answers": {
+        "a": "Higher crystallinity always improves actuation because stiffer parts recover faster.",
+        "b": "Higher crystallinity *reduces* actuation because crystalline regions are rigid and lock the shape-memory network, preventing full recovery.",
+        "c": "Crystallinity has no effect on actuation; only the switching temperature T_g matters.",
+        "d": "Higher crystallinity improves recovery distance but slows the rate of shape change."
+      },
+      "explanations": {
+        "a": "Incorrect — Stiffness and actuation are decoupled; more crystallinity aids stiffness but hardens the shape-memory response.",
+        "b": "Correct — Crystals form rigid anchors that pin the network; this improves mechanical damping but reduces the entropic spring-back that drives 4D recovery.",
+        "c": "Incorrect — Crystallinity directly modulates the glass-to-rubbery transition and the network's elastic restoring force.",
+        "d": "Incorrect — Higher crystallinity reduces *both* recovery distance and recovery rate."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q5. For a 100 mm × 100 mm × 5 mm plate cooled on an unheated bed with ΔT = 200 °C, warpage δ is approximately 2.8 mm. If you increase the chamber temperature to 60 °C (heated bed), δ drops to 0.6 mm. What physical mechanism causes this ~4.7× reduction?",
+      "answers": {
+        "a": "The thermal gradient ΔT is reduced from 200 to 200-60=140 °C, lowering the mismatch strain linearly.",
+        "b": "The constraint from the bed is weaker when the bed is hot, so the biaxial stress is reduced.",
+        "c": "Higher bed temperature doubles the cooling time, so crystallinity increases and the part is less prone to warping.",
+        "d": "The relaxation factor f_relax becomes significant near T_g when the bed is warm, allowing chains to dissipate residual stress by viscous flow before full stiffening."
+      },
+      "explanations": {
+        "a": "Incorrect — This reduces ΔT by 30%, which would lower δ by ~30%, not ~5×.",
+        "b": "Incorrect — The bed still provides the constraint; the effect is on the material's ability to relax stress, not on the mechanical constraint.",
+        "c": "Incorrect — Higher crystallinity would *increase* warping risk by stiffening the residual-stress anchor.",
+        "d": "Correct — The relaxation factor f_relax = min(1, e^−(T_bed−20)/T*) rises sharply near T_g; a warm bed holds the part in the rubbery regime longer, allowing entropic relaxation before the glassy lock-in."
+      },
+      "correctAnswer": "d",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q6. In the Tsai-Hill criterion, why does the formula include a shear-strength term 1/τ_LT² that couples with sin²θ cos²θ?",
+      "answers": {
+        "a": "The mixed term captures the transverse-shear failure mode, which dominates between the primary fibre direction and the cross-fibre direction.",
+        "b": "Shear stress is the only stress component that acts at all angles uniformly.",
+        "c": "Shear strength is added to account for out-of-plane bending stresses in thin laminae.",
+        "d": "The term is a mathematical correction that has no physical significance in laminate failure."
+      },
+      "explanations": {
+        "a": "Correct — When the load is at an intermediate angle (say, 45°), the stress tensor mixes longitudinal and transverse components, and shear becomes the limiting mode; the formula captures this via the (1/τ_LT²)sin²θ cos²θ cross-term.",
+        "b": "Incorrect — Shear stress varies with the orientation; normal stresses do not act uniformly.",
+        "c": "Incorrect — Tsai-Hill is for in-plane laminate strength; out-of-plane bending requires a separate analysis.",
+        "d": "Incorrect — The formula derives from rigorous composite-failure theory; the shear term is essential to the physics."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q7. When comparing FDM print anisotropy ratios—PLA 47/24, ABS 35/14, PETG 50/28 MPa—which material shows the *least* anisotropy and therefore the most isotropic strength?",
+      "answers": {
+        "a": "PLA, because its 47/24 = 1.96 ratio is lowest.",
+        "b": "ABS, because 35/14 = 2.50 is highest.",
+        "c": "PETG, because 50/28 = 1.79 is lowest.",
+        "d": "They all have the same anisotropy because the matrix material sets the properties."
+      },
+      "explanations": {
+        "a": "Incorrect — Higher ratios mean *more* anisotropy, not less.",
+        "b": "Incorrect — ABS has the highest anisotropy and is the most direction-dependent.",
+        "c": "Correct — PETG's ratio 50/28 = 1.79 is the lowest among the three; a ratio closer to 1 means less directional dependence and more isotropic behaviour.",
+        "d": "Incorrect — Different polymers exhibit different anisotropy; the road-versus-bond strength gap varies."
+      },
+      "correctAnswer": "c",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q8. In Sub-Calc E, the process-capability calculation assumes shrinkage σ_proc = k_vib·v_print + k_temp·ΔT_nozzle. Why are these two terms *added* rather than combined in quadrature?",
+      "answers": {
+        "a": "Vibration and temperature errors are uncorrelated and should be added in quadrature for true probability.",
+        "b": "The equation describes the root-mean-square (RMS) sum, not a worst-case.",
+        "c": "Temperature variation is negligible compared to vibration, so it is ignored.",
+        "d": "The linear sum is the worst-case bound, assuming vibration and temperature drift reinforce each other; the problem notes this as the honest bound for a correlated process."
+      },
+      "explanations": {
+        "a": "Incorrect — RSS would combine them in quadrature; the linear sum is deliberate and conservative.",
+        "b": "Incorrect — RMS would use a square root; the linear sum is the worst-case, not RMS.",
+        "c": "Incorrect — Temperature is not negligible; it enters explicitly in the formula.",
+        "d": "Correct — The brief states that 4D-print thermal and vibration errors are *physically correlated* (e.g., temperature drift and head vibration both increase with run time); the linear worst-case sum reflects this realism."
+      },
+      "correctAnswer": "d",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q9. A three-feature stack has nominal dimensions 10.0 mm, 8.0 mm, and 6.0 mm, with individual shrinkage errors ±0.1 mm each. RSS combines them as δ_RSS = √(0.1² + 0.1² + 0.1²) ≈ 0.173 mm. Worst-case is δ_WC = 0.3 mm. If the tolerance band is ±0.2 mm, which analysis would still pass?",
+      "answers": {
+        "a": "Only RSS, because it is smaller than the tolerance.",
+        "b": "Neither, because both exceed the tolerance in some scenario.",
+        "c": "Both, because 0.173 mm and 0.3 mm are both less than 0.2 mm.",
+        "d": "Only WC, because it is more conservative."
+      },
+      "explanations": {
+        "a": "Incorrect — RSS passes, but you must consider whether WC also passes.",
+        "b": "Correct — RSS passes narrowly (0.173 < 0.2), but the honest worst-case (0.3 mm) exceeds the tolerance; the stack is actually out of spec under the correlated worst-case assumption.",
+        "c": "Incorrect — WC = 0.3 mm exceeds the ±0.2 mm tolerance; the worst-case does not pass.",
+        "d": "Incorrect — WC (0.3 mm) exceeds ±0.2 mm, so it fails; WC is not a pass."
+      },
+      "correctAnswer": "b",
+      "difficulty": "advanced"
+    },
+    {
+      "question": "Q10. Suppose you run the five sub-calculators on two candidate print recipes: (A) high-temperature, long dwell, heated bed; (B) low-temperature, short dwell, unheated bed. Which recipe likely maximises the 4D-printing trade-off—strong parts that are still good actuators?",
+      "answers": {
+        "a": "Neither recipe is optimal; the trade-off requires a compromise: adequate bonding D_b (say, 0.82–0.85) with *moderate* crystallinity (30–35%), a heated bed for dimensional control, and a raster angle chosen to avoid the 45–55° weak plane.",
+        "b": "Recipe B: low temperature and short dwell minimise crystallinity, preserving actuator response.",
+        "c": "Recipe A: high temperature ensures strong bonds and good mechanical properties.",
+        "d": "Both recipes fail because no FDM process can produce both strong and actuating parts simultaneously."
+      },
+      "explanations": {
+        "a": "Correct — The experiment's core insight is that competing processes must be balanced: enough weld to avoid failure, enough crystallinity for dimensional stability, but not so much that the shape-memory response vanishes. Thermal management (heated bed, raster choice) enables this trade-off.",
+        "b": "Incorrect — Recipe B preserves actuator response but risks poor bonding (D_b < 0.80), leading to part delamination.",
+        "c": "Incorrect — Recipe A maximises strength but locks the shape-memory network via high crystallinity, ruining actuation.",
+        "d": "Incorrect — The existence of the simulator and its five sub-calculators proves that tuning the process parameters (within constraints) permits Pareto-optimal compromises."
+      },
+      "correctAnswer": "a",
+      "difficulty": "advanced"
+    }
+  ]
+}

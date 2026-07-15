@@ -1,0 +1,10 @@
+
+c:\Users\anu85\OneDrive\Desktop\virtual_lab\VLab_Anusha\exp-multi-material-4d-structure-design-dei\experiment\simulation\js\main.js
+  206:67  warning  'tAnim' is assigned a value but never used  no-unused-vars
+  442:42  warning  'pb' is assigned a value but never used     no-unused-vars
+  574:67  warning  'tAnim' is assigned a value but never used  no-unused-vars
+  741:67  warning  'tAnim' is assigned a value but never used  no-unused-vars
+  952:42  warning  'pb' is assigned a value but never used     no-unused-vars
+
+✖ 5 problems (0 errors, 5 warnings)
+
