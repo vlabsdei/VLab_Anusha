@@ -1,4 +1,41 @@
 /* global THREE */
+/* ---- LabGate: gate the whole experiment behind a Start click ---- */
+window.LabGate = (function () {
+  let armed = false;
+  function disableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = true; });
+  }
+  function enableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = false; });
+  }
+  // startFn = the deferred init sequence for the active sub-calc module.
+  function arm(startFn) {
+    if (armed) return; armed = true;
+    const host = document.getElementById('viewport3D')
+              || document.querySelector('.sim-viewport-fluid');
+    disableControls();
+    const ov = document.createElement('div');
+    ov.className = 'labgate';
+    ov.innerHTML =
+      '<div class="labgate__panel">' +
+      '<div class="labgate__title">Experiment idle</div>' +
+      '<div class="labgate__sub">Set parameters, then start the simulation.</div>' +
+      '<button type="button" class="labgate__btn">Start Experiment</button>' +
+      '</div>';
+    const anchor = host.closest('.sim-viewport-fluid > div') || host;
+    anchor.style.position = anchor.style.position || 'relative';
+    anchor.appendChild(ov);
+    ov.querySelector('.labgate__btn').addEventListener('click', () => {
+      ov.remove();
+      enableControls();
+      startFn();
+    });
+  }
+  return { arm: arm };   // modules call LabGate.arm(...)
+})();
+
 // ============================================================
 // Combined simulator script for Exp 5 - Multi-Material 4D
 // Structure Design. Five sub-calculators, one per page,
@@ -331,10 +368,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valH.innerText = h.toFixed(2) + ' mm'; valTheta.innerText = thetaDeg.toFixed(0) + ' deg';
-    refresh(); dispFold = 1;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valH.innerText = h.toFixed(2) + ' mm'; valTheta.innerText = thetaDeg.toFixed(0) + ' deg';
+        refresh(); dispFold = 1;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -381,6 +420,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     let n = parseFloat(nInput.value), j1 = parseFloat(j1Input.value), j2 = parseFloat(j2Input.value);
     let sweeping = false, tAnim = 0, sweepJ1 = 0;
+    let viewJ1 = j1; // animated preview of j1 during the joint-count test; never overrides the slider's j1
 
     // ---------- Three.js: 2-jaw gripper that closes on a workpiece ----------
     let S = null, base, jawL, jawR, tipL, tipR, coupler, work, pinMeshes = [];
@@ -403,7 +443,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
     function update3D() {
         if (!S) return;
-        const F = mobility(n, Math.round(j1), Math.round(j2)), rg = regime(F);
+        const F = mobility(n, Math.round(viewJ1), Math.round(j2)), rg = regime(F);
         let open = 0.32;
         if (rg.amp > 0) open = 0.32 + rg.amp * 0.30 * (0.5 + 0.5 * Math.sin(tAnim * 1.7));
         if (F > 2) open += (Math.random() - 0.5) * 0.07; // floppy jitter
@@ -417,7 +457,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         const gripped = (F === 2) && (open < 0.45);          // working gripper actually closing
         work.material.color.copy(gripped ? new THREE.Color(0x16a34a) : new THREE.Color(0x94a3b8));
         work.material.emissiveIntensity = gripped ? 0.5 : 0.12;
-        const total = Math.round(j1) + Math.round(j2);
+        const total = Math.round(viewJ1) + Math.round(j2);
         pinMeshes.forEach((m, i) => { m.visible = i < total; if (i < total) { m.position.set(-0.55 + (i % 6) * 0.22, -0.18 - Math.floor(i / 6) * 0.22, 0.28); m.material.color.set(i < Math.round(j1) ? 0xef4444 : 0xf59e0b); } });
     }
 
@@ -485,19 +525,18 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         drawDOFPlot(); drawRegPlot(); fillDOF(); updateEq();
     }
 
-    // ---------- joint-count sweep ----------
-    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepJ1 = 0; btnRun.innerText = 'Testing...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Test the Gripper'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    // ---------- joint-count sweep (builds up to the CHOSEN j1, never past it) ----------
+    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepJ1 = 0; viewJ1 = 0; btnRun.innerText = 'Testing...'; btnRun.style.background = '#475569'; }
+    function stopRun(done) { sweeping = false; viewJ1 = j1; btnRun.innerText = 'Test the Gripper'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
     function stepRun(dt) {
         sweepJ1 += dt * 1.7;
-        j1 = Math.min(10, Math.round(sweepJ1));
-        j1Input.value = j1; valJ1.innerText = String(j1); refresh();
-        if (sweepJ1 >= 10) { j1 = 10; stopRun(true); }
+        if (sweepJ1 >= j1) { viewJ1 = j1; stopRun(true); }
+        else { viewJ1 = sweepJ1; }
     }
 
     // ---------- events ----------
     nInput.addEventListener('input', () => { if (sweeping) stopRun(); n = parseInt(nInput.value, 10); valN.innerText = String(n); refresh(); });
-    j1Input.addEventListener('input', () => { if (sweeping) stopRun(); j1 = parseInt(j1Input.value, 10); valJ1.innerText = String(j1); refresh(); });
+    j1Input.addEventListener('input', () => { if (sweeping) stopRun(); j1 = parseInt(j1Input.value, 10); viewJ1 = j1; valJ1.innerText = String(j1); refresh(); });
     j2Input.addEventListener('input', () => { if (sweeping) stopRun(); j2 = parseInt(j2Input.value, 10); valJ2.innerText = String(j2); refresh(); });
     btnRun.addEventListener('click', startRun);
 
@@ -512,10 +551,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valN.innerText = String(n); valJ1.innerText = String(j1); valJ2.innerText = String(j2);
-    refresh();
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valN.innerText = String(n); valJ1.innerText = String(j1); valJ2.innerText = String(j2);
+        refresh();
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -690,9 +731,11 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    recompute(); dispFold = 1;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        recompute(); dispFold = 1;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -848,10 +891,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valAlpha.innerText = alpha.toFixed(0) + ' deg'; valPhi.innerText = phi.toFixed(0) + ' deg';
-    refresh(); dispFold = 1;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valAlpha.innerText = alpha.toFixed(0) + ' deg'; valPhi.innerText = phi.toFixed(0) + ' deg';
+        refresh(); dispFold = 1;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -898,6 +943,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
 
     let h = parseFloat(hInput.value), thetaDeg = parseFloat(thetaInput.value), L = parseFloat(lInput.value);
     let sweeping = false, tAnim = 0, sweepT = 0;
+    let viewH = h; // animated preview of thickness during the cycle test; settles on the CHOSEN h, never overrides it
 
     // ---------- Three.js: a living hinge flexing open/close repeatedly ----------
     let S = null, joints = [], segs = [];
@@ -919,15 +965,15 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
     function update3D() {
         if (!S) return;
-        const util = sigMax(h, L, thetaDeg) / SIG_F;
+        const util = sigMax(viewH, L, thetaDeg) / SIG_F;
         const bendNow = (thetaDeg * Math.PI / 180) * (0.5 + 0.5 * Math.sin(tAnim * 2.2)); // cyclic actuation 0..theta
         const nH = HIN1 - HIN0, dH = bendNow / nH;
         let phi = 0, x = -1.5, y = 0.0, prev = new THREE.Vector3(x, y, 0);
         const pts = [prev.clone()];
         for (let i = 0; i < NB; i++) { if (i >= HIN0 && i < HIN1) phi += dH; const np = new THREE.Vector3(prev.x + 0.1 * Math.cos(phi), prev.y + 0.1 * Math.sin(phi), 0); pts.push(np); prev = np; }
-        for (let i = 0; i <= NB; i++) { joints[i].position.copy(pts[i]); joints[i].scale.setScalar(Math.max(0.5, h / 0.5)); }
+        for (let i = 0; i <= NB; i++) { joints[i].position.copy(pts[i]); joints[i].scale.setScalar(Math.max(0.5, viewH / 0.5)); }
         const hc = new THREE.Color(utilColor(util));
-        segs.forEach((s, i) => { placePlate(s.mesh, pts[i], pts[i + 1]); s.mesh.material.color.copy(s.hinge ? hc : new THREE.Color(0x64748b)); s.mesh.scale.y = Math.max(0.4, h / 0.5); });
+        segs.forEach((s, i) => { placePlate(s.mesh, pts[i], pts[i + 1]); s.mesh.material.color.copy(s.hinge ? hc : new THREE.Color(0x64748b)); s.mesh.scale.y = Math.max(0.4, viewH / 0.5); });
     }
 
     function fmtN(N) { return N < 1 ? 'fails (<1)' : (N >= 1e5 ? N.toExponential(1) : Math.round(N).toLocaleString()); }
@@ -992,13 +1038,13 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         drawFatPlot(); drawStrPlot(); fillFat(); updateEq();
     }
 
-    // ---------- thickness sweep (thinning improves life) ----------
-    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; h = 1.0; btnRun.innerText = 'Cycling...'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Run Cycle Test'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } }
-    function stepRun(dt) { sweepT += dt; h = Math.max(0.2, 1.0 - sweepT * 0.13); hInput.value = h; valH.innerText = h.toFixed(2) + ' mm'; refresh(); if (h <= 0.2) { h = 0.2; stopRun(true); } }
+    // ---------- thickness-preview sweep (visualizes thinning -> longer life, settles at the CHOSEN h) ----------
+    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepT = 0; viewH = 1.0; btnRun.innerText = 'Cycling...'; btnRun.style.background = '#475569'; }
+    function stopRun(done) { sweeping = false; viewH = h; btnRun.innerText = 'Run Cycle Test'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnRestart'); if (nx) nx.style.display = 'block'; } }
+    function stepRun(dt) { sweepT += dt; const next = 1.0 - sweepT * 0.13; if (next <= h) { viewH = h; stopRun(true); } else { viewH = next; } }
 
     // ---------- events ----------
-    hInput.addEventListener('input', () => { if (sweeping) stopRun(); h = parseFloat(hInput.value); valH.innerText = h.toFixed(2) + ' mm'; refresh(); });
+    hInput.addEventListener('input', () => { if (sweeping) stopRun(); h = parseFloat(hInput.value); viewH = h; valH.innerText = h.toFixed(2) + ' mm'; refresh(); });
     thetaInput.addEventListener('input', () => { if (sweeping) stopRun(); thetaDeg = parseFloat(thetaInput.value); valTheta.innerText = thetaDeg.toFixed(0) + ' deg'; refresh(); });
     lInput.addEventListener('input', () => { if (sweeping) stopRun(); L = parseFloat(lInput.value); valL.innerText = L.toFixed(1) + ' mm'; refresh(); });
     btnRun.addEventListener('click', startRun);
@@ -1014,8 +1060,10 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valH.innerText = h.toFixed(2) + ' mm'; valTheta.innerText = thetaDeg.toFixed(0) + ' deg'; valL.innerText = L.toFixed(1) + ' mm';
-    refresh();
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valH.innerText = h.toFixed(2) + ' mm'; valTheta.innerText = thetaDeg.toFixed(0) + ' deg'; valL.innerText = L.toFixed(1) + ' mm';
+        refresh();
+        requestAnimationFrame(loop);
+    });
 })();

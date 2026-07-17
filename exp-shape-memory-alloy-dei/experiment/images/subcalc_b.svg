@@ -1,41 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
-  <rect width="640" height="440" fill="#ffffff"/>
-  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
-  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc B: Shape Memory Effect vs Superelasticity</text>
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="640" height="400" fill="#FFFFFF"/>
+  <text x="320" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">UTM Stress–Strain Loops of Nitinol</text>
 
-  <!-- LEFT: SME (T < A_f) -->
-  <text x="170" y="74" fill="#0f172a" font-size="13" font-weight="700" text-anchor="middle">SME  (T &lt; A_f)</text>
-  <line x1="60" y1="210" x2="290" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
-  <line x1="60" y1="210" x2="60" y2="86" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="52" y="96" fill="#475569" font-size="10" text-anchor="end">&#963;</text>
-  <text x="290" y="226" fill="#475569" font-size="10" text-anchor="end">e</text>
-  <!-- load then unload leaving residual strain -->
-  <path d="M60 210 L100 150 L210 130 L240 100" fill="none" stroke="#dc2626" stroke-width="2.5"/>
-  <path d="M240 100 L150 200" fill="none" stroke="#dc2626" stroke-width="2.5"/>
-  <text x="180" y="120" fill="#dc2626" font-size="9" font-weight="700">detwinning</text>
-  <text x="150" y="214" fill="#b45309" font-size="9" font-weight="700" text-anchor="middle">residual</text>
-  <!-- heat recovery (dashed back to origin) -->
-  <path d="M150 200 Q105 215 60 210" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="5 4"/>
-  <text x="105" y="200" fill="#16a34a" font-size="9" font-weight="700">heat &#8594; recover</text>
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="205" y1="52" x2="205" y2="338"/>
+    <line x1="340" y1="52" x2="340" y2="338"/>
+    <line x1="475" y1="52" x2="475" y2="338"/>
+    <line x1="70" y1="280.8" x2="610" y2="280.8"/>
+    <line x1="70" y1="223.6" x2="610" y2="223.6"/>
+    <line x1="70" y1="166.4" x2="610" y2="166.4"/>
+    <line x1="70" y1="109.2" x2="610" y2="109.2"/>
+  </g>
 
-  <!-- RIGHT: Superelasticity (T > A_f) -->
-  <text x="470" y="74" fill="#0f172a" font-size="13" font-weight="700" text-anchor="middle">Superelasticity  (T &gt; A_f)</text>
-  <line x1="360" y1="210" x2="600" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
-  <line x1="360" y1="210" x2="360" y2="86" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="352" y="96" fill="#475569" font-size="10" text-anchor="end">&#963;</text>
-  <text x="600" y="226" fill="#475569" font-size="10" text-anchor="end">e</text>
-  <!-- closed hysteresis loop -->
-  <path d="M360 210 L395 140 L520 120 L555 100 L520 150 L400 170 Z" fill="#fde2e7" stroke="#8A1134" stroke-width="2.5"/>
-  <text x="455" y="118" fill="#8A1134" font-size="9" font-weight="700">loading plateau</text>
-  <text x="430" y="184" fill="#8A1134" font-size="9" font-weight="700">unloading plateau</text>
-  <text x="470" y="148" fill="#64748b" font-size="9" text-anchor="middle">W_hys</text>
+  <line x1="70" y1="52" x2="70" y2="338" stroke="#334155" stroke-width="1.5"/>
+  <line x1="70" y1="338" x2="610" y2="338" stroke="#334155" stroke-width="1.5"/>
 
-  <!-- equation panel -->
-  <rect x="20" y="248" width="600" height="172" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
-  <text x="36" y="276" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
-  <text x="36" y="304" fill="#1e293b" font-size="14" font-weight="700">Clausius-Clapeyron:  &#963;_AM = &#963;_0 + (d&#963;/dT) &#215; (T &#8722; A_f)</text>
-  <text x="36" y="330" fill="#1e293b" font-size="14" font-weight="700">Damping capacity:  Q&#8315;&#185; = W_hys / (&#960; &#215; &#963;_max &#215; e_max)</text>
-  <text x="36" y="356" fill="#475569" font-size="12">&#963;_0 = 150 MPa at A_f;  d&#963;/dT = 7 MPa/&#176;C for NiTi.  W_hys = area of the loop.</text>
-  <text x="36" y="380" fill="#475569" font-size="12">T &lt; A_f: deform martensite (detwinning); strain recovered only by heating above A_f.</text>
-  <text x="36" y="404" fill="#94a3b8" font-size="11">Typical Q&#8315;&#185;: steel &#8776; 0.001, superelastic SMA &#8776; 0.052, rubber &#8776; 0.1.</text>
+  <g fill="#334155" font-size="11" text-anchor="middle">
+    <line x1="70" y1="338" x2="70" y2="343" stroke="#334155"/><text x="70" y="356">0</text>
+    <line x1="205" y1="338" x2="205" y2="343" stroke="#334155"/><text x="205" y="356">2</text>
+    <line x1="340" y1="338" x2="340" y2="343" stroke="#334155"/><text x="340" y="356">4</text>
+    <line x1="475" y1="338" x2="475" y2="343" stroke="#334155"/><text x="475" y="356">6</text>
+    <line x1="610" y1="338" x2="610" y2="343" stroke="#334155"/><text x="610" y="356">8</text>
+  </g>
+  <g fill="#334155" font-size="11" text-anchor="end">
+    <text x="62" y="342">0</text>
+    <text x="62" y="284.8">100</text>
+    <text x="62" y="227.6">200</text>
+    <text x="62" y="170.4">300</text>
+    <text x="62" y="113.2">400</text>
+    <text x="62" y="56">500</text>
+  </g>
+  <text x="340" y="378" text-anchor="middle" font-size="13" fill="#334155">Strain (%)</text>
+  <text x="24" y="195" text-anchor="middle" font-size="13" fill="#334155" transform="rotate(-90 24 195)">Stress (MPa)</text>
+
+  <!-- superelastic enclosed area (Whyst) -->
+  <path d="M137.5,252.2 L475,237.9 L529,166.4 L461.5,286.5 L151,303.7 L70,338 L137.5,252.2 Z" fill="#E2570F" opacity="0.12"/>
+
+  <!-- superelastic loop (closed, T >= Af) -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.5"
+    points="70,338 137.5,252.2 475,237.9 529,166.4"/>
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.5"
+    points="529,166.4 461.5,286.5 151,303.7 70,338"/>
+
+  <!-- shape-memory loop (open, permanent set, T < Af) -->
+  <polyline fill="none" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 4"
+    points="70,338 137.5,269.4 508.75,257.9 448,338"/>
+
+  <!-- permanent set marker -->
+  <circle cx="448" cy="338" r="3" fill="#E2570F"/>
+  <line x1="448" y1="338" x2="448" y2="316" stroke="#E2570F" stroke-width="1" stroke-dasharray="2 2"/>
+  <text x="448" y="310" text-anchor="middle" font-size="11" fill="#E2570F" font-weight="bold">permanent set</text>
+
+  <!-- Whyst annotation -->
+  <text x="300" y="215" text-anchor="middle" font-size="12" fill="#E2570F" font-weight="bold">W_hyst</text>
+
+  <!-- legend -->
+  <g font-size="11" fill="#334155">
+    <line x1="360" y1="90" x2="388" y2="90" stroke="#1E40AF" stroke-width="2.5"/>
+    <text x="393" y="94">Superelastic  (T ≥ Af)</text>
+    <line x1="360" y1="109" x2="388" y2="109" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <text x="393" y="113">Shape memory  (T &lt; Af)</text>
+  </g>
 </svg>

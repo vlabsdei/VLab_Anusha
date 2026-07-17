@@ -2,174 +2,174 @@
   "version": 2,
   "questions": [
     {
-      "question": "Q1. What distinguishes 4D printing from 3D printing?",
+      "question": "Q1. In the context of 4D printing, what does the fourth dimension represent?",
       "answers": {
-        "a": "4D printing uses more colors.",
-        "b": "The printed object is designed to change shape or function over time.",
-        "c": "4D printing is faster.",
-        "d": "It only uses metal materials."
+        "a": "A fourth spatial dimension.",
+        "b": "Time - the material transforms over time in response to stimuli.",
+        "c": "The material's density.",
+        "d": "The cost of production."
       },
       "explanations": {
-        "a": "Incorrect — Color is not the defining factor.",
-        "b": "Correct — The '4th dimension' is time, meaning the object transforms in response to stimuli.",
-        "c": "Incorrect — Speed is not the primary distinction.",
-        "d": "Incorrect — 4D printing heavily uses polymers."
+        "a": "Incorrect — We work in 3D space; time is the fourth dimension.",
+        "b": "Correct — 4D printing adds time as a dimension; the object changes shape after printing when triggered.",
+        "c": "Incorrect — Density is not related to the '4D' concept.",
+        "d": "Incorrect — Cost does not define 4D printing."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q2. The WLF equation characterizes which of the following?",
+      "question": "Q2. What are netpoints in a Shape Memory Polymer?",
       "answers": {
-        "a": "The glass transition and viscosity shifts.",
-        "b": "The tensile strength of the polymer.",
-        "c": "The electrical conductivity.",
-        "d": "The color change under UV light."
+        "a": "Permanent crosslinks that store the memory of the original shape.",
+        "b": "Temporary connection points that form during heating.",
+        "c": "Regions where the material cracks under stress.",
+        "d": "Points where water molecules attach to the polymer."
       },
       "explanations": {
-        "a": "Correct — The WLF equation characterizes the glass transition and viscosity changes.",
-        "b": "Incorrect — Not related to WLF.",
-        "c": "Incorrect — Not related to WLF.",
-        "d": "Incorrect — Not related to WLF."
+        "a": "Correct — Netpoints are permanent crosslinks (chemical or physical) that define the permanent shape.",
+        "b": "Incorrect — Netpoints are permanent, not temporary.",
+        "c": "Incorrect — Netpoints are not fracture sites.",
+        "d": "Incorrect — Netpoints are mechanical features, not water-binding sites."
       },
       "correctAnswer": "a",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q3. The Shape Fixity Ratio (R_f) measures:",
-      "answers": {
-        "a": "How fast the material breaks under stress.",
-        "b": "How well the temporary shape holds without an external load.",
-        "c": "The maximum temperature the material can withstand.",
-        "d": "The speed of shape recovery."
-      },
-      "explanations": {
-        "a": "Incorrect — This describes tensile strength.",
-        "b": "Correct — Shape fixity quantifies how well the temporary shape is maintained.",
-        "c": "Incorrect — This describes thermal stability.",
-        "d": "Incorrect — This describes recovery rate."
-      },
-      "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q4. Which stimulus is typically used to trigger shape recovery in thermo-responsive SMPs?",
+      "question": "Q3. The glass transition temperature (T_g) marks the boundary between which two states of a polymer?",
       "answers": {
-        "a": "Magnetic Field",
-        "b": "Light",
-        "c": "Temperature (Heat)",
-        "d": "Moisture"
+        "a": "Liquid and gas.",
+        "b": "Crystalline and amorphous.",
+        "c": "Glassy (rigid) and rubbery (compliant).",
+        "d": "Solid and liquid."
       },
       "explanations": {
-        "a": "Incorrect — This applies to magnetically-actuated structures.",
-        "b": "Incorrect — This applies to photo-responsive polymers.",
-        "c": "Correct — Heat triggers the shape recovery in thermo-responsive SMPs.",
-        "d": "Incorrect — This applies to hygroscopic structures."
+        "a": "Incorrect — T_g is not a vaporization transition.",
+        "b": "Incorrect — T_g applies to amorphous polymers; it is not about crystallinity.",
+        "c": "Correct — Below T_g the polymer is a stiff glass; above it the switching segments soften and it becomes rubbery.",
+        "d": "Incorrect — The polymer remains solid at T_g; it undergoes a stiffness transition, not a phase change."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
     },
     {
-      "question": "Q5. Why is the low thermal efficiency (1-5%) of SMPs acceptable in biomedical applications?",
+      "question": "Q4. What does the strain fixity ratio (R_f) quantify?",
       "answers": {
-        "a": "Because human body heat acts as a free trigger.",
-        "b": "Because biomedical devices don't need to move.",
-        "c": "Because they are easily disposable.",
-        "d": "Because they are cheaper to manufacture."
+        "a": "The speed at which the material recovers its original shape.",
+        "b": "The fraction of applied strain that remains locked after unloading during programming.",
+        "c": "How easily the material breaks under tension.",
+        "d": "The maximum temperature the material can withstand."
       },
       "explanations": {
-        "a": "Correct — Body heat (37°C) provides the necessary thermal energy for free.",
-        "b": "Incorrect — They do move (actuate).",
-        "c": "Incorrect — Disposability is not related to thermal efficiency.",
-        "d": "Incorrect — Manufacturing cost is independent of thermal efficiency here."
-      },
-      "correctAnswer": "a",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q6. What is the Glass Transition Temperature (T_g)?",
-      "answers": {
-        "a": "The point where the polymer evaporates.",
-        "b": "The temperature at which a polymer shifts from a glassy state to a rubbery state.",
-        "c": "The temperature where the polymer crystallizes into a solid.",
-        "d": "The maximum heating threshold before the material catches fire."
-      },
-      "explanations": {
-        "a": "Incorrect — This describes vaporization.",
-        "b": "Correct — T_g is the transition boundary between glassy and rubbery states.",
-        "c": "Incorrect — This is the crystallization temperature.",
-        "d": "Incorrect — This is the degradation temperature."
+        "a": "Incorrect — This describes recovery rate, not strain fixity.",
+        "b": "Correct — R_f is the percentage of loading strain that stays permanently fixed after the temporary shape is programmed and unloaded.",
+        "c": "Incorrect — This relates to tensile strength.",
+        "d": "Incorrect — This is thermal stability, not fixity."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q7. In the context of shape memory polymers, what is the role of 'netpoints'?",
+      "question": "Q5. The Williams-Landel-Ferry (WLF) equation predicts how which property changes with temperature?",
       "answers": {
-        "a": "They provide electrical conductivity.",
-        "b": "They determine the temporary shape.",
-        "c": "They provide the elastic restoring force to remember the permanent shape.",
-        "d": "They absorb moisture to expand the polymer."
+        "a": "The density of the polymer.",
+        "b": "The color of the material.",
+        "c": "The brittleness of the polymer below T_g.",
+        "d": "The relaxation time and viscosity shift above T_g."
       },
       "explanations": {
-        "a": "Incorrect — Netpoints are mechanical crosslinks.",
-        "b": "Incorrect — Switching segments determine the temporary shape.",
-        "c": "Correct — Crosslinked netpoints lock in the permanent shape and provide entropic spring-back.",
-        "d": "Incorrect — This relates to hydrogel swelling."
+        "a": "Incorrect — WLF does not govern density changes.",
+        "b": "Incorrect — WLF is not about optical properties.",
+        "c": "Incorrect — Below T_g the relaxation time is effectively infinite; WLF applies above T_g.",
+        "d": "Correct — The WLF equation gives the shift factor a_T, which scales how much faster the material relaxes as temperature rises above T_g."
       },
-      "correctAnswer": "c",
+      "correctAnswer": "d",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q8. What happens to an amorphous polymer's relaxation time as its temperature rises significantly above T_g?",
+      "question": "Q6. During shape recovery, what force drives the polymer back to its original permanent shape?",
       "answers": {
-        "a": "It decreases drastically.",
-        "b": "It increases drastically.",
-        "c": "It remains entirely constant.",
-        "d": "It drops to exactly zero immediately."
+        "a": "The entropic restoring force supplied by the netpoints.",
+        "b": "Gravitational pull.",
+        "c": "External applied pressure.",
+        "d": "Friction between polymer chains."
       },
       "explanations": {
-        "a": "Correct — The polymer chains become highly mobile, reducing the time needed to relax stress.",
-        "b": "Incorrect — Increased heat increases mobility, lowering relaxation time.",
-        "c": "Incorrect — Relaxation time is highly temperature-dependent.",
-        "d": "Incorrect — It approaches an asymptote but never reaches absolute zero."
+        "a": "Correct — Once reheated above T_g, the netpoints exert an entropic spring-back that pulls the polymer toward its permanent shape.",
+        "b": "Incorrect — Gravity is not the driver at the molecular scale.",
+        "c": "Incorrect — Recovery is an internal process once heat unfreezes the switching segments.",
+        "d": "Incorrect — Friction between chains resists motion rather than driving it."
       },
       "correctAnswer": "a",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q9. What material property is strictly required to create a 'triple-shape' memory polymer?",
+      "question": "Q7. Which of the three model materials in this lab has the lowest glass transition temperature?",
       "answers": {
-        "a": "Three different colors of dye.",
-        "b": "A polymer blend featuring two distinct glass transition temperatures.",
-        "c": "A polymer that responds to both heat and light.",
-        "d": "A highly crystalline metal alloy structure."
+        "a": "PMMA-SMP (T_g = 105°C).",
+        "b": "PLA-SMP (T_g = 60°C).",
+        "c": "PU-SMP (T_g = 45°C).",
+        "d": "All three have the same T_g."
       },
       "explanations": {
-        "a": "Incorrect — Color has no bearing on mechanical shape memory.",
-        "b": "Correct — A phase-separated copolymer with two distinct T_g values enables two temporary shapes.",
-        "c": "Incorrect — Triple-shape can be achieved purely thermally.",
-        "d": "Incorrect — We are discussing polymers, not SMAs."
-      },
-      "correctAnswer": "b",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q10. Which physical state characterizes an amorphous polymer when it is below its T_g?",
-      "answers": {
-        "a": "A highly flexible rubber.",
-        "b": "A liquid melt.",
-        "c": "A rigid, glassy solid.",
-        "d": "A gas."
-      },
-      "explanations": {
-        "a": "Incorrect — This is the state above T_g.",
-        "b": "Incorrect — This is the state far above T_g.",
-        "c": "Correct — Below T_g, the polymer chains are frozen in a rigid, glassy state.",
-        "d": "Incorrect — This is vaporization."
+        "a": "Incorrect — PMMA has the highest T_g.",
+        "b": "Incorrect — PLA is intermediate.",
+        "c": "Correct — PU-SMP has T_g = 45°C, making it the easiest to trigger with modest heat.",
+        "d": "Incorrect — The three materials have distinct T_g values."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
+    },
+    {
+      "question": "Q8. What is the primary objective of the programming step in Shape Memory Polymers?",
+      "answers": {
+        "a": "To crystallize the entire material.",
+        "b": "To increase the density of the material.",
+        "c": "To remove all the permanent shape memory.",
+        "d": "To write the temporary shape by loading the rubbery material, cooling it below T_g while stressed, then unloading."
+      },
+      "explanations": {
+        "a": "Incorrect — Programming does not necessarily crystallize the material.",
+        "b": "Incorrect — Programming does not significantly change density.",
+        "c": "Incorrect — Programming preserves the netpoints and the permanent shape; it only adds a temporary shape.",
+        "d": "Correct — Programming imprints a temporary shape by applying stress in the rubbery state, cooling to lock the strain, then releasing the load."
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q9. Recovery kinetics in an SMP follows which mathematical law?",
+      "answers": {
+        "a": "Linear with time.",
+        "b": "First-order exponential decay toward the equilibrium strain.",
+        "c": "Quadratic with temperature.",
+        "d": "Constant rate independent of time and temperature."
+      },
+      "explanations": {
+        "a": "Incorrect — Recovery slows exponentially, not linearly.",
+        "b": "Correct — Strain recovery follows ε(t) = ε_eq + (ε_u - ε_eq)·exp(-t/τ), a first-order exponential decay.",
+        "c": "Incorrect — The recovery rate depends exponentially on the relaxation time τ(T), not quadratically on T.",
+        "d": "Incorrect — Recovery rate depends strongly on temperature and time."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q10. For biomedical applications at body temperature (37°C), which material offers the best activation temperature match?",
+      "answers": {
+        "a": "PU-SMP (T_g = 45°C) — within 8°C of body temperature.",
+        "b": "PLA-SMP (T_g = 60°C) — moderate overshoot.",
+        "c": "PMMA-SMP (T_g = 105°C) — far above body temperature for safety.",
+        "d": "None — all are too far from 37°C."
+      },
+      "explanations": {
+        "a": "Correct — PU-SMP's T_g is within 10°C of 37°C, making it ideal for body-worn devices where ambient heat can nearly supply the trigger.",
+        "b": "Incorrect — Still 23°C above body temperature.",
+        "c": "Incorrect — So high that body heat alone cannot trigger it.",
+        "d": "Incorrect — PU-SMP is well-suited to biomedical use."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
     }
   ]
 }

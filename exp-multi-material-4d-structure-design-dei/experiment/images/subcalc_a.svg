@@ -1,38 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
-  <rect width="640" height="440" fill="#ffffff"/>
-  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
-  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc A: Stiffness Contrast &amp; Hinge Design</text>
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+  <text x="320" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">Stiffness contrast localises the fold in the hinge</text>
 
-  <!-- bilayer flat -->
-  <text x="130" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Bilayer (flat)</text>
-  <rect x="55" y="92" width="150" height="14" fill="#475569"/>
-  <rect x="55" y="106" width="150" height="9" fill="#14b8a6"/>
-  <text x="215" y="103" fill="#475569" font-size="9">passive (PLA, 2 GPa)</text>
-  <text x="215" y="116" fill="#0f766e" font-size="9">active (gel, 1 MPa)</text>
+  <!-- gridlines -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="72" y1="54" x2="72" y2="322"/>
+    <line x1="204" y1="54" x2="204" y2="322"/>
+    <line x1="336" y1="54" x2="336" y2="322"/>
+    <line x1="468" y1="54" x2="468" y2="322"/>
+    <line x1="600" y1="54" x2="600" y2="322"/>
+    <line x1="72" y1="322" x2="600" y2="322"/>
+    <line x1="72" y1="255" x2="600" y2="255"/>
+    <line x1="72" y1="188" x2="600" y2="188"/>
+    <line x1="72" y1="121" x2="600" y2="121"/>
+    <line x1="72" y1="54" x2="600" y2="54"/>
+  </g>
 
-  <!-- bent -->
-  <text x="130" y="150" fill="#8A1134" font-size="12" font-weight="700" text-anchor="middle">Heated: folds at soft hinge</text>
-  <path d="M55 175 h70 a26 26 0 0 1 26 26 v40" fill="none" stroke="#475569" stroke-width="13"/>
-  <path d="M125 175 a26 26 0 0 1 26 26" fill="none" stroke="#14b8a6" stroke-width="8"/>
-  <circle cx="125" cy="178" r="6" fill="#8A1134"/>
-  <text x="150" y="250" fill="#8A1134" font-size="10" font-weight="700">hinge</text>
+  <!-- clean-fold region SC >= 1000 -->
+  <rect x="468" y="54" width="132" height="268" fill="#16a34a" opacity="0.09"/>
+  <text x="534" y="70" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">clean box  SC ≥ 1000</text>
+  <line x1="468" y1="54" x2="468" y2="322" stroke="#16a34a" stroke-width="1.3" stroke-dasharray="5 4"/>
 
-  <!-- L vs h plot -->
-  <text x="470" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">Hinge length L vs thickness h</text>
-  <line x1="360" y1="84" x2="360" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
-  <line x1="360" y1="220" x2="615" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="349" y="94" fill="#475569" font-size="10" text-anchor="end">L</text>
-  <text x="615" y="237" fill="#475569" font-size="10" text-anchor="end">h</text>
-  <path d="M362 218 Q450 210 520 165 Q570 120 612 90" fill="none" stroke="#8A1134" stroke-width="2.5"/>
-  <text x="430" y="205" fill="#475569" font-size="9">L &#8733; h&#179; (thinner &#8594; shorter)</text>
+  <!-- 90% reference -->
+  <line x1="72" y1="80.8" x2="600" y2="80.8" stroke="#64748B" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="78" y="76" font-size="11" fill="#64748B">90%</text>
 
-  <!-- equation panel -->
-  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
-  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
-  <text x="36" y="310" fill="#1e293b" font-size="15" font-weight="700">EI = E &#183; b &#183; h&#179; / 12</text>
-  <text x="300" y="310" fill="#1e293b" font-size="15" font-weight="700">SC = E_passive / E_active</text>
-  <text x="36" y="338" fill="#1e293b" font-size="15" font-weight="700">&#952; = M &#183; L_hinge / (E_active &#183; I)</text>
-  <text x="36" y="366" fill="#0f766e" font-size="12" font-weight="700">Hydrogel/PLA &#8594; SC &#8776; 2000: deformation localises in the soft hinge.</text>
-  <text x="36" y="390" fill="#475569" font-size="12" font-weight="700">SC &gt; 1000 needed for a clean, localised fold; thinner hinge needs shorter L.</text>
-  <text x="36" y="411" fill="#94a3b8" font-size="11">A single material can only bend; stiffness contrast enables programmed folds.</text>
+  <!-- axes -->
+  <line x1="72" y1="54" x2="72" y2="322" stroke="#334155" stroke-width="1.6"/>
+  <line x1="72" y1="322" x2="600" y2="322" stroke="#334155" stroke-width="1.6"/>
+
+  <!-- y ticks -->
+  <g font-size="11" fill="#334155" text-anchor="end">
+    <text x="65" y="326">0</text>
+    <text x="65" y="259">25</text>
+    <text x="65" y="192">50</text>
+    <text x="65" y="125">75</text>
+    <text x="65" y="58">100</text>
+  </g>
+  <!-- x ticks -->
+  <g font-size="11" fill="#334155" text-anchor="middle">
+    <text x="72" y="340">1</text>
+    <text x="204" y="340">10</text>
+    <text x="336" y="340">100</text>
+    <text x="468" y="340">1000</text>
+    <text x="600" y="340">10⁴</text>
+  </g>
+
+  <text x="336" y="366" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">Stiffness contrast  SC = E_passive / E_active</text>
+  <text x="24" y="188" text-anchor="middle" font-size="13" font-weight="700" fill="#334155" transform="rotate(-90 24 188)">Fold that stays in hinge  f (%)</text>
+
+  <!-- localisation curve f = SC/(SC+100) -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.5"
+    points="72,319.4 98.4,317.8 124.8,315.4 151.2,311.7 177.6,306.1 204,297.6 230.4,285.3 256.8,268.2 283.2,245.7 309.6,218.3 336,188 362.4,157.7 388.8,130.3 415.2,107.8 441.6,90.7 468,78.4 494.4,69.9 520.8,64.3 547.2,60.6 573.6,58.2 600,56.7"/>
+
+  <!-- answer point SC=100 -> 50% -->
+  <circle cx="336" cy="188" r="5" fill="#E2570F" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="345" y="184" font-size="11" font-weight="700" fill="#E2570F">f = 50% at SC = 100</text>
+
+  <text x="120" y="238" font-size="11" fill="#64748B" font-style="italic">panels bow, fold smears</text>
 </svg>

@@ -1,0 +1,91 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .axes { stroke: #334155; stroke-width: 1.5; }
+      .grid { stroke: #E2E8F0; stroke-width: 0.8; }
+      .curve { stroke: #1E40AF; stroke-width: 2.5; fill: none; }
+      .fill-curve { stroke: #1E40AF; stroke-width: 2; fill: #E2E8F0; opacity: 0.4; }
+      .text-label { font: 13px sans-serif; fill: #334155; }
+      .highlight { stroke: #E2570F; stroke-width: 2; }
+      .arrow { stroke: #E2570F; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#E2570F" />
+    </marker>
+    <marker id="arrowhead-small" markerWidth="8" markerHeight="8" refX="7" refY="2" orient="auto">
+      <polygon points="0 0, 8 2, 0 4" fill="#1E40AF" />
+    </marker>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="30" y="25" class="text-label" font-weight="bold" font-size="14">Anisotropic Fibre Swelling (β₂ &gt; β₁)</text>
+
+  <!-- Left: Swelling ellipse at θ_f = 0° -->
+  <g>
+    <text x="50" y="55" class="text-label" font-size="12" font-weight="bold">θ<tspan baseline-shift="sub">f</tspan> = 0°</text>
+
+    <!-- Axes -->
+    <line x1="50" y1="120" x2="120" y2="120" class="axes"/>
+    <line x1="85" y1="85" x2="85" y2="155" class="axes"/>
+
+    <!-- Ellipse (major = transverse, minor = longitudinal) -->
+    <ellipse cx="85" cy="120" rx="25" ry="12" class="fill-curve" stroke="#1E40AF" stroke-width="2"/>
+
+    <!-- Axis labels -->
+    <text x="125" y="125" class="text-label" font-size="11">ε<tspan baseline-shift="sub">∥</tspan></text>
+    <text x="75" y="80" class="text-label" font-size="11">ε<tspan baseline-shift="sub">⊥</tspan></text>
+
+    <!-- Anisotropy ratio -->
+    <text x="40" y="180" class="text-label" font-size="10">A<tspan baseline-shift="sub">s</tspan> = 7.0</text>
+  </g>
+
+  <!-- Center: Rotation at θ_f = 45° -->
+  <g>
+    <text x="230" y="55" class="text-label" font-size="12" font-weight="bold">θ<tspan baseline-shift="sub">f</tspan> = 45°</text>
+
+    <!-- Axes (rotated) -->
+    <line x1="265" y1="120" x2="335" y2="120" class="axes"/>
+    <line x1="300" y1="85" x2="300" y2="155" class="axes"/>
+
+    <!-- Rotated ellipse -->
+    <ellipse cx="300" cy="120" rx="25" ry="12" class="fill-curve" stroke="#1E40AF" stroke-width="2" transform="rotate(45 300 120)"/>
+
+    <!-- Fibre direction -->
+    <line x1="275" y1="145" x2="325" y2="95" class="highlight" stroke-width="1.5" stroke-dasharray="2,3"/>
+    <text x="330" y="95" class="text-label" font-size="10" fill="#E2570F">fibre</text>
+
+    <!-- Decomposition arrows -->
+    <line x1="340" y1="120" x2="385" y2="120" class="arrow" stroke="#E2570F"/>
+    <text x="390" y="115" class="text-label" font-size="10" fill="#E2570F">ε<tspan baseline-shift="sub">xx</tspan></text>
+
+    <line x1="300" y1="155" x2="300" y2="200" class="arrow" stroke="#E2570F"/>
+    <text x="305" y="210" class="text-label" font-size="10" fill="#E2570F">ε<tspan baseline-shift="sub">xy</tspan></text>
+  </g>
+
+  <!-- Right: Resulting bending + twist -->
+  <g>
+    <text x="430" y="55" class="text-label" font-size="12" font-weight="bold">Deformation Modes</text>
+
+    <!-- Bending component -->
+    <rect x="420" y="90" width="150" height="40" fill="#E2E8F0" stroke="#334155" stroke-width="1" rx="2"/>
+    <text x="435" y="110" class="text-label" font-size="11" font-weight="bold">Bending:</text>
+    <text x="435" y="125" class="text-label" font-size="10">κ<tspan baseline-shift="sub">bend</tspan> ∝ ε<tspan baseline-shift="sub">xx</tspan></text>
+
+    <!-- Twist component -->
+    <rect x="420" y="145" width="150" height="40" fill="#FFF5E6" stroke="#E2570F" stroke-width="1.5" rx="2"/>
+    <text x="435" y="165" class="text-label" font-size="11" font-weight="bold">Twist:</text>
+    <text x="435" y="180" class="text-label" font-size="10" fill="#E2570F">κ<tspan baseline-shift="sub">twist</tspan> ∝ ε<tspan baseline-shift="sub">xy</tspan> (max at 45°)</text>
+  </g>
+
+  <!-- Bottom: Key equations -->
+  <g>
+    <rect x="30" y="260" width="560" height="85" fill="#F1F5F9" stroke="#334155" stroke-width="1" rx="3"/>
+    <text x="50" y="280" class="text-label" font-weight="bold" font-size="12">Strain Transformation (fibre at angle θ<tspan baseline-shift="sub">f</tspan>):</text>
+    <text x="50" y="300" class="text-label" font-size="11">ε<tspan baseline-shift="sub">xx</tspan> = β₁cos²θ<tspan baseline-shift="sub">f</tspan>ΔC + β₂sin²θ<tspan baseline-shift="sub">f</tspan>ΔC</text>
+    <text x="50" y="320" class="text-label" font-size="11">ε<tspan baseline-shift="sub">xy</tspan> = (β₂ − β₁)sin(θ<tspan baseline-shift="sub">f</tspan>)cos(θ<tspan baseline-shift="sub">f</tspan>)ΔC</text>
+    <text x="50" y="337" class="text-label" font-size="11" fill="#E2570F">• Twist peaks near θ<tspan baseline-shift="sub">f</tspan> = 45°;  bending vanishes at 0° or 90°</text>
+  </g>
+</svg>

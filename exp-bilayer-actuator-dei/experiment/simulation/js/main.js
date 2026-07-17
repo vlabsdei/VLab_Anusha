@@ -1,6 +1,43 @@
 /* global THREE */
 // Combined simulator script for Exp 2
 
+/* ---- LabGate: gate the whole experiment behind a Start click ---- */
+window.LabGate = (function () {
+  let armed = false;
+  function disableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = true; });
+  }
+  function enableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = false; });
+  }
+  // startFn = the deferred init sequence for the active sub-calc module.
+  function arm(startFn) {
+    if (armed) return; armed = true;
+    const host = document.getElementById('viewport3D')
+              || document.querySelector('.sim-viewport-fluid');
+    disableControls();
+    const ov = document.createElement('div');
+    ov.className = 'labgate';
+    ov.innerHTML =
+      '<div class="labgate__panel">' +
+      '<div class="labgate__title">Experiment idle</div>' +
+      '<div class="labgate__sub">Set parameters, then start the simulation.</div>' +
+      '<button type="button" class="labgate__btn">Start Experiment</button>' +
+      '</div>';
+    const anchor = host.closest('.sim-viewport-fluid > div') || host;
+    anchor.style.position = anchor.style.position || 'relative';
+    anchor.appendChild(ov);
+    ov.querySelector('.labgate__btn').addEventListener('click', () => {
+      ov.remove();
+      enableControls();
+      startFn();
+    });
+  }
+  return { arm: arm };   // modules call LabGate.arm(...)
+})();
+
 // ============================================================
 // SCRIPT_A.JS (Page Check: document.getElementById('deltaH'))
 // ============================================================
@@ -197,20 +234,22 @@
     
     
     
-        // Initial labels and render
-        updateLabels();
-        try {
-            init3D();
-            threejsInitialized = true;
-        } catch (e) {
-            console.error("Three.js WebGL failure, falling back to 2D canvas:", e);
-            document.getElementById('simCanvas').style.display = 'block';
-        }
-        runSimulationAtTime(0.0);
+        // Initial labels and render — deferred until "Start Experiment" is clicked
+        LabGate.arm(function () {
+            updateLabels();
+            try {
+                init3D();
+                threejsInitialized = true;
+            } catch (e) {
+                console.error("Three.js WebGL failure, falling back to 2D canvas:", e);
+                document.getElementById('simCanvas').style.display = 'block';
+            }
+            runSimulationAtTime(0.0);
+        });
     }
-    
-    
-    
+
+
+
     function setStimulusType(type) {
         currentStimulusType = type;
         if (type === 'thermal') {
@@ -1428,18 +1467,20 @@
             });
         }
     
-        // Initial labels and render
-        updateLabels();
-        try {
-            init3D();
-            threejsInitialized = true;
-        } catch (e) {
-            console.error("Three.js WebGL failure, falling back to 2D canvas:", e);
-            document.getElementById('simCanvas').style.display = 'block';
-        }
-        runSimulationAtTime(0.0);
+        // Initial labels and render — deferred until "Start Experiment" is clicked
+        LabGate.arm(function () {
+            updateLabels();
+            try {
+                init3D();
+                threejsInitialized = true;
+            } catch (e) {
+                console.error("Three.js WebGL failure, falling back to 2D canvas:", e);
+                document.getElementById('simCanvas').style.display = 'block';
+            }
+            runSimulationAtTime(0.0);
+        });
     }
-    
+
     function updateLabels() {
         if (valH1) valH1.innerText = parseFloat(slideH1.value).toFixed(2) + ' mm';
         if (valH2) valH2.innerText = parseFloat(slideH2.value).toFixed(2) + ' mm';
@@ -2799,12 +2840,14 @@
             if (isRunning) {
                 pauseAnimation();
             } else {
-                const currentDT = parseFloat(slideDT.value);
-                if (currentDT >= 100) {
+                // Ramp toward whatever the user set the deltaT slider to —
+                // captured BEFORE any zero-reset below, so Run always honors it.
+                let targetDT = parseFloat(slideDT.value);
+                if (targetDT >= 100) {
                     slideDT.value = 0;
                     if (timeScrubber) timeScrubber.value = 0;
                 }
-                startPresetAnimation();
+                startPresetAnimation(targetDT);
             }
         });
         if (btnReset) btnReset.addEventListener('click', resetSetup);
@@ -2824,17 +2867,19 @@
         if (preset3Btn) preset3Btn.addEventListener('click', () => applyComboPreset(0, 45));
         if (preset4Btn) preset4Btn.addEventListener('click', () => applyComboPreset(45, 90));
     
-        // Initialize 3D Viewport
-        try {
-            init3D();
-            threejsInitialized = true;
-        } catch (e) {
-            console.error("WebGL failure during Three.js initialization:", e);
-        }
-    
-        updateValues();
+        // Initialize 3D Viewport — deferred until "Start Experiment" is clicked
+        LabGate.arm(function () {
+            try {
+                init3D();
+                threejsInitialized = true;
+            } catch (e) {
+                console.error("WebGL failure during Three.js initialization:", e);
+            }
+
+            updateValues();
+        });
     }
-    
+
     function updateValues() {
         const tTop = parseInt(slideThetaTop.value);
         const tBot = parseInt(slideThetaBot.value);
@@ -3439,36 +3484,41 @@
     function applyComboPreset(top, bot) {
         slideThetaTop.value = top;
         slideThetaBot.value = bot;
-        
+
         if (animInterval) {
             clearInterval(animInterval);
             animInterval = null;
             isRunning = false;
         }
-        
-        startPresetAnimation();
+
+        // Ramp toward the user's current deltaT slider setting, not a fixed value.
+        startPresetAnimation(parseFloat(slideDT.value));
     }
-    
-    function startPresetAnimation() {
+
+    // targetDT: the ΔT (°C) this ramp should animate toward. Must come from the
+    // live deltaT slider value — it must never be a hardcoded constant, otherwise
+    // the slider is silently ignored during Run/Play (the sim would always ramp
+    // to a fixed temperature no matter what the user dialed in).
+    function startPresetAnimation(targetDT) {
         isRunning = true;
         if (btnRun) {
             btnRun.disabled = true;
             btnRun.innerText = 'Running...';
         }
         if (btnPlayPause) btnPlayPause.innerText = 'Pause';
-        
+
+        if (targetDT === undefined || isNaN(targetDT)) targetDT = parseFloat(slideDT.value) || 100;
         let currentDT = 0;
-        const targetDT = 100;
         const steps = 50;
         const dtStep = targetDT / steps;
-        const delay = 800 / steps; 
-        
+        const delay = 800 / steps;
+
         slideDT.value = 0;
         if (timeScrubber) timeScrubber.value = 0;
-        
+
         animInterval = setInterval(() => {
             currentDT += dtStep;
-            
+
             if (currentDT >= targetDT) {
                 currentDT = targetDT;
                 clearInterval(animInterval);
@@ -3480,23 +3530,23 @@
                 }
                 if (btnPlayPause) btnPlayPause.innerText = 'Play';
             }
-            
+
             slideDT.value = Math.round(currentDT);
             if (timeScrubber) timeScrubber.value = Math.round(currentDT);
             updateValues();
         }, delay);
     }
-    
+
     function togglePlayPause() {
         if (isRunning) {
             pauseAnimation();
         } else {
-            const currentDT = parseFloat(slideDT.value);
-            if (currentDT >= 100) {
+            let targetDT = parseFloat(slideDT.value);
+            if (targetDT >= 100) {
                 slideDT.value = 0;
                 if (timeScrubber) timeScrubber.value = 0;
             }
-            startPresetAnimation();
+            startPresetAnimation(targetDT);
         }
     }
     
@@ -4111,14 +4161,17 @@
      */
     function updateInsight(L_mm, t90_seconds) {
         if (!liveInsight) return;
-        
+
         const t90_str = formatTime(t90_seconds);
-        
+        // t_90 scales as L^2 (same material/D), so speedup vs the 1.0 mm baseline
+        // must be computed from the live thickness slider, not a fixed constant.
+        const speedupVsBaseline = Math.pow(1.0 / L_mm, 2);
+
         if (L_mm <= 0.2) {
             liveInsight.innerHTML = `
                 <strong>Design Insight (Fast Response):</strong><br>
-                A thin layer of <strong>${L_mm} mm</strong> reaches 90% saturation in just <strong>${t90_str}</strong>. 
-                This represents a <strong>25.0x</strong> acceleration compared to the 1.0 mm baseline. 
+                A thin layer of <strong>${L_mm} mm</strong> reaches 90% saturation in just <strong>${t90_str}</strong>.
+                This represents a <strong>${speedupVsBaseline.toFixed(1)}x</strong> acceleration compared to the 1.0 mm baseline.
                 Perfect for responsive hinges, active bilayers, and fast shape-shifting logic.
             `;
         } else if (L_mm >= 1.0) {
@@ -4679,10 +4732,12 @@
             });
         }
     });
-    
-    // Initialize on Load
-    init3D();
-    updateValues();
+
+    // Initialize on Load — deferred until "Start Experiment" is clicked
+    LabGate.arm(function () {
+        init3D();
+        updateValues();
+    });
 })();
 
 // ============================================================
@@ -5778,8 +5833,10 @@
             updateValues();
         });
     }
-    
-    // Initialize on Load
-    init3D();
-    updateValues();
+
+    // Initialize on Load — deferred until "Start Experiment" is clicked
+    LabGate.arm(function () {
+        init3D();
+        updateValues();
+    });
 })();

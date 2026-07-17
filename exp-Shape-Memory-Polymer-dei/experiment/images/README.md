@@ -1,3 +1,3 @@
-# 4D Printing Virtual Lab - Directory Reference
+# 4D Printing Virtual Lab - Image Assets
 
-This directory contains assets and files specific to the 4D Printing Technology Virtual Lab (Experiment 1: Shape Memory Polymers).
+Figure sources for the Shape Memory Polymer theory pages (Sub-Calc A through E diagrams).

@@ -1,4 +1,41 @@
 /* global THREE */
+/* ---- LabGate: gate the whole experiment behind a Start click ---- */
+window.LabGate = (function () {
+  let armed = false;
+  function disableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = true; });
+  }
+  function enableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = false; });
+  }
+  // startFn = the deferred init sequence for the active sub-calc module.
+  function arm(startFn) {
+    if (armed) return; armed = true;
+    const host = document.getElementById('viewport3D')
+              || document.querySelector('.sim-viewport-fluid');
+    disableControls();
+    const ov = document.createElement('div');
+    ov.className = 'labgate';
+    ov.innerHTML =
+      '<div class="labgate__panel">' +
+      '<div class="labgate__title">Experiment idle</div>' +
+      '<div class="labgate__sub">Set parameters, then start the simulation.</div>' +
+      '<button type="button" class="labgate__btn">Start Experiment</button>' +
+      '</div>';
+    const anchor = host.closest('.sim-viewport-fluid > div') || host;
+    anchor.style.position = anchor.style.position || 'relative';
+    anchor.appendChild(ov);
+    ov.querySelector('.labgate__btn').addEventListener('click', () => {
+      ov.remove();
+      enableControls();
+      startFn();
+    });
+  }
+  return { arm: arm };   // modules call LabGate.arm(...)
+})();
+
 // ============================================================
 // Combined simulator script for Exp 6 - Non-Thermal 4D
 // Actuation. Five sub-calculators, one per page, selected by a
@@ -318,10 +355,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valInt.innerText = I0.toFixed(0) + ' mW/cm2'; valConc.innerText = C.toFixed(0) + ' mmol/L';
-    refresh(); dispCis = targCis;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valInt.innerText = I0.toFixed(0) + ' mW/cm2'; valConc.innerText = C.toFixed(0) + ' mmol/L';
+        refresh(); dispCis = targCis;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -481,10 +520,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valPow.innerText = P.toFixed(1) + ' W'; valAunr.innerText = load.toFixed(2) + ' wt%';
-    refresh(); dispHeat = 1;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valPow.innerText = P.toFixed(1) + ' W'; valAunr.innerText = load.toFixed(2) + ' wt%';
+        refresh(); dispHeat = 1;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -524,7 +565,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     const torque = (B, phi) => mEff(phi) * VBEAM * (B / 1000);             // N.m (m_total * B)
 
     let phi = parseFloat(volInput.value), B = parseFloat(bInput.value);
-    let dispAng = 0, targAng = 0, sweeping = false, sweepB = 0, tAnim = 0;
+    let dispAng = 0, targAng = 0, sweeping = false, appliedB = B, tAnim = 0;
 
     // ---------- Three.js: magnetic catheter tip that bends toward an external magnet ----------
     let S = null, joints = [], segs = [], parts = [], arrows = [], target;
@@ -552,9 +593,9 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         for (let i = 0; i <= NB; i++) joints[i].position.copy(pts[i]);
         segs.forEach((s, i) => { HG.placeCyl(s, pts[i], pts[i + 1]); });
         parts.forEach((p, i) => { const idx = Math.floor((i + 0.5) / parts.length * NB); p.position.copy(pts[idx]); });
-        const strength = Math.min(B / 150, 1);
+        const strength = Math.min(appliedB / 150, 1);
         arrows.forEach((a) => { a.scale.setScalar(0.5 + strength); a.children.forEach((c) => { c.material.color.set(HG.mix(0xcbd5e1, 0x16a34a, strength)); }); });
-        const steered = thetaDeg(B, phi) >= 45;
+        const steered = thetaDeg(appliedB, phi) >= 45;
         if (target) { target.material.color.set(steered ? 0x16a34a : 0x94a3b8); target.material.opacity = steered ? 0.8 : 0.4; }
     }
 
@@ -593,7 +634,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
     function refresh() {
         const th = thetaDeg(B, phi), df = deflection(B, phi);
-        if (!sweeping) targAng = rad(th);
+        if (!sweeping) { targAng = rad(th); appliedB = B; }
         HG.put(resMs, mEff(phi).toExponential(2) + ' A/m');
         HG.put(resTau, (torque(B, phi) * 1e6).toFixed(2) + ' uN.m');
         HG.put(resDef, df.toFixed(2) + ' mm @ ' + th.toFixed(0) + ' deg', '#E2570F');
@@ -609,10 +650,17 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         drawMagPlot(); drawBcPlot(); fillMag(); updateEq();
     }
 
-    // ---------- apply-the-magnet sweep ----------
-    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepB = 0; btnRun.innerText = 'Pause Sweep'; btnRun.style.background = '#475569'; }
+    // ---------- apply-the-magnet ramp: bring the field up to the slider-set B ----------
+    // (ramps 0 -> the currently dialled-in Field B, so the "Field B" slider always
+    // drives the outcome, instead of always sweeping to a fixed 150 mT)
+    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; appliedB = 0; btnRun.innerText = 'Pause Sweep'; btnRun.style.background = '#475569'; }
     function stopRun(done) { sweeping = false; btnRun.innerText = 'Apply the Magnet'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
-    function stepRun(dt) { sweepB += dt * 28; B = Math.min(150, sweepB); bInput.value = B; valB.innerText = B.toFixed(0) + ' mT'; targAng = rad(thetaDeg(B, phi)); refresh(); if (sweepB >= 150) { B = 150; stopRun(true); } }
+    function stepRun(dt) {
+        appliedB = Math.min(B, appliedB + dt * Math.max(20, B * 0.9));
+        targAng = rad(thetaDeg(appliedB, phi));
+        refresh();
+        if (appliedB >= B) { appliedB = B; stopRun(true); }
+    }
 
     // ---------- events ----------
     volInput.addEventListener('input', () => { if (sweeping) stopRun(); phi = parseFloat(volInput.value); valVol.innerText = phi.toFixed(1) + ' vol%'; refresh(); });
@@ -631,10 +679,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valVol.innerText = phi.toFixed(1) + ' vol%'; valB.innerText = B.toFixed(0) + ' mT';
-    refresh(); dispAng = targAng;
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valVol.innerText = phi.toFixed(1) + ' vol%'; valB.innerText = B.toFixed(0) + ' mT';
+        refresh(); dispAng = targAng;
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -681,7 +731,7 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     function crossover(n, R) { for (let r = 10; r <= 250; r += 0.5) if (Pcoil(n, R, r) > P_MAX) return r; return 250; }
 
     let n = parseFloat(turnsInput.value), R = parseFloat(radInput.value), r = parseFloat(distInput.value);
-    let dispField = 1, targField = 1, sweeping = false, sweepR = 0, tAnim = 0;
+    let dispField = 1, targField = 1, running = false, tAnim = 0;
 
     // ---------- Three.js: external coil + skin/tissue + in-body robot at depth ----------
     let S = null, coil, tissue, device, beam;
@@ -763,15 +813,17 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
         drawCoilPlot(); drawFieldPlot(); fillCoil(); updateEq();
     }
 
-    // ---------- power-the-coil depth sweep ----------
-    function startRun() { if (sweeping) { stopRun(); return; } sweeping = true; sweepR = 10; btnRun.innerText = 'Pause Sweep'; btnRun.style.background = '#475569'; }
-    function stopRun(done) { sweeping = false; btnRun.innerText = 'Power the Coil'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
-    function stepRun(dt) { sweepR += dt * 26; r = Math.min(150, sweepR); distInput.value = r; valDist.innerText = r.toFixed(0) + ' mm'; refresh(); if (sweepR >= 150) { r = 150; stopRun(true); } }
+    // ---------- power-the-coil ramp: current builds up at the fixed, slider-set
+    // depth/turns/radius (r, n, R are never overridden - they always drive the solver) ----------
+    let tRun = 0;
+    function startRun() { if (running) { stopRun(); return; } running = true; tRun = 0; targField = 1; dispField = 0; btnRun.innerText = 'Pause'; btnRun.style.background = '#475569'; }
+    function stopRun(done) { running = false; btnRun.innerText = 'Power the Coil'; btnRun.style.background = '#E2570F'; if (done) { const nx = document.getElementById('btnNextCalc'); if (nx) nx.style.display = 'block'; } }
+    function stepRun(dt) { tRun += dt; if (tRun >= 1.6 && dispField > 0.98) stopRun(true); }
 
     // ---------- events ----------
-    turnsInput.addEventListener('input', () => { if (sweeping) stopRun(); n = parseFloat(turnsInput.value); valTurns.innerText = String(n); refresh(); });
-    radInput.addEventListener('input', () => { if (sweeping) stopRun(); R = parseFloat(radInput.value); valRad.innerText = R.toFixed(0) + ' mm'; refresh(); });
-    distInput.addEventListener('input', () => { if (sweeping) stopRun(); r = parseFloat(distInput.value); valDist.innerText = r.toFixed(0) + ' mm'; refresh(); });
+    turnsInput.addEventListener('input', () => { if (running) stopRun(); n = parseFloat(turnsInput.value); valTurns.innerText = String(n); refresh(); });
+    radInput.addEventListener('input', () => { if (running) stopRun(); R = parseFloat(radInput.value); valRad.innerText = R.toFixed(0) + ' mm'; refresh(); });
+    distInput.addEventListener('input', () => { if (running) stopRun(); r = parseFloat(distInput.value); valDist.innerText = r.toFixed(0) + ' mm'; refresh(); });
     btnRun.addEventListener('click', startRun);
 
     // ---------- render loop ----------
@@ -779,16 +831,19 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     function loop(now) {
         requestAnimationFrame(loop);
         const dt = Math.min((now - last) / 1000, 0.05); last = now; tAnim += dt;
-        if (sweeping) stepRun(dt);
+        if (running) stepRun(dt);
+        dispField += (targField - dispField) * 0.08;
         update3D();
         if (S) { S.controls.update(); S.renderer.render(S.scene, S.camera); }
     }
 
     // ---------- init ----------
-    init3D();
-    valTurns.innerText = String(n); valRad.innerText = R.toFixed(0) + ' mm'; valDist.innerText = r.toFixed(0) + ' mm';
-    refresh();
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valTurns.innerText = String(n); valRad.innerText = R.toFixed(0) + ' mm'; valDist.innerText = r.toFixed(0) + ' mm';
+        refresh();
+        requestAnimationFrame(loop);
+    });
 })();
 
 // ============================================================
@@ -825,6 +880,15 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     const tPhoto = (I) => 850 / I;               // photokinetic 90% conversion
     const tTherm = (tau) => tau;                 // thermal diffusion time constant
     function fmtT(s) { return s < 1 ? (s * 1000).toFixed(0) + ' ms' : (s < 60 ? s.toFixed(1) + ' s' : (s / 60).toFixed(1) + ' min'); }
+    // Map a physical response time (log scale, same -3..3 decade span as the
+    // response-time bar chart) onto a watchable on-screen race duration, so the
+    // B / I / tau sliders visibly change how fast each strip snaps in the 3D race
+    // instead of the race always taking a fixed 0.3s/2.5s/6s regardless of input.
+    const RACE_L0 = -3, RACE_L1 = 3, RACE_D_MIN = 0.3, RACE_D_MAX = 6.0;
+    function raceDur(t) {
+        const L = Math.max(RACE_L0, Math.min(RACE_L1, Math.log10(t)));
+        return RACE_D_MIN + (L - RACE_L0) / (RACE_L1 - RACE_L0) * (RACE_D_MAX - RACE_D_MIN);
+    }
     const STIM = [
         { key: 'Magnetic', col: 0x1E40AF, app: 'Surgical robots' },
         { key: 'Photo', col: 0x7c3aed, app: 'Microfluidics' },
@@ -939,7 +1003,12 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     function loop(now) {
         requestAnimationFrame(loop);
         const dt = Math.min((now - last) / 1000, 0.05); last = now; tAnim += dt;
-        if (running) { animT += dt; targ = [Math.min(animT / 0.3, 1), Math.min(animT / 2.5, 1), Math.min(animT / 6, 1)]; if (animT > 6.4) stopRun(true); }
+        if (running) {
+            animT += dt;
+            const d1 = raceDur(tMag(B)), d2 = raceDur(tPhoto(I)), d3 = raceDur(tTherm(tau));
+            targ = [Math.min(animT / d1, 1), Math.min(animT / d2, 1), Math.min(animT / d3, 1)];
+            if (animT > Math.max(d1, d2, d3) + 0.4) stopRun(true);
+        }
         else targ = [1, 1, 1];
         for (let k = 0; k < 3; k++) disp[k] += (targ[k] - disp[k]) * 0.12;
         update3D();
@@ -947,8 +1016,10 @@ HG.put = function (el, txt, color) { if (!el) return; el.innerText = txt; if (co
     }
 
     // ---------- init ----------
-    init3D();
-    valB.innerText = B.toFixed(0) + ' mT'; valInt.innerText = I.toFixed(0) + ' mW/cm2'; valTau.innerText = tau.toFixed(0) + ' s';
-    refresh();
-    requestAnimationFrame(loop);
+    LabGate.arm(function () {
+        init3D();
+        valB.innerText = B.toFixed(0) + ' mT'; valInt.innerText = I.toFixed(0) + ' mW/cm2'; valTau.innerText = tau.toFixed(0) + ' s';
+        refresh();
+        requestAnimationFrame(loop);
+    });
 })();

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · The pH-Triggered Drug Capsule — Hydrogel Mechanics</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">how much will it swell?</span><span class="subcalc__desc">Flory-Rehner swelling</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">where will it open?</span><span class="subcalc__desc">pH / Donnan equilibrium</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">how big is the snap?</span><span class="subcalc__desc">LCST thermoresponse</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">is it as soft as the tissue?</span><span class="subcalc__desc">Swollen modulus</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">how fast is the dose?</span><span class="subcalc__desc">Korsmeyer-Peppas release</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · pH-Responsive Swelling</span>
+            <h1 class="stage__title">The pH-Triggered Drug Capsule</h1>
+            <p class="stage__obj">Weak-acid groups on the capsule shell ionise as pH rises past the polymer's pKa (Henderson&ndash;Hasselbalch), pulling in water via Donnan osmotic pressure and swelling the shell open &mdash; releasing its payload once past the stomach.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Pick a polymer and acid-group count, then click 'Swallow the Capsule' to follow it from stomach acid into the intestine and watch it open.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Capsule: sealed (in stomach acid)</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How far the capsule opens vs pH</div>
+                    <canvas id="plotCanvasPH" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How charged the shell gets vs pH</div>
+                    <canvas id="plotCanvasAlpha" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Which polymer releases where?</h3>
+            <table id="capsuleTable">
+                <thead><tr><th>Polymer (pKa)</th><th>Opens at pH</th><th style="text-align:right;">Releases in</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the trigger</button>
+            <div class="derivation-content"><div id="phFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Choose the capsule polymer</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="poly" value="4.8" id="polyPAA" checked><label for="polyPAA">PAA &ndash; opens early (pKa 4.8)</label></div>
+                            <div class="option"><input type="radio" name="poly" value="4.3" id="polyPMAA"><label for="polyPMAA">PMAA &ndash; opens earliest (pKa 4.3)</label></div>
+                            <div class="option"><input type="radio" name="poly" value="6.0" id="polyCustom"><label for="polyCustom">Custom &ndash; opens late (pKa 6.0)</label></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. How many acid groups on the shell</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Ionisable fraction (few &rarr; many)</label>
+                                <input type="range" id="fionInput" aria-label="Fion Input" min="0.1" max="1.6" step="0.05" value="0.6">
+                                <div class="slider-val" id="valFion">0.60</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Set the surrounding pH</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>pH (stomach acid &rarr; intestine)</label>
+                                <input type="range" id="phInput" aria-label="Ph Input" min="1" max="8" step="0.1" value="1.8">
+                                <div class="slider-val" id="valPh">1.8</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Swallow the Capsule</button>
+                        <button type="button" onclick="location.reload()">Reset Capsule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>What the capsule does</h3>
+                        <div class="result-row"><span class="result-label">Capsule polymer (pKa)</span><span class="result-val" id="resMat">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Shell charge now (ionisation)</span><span class="result-val" id="resAlpha">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Shell swelling Q</span><span class="result-val" id="resQ">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Springs open at pH ~</span><span class="result-val" id="resOpenPh">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Releases drug in</span><span class="result-val" id="resRelease">&mdash;</span></div>
+                        <div class="result-row"><span class="result-label">Opening window (10-90%)</span><span class="result-val" id="resWindow">&mdash;</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index2.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

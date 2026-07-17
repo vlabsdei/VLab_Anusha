@@ -1,63 +1,64 @@
 # Procedure: Non-Thermal 4D Actuation
 
-Welcome to the Non-Thermal 4D Actuation Virtual Laboratory. Each sub-calculator is a recognizable light- or magnetically-driven 4D-printed device: a light-bending actuator strip, an NIR skin-activated implant, a magnetic catheter tip, a wireless coil driver, and a stimulus speed race. You set the light, magnet, or coil on the left, trigger the device, watch it respond in 3D, and read off a real design number. The Beer-Lambert, photothermal, magnetic-torque, coil-field, and response-time physics runs underneath every animation.
+Welcome to the Non-Thermal 4D Actuation lab. Here you drive printed active structures with light and magnetic fields instead of bulk heat, then measure how fast and how far each one responds. Work through the five sub-calculators below; each opens behind a **Start Experiment** gate — set your parameters first, then start the solver.
 
 ---
 
-## Sub-Calc A: The Light-Driven Actuator Strip (Azobenzene)
-**The device:** a printed strip carrying azobenzene dye. Violet 365 nm light flips the dye and the strip bends toward the light; blue 450 nm light flips it back and the strip relaxes - a light-powered actuator with no wires.
+## Sub-Calc A: The Light-Driven Actuator Strip
+**Objective:** Bend an azobenzene-loaded strip with UV light and read off how quickly it actuates as you change brightness and dye loading.
 
-1. **Pick the light:** choose **365 nm** (UV - bends it) or **450 nm** (visible - relaxes it).
-2. **Set the dose:** move the **light intensity I&#8320;** and **dye concentration C** sliders.
-3. **Trigger it:** click **Shine the Light**. The strip curls toward the lamp and tints violet as the dye switches.
-4. **Read the plots:** the bend-vs-time curve (with the t<sub>90</sub> marker) and the **time-to-actuate vs brightness** curve.
-5. **Record:** the absorbed intensity, the photostationary cis %, the bend angle, and the **time to 90% bend t<sub>90</sub>** at three intensities.
-6. **Design takeaway:** brighter light actuates faster (t<sub>90</sub> &prop; 1/intensity); UV bends, visible relaxes. Click **Next Experiment ->**.
-
----
-
-## Sub-Calc B: The NIR Skin-Activated Implant (Photothermal)
-**The device:** a printed implant sitting under the skin. An 808 nm laser shines through the skin and heats a nanoparticle spot to switch the implant on - activation with no surgery, as long as the hot spot stays local.
-
-1. **Set the laser:** move the **laser power P** slider.
-2. **Set the loading:** move the **gold-nanorod (AuNR) loading** slider (more nanorods absorb more light).
-3. **Trigger it:** click **Fire the Laser**. The beam passes through the translucent skin and a red hot-spot grows on the implant; the marker glows when it activates.
-4. **Read the plots:** the **hot-zone size vs power** curve (with the "stays local < 0.5 mm" band and minimum power) and the temperature-rise curve (with the +25&deg;C switch-on line).
-5. **Record:** the heating rate, the steady &Delta;T, the **time to activate**, the heated-zone size d, and the **minimum power** to keep d < 0.5 mm.
-6. **Design takeaway:** use enough power to cross +25&deg;C but keep the heated zone small - faster heating means a tighter spot. Click **Next Experiment ->**.
+1. **Pick the light colour:** Choose **365 nm UV – makes it bend** or **450 nm visible – lets it relax**. UV switches the dye trans&rarr;cis (bending); visible reverses it.
+2. **Set the brightness:** Drag **Light brightness I&#8320; (mW/cm&sup2;)** (range 5–60).
+3. **Set the dye:** Drag **Dye loading C (mmol/L)** (range 1–30). More dye raises the absorbed fraction toward saturation.
+4. **Actuate:** Click **Shine the Light** to run the animation; the strip curls toward the lamp as the cis fraction builds.
+5. **Read the outcome:** In Readouts, note *Light reaching the strip* (I<sub>abs</sub>), *How much the dye switches* (cis %), *Bend angle*, and *Time to actuate (t90)*. The lower plot shows t90 falling as 1/I<sub>0</sub>.
+6. **Advance:** Use the **&rsaquo;** arrow (Next sub-calc) at the bottom of the rail.
 
 ---
 
-## Sub-Calc C: The Magnetic Catheter Tip / Micro-Gripper (Magnetic Torque)
-**The device:** a printed strip loaded with magnetic particles that bends when an external magnet is brought close - wireless, millisecond steering for a catheter tip threading into a side branch.
+## Sub-Calc B: The NIR Skin-Activated Implant
+**Objective:** Fire an 808 nm laser through skin onto a nanorod implant and find a dose that switches it on while keeping the hot zone local.
 
-1. **Set the loading:** move the **particle volume fraction** slider (1-10 vol%).
-2. **Set the magnet:** move the **external field B** slider, or click **Apply the Magnet** to ramp the field up.
-3. **Watch it:** the tip bends toward the green field arrows; the target ring lights up when the tip steers far enough (&ge; 45&deg;).
-4. **Read the plots:** the tip-bend vs field curve (with the 45&deg; and 90&deg; markers) and the **critical field vs particle content** curve.
-5. **Record:** the effective magnetisation, the torque, the tip deflection, and the **critical field B<sub>crit</sub>** for 45&deg; and 90&deg;.
-6. **Design takeaway:** print in more particles to steer with a gentler magnet - B<sub>crit</sub> falls as 1/(volume fraction), and steering stays wireless and millisecond-fast. Click **Next Experiment ->**.
-
----
-
-## Sub-Calc D: The Wireless Coil Driving an In-Body Robot (Coil Design)
-**The device:** an external coil that must deliver enough magnetic field at an implanted robot's depth to drive it. Tissue soaks up the field, so beyond a crossover depth a tiny on-board battery wins.
-
-1. **Set the coil:** move the **turns n** and **coil radius R** sliders.
-2. **Set the depth:** move the **implant depth r** slider (50-100 mm for an in-body device), or click **Power the Coil** to sweep depth.
-3. **Watch it:** the in-body device glows green when the coil can power it and red when it cannot; the field beam fades with depth.
-4. **Read the plots:** the **coil power vs depth** curve (with the wireless-budget line and crossover marker) and the **field reaching the device** curve (solid = at the surface, dashed = after tissue soaks it up).
-5. **Record:** the field at depth, the required current and **coil power P**, the tissue-attenuated field, and the **crossover depth** beyond which a battery wins.
-6. **Design takeaway:** power climbs steeply with depth - wireless wins when shallow, battery wins when deep. Click **Next Experiment ->**.
+1. **Set laser power:** Drag **Laser power P (W)** (range 0.1–6.0).
+2. **Set nanoparticle loading:** Drag **Nanorod loading (wt%)** (range 0.02–0.50). Steady temperature rise scales with power &times; loading.
+3. **Fire:** Click **Fire the Laser**. The heat field spreads across the implant's top face and the activation marker glows once it crosses threshold.
+4. **Check activation:** Watch *Temperature rise* against the **+25 &deg;C switch-on** line and *Time to switch on (+25&deg;C)*.
+5. **Check confinement:** Read *Heated-zone size d* and *Min power to stay local (d&lt;0.5mm)*. If d has spread past 0.5 mm, raise the power toward P<sub>min</sub> for a tighter spot.
+6. **Advance:** Click the **&rsaquo;** arrow.
 
 ---
 
-## Sub-Calc E: Pick the Right Trigger for the Job (Speed Race)
-**The device:** three identical printed actuator strips racing under three different triggers - magnetic, light, and heat - to show which is fastest and which job each one suits.
+## Sub-Calc C: The Magnetic Micro-Gripper / Catheter Tip
+**Objective:** Steer a particle-loaded tip with an external magnet and find the loading that lets a gentle field do the job.
 
-1. **Set the triggers:** move the **magnetic field B**, **light intensity I**, and **thermal time-constant &tau;** sliders.
-2. **Trigger it:** click **Race the Actuators**. The three strips bend in real time at their own characteristic speed.
-3. **Read the plots:** the **response-time bar chart** (log scale) and the **application map** linking each trigger to its use.
-4. **Record:** the magnetic, photo, and thermal response times in the comparison table, and confirm the ranking - magnetic fastest (ms), photo intermediate (s), thermal slowest (min).
-5. **Design takeaway:** pick the trigger by the speed your device needs - magnetic for surgical robots, photo for microfluidics, thermal for implants.
-6. **Finish:** you have driven all five non-thermal devices. Use **Restart** to compare other settings.
+1. **Set particle loading:** Drag **Particle loading (vol%)** (range 1–10).
+2. **Set field strength:** Drag **Field B (mT)** (range 0–150).
+3. **Apply the field:** Click **Apply the Magnet**. The field ramps up to your dialled-in B and the tip curls toward the magnet arrows; the green torus marks the branch it should steer into.
+4. **Read the mechanics:** Note *Magnetic strength in the tip* (M<sub>eff</sub>), *Twisting force (torque)*, and *Tip bend* (angle and arc deflection).
+5. **Read the design targets:** Check *Magnet to steer 45&deg;* and *Magnet to steer 90&deg;* (B<sub>crit</sub>). The lower plot shows the field needed dropping as 1/(vol-fraction).
+6. **Advance:** Click the **&rsaquo;** arrow.
+
+---
+
+## Sub-Calc D: The Wireless Coil Driving an In-Body Robot
+**Objective:** Size an external drive coil for an implant at depth, and locate the depth past which a battery becomes the better choice.
+
+1. **Set coil turns:** Drag **Number of turns n** (range 50–2000).
+2. **Set coil radius:** Drag **Coil radius R (mm)** (range 20–120).
+3. **Set implant depth:** Drag **Implant depth r (mm)** (range 10–150).
+4. **Power up:** Click **Power the Coil** to energise the coil and light the in-body robot.
+5. **Read the budget:** Note *Field reaching the device*, *Current the coil needs* (I), and *Coil power* (P) — flagged green while under the 300 W wireless budget, red once over it.
+6. **Find the crossover:** Read *Crossover depth (battery wins past here)*. The main plot shades the depth band where the coil exceeds budget.
+7. **Advance:** Click the **&rsaquo;** arrow.
+
+---
+
+## Sub-Calc E: Pick the Right Trigger for the Job
+**Objective:** Race magnetic, light, and thermal actuation side by side and match each trigger to the application its speed suits.
+
+1. **Set magnet strength:** Drag **Field B (mT)** (range 10–150).
+2. **Set light brightness:** Drag **Brightness I (mW/cm&sup2;)** (range 5–60).
+3. **Set heat response:** Drag **Thermal time-constant (s)** (range 60–900).
+4. **Race:** Click **Race the Actuators**. Three identical strips bend under their respective triggers; the bar chart plots each response time on a log scale.
+5. **Compare:** Read *Magnetic / Light / Heat response time* and the ratios *Light slower than magnetic by* and *Heat slower than magnetic by*. Use the trigger-to-application map to pick the right stimulus.
+6. **Finish:** This is the last sub-calc — the **&rsaquo;** arrow is disabled.

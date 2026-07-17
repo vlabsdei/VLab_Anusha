@@ -1,39 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
-  <rect width="640" height="440" fill="#ffffff"/>
-  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
-  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc D: Origami-Based Structures (Miura Fold)</text>
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">Miura-ori: Pack Ratio and Auxetic Behavior</text>
 
-  <!-- Miura herringbone pattern -->
-  <text x="160" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Miura-ori crease pattern</text>
-  <g stroke="#8A1134" stroke-width="2" fill="none">
-    <path d="M40 90 l40 18 l40 -18 l40 18 l40 -18 l40 18"/>
-    <path d="M40 130 l40 18 l40 -18 l40 18 l40 -18 l40 18"/>
-    <path d="M40 170 l40 18 l40 -18 l40 18 l40 -18 l40 18"/>
-    <path d="M40 210 l40 18 l40 -18 l40 18 l40 -18 l40 18"/>
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="70" y1="50" x2="70" y2="280"/>
+    <line x1="147" y1="50" x2="147" y2="280"/>
+    <line x1="224" y1="50" x2="224" y2="280"/>
+    <line x1="301" y1="50" x2="301" y2="280"/>
+    <line x1="378" y1="50" x2="378" y2="280"/>
+    <line x1="455" y1="50" x2="455" y2="280"/>
+    <line x1="532" y1="50" x2="532" y2="280"/>
+    <line x1="70" y1="280" x2="532" y2="280"/>
+    <line x1="70" y1="232" x2="532" y2="232"/>
+    <line x1="70" y1="184" x2="532" y2="184"/>
+    <line x1="70" y1="136" x2="532" y2="136"/>
+    <line x1="70" y1="88" x2="532" y2="88"/>
+    <line x1="70" y1="50" x2="532" y2="50"/>
   </g>
-  <g stroke="#2563eb" stroke-width="1.6" fill="none" stroke-dasharray="5 3">
-    <line x1="40" y1="90" x2="40" y2="210"/><line x1="80" y1="108" x2="80" y2="228"/>
-    <line x1="120" y1="90" x2="120" y2="210"/><line x1="160" y1="108" x2="160" y2="228"/>
-    <line x1="200" y1="90" x2="200" y2="210"/><line x1="240" y1="108" x2="240" y2="228"/>
+
+  <!-- axes -->
+  <line x1="70" y1="50" x2="70" y2="280" stroke="#334155" stroke-width="1.6"/>
+  <line x1="70" y1="280" x2="532" y2="280" stroke="#334155" stroke-width="1.6"/>
+
+  <!-- x-axis ticks and labels -->
+  <g font-size="11" fill="#334155" text-anchor="middle">
+    <text x="70" y="303">0°</text>
+    <text x="147" y="303">15°</text>
+    <text x="224" y="303">30°</text>
+    <text x="301" y="303">45°</text>
+    <text x="378" y="303">60°</text>
+    <text x="455" y="303">75°</text>
+    <text x="532" y="303">90°</text>
   </g>
-  <text x="55" y="250" fill="#8A1134" font-size="9" font-weight="700">mountain</text>
-  <text x="175" y="250" fill="#2563eb" font-size="9" font-weight="700">valley</text>
 
-  <!-- auxetic indicator -->
-  <text x="470" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">Auxetic behaviour</text>
-  <rect x="380" y="95" width="80" height="60" rx="6" fill="#ccfbf1" stroke="#14b8a6"/>
-  <path d="M470 125 h36" stroke="#8A1134" stroke-width="2" marker-end="url(#arD)"/>
-  <rect x="516" y="85" width="100" height="80" rx="6" fill="#99f6e4" stroke="#0d9488"/>
-  <defs><marker id="arD" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8A1134"/></marker></defs>
-  <text x="420" y="180" fill="#0f766e" font-size="10" text-anchor="middle">stretch x</text>
-  <text x="566" y="180" fill="#0f766e" font-size="10" font-weight="700" text-anchor="middle">expands x AND y</text>
-  <text x="498" y="210" fill="#9333ea" font-size="12" font-weight="700" text-anchor="middle">&#957;_x &lt; 0 (negative Poisson)</text>
+  <!-- y-axis ticks and labels -->
+  <g font-size="11" fill="#334155" text-anchor="end">
+    <text x="63" y="284">0</text>
+    <text x="63" y="236">25</text>
+    <text x="63" y="188">50</text>
+    <text x="63" y="140">75</text>
+    <text x="63" y="92">100</text>
+    <text x="63" y="54">125</text>
+  </g>
 
-  <!-- equation panel -->
-  <rect x="20" y="262" width="600" height="158" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
-  <text x="36" y="290" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
-  <text x="36" y="320" fill="#1e293b" font-size="15" font-weight="700">tan(&#952;_M) = tan(&#945;) &#183; sin(&#966;)</text>
-  <text x="36" y="348" fill="#1e293b" font-size="14" font-weight="700">A_ratio = sin(&#966;)cos(&#945;) / (sin&#178;(&#945;)cos(&#966;) + cos&#178;(&#945;))   &#8594; A_ratio &lt; 1 (folds smaller)</text>
-  <text x="36" y="376" fill="#9333ea" font-size="14" font-weight="700">&#957;_x = &#8722;(&#8706;&#949;_y/&#8706;&#949;_x) &lt; 0   (auxetic)</text>
-  <text x="36" y="402" fill="#94a3b8" font-size="11" font-weight="700">Rigid-origami assumption fails when panel thickness &gt; ~5% of panel length (Tachi-Miura).</text>
+  <!-- axis labels -->
+  <text x="301" y="330" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">Fold angle φ (degrees)</text>
+  <text x="22" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#334155" transform="rotate(-90 22 165)">Ratio (%)</text>
+
+  <!-- 0% line (flat) -->
+  <line x1="70" y1="280" x2="532" y2="280" stroke="#94a3b8" stroke-width="1.2"/>
+  <text x="76" y="277" font-size="10" fill="#64748b">0%</text>
+
+  <!-- 100% line (reference) -->
+  <line x1="70" y1="88" x2="532" y2="88" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="76" y="84" font-size="10" fill="#64748b">100%</text>
+
+  <!-- Pack ratio curve: A_pack/A_flat = cos(φ) · √[1 − sin²(α)sin²(φ)] with α = 60° -->
+  <!-- At φ=0°: cos(0)·√[1-0] = 1·1 = 100% -->
+  <!-- At φ=30°: cos(30)·√[1-0.75·0.25] = 0.866·√0.8125 ≈ 0.78 = 78% -->
+  <!-- At φ=60°: cos(60)·√[1-0.75·0.75] = 0.5·√0.4375 ≈ 0.33 = 33% -->
+  <!-- At φ=90°: cos(90)·√[1-0.75·1] = 0·√0.25 = 0% -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.8"
+    points="70,88 147,136 224,184 301,232 378,264 455,276 532,280"/>
+  <text x="445" y="255" font-size="10" fill="#1E40AF" font-weight="600">Pack ratio</text>
+
+  <!-- Poisson's ratio curve (negative, inverted for display) -->
+  <!-- νₓ = −d(ln λ_W)/d(ln λ_L) < 0 -->
+  <!-- At φ=0°: νₓ ≈ 0 (flat, no auxetic behavior) -->
+  <!-- At φ=45°: νₓ ≈ −0.5 to −0.7 (moderately auxetic) -->
+  <!-- At φ=90°: νₓ → −1 (highly auxetic, pulls expand in both directions) -->
+  <!-- Offset vertically to show "negative" concept: higher fold = more negative = shown as high on inverted scale -->
+  <polyline fill="none" stroke="#E2570F" stroke-width="2.8"
+    points="70,258 147,238 224,210 301,160 378,108 455,76 532,52"/>
+  <text x="485" y="65" font-size="10" fill="#E2570F" font-weight="600">Auxetic (−νₓ)</text>
+
+  <!-- Auxetic region highlight -->
+  <rect x="300" y="50" width="232" height="230" fill="#16a34a" opacity="0.06"/>
+  <text x="515" y="68" font-size="9" fill="#16a34a" font-weight="600">Auxetic</text>
+  <text x="515" y="80" font-size="9" fill="#16a34a" font-weight="600">region</text>
+
+  <!-- Fold angle =0 label -->
+  <line x1="70" y1="50" x2="70" y2="290" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="70" y="40" text-anchor="middle" font-size="9" fill="#64748b">flat</text>
+
+  <!-- Fold angle = 90 label -->
+  <line x1="532" y1="50" x2="532" y2="290" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="532" y="40" text-anchor="middle" font-size="9" fill="#64748b">packed</text>
+
+  <!-- Bottom note -->
+  <text x="301" y="350" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">As fold angle increases, sheet compresses while negative Poisson's ratio grows</text>
 </svg>

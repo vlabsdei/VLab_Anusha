@@ -1,174 +1,174 @@
 {
-  "version": 2.0,
+  "version": 2,
   "questions": [
     {
-      "question": "Q1. What is the fundamental mechanism behind shape change in a bilayer actuator?",
+      "question": "Q1. What is a bilayer actuator?",
       "answers": {
-        "a": "Electrostatic repulsion between the layers.",
-        "b": "The differential expansion or contraction of two layers in response to a stimulus.",
-        "c": "Phase transformation from crystalline to amorphous state.",
-        "d": "Gravitational bending due to uneven mass distribution."
+        "a": "A single layer printed at multiple angles.",
+        "b": "Correct — Two bonded layers that respond differently to a stimulus, causing the structure to bend or twist.",
+        "c": "A material that only responds to heat.",
+        "d": "A composite made of three or more distinct layers."
       },
       "explanations": {
-        "a": "Incorrect — Actuation is driven by differential strain, not electrostatic forces.",
-        "b": "Correct — Bending is induced when one layer expands or contracts more than the adjacent layer under a stimulus.",
-        "c": "Incorrect — While phase changes can trigger strain, the bimetal mechanism itself relies on differential expansion.",
-        "d": "Incorrect — Gravity has a negligible effect compared to internal stresses."
+        "a": "Incorrect — Multiple angles describe raster programming, not bilayer structure.",
+        "b": "Correct — A bilayer exploits mismatch strain between layers with different expansion coefficients.",
+        "c": "Incorrect — Bilayers respond to heat, moisture, light, or fields depending on material choice.",
+        "d": "Incorrect — A bilayer is specifically two bonded layers."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q2. Which historical equation forms the foundation for modeling curvature in bimetallic and bilayer 4D printed actuators?",
+      "question": "Q2. What is the mismatch strain Δε in a bilayer?",
       "answers": {
-        "a": "Hooke's Law of Elasticity.",
-        "b": "Timoshenko's Bimetal Formula.",
-        "c": "Fick's First Law of Diffusion.",
-        "d": "The Williams-Landel-Ferry (WLF) Equation."
+        "a": "The difference in expansion between the two layers.",
+        "b": "The total strain in a single layer.",
+        "c": "The maximum stress the material can withstand.",
+        "d": "The rate at which moisture diffuses into the layers."
       },
       "explanations": {
-        "a": "Incorrect — Hooke's law relates stress and strain, but does not directly model bimetallic curvature.",
-        "b": "Correct — Timoshenko's 1925 bimetal formula is the foundational equation relating layer properties and temperature changes to curvature.",
-        "c": "Incorrect — Fick's First Law governs steady-state diffusion, not curvature dynamics.",
-        "d": "Incorrect — The WLF equation characterizes temperature-dependent polymer relaxation, not bilayer bending."
+        "a": "Correct — Mismatch strain is the differential expansion (or swelling) that drives curvature.",
+        "b": "Incorrect — Individual layer strain is not the mismatch.",
+        "c": "Incorrect — That describes strength, not mismatch.",
+        "d": "Incorrect — Diffusion rate is a separate transport property."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q3. According to Timoshenko's formula, how does total thickness h affect the curvature κ?",
+      "answers": {
+        "a": "Curvature increases linearly with h.",
+        "b": "Thickness has no effect on curvature.",
+        "c": "Curvature decreases as h increases.",
+        "d": "Curvature is proportional to h²."
+      },
+      "explanations": {
+        "a": "Incorrect — Thicker beams are stiffer and bend less for the same mismatch.",
+        "b": "Incorrect — Thickness directly enters the denominator.",
+        "c": "Correct — κ ∝ Δε/(h·φ), so larger h reduces curvature.",
+        "d": "Incorrect — The relationship is inverse, not quadratic."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. What is the glass transition temperature T_g?",
+      "answers": {
+        "a": "The melting point of the polymer.",
+        "b": "The temperature at which a polymer transitions from glassy to rubbery state.",
+        "c": "The temperature where the material burns.",
+        "d": "The maximum operating temperature for any polymer."
+      },
+      "explanations": {
+        "a": "Incorrect — T_g is not melting; crystalline materials have a melting point instead.",
+        "b": "Correct — T_g marks the transition between rigid glassy and flexible rubbery behavior.",
+        "c": "Incorrect — That is the degradation temperature.",
+        "d": "Incorrect — Different polymers have different operating ranges above or below T_g."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q3. What does the term 'Swelling Anisotropy Ratio (As)' represent in wood or cellulose-based composite layers?",
+      "question": "Q5. In anisotropic fibre-reinforced swelling, what happens at θ_f = 45°?",
       "answers": {
-        "a": "The ratio of thermal expansion to moisture expansion.",
-        "b": "The ratio of transverse swelling strain to parallel swelling strain relative to the fiber direction.",
-        "c": "The ratio of active layer thickness to passive layer thickness.",
-        "d": "The ratio of wet density to dry density of the material."
+        "a": "Bending is maximized and twist is zero.",
+        "b": "Both bending and twist are maximized.",
+        "c": "The material does not respond to the stimulus.",
+        "d": "Twist is maximized and bending is reduced."
       },
       "explanations": {
-        "a": "Incorrect — It relates directional swelling strains, not thermal and moisture properties.",
-        "b": "Correct — Swelling anisotropy (As) is the ratio of transverse swelling (perpendicular to fibers) to parallel swelling (parallel to fibers).",
-        "c": "Incorrect — This describes the geometric thickness ratio (m).",
-        "d": "Incorrect — Swelling anisotropy describes strain variation, not density ratios."
+        "a": "Incorrect — At 45°, the shear strain component ε_xy peaks.",
+        "b": "Incorrect — Bending is driven by ε_xx, which is reduced at 45°.",
+        "c": "Incorrect — The material still responds, just in a different mode.",
+        "d": "Correct — At θ_f = 45°, the shear strain ε_xy is maximum, driving twist κ_xy; axial ε_xx is intermediate."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q4. According to Fick's Second Law, how does the characteristic diffusion time (tdiff) scale with the thickness (L) of an active hydrogel slab?",
+      "question": "Q6. Which stimulus is most relevant to hygroscopic (moisture-driven) bilayer actuators?",
       "answers": {
-        "a": "Linear with thickness (tdiff ∝ L).",
-        "b": "Inversely proportional to thickness (tdiff ∝ 1/L).",
-        "c": "Proportional to the square of thickness (tdiff ∝ L²).",
-        "d": "Exponentially (tdiff ∝ e^L)."
+        "a": "Relative humidity and water uptake.",
+        "b": "Electromagnetic field.",
+        "c": "Magnetic field.",
+        "d": "UV light."
       },
       "explanations": {
-        "a": "Incorrect — Diffusion does not scale linearly with distance.",
-        "b": "Incorrect — Increasing thickness increases diffusion time; it is not inversely proportional.",
-        "c": "Correct — Fick's Second Law dictates that diffusion time scales with the square of the characteristic length (L²).",
-        "d": "Incorrect — While the concentration profile has exponential-like curves, the characteristic time scales quadratically (L²)."
+        "a": "Correct — Hygroscopic actuators swell when absorbing water, with swelling coefficient β.",
+        "b": "Incorrect — That applies to magnetically-actuated composites.",
+        "c": "Incorrect — Magnetic actuation uses ferromagnetic particles.",
+        "d": "Incorrect — Photoactuators use photochromic or light-sensitive materials."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q7. How does halving the layer thickness L affect the diffusion time t_90?",
+      "answers": {
+        "a": "t_90 is halved.",
+        "b": "t_90 remains unchanged.",
+        "c": "t_90 is quartered.",
+        "d": "t_90 doubles."
+      },
+      "explanations": {
+        "a": "Incorrect — The L² scaling makes the effect stronger.",
+        "b": "Incorrect — Diffusion time depends on thickness.",
+        "c": "Correct — t_90 ∝ L², so halving L gives (1/2)² = 1/4 of the original time.",
+        "d": "Incorrect — This would happen if we doubled thickness."
       },
       "correctAnswer": "c",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q5. In 3D/4D printing via FDM, how does the deposition path (raster print angle) program the actuator's motion?",
+      "question": "Q8. What is the blocking force in a cantilever actuator?",
       "answers": {
-        "a": "It changes the chemical composition of the printed filament.",
-        "b": "It changes the local orientation of fibers or polymer chains, establishing directional expansion properties.",
-        "c": "It alters the glass transition temperature (Tg) of the polymer.",
-        "d": "It only affects the surface roughness of the printed part."
+        "a": "The maximum force the material can support before breaking.",
+        "b": "The force needed to overcome the glass transition.",
+        "c": "The force required to print the material.",
+        "d": "The force developed when the tip is held rigidly and cannot deflect."
       },
       "explanations": {
-        "a": "Incorrect — Printing orientation does not alter chemical composition.",
-        "b": "Correct — The print path aligns polymer chains or embedded fibers, creating highly anisotropic expansion coefficients in specific directions.",
-        "c": "Incorrect — Tg is an intrinsic material property and is not changed by the print path angle.",
-        "d": "Incorrect — Print path angle determines the direction-dependent mechanical response, not just surface finish."
+        "a": "Incorrect — That is tensile strength.",
+        "b": "Incorrect — T_g is a temperature transition, not a force barrier.",
+        "c": "Incorrect — Printing force is unrelated to actuator performance.",
+        "d": "Correct — F_block arises when mismatch strain is converted to force against a rigid constraint."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q9. What does the anisotropy index A_s = β_2/β_1 measure?",
+      "answers": {
+        "a": "The ratio of print-path angles in two layers.",
+        "b": "The ratio of transverse to longitudinal swelling in a fibre.",
+        "c": "The ratio of active layer thickness to passive layer thickness.",
+        "d": "The ratio of diffusion time to bending time."
+      },
+      "explanations": {
+        "a": "Incorrect — That would be a raster angle pair.",
+        "b": "Correct — A_s = β_perp/β_parallel quantifies how much more the fibre swells across its axis than along it.",
+        "c": "Incorrect — That is the thickness ratio m.",
+        "d": "Incorrect — There is no standard ratio of these timescales."
       },
       "correctAnswer": "b",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q6. In a bilayer actuator, what is 'Blocking Force (Fblock)'?",
+      "question": "Q10. What happens to the elastic modulus E of PLA as temperature rises above its T_g = 55°C?",
       "answers": {
-        "a": "The maximum force the actuator can exert to prevent it from dissolving in water.",
-        "b": "The force required to keep the actuator flat (prevent bending) under stimulus.",
-        "c": "The force that causes delamination between the two layers.",
-        "d": "The gravitational load of the actuator."
+        "a": "It drops from ~2300 MPa toward ~25 MPa (glassy to rubbery).",
+        "b": "It remains constant.",
+        "c": "It increases dramatically.",
+        "d": "It oscillates unpredictably."
       },
       "explanations": {
-        "a": "Incorrect — Has nothing to do with chemical dissolution.",
-        "b": "Correct — Blocking force is the force required to completely constrain the actuator and prevent any out-of-plane deflection.",
-        "c": "Incorrect — That is the interfacial shear/peeling force.",
-        "d": "Incorrect — Blocking force is an active mechanical response, not static weight."
+        "a": "Correct — Above T_g, PLA chains become mobile; E drops ~100× from the glassy to the rubbery state.",
+        "b": "Incorrect — Modulus is highly temperature-dependent.",
+        "c": "Incorrect — Softening occurs, not stiffening.",
+        "d": "Incorrect — The transition is smooth and well-characterized by the WLF equation."
       },
-      "correctAnswer": "b",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "Q7. What represents the total work output (W) of a bilayer actuator?",
-      "answers": {
-        "a": "The product of the mass and the acceleration of the actuator.",
-        "b": "The area under the force-deflection curve, approximated as 0.5 × Fblock × delta_free for a linear actuator.",
-        "c": "The thermal energy absorbed by the active layer.",
-        "d": "The time derivative of the blocking force."
-      },
-      "explanations": {
-        "a": "Incorrect — This describes Newton's Second Law (F = ma).",
-        "b": "Correct — Work output is calculated as the area under the force-deflection line, which is 0.5 × Fblock × delta_free.",
-        "c": "Incorrect — This represents thermal input, not mechanical work output.",
-        "d": "Incorrect — Work is force integrated over distance, not force's time rate of change."
-      },
-      "correctAnswer": "b",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q8. Which of the following material pairs would most likely act as a bilayer actuator under thermal stimulus?",
-      "answers": {
-        "a": "Two identical sheets of standard PLA printed with the same raster angle.",
-        "b": "A layer of high-expansion 4D-Print PLA bonded to a layer of low-expansion Standard PLA.",
-        "c": "Two layers of PNIPAM hydrogel at uniform temperature.",
-        "d": "A single isotropic elastomer sheet."
-      },
-      "explanations": {
-        "a": "Incorrect — Identical materials with the same orientation will expand equally, producing zero bending.",
-        "b": "Correct — Bonding layers with differing thermal expansion coefficients (CTEs) creates a mismatch that drives bending.",
-        "c": "Incorrect — Uniform layers without expansion differences will not bend.",
-        "d": "Incorrect — A single isotropic layer will expand uniformly without bending."
-      },
-      "correctAnswer": "b",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "Q9. How is the curvature (κ) of a bent beam related to its radius of curvature (R)?",
-      "answers": {
-        "a": "κ = R²",
-        "b": "κ = 1/R",
-        "c": "κ = ln(R)",
-        "d": "κ = 2πR"
-      },
-      "explanations": {
-        "a": "Incorrect — Curvature is not the square of the radius.",
-        "b": "Correct — Curvature is mathematically defined as the reciprocal of the radius of curvature (1/R).",
-        "c": "Incorrect — Not a logarithmic relationship.",
-        "d": "Incorrect — This is the formula for circumference."
-      },
-      "correctAnswer": "b",
-      "difficulty": "beginner"
-    },
-    {
-      "question": "Q10. What is a major challenge in bilayer actuators made of two highly dissimilar materials (e.g., hydrogel and PLA)?",
-      "answers": {
-        "a": "The materials will blend together and form a single alloy.",
-        "b": "Interfacial stress can cause delamination (peeling apart) at the boundary.",
-        "c": "They become radioactive under stimulus.",
-        "d": "Dissimilar materials cannot be printed in the same lab."
-      },
-      "explanations": {
-        "a": "Incorrect — They do not alloy; they are distinct solid phases.",
-        "b": "Correct — High differential strain creates severe shear stresses at the interface, which can lead to delamination.",
-        "c": "Incorrect — There is no nuclear radiation involved in thermo-mechanical actuation.",
-        "d": "Incorrect — Multi-material 3D printing is common."
-      },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "intermediate"
     }
   ]

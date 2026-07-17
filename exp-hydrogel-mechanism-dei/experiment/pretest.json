@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. What is a hydrogel?",
+      "answers": {
+        "a": "A rigid, non-porous plastic used in engineering.",
+        "b": "A crosslinked polymer network that soaks up water while holding its shape.",
+        "c": "A liquid suspension of polymers in oil.",
+        "d": "A type of crystalline metal alloy."
+      },
+      "explanations": {
+        "a": "Incorrect — Hydrogels are porous and water-absorbing.",
+        "b": "Correct — A hydrogel is defined as a crosslinked polymer network containing water.",
+        "c": "Incorrect — Hydrogels are solid networks, not liquid suspensions.",
+        "d": "Incorrect — Hydrogels are polymers, not metals."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. The swelling ratio Q is defined as:",
+      "answers": {
+        "a": "The swollen volume divided by the dry volume.",
+        "b": "The dry volume divided by the swollen volume.",
+        "c": "The mass of polymer divided by the mass of water.",
+        "d": "The rate at which water enters the gel."
+      },
+      "explanations": {
+        "a": "Correct — Q = V_swollen / V_dry = 1 / v_p, where v_p is polymer volume fraction.",
+        "b": "Incorrect — This is the reciprocal of Q.",
+        "c": "Incorrect — Q is a volume ratio, not a mass ratio.",
+        "d": "Incorrect — Q is an equilibrium ratio, not a rate."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q3. What does the Flory parameter χ represent in the Flory-Rehner equation?",
+      "answers": {
+        "a": "The crosslink density of the polymer.",
+        "b": "The temperature of the system in Kelvin.",
+        "c": "The solvent-interaction parameter; lower values mean the solvent loves water more.",
+        "d": "The molecular weight of the polymer chains."
+      },
+      "explanations": {
+        "a": "Incorrect — Crosslink density is set by the V₁/V_e term.",
+        "b": "Incorrect — Temperature is a separate input variable.",
+        "c": "Correct — χ is the Flory solvent-interaction parameter; χ = 0.40 (Alginate) means water-loving, while χ = 0.55 (pHEMA) is less water-loving.",
+        "d": "Incorrect — χ is an interaction parameter independent of chain length."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. In the self-folding gripper (Sub-Calc A), what physical phenomenon converts linear swelling into fold angle?",
+      "answers": {
+        "a": "Electrostatic repulsion between polymer chains.",
+        "b": "A printed bilayer where the two materials swell differently.",
+        "c": "Surface tension at the water-polymer interface.",
+        "d": "Magnetic attraction to an external field."
+      },
+      "explanations": {
+        "a": "Incorrect — The gripper uses mechanical swelling anisotropy.",
+        "b": "Correct — A printed bilayer with different swelling ratios creates differential stress, causing the finger to fold (θ_fold ≈ 90° · (Q^(1/3) − 1)).",
+        "c": "Incorrect — Surface tension is negligible at this scale.",
+        "d": "Incorrect — The self-folding gripper is not magnetically actuated."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q5. The Henderson-Hasselbalch equation describes the:",
+      "answers": {
+        "a": "Rate of drug diffusion through the gel.",
+        "b": "Maximum load a gel can bear before rupture.",
+        "c": "Relationship between temperature and gel stiffness.",
+        "d": "Fraction of ionised groups on a weak polyacid as a function of pH."
+      },
+      "explanations": {
+        "a": "Incorrect — Diffusion is described by the Korsmeyer-Peppas power law.",
+        "b": "Incorrect — Mechanical failure is not described by Henderson-Hasselbalch.",
+        "c": "Incorrect — Temperature-stiffness is described by rubber elasticity.",
+        "d": "Correct — α = 1 / (1 + 10^(pKa − pH)) gives the ionisation fraction."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q6. What does LCST stand for, and at what temperature does it occur for PNIPAM?",
+      "answers": {
+        "a": "Lower Critical Solution Temperature; approximately 32°C.",
+        "b": "Lower Critical Stress Temperature; approximately 25°C.",
+        "c": "Liquid Crystalline State Transition; approximately 37°C.",
+        "d": "Long-chain Stabilised Thermal regime; approximately 40°C."
+      },
+      "explanations": {
+        "a": "Correct — The LCST (~32°C) is where PNIPAM-type gels collapse by expelling water.",
+        "b": "Incorrect — The acronym and temperature are wrong.",
+        "c": "Incorrect — Neither the acronym nor temperature is correct.",
+        "d": "Incorrect — LCST is not a stabilisation regime."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q7. What is the dry shear modulus G_dry determined by?",
+      "answers": {
+        "a": "The polymer's colour and transparency.",
+        "b": "Only the temperature of the surrounding water.",
+        "c": "The number of elastically-effective chains per unit volume (ν_e) and thermal energy (k_B T).",
+        "d": "The pH of the solvent."
+      },
+      "explanations": {
+        "a": "Incorrect — Optical properties do not determine mechanical stiffness.",
+        "b": "Incorrect — While T appears in the formula, ν_e (crosslink density) is equally important.",
+        "c": "Correct — G_dry = ν_e k_B T according to affine rubber-elasticity theory.",
+        "d": "Incorrect — pH affects ionic swelling, not the baseline dry modulus."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. How does swelling affect the Young's modulus of a gel?",
+      "answers": {
+        "a": "It increases linearly with Q.",
+        "b": "It remains constant regardless of swelling.",
+        "c": "It increases exponentially with the square of Q.",
+        "d": "It decreases as the cube root of Q (E ∝ Q^(-1/3))."
+      },
+      "explanations": {
+        "a": "Incorrect — The relationship is not linear.",
+        "b": "Incorrect — Swelling significantly softens the gel.",
+        "c": "Incorrect — Modulus decreases with swelling, not increases.",
+        "d": "Correct — G_swollen = G_dry · Q^(-1/3), and E = 3G for an incompressible gel."
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q9. The Korsmeyer-Peppas power law (M_t / M_∞ = k t^n) is valid up to what fraction of drug released?",
+      "answers": {
+        "a": "20%",
+        "b": "60%",
+        "c": "40%",
+        "d": "90%"
+      },
+      "explanations": {
+        "a": "Incorrect — The model becomes unreliable earlier.",
+        "b": "Correct — The Korsmeyer-Peppas power law is trustworthy only while the released fraction is less than 60%; beyond that, geometry and boundary effects dominate.",
+        "c": "Incorrect — The cutoff is higher.",
+        "d": "Incorrect — The model fails well before this."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q10. If the ionisation fraction f_ion is too high in a pH-triggered capsule, what is the failure mode?",
+      "answers": {
+        "a": "The shell over-swells and ruptures, dumping the entire dose at once.",
+        "b": "The capsule opens too gradually.",
+        "c": "The capsule fails to open at any pH.",
+        "d": "The gel becomes insoluble and precipitates."
+      },
+      "explanations": {
+        "a": "Correct — Excessive ionisation produces strong Donnan pressure; if Q exceeds ~24 the shell ruptures catastrophically.",
+        "b": "Incorrect — The issue is premature over-swelling, not slow opening.",
+        "c": "Incorrect — High ionisation actually increases opening.",
+        "d": "Incorrect — Ionisation does not cause precipitation."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    }
+  ]
+}

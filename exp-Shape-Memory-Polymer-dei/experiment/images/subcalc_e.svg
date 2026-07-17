@@ -1,0 +1,93 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .label { font-family: sans-serif; font-size: 12px; fill: #334155; font-weight: bold; }
+      .label-small { font-family: sans-serif; font-size: 10px; fill: #334155; }
+      .box { fill: white; stroke: #334155; stroke-width: 1.5; }
+      .arrow { stroke: #E2570F; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .energy-box-q { fill: #1E40AF; opacity: 0.3; }
+      .energy-box-w { fill: #E2570F; opacity: 0.4; }
+      .energy-box-heat { fill: #D1D5DB; opacity: 0.3; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#E2570F"/>
+    </marker>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" font-size="16" font-weight="bold" text-anchor="middle" fill="#334155">
+    Thermal-to-Mechanical Energy Conversion in SMP Actuators
+  </text>
+
+  <!-- Q INPUT box (left) -->
+  <rect x="30" y="80" width="100" height="120" class="box"/>
+  <text x="80" y="105" text-anchor="middle" class="label">Input Heat</text>
+  <text x="80" y="125" text-anchor="middle" class="label-small">Q = m·C<tspan baseline-shift="sub">p</tspan>·ΔT</text>
+  <text x="80" y="145" text-anchor="middle" class="label-small" fill="#1E40AF" font-weight="bold">~440 J</text>
+  <text x="80" y="165" text-anchor="middle" class="label-small" fill="#666">(~ΔT=25°C)</text>
+
+  <!-- Arrow from Q to three outputs -->
+  <path d="M 130 140 L 160 140" class="arrow"/>
+
+  <!-- SENSIBLE HEAT box (center-down) -->
+  <rect x="170" y="190" width="120" height="100" class="energy-box-heat"/>
+  <rect x="170" y="190" width="120" height="100" class="box"/>
+  <text x="230" y="215" text-anchor="middle" class="label">Sensible Heat</text>
+  <text x="230" y="235" text-anchor="middle" class="label-small">Temperature Rise</text>
+  <text x="230" y="255" text-anchor="middle" class="label-small" fill="#666" font-weight="bold">~400 J</text>
+  <text x="230" y="275" text-anchor="middle" class="label-small">(90% of Q)</text>
+
+  <!-- Arrow from Q branch to Sensible Heat -->
+  <path d="M 180 155 Q 180 170 200 190" class="arrow"/>
+
+  <!-- U_STORED box (top-center) -->
+  <rect x="170" y="80" width="110" height="90" class="box"/>
+  <text x="225" y="105" text-anchor="middle" class="label">Stored Energy</text>
+  <text x="225" y="125" text-anchor="middle" class="label-small">U<tspan baseline-shift="sub">stored</tspan> = ½E·ε²·V</text>
+  <text x="225" y="145" text-anchor="middle" class="label-small" fill="#1E40AF" font-weight="bold">~38 J</text>
+
+  <!-- Arrow from Q to U_stored -->
+  <path d="M 160 120 L 170 125" class="arrow"/>
+
+  <!-- WORK box (right) -->
+  <rect x="420" y="80" width="120" height="120" class="energy-box-w"/>
+  <rect x="420" y="80" width="120" height="120" class="box"/>
+  <text x="480" y="110" text-anchor="middle" class="label">Mechanical Work</text>
+  <text x="480" y="130" text-anchor="middle" class="label-small">W = σ<tspan baseline-shift="sub">recovery</tspan>·Δε·V</text>
+  <text x="480" y="150" text-anchor="middle" class="label-small" fill="#E2570F" font-weight="bold">~12 J</text>
+  <text x="480" y="170" text-anchor="middle" class="label-small">(2-3% of Q)</text>
+
+  <!-- Arrow from U_stored + recovery to Work -->
+  <path d="M 280 120 L 420 120" class="arrow"/>
+  <text x="350" y="110" font-size="10" text-anchor="middle" fill="#E2570F" font-weight="bold">Release +</text>
+  <text x="350" y="123" font-size="10" text-anchor="middle" fill="#E2570F" font-weight="bold">Recovery Stress</text>
+
+  <!-- EFFICIENCY calculation -->
+  <rect x="280" y="240" width="260" height="100" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1.5" rx="4"/>
+  <text x="410" y="265" text-anchor="middle" class="label">Overall Thermal Efficiency</text>
+  <text x="410" y="290" text-anchor="middle" font-size="13" fill="#334155">
+    η = (W / Q) × 100% = (12 / 440) × 100%
+  </text>
+  <text x="410" y="315" text-anchor="middle" font-size="14" font-weight="bold" fill="#E2570F">
+    η ≈ 2.7% (typically 1–5%)
+  </text>
+  <text x="410" y="335" text-anchor="middle" font-size="10" fill="#666" font-style="italic">
+    Bulk sensible heat Q ≫ stored energy U<tspan baseline-shift="sub">stored</tspan>, so efficiency is low.
+  </text>
+
+  <!-- Biomedical note -->
+  <rect x="30" y="240" width="220" height="100" fill="#EBF8FF" stroke="#0369A1" stroke-width="1.5" rx="4"/>
+  <text x="140" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0369A1">Biomedical Advantage</text>
+  <text x="40" y="285" font-size="10" fill="#0369A1">
+    • Body heat (37°C) supplies ~40% of ΔT for free
+  </text>
+  <text x="40" y="305" font-size="10" fill="#0369A1">
+    • Trigger cost ≈ heating from 37°C to 45°C
+  </text>
+  <text x="40" y="325" font-size="10" fill="#0369A1">
+    • Low power consumption justifies low efficiency
+  </text>
+</svg>

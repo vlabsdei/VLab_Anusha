@@ -2,72 +2,174 @@
   "version": 2,
   "questions": [
     {
-      "question": "Q1. Which phase of a Shape Memory Alloy is stable at high temperatures and possesses a symmetric cubic crystal structure?",
+      "question": "Q1. What is the primary active material used in SMA-driven 4D printing?",
       "answers": {
-        "a": "Martensite",
-        "b": "Austenite",
-        "c": "Pearlite",
-        "d": "Bainite"
+        "a": "Polylactic acid (PLA)",
+        "b": "Near-equiatomic Nitinol (NiTi)",
+        "c": "Titanium carbide",
+        "d": "Silicone elastomer"
       },
       "explanations": {
-        "a": "Incorrect — Martensite is the low-temperature phase.",
-        "b": "Correct — Austenite is the symmetric cubic high-temperature phase.",
-        "c": "Incorrect — Pearlite is a steel microstructure, not an SMA phase.",
-        "d": "Incorrect — Bainite is a steel phase, not an SMA phase."
+        "a": "Incorrect — PLA is a thermo-responsive polymer, not an SMA.",
+        "b": "Correct — Nitinol exhibits large recoverable strains (up to 8%) and stresses of several hundred MPa, ideal for 4D actuation.",
+        "c": "Incorrect — Titanium carbide is a ceramic, not a shape memory alloy.",
+        "d": "Incorrect — Silicone is an elastomer without shape memory transformation."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q2. What does a 0.1 at% increase in Nickel content typically do to the Martensite Start temperature (M_s) of Nitinol?",
+      "question": "Q2. In the martensitic transformation, which phase is soft and easily reoriented by stress?",
       "answers": {
-        "a": "Increases M_s by ~10°C",
-        "b": "Decreases M_s by ~10°C",
-        "c": "Has no effect on M_s",
-        "d": "Increases M_s by ~100°C"
+        "a": "Martensite (B19')",
+        "b": "Austenite (B2)",
+        "c": "The gel phase",
+        "d": "The rubbery state"
       },
       "explanations": {
-        "a": "Incorrect — Extra nickel decreases the transformation temperatures.",
-        "b": "Correct — Nitinol is highly sensitive to composition, and extra nickel decreases M_s by ~100°C per 1 at% (or ~10°C per 0.1 at%).",
-        "c": "Incorrect — Composition is extremely critical for Nitinol.",
-        "d": "Incorrect — It decreases, not increases."
+        "a": "Correct — Martensite is the monoclinic low-temperature phase that detwins readily under stress.",
+        "b": "Incorrect — Austenite is the stiff, high-symmetry parent phase.",
+        "c": "Incorrect — SMAs do not have a gel phase.",
+        "d": "Incorrect — This term applies to polymers, not metallic SMAs."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q3. What does the DSC machine directly measure?",
+      "answers": {
+        "a": "The hardness of the material",
+        "b": "Electrical resistance",
+        "c": "Heat flow during a thermal scan",
+        "d": "Magnetic susceptibility"
+      },
+      "explanations": {
+        "a": "Incorrect — Hardness is measured by mechanical indentation tests.",
+        "b": "Incorrect — That is measured by a four-point probe or LCR meter.",
+        "c": "Correct — Differential Scanning Calorimetry records heat flow; the endo- and exothermic peaks locate the transformation temperatures.",
+        "d": "Incorrect — That is measured by a magnetometer."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. The Duerig empirical relation links M_s to which parameter?",
+      "answers": {
+        "a": "The wire diameter",
+        "b": "The atomic composition (at% Ni)",
+        "c": "The applied stress",
+        "d": "The cooling rate"
+      },
+      "explanations": {
+        "a": "Incorrect — M_s depends on alloy composition, not wire geometry.",
+        "b": "Correct — M_s = 1020 − 99.3 × (at%Ni − 40.91) °C; composition is the key control parameter.",
+        "c": "Incorrect — Stress affects the transformation but the baseline M_s is set by composition.",
+        "d": "Incorrect — The Duerig relation assumes quasi-equilibrium; kinetics do not enter."
       },
       "correctAnswer": "b",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q3. The Clausius-Clapeyron relation in SMAs describes the relationship between:",
+      "question": "Q5. In Shape Memory Effect (below A_f), what remains after unloading?",
       "answers": {
-        "a": "Current and temperature rise",
-        "b": "Applied stress and phase transformation temperatures",
-        "c": "Pre-strain and fatigue life",
-        "d": "Elastic modulus and density"
+        "a": "Fully elastic recovery",
+        "b": "A residual stress",
+        "c": "Plastic deformation",
+        "d": "A permanent set that is recovered only by heating"
       },
       "explanations": {
-        "a": "Incorrect — Joule heating governs the current-temperature rise.",
-        "b": "Correct — The Clausius-Clapeyron relation describes how phase transition stresses scale linearly with temperature.",
-        "c": "Incorrect — Coffin-Manson relation governs fatigue.",
-        "d": "Incorrect — These are basic material properties."
+        "a": "Incorrect — Below A_f the alloy is primarily martensitic and does not fully recover elastically.",
+        "b": "Incorrect — The permanent set is a geometric (strain) change, not a residual stress.",
+        "c": "Incorrect — Shape Memory is not plastic deformation; it is a phase-driven, reversible phenomenon.",
+        "d": "Correct — Martensite detwinns at constant stress; the permanent set persists until the wire is heated above A_f to reform austenite."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q6. What is the Superelastic effect?",
+      "answers": {
+        "a": "Stress-induced martensite formation and reversion on unloading at/above A_f",
+        "b": "A permanently deformed shape that recovers only on heating",
+        "c": "A rubber-like extension with no energy dissipation",
+        "d": "Enhanced elastic modulus from cold-working"
+      },
+      "explanations": {
+        "a": "Correct — At or above A_f, loading forms martensite reversibly; unloading reforms austenite, closing the stress-strain loop elastically.",
+        "b": "Incorrect — That describes the Shape Memory Effect.",
+        "c": "Incorrect — Superelasticity has a closed hysteresis loop with substantial energy dissipation.",
+        "d": "Incorrect — Superelasticity arises from the phase transformation, not work-hardening."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q7. In the resistive heating model (Sub-Calc C), what does the steady-state temperature T_ss represent?",
+      "answers": {
+        "a": "The peak temperature achieved during actuation",
+        "b": "The temperature where oxidation begins",
+        "c": "The asymptotic temperature at which Joule input equals convective loss",
+        "d": "The temperature of the surrounding air"
+      },
+      "explanations": {
+        "a": "Incorrect — T_ss may not be reached during the heating ramp.",
+        "b": "Incorrect — Oxidation warnings occur above ~150 °C, a separate limit.",
+        "c": "Correct — Setting dT/dt = 0 gives T_ss = T_amb + I^2R_A / (hA_surf); if T_ss ≤ A_f the wire never actuates.",
+        "d": "Incorrect — T_amb is the ambient temperature, not T_ss."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. The blocking force F_block is determined by which two parameters?",
+      "answers": {
+        "a": "The wire length and the applied current",
+        "b": "The ambient temperature and the resistivity",
+        "c": "The pre-strain and the wire diameter",
+        "d": "The recovery stress and the wire cross-sectional area"
+      },
+      "explanations": {
+        "a": "Incorrect — The blocking force is a mechanical property, independent of electrical drive.",
+        "b": "Incorrect — Blocking force is a material property unaffected by ambient conditions or resistivity.",
+        "c": "Incorrect — Pre-strain affects the stroke, not the blocking force directly.",
+        "d": "Correct — F_block = σ_recovery × A_wire; using σ_recovery ≈ 400 MPa and the identity 1 MPa × 1 mm^2 = 1 N."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q9. In the fatigue model, Functional Fatigue refers to:",
+      "answers": {
+        "a": "Crack initiation and propagation to fracture",
+        "b": "The gradual loss of recoverable strain from accumulated dislocations",
+        "c": "Oxidation and degradation of the wire surface",
+        "d": "The formation of twin variants"
+      },
+      "explanations": {
+        "a": "Incorrect — That is Structural Fatigue, governed by the Coffin-Manson law.",
+        "b": "Correct — Functional Fatigue is modelled as exponential decay: ε_rec = ε_applied × exp(−kN_ref), where k depends on strain amplitude.",
+        "c": "Incorrect — Oxidation is a material degradation mechanism, not the focus of the fatigue model.",
+        "d": "Incorrect — Twin variants form during the martensitic transformation, not a fatigue mode."
       },
       "correctAnswer": "b",
       "difficulty": "intermediate"
     },
     {
-      "question": "Q4. What is the crystallographic structure of Nitinol's low-temperature Martensite phase?",
+      "question": "Q10. If M_s = 40 °C and A_f = A_s + 20 °C with A_s = M_s + 30 °C, what is the thermal hysteresis A_f − M_s?",
       "answers": {
-        "a": "Body-centered cubic (BCC)",
-        "b": "Monoclinic (B19')",
-        "c": "Face-centered cubic (FCC)",
-        "d": "Hexagonal close-packed (HCP)"
+        "a": "50 °C",
+        "b": "30 °C",
+        "c": "20 °C",
+        "d": "60 °C"
       },
       "explanations": {
-        "a": "Incorrect — BCC is similar to the Austenite phase (B2 cubic).",
-        "b": "Correct — Martensite possesses a sheared monoclinic crystal lattice (B19').",
-        "c": "Incorrect — Nitinol does not form FCC in these phases.",
-        "d": "Incorrect — Nitinol does not form HCP in these phases."
+        "a": "Correct — A_s = 40 + 30 = 70 °C, A_f = 70 + 20 = 90 °C, so hysteresis = 90 − 40 = 50 °C.",
+        "b": "Incorrect — That is the M_s to A_s interval only.",
+        "c": "Incorrect — That is the A_s to A_f interval only.",
+        "d": "Incorrect — That would require a different offset structure."
       },
-      "correctAnswer": "b",
-      "difficulty": "advanced"
+      "correctAnswer": "a",
+      "difficulty": "beginner"
     }
   ]
 }

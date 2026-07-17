@@ -1,35 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
-  <rect width="640" height="440" fill="#ffffff"/>
-  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
-  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc B: NIR Photothermal Heating</text>
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">NIR nanorod heating: temperature rise &amp; activation threshold</text>
 
-  <!-- laser + hot spot -->
-  <text x="150" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">NIR laser heats nanoparticle spot</text>
-  <line x1="150" y1="82" x2="150" y2="150" stroke="#b91c1c" stroke-width="4"/>
-  <polygon points="142,150 158,150 150,165" fill="#b91c1c"/>
-  <rect x="55" y="165" width="190" height="55" rx="6" fill="#cbd5e1" stroke="#94a3b8"/>
-  <radialGradient id="hot6" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff4500"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
-  <ellipse cx="150" cy="192" rx="48" ry="20" fill="url(#hot6)"/>
-  <text x="150" y="196" fill="#7f1d1d" font-size="10" font-weight="700" text-anchor="middle">heated zone d</text>
-  <text x="55" y="240" fill="#64748b" font-size="10">d = thermal blur grows with exposure time</text>
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="70" y1="79" x2="560" y2="79"/>
+    <line x1="70" y1="130" x2="560" y2="130"/>
+    <line x1="70" y1="181" x2="560" y2="181"/>
+    <line x1="70" y1="232" x2="560" y2="232"/>
+    <line x1="70" y1="283" x2="560" y2="283"/>
+    <line x1="192" y1="40" x2="192" y2="300"/>
+    <line x1="315" y1="40" x2="315" y2="300"/>
+    <line x1="437" y1="40" x2="437" y2="300"/>
+  </g>
 
-  <!-- d vs power -->
-  <text x="470" y="74" fill="#0f172a" font-size="12" font-weight="700" text-anchor="middle">resolution d vs power</text>
-  <line x1="360" y1="84" x2="360" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
-  <line x1="360" y1="210" x2="618" y2="210" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="349" y="94" fill="#475569" font-size="10" text-anchor="end">d</text>
-  <text x="618" y="227" fill="#475569" font-size="10" text-anchor="end">P</text>
-  <rect x="360" y="175" width="258" height="35" fill="#d1fae5" opacity="0.6"/>
-  <text x="364" y="190" fill="#047857" font-size="8" font-weight="700">localised d &lt; 0.5 mm</text>
-  <path d="M368 92 Q420 150 500 178 Q560 195 614 200" fill="none" stroke="#8A1134" stroke-width="2.5"/>
-  <text x="430" y="120" fill="#475569" font-size="9">higher power &#8594; faster &#8594; smaller blur</text>
+  <!-- axes -->
+  <line x1="70" y1="40" x2="70" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <line x1="70" y1="300" x2="560" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <polygon points="70,34 66,44 74,44" fill="#334155"/>
+  <polygon points="566,300 556,296 556,304" fill="#334155"/>
 
-  <!-- equation panel -->
-  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
-  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
-  <text x="36" y="310" fill="#1e293b" font-size="14" font-weight="700">dT/dt = &#951;_abs I&#8320; A_particle / (m C_p)</text>
-  <text x="36" y="338" fill="#1e293b" font-size="14" font-weight="700">&#916;T = &#951;_abs P / (h_conv A_surface)</text>
-  <text x="36" y="366" fill="#1e293b" font-size="15" font-weight="700">d = 2&#8730;(D_th t_exp)  (spatial resolution / thermal blur)</text>
-  <text x="36" y="392" fill="#0f766e" font-size="12" font-weight="700">Trade-off: more power heats faster &#8594; shorter exposure &#8594; sharper (smaller d).</text>
-  <text x="36" y="412" fill="#475569" font-size="11" font-weight="700">NIR (808 nm) penetrates tissue; find min power for localised (d &lt; 0.5 mm) SMP activation.</text>
+  <!-- steady-state asymptote (ΔT_ss) -->
+  <line x1="70" y1="79" x2="560" y2="79" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <text x="556" y="73" text-anchor="end" font-size="11" fill="#475569">ΔT&#8339;&#8347; (steady state)</text>
+
+  <!-- activation threshold at +25°C -->
+  <line x1="70" y1="181" x2="560" y2="181" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="80" y="175" font-size="11" fill="#dc2626" font-weight="bold">ΔT<sub>req</sub> = 25&#176;C (activation)</text>
+
+  <!-- activation time vertical line -->
+  <line x1="220" y1="181" x2="220" y2="300" stroke="#E2570F" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <text x="225" y="292" font-size="11" fill="#E2570F" font-weight="bold">t<sub>act</sub></text>
+
+  <!-- heated zone size visualization at t_act -->
+  <rect x="200" y="320" width="40" height="15" fill="none" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="225" y="340" text-anchor="middle" font-size="10" fill="#E2570F">d = 2√(D<sub>th</sub>t<sub>act</sub>)</text>
+
+  <!-- temperature rise curve: ΔT(t) = ΔT_ss(1 - e^(-t/τ_H)) -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.8"
+    points="70,300 119,269.3 168,248.1 217,232.8 266,222.4 315,215.5 364,210.8 413,207.7 462,205.7 511,204.4 560,203.5"/>
+
+  <!-- tracker dot at activation crossing -->
+  <circle cx="220" cy="181" r="5.5" fill="#E2570F" stroke="#ffffff" stroke-width="1.6"/>
+
+  <!-- axis labels -->
+  <text x="315" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">Time (s)</text>
+  <text x="24" y="170" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155" transform="rotate(-90 24 170)">ΔT (°C)</text>
+
+  <!-- y-axis tick labels -->
+  <text x="64" y="304" text-anchor="end" font-size="10" fill="#475569">0</text>
+  <text x="64" y="253" text-anchor="end" font-size="10" fill="#475569">10</text>
+  <text x="64" y="202" text-anchor="end" font-size="10" fill="#475569">25</text>
+  <text x="64" y="83" text-anchor="end" font-size="10" fill="#475569">ΔT<sub>ss</sub></text>
+
+  <!-- formula and note -->
+  <text x="380" y="150" font-size="11" fill="#1E40AF" font-weight="bold">ΔT(t) = ΔT&#8339;&#8347;(1 &#8722; e<sup>&#8722;t/τ<sub>H</sub></sup>)</text>
+  <text x="380" y="166" font-size="10.5" fill="#475569">τ<sub>H</sub> = 15 s (thermal time constant)</text>
+  <text x="380" y="182" font-size="10.5" fill="#475569">Higher power &#8594; faster rise &#8594; sooner t<sub>act</sub> &#8594; tighter zone</text>
 </svg>

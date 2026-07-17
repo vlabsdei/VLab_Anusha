@@ -1,117 +1,97 @@
-# Theory: Non-Thermal 4D Actuation - Light & Magnetic Control
+# Theory: Non-Thermal 4D Actuation
 
-## 1. Beyond Heat: Remote, Precise, Biocompatible Actuation
-Thermal actuation is the most common 4D-printing stimulus, but many applications need actuation that is **remote**, **spatially precise**, or **biocompatible** in ways heat cannot provide. This experiment quantifies light-driven and magnetically-controlled actuation, connecting optics, materials science, and electronics.
-
-<p align="center"><img src="images/theory_overview.svg" alt="Overview of non-thermal 4D actuation" width="620"/></p>
-<p align="center"><em>Figure 1: Three remote stimuli - UV/Vis light, an NIR laser and a magnetic field - actuate one structure, with response times spanning milliseconds to minutes.</em></p>
+## 1. Introduction to Non-Thermal 4D Printing
+4D printing adds a time axis to additive manufacturing: a printed structure changes its shape or function after fabrication in response to an external stimulus. The most familiar route is thermal — heat a shape-memory polymer through its glass transition. But bulk heating is slow, hard to localise, and awkward inside the body. This experiment covers the *non-thermal* alternatives, where light and magnetic fields do the driving. Each brings its own physics and its own trade-offs: light can be aimed precisely but is limited by absorption and reaction kinetics, magnetic fields pass through tissue almost untouched and act nearly instantly, and near-infrared light splits the difference by converting to local heat only where nanoparticles absorb it.
 
 ---
 
-## 2. Azobenzene Photoisomerisation: trans -> cis - The Light-Driven Actuator Strip (Sub-Calc A)
-Azobenzene (AZO) molecules switch between an extended **trans** and a bent **cis** form under light. UV light (365 nm) drives trans -> cis; visible light (450 nm) reverses it. The light intensity decays with depth x according to the **Beer-Lambert law**:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">I(x) = I<sub>0</sub> &middot; e<sup>&minus;&epsilon;&middot;C&middot;x</sup></div>
-
-where &epsilon; is the molar absorptivity and C is the AZO concentration. The **photoisomerisation rate** is set by the absorbed photon flux:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">d[cis]/dt = &Phi; &middot; I<sub>abs</sub> / (N<sub>A</sub> &middot; h&nu;)</div>
-
-with quantum yield &Phi; &asymp; 0.20 for AZO and photon energy h&nu;. Integrating gives a first-order approach to the photostationary state, [cis](t) = [cis]<sub>pss</sub>(1 &minus; e<sup>&minus;k&middot;I&middot;t</sup>), so the time to reach a given conversion is **inversely proportional to intensity**:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">t<sub>90</sub> = ln(10) / (k &middot; I)</div>
-
-Doubling the intensity halves the conversion time. The bent cis isomer occupies less volume, producing a **photo-induced volume contraction**:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">&Delta;V/V = &beta;<sub>photo</sub> &middot; [cis]</div>
-
-<p align="center"><img src="images/subcalc_a.svg" alt="Azobenzene photoisomerisation" width="600"/></p>
-<p align="center"><em>Figure 2: UV light drives the extended trans isomer to the bent cis form (visible light reverses it); the volume change produces a heat-free, reversible photomechanical response.</em></p>
-
-This is the fundamental light-driven shape-change mechanism, and because the trans <-> cis switch needs no heat, it enables fast, reversible, room-temperature actuation.
+## 2. Stimuli, Kinetics, and Confinement
+Three ideas recur across the sub-calcs. First, **how far** a structure moves is set by an equilibrium — a photostationary state, a magnetic torque balance, or a steady temperature rise. Second, **how fast** it gets there is set by a kinetic time constant — a first-order rate, a viscous alignment time, or a thermal relaxation time. Third, **how local** the effect stays matters as much as its size: a heated zone that spreads beyond its target, or a coil field that demands runaway power at depth, defeats the purpose. The five sub-calcs each isolate one stimulus and quantify its equilibrium, its kinetics, and its practical limit.
 
 ---
 
-## 3. NIR Photothermal Actuation - The NIR Skin-Activated Implant (Sub-Calc B)
-Near-infrared (NIR, ~808 nm) light penetrates tissue far better than UV. Embedded NIR-absorbing nanoparticles (e.g. gold nanorods) convert the light to heat, locally triggering a shape-memory transition. The local **heating rate** is:
+## 3. The Light-Driven Actuator Strip (Sub-Calc A)
+An azobenzene dye printed into one layer of a bilayer strip isomerises from its extended *trans* form to its bent *cis* form under 365 nm UV light, contracting that layer and bending the strip toward the lamp. 450 nm visible light drives it back. How much light the dye actually captures follows the **Beer-Lambert law** through an optical depth &epsilon;Cx:
 
-<div align="center" style="font-size: 1.05em; font-weight: bold;">dT/dt = &eta;<sub>abs</sub> &middot; I<sub>0</sub> &middot; A<sub>particle</sub> / (m &middot; C<sub>p</sub>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">I<sub>abs</sub> = I<sub>0</sub> (1 - e<sup>-&epsilon;Cx</sup>)</div>
 
-and the **steady-state temperature rise** balances absorbed power against convective loss:
+with molar absorptivity &epsilon; = 1250, path length x = 0.1 cm, and dye loading C in mmol/L. The dye then approaches its **photostationary state (PSS)** by first-order photokinetics:
 
-<div align="center" style="font-size: 1.05em; font-weight: bold;">&Delta;T = &eta;<sub>abs</sub> &middot; P<sub>laser</sub> / (h<sub>conv</sub> &middot; A<sub>surface</sub>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">[cis](t) = [cis]<sub>PSS</sub> (1 - e<sup>-kt</sup>) &nbsp;&nbsp; k = k<sub>0</sub> I<sub>0</sub> (f<sub>abs</sub>(C) / f<sub>abs</sub>(8))</div>
 
-Heat then diffuses sideways, blurring the activated region. The **spatial resolution** (thermal blur) grows with exposure time:
+where [cis]<sub>PSS</sub> = 0.85 under 365 nm and 0.12 under 450 nm, f<sub>abs</sub> is the absorbed fraction, and k<sub>0</sub> = 2.709&times;10<sup>-3</sup>. The actuation time — reaching 90% of full switching — and the bend angle are:
 
-<div align="center" style="font-size: 1.1em; font-weight: bold;">d = 2&middot;&radic;(D<sub>th</sub> &middot; t<sub>exp</sub>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">t<sub>90</sub> = ln(10) / k &nbsp;(&prop; 1/I<sub>0</sub>) &nbsp;&nbsp;|&nbsp;&nbsp; &theta; &asymp; 70&deg; &middot; ([cis] / 0.85)</div>
 
-<p align="center"><img src="images/subcalc_b.svg" alt="NIR photothermal heating" width="600"/></p>
-<p align="center"><em>Figure 3: NIR-absorbing nanoparticles convert light to heat at a spot; higher power reaches the activation temperature faster, shrinking the thermal-blur radius d.</em></p>
+Brighter light bends the strip faster; the bend saturates at about 70&deg; at full cis loading.
 
-There is a clear **trade-off**: higher laser power heats the spot to the activation temperature faster, so a shorter exposure is needed and the thermal blur d is smaller. To achieve localised activation (d &lt; 0.5 mm) the laser power must exceed a minimum value, while &Delta;T must still clear the SMP activation threshold (&Delta;T<sub>required</sub> &asymp; 25&deg;C from Experiment 1).
-
----
-
-## 4. Magnetic Torque on Embedded Particles - The Magnetic Catheter Tip / Micro-Gripper (Sub-Calc C)
-A composite filled with magnetic particles (Fe<sub>3</sub>O<sub>4</sub> or NdFeB) responds to an external field, enabling **wireless** actuation. A particle of magnetic moment m in a field B feels a **torque**:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">&tau; = m &middot; B &middot; sin(&theta;) , &nbsp; m = M<sub>s</sub> &middot; V<sub>particle</sub></div>
-
-This torque bends a magnetic-composite beam. For small angles the tip **deflection** is:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">&delta; = &tau; &middot; L&sup2; / (2 &middot; E &middot; I)</div>
-
-The **critical field** to bend the beam through 45&deg; follows from setting the magnetic moment against the elastic restoring moment:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">B<sub>crit</sub> = E &middot; I &middot; &pi; / (4 &middot; M<sub>s</sub> &middot; V &middot; L&sup2;)</div>
-
-<p align="center"><img src="images/subcalc_c.svg" alt="Magnetic torque on embedded particles" width="600"/></p>
-<p align="center"><em>Figure 4: An external field torques the embedded dipoles and bends the composite beam in milliseconds; the critical field falls as the particle volume fraction rises.</em></p>
-
-Because the effective magnetisation scales with particle volume fraction, **B<sub>crit</sub> scales inversely with the particle volume fraction**: a more highly loaded composite bends in a weaker field.
+<p align="center"><img src="images/subcalc_a.svg" alt="Cis fraction and bend angle rising toward the photostationary state with the t90 actuation time marked" width="620"/></p>
+<p align="center"><em>Figure 1: Under UV the cis fraction climbs first-order toward its PSS value and the strip bends with it; t<sub>90</sub> = ln(10)/k marks when it reaches 90% of full bend, and it shrinks as brightness rises (Sub-Calc A).</em></p>
 
 ---
 
-## 5. Wireless Remote Actuation: Coil Design - The Wireless Coil Driving an In-Body Robot (Sub-Calc D)
-To actuate a sub-dermal device, an external coil must produce B<sub>crit</sub> at a target depth. The on-axis field of a coil of n turns, radius R, carrying current I, at distance r is:
+## 4. The NIR Skin-Activated Implant (Sub-Calc B)
+Gold nanorods tuned to 808 nm absorb near-infrared light — a wavelength that passes through skin with little attenuation — and convert it to local heat, switching a thermoresponsive implant on without wires or surgery. The steady temperature rise scales with laser power P and nanorod loading, and heating follows a **Newtonian (lumped-capacitance) approach** to that steady state:
 
-<div align="center" style="font-size: 1.05em; font-weight: bold;">B = &mu;<sub>0</sub> &middot; n &middot; I &middot; R&sup2; / (2(R&sup2; + r&sup2;)<sup>3/2</sup>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">&Delta;T<sub>ss</sub> = 560 &middot; P &middot; load &nbsp;&nbsp;|&nbsp;&nbsp; &Delta;T(t) = &Delta;T<sub>ss</sub> (1 - e<sup>-t/&tau;<sub>H</sub></sup>)</div>
 
-Inverting for the current needed to reach B<sub>crit</sub> and using P = I&sup2;R<sub>coil</sub> gives the **power budget**:
+with thermal time constant &tau;<sub>H</sub> = 15 s. The implant switches on once the rise clears the activation threshold &Delta;T<sub>req</sub> = 25 &deg;C, giving an activation time:
 
-<div align="center" style="font-size: 1.0em; font-weight: bold;">I = B<sub>crit</sub> &middot; 2(R&sup2;+r&sup2;)<sup>3/2</sup> / (&mu;<sub>0</sub> n R&sup2;) , &nbsp; P<sub>coil</sub> = I&sup2; R<sub>coil</sub></div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">t<sub>act</sub> = -&tau;<sub>H</sub> ln(1 - &Delta;T<sub>req</sub> / &Delta;T<sub>ss</sub>) &nbsp;&nbsp; (only if &Delta;T<sub>ss</sub> &gt; &Delta;T<sub>req</sub>)</div>
 
-<p align="center"><img src="images/subcalc_d.svg" alt="Wireless coil design" width="600"/></p>
-<p align="center"><em>Figure 5: An external coil must deliver B<sub>crit</sub> at the implant depth; the required current and power climb steeply with depth, while tissue further attenuates the field.</em></p>
+Heat also spreads while it activates. Treating conduction as diffusion with diffusivity D<sub>th</sub> = 5.3&times;10<sup>-3</sup> mm&sup2;/s, the heated-zone size at activation is:
 
-The field is further attenuated through tissue, B<sub>tissue</sub> = B<sub>surface</sub>&middot;e<sup>&minus;r/&delta;</sup> with &delta; &asymp; 50 mm. Because the required power rises steeply with depth, beyond a **crossover depth** a battery-powered implant (milliwatts) becomes more practical than wireless coil drive (watts).
+<div align="center" style="font-size: 1.1em; font-weight: bold;">d = 2 &radic;(D<sub>th</sub> t<sub>act</sub>)</div>
 
----
+The design tension is real: too little power never crosses +25 &deg;C, but slow heating lets the zone diffuse wide. Because faster heating reaches threshold sooner, more power actually gives a *tighter* spot — the sub-calc reports the minimum power P<sub>min</sub> that keeps d below 0.5 mm.
 
-## 6. Actuation Speed Comparison - Pick the Right Trigger for the Job (Sub-Calc E)
-The three stimuli differ by orders of magnitude in response time:
-
-<div align="center" style="font-size: 1.0em; font-weight: bold;">t<sub>mag</sub> &asymp; &eta;<sub>medium</sub>/(M<sub>s</sub>B) [ms] &nbsp;&laquo;&nbsp; t<sub>photo</sub> &asymp; 1/(&Phi; I &sigma;<sub>abs</sub>) [s] &nbsp;&laquo;&nbsp; t<sub>thermal</sub> [min]</div>
-
-<p align="center"><img src="images/subcalc_e.svg" alt="Actuation speed comparison" width="600"/></p>
-<p align="center"><em>Figure 6: The three stimuli differ by orders of magnitude in response time, which maps each to its niche: magnetic to surgical robots, photo to microfluidics, thermal to implants.</em></p>
-
-Magnetic actuation is the **fastest** (milliseconds), photo is **intermediate** (seconds), and thermal is the **slowest** (minutes). This maps each stimulus to its natural application: **magnetic -> surgical robots**, **photo -> microfluidics**, **thermal -> implants**. This comparison table is the single most useful design-decision guide in the experiment.
+<p align="center"><img src="images/subcalc_b.svg" alt="Newtonian temperature-rise curve crossing the +25 C activation threshold with heated-zone growth" width="620"/></p>
+<p align="center"><em>Figure 2: The nanorod spot heats toward &Delta;T<sub>ss</sub>; activation occurs where the curve crosses +25 &deg;C, and the heated-zone size d = 2&radic;(D<sub>th</sub>t<sub>act</sub>) sets whether the trigger stays local (Sub-Calc B).</em></p>
 
 ---
 
-## 7. Contradictions and Limitations
+## 5. The Magnetic Micro-Gripper / Catheter Tip (Sub-Calc C)
+Ferromagnetic particles printed into a soft tip carry a net moment m that an external field B tries to align, producing a **magnetic torque** that bends the tip:
 
-<p align="center"><img src="images/theory_limits.svg" alt="Model validity windows and limitations" width="620"/></p>
-<p align="center"><em>Figure 7: Validity windows - Beer-Lambert without scattering, dispersed vs agglomerated particles, and tissue-specific penetration depth.</em></p>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">&tau; = m &times; B = m B sin&theta; &nbsp;&nbsp; m = M<sub>s</sub> V<sub>particle</sub></div>
 
-**Contradiction 1 - Beer-Lambert ignores scattering.** Sub-Calc A uses the Beer-Lambert law, which assumes a purely **absorbing** medium. Real 4D-printed composites contain particles and pigments that **scatter** light, so the actual penetration depth is 2-5x shorter than predicted in heavily pigmented resins. Beer-Lambert is accurate only for transparent resins with low AZO loading (C &lt; 0.01 mol/L); filled composites need a modified law with a scattering term.
+with saturation magnetisation M<sub>s</sub> = 4.8&times;10<sup>5</sup> A/m (magnetite, Fe<sub>3</sub>O<sub>4</sub>) and effective moment density M<sub>eff</sub> = M<sub>s</sub>&phi;/100 for a volume fraction &phi; in vol%. In the linear regime the tip angle grows with both loading and field, and the arc deflection of a beam of length L follows from that angle:
 
-**Contradiction 2 - magnetic particle agglomeration.** Sub-Calc C assumes uniformly dispersed, non-interacting particles. In reality, ferromagnetic particles (Fe<sub>3</sub>O<sub>4</sub> &gt; 30 nm) **agglomerate** through dipole-dipole interactions, forming clusters with larger effective volume but lower surface area, which rotate less freely in a viscous matrix and so deliver less torque per gram. This is why **superparamagnetic** nanoparticles (&lt; 20 nm) - which do not agglomerate below their blocking temperature - are universally preferred.
+<div align="center" style="font-size: 1.1em; font-weight: bold;">&theta; = min(90&deg;, k<sub>m</sub> &phi; B) &nbsp;&nbsp;|&nbsp;&nbsp; &delta; = L (1 - cos&theta;) / &theta;</div>
 
-**Contradiction 3 - tissue penetration depth is tissue-specific.** Sub-Calc D uses &delta; &asymp; 50 mm, but the electromagnetic penetration depth is frequency- and tissue-dependent (at 50 Hz, &delta; &asymp; 60 mm in muscle but only ~20 mm in bone). For deep implants (&gt; 100 mm) the required coil power rises dramatically, so the student must identify the **crossover depth** beyond which a battery-powered implant is the better choice.
+with k<sub>m</sub> = 0.18 deg/(vol%&middot;mT) and L = 10 mm. The field needed to reach a target angle is the **critical field**, which falls inversely with particle content:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">B<sub>crit</sub> = &theta;<sub>target</sub> / (k<sub>m</sub> &phi;) &nbsp;&nbsp; (&prop; 1/&phi;)</div>
+
+So printing in more particles lets a gentler, safer external magnet do the steering — and because the torque is magnetic, it acts in milliseconds and passes straight through tissue.
+
+<p align="center"><img src="images/subcalc_c.svg" alt="Free-body sketch of a magnetically loaded tip bending under field torque with the critical-field relation" width="620"/></p>
+<p align="center"><em>Figure 3: The field-aligned moment m generates a torque &tau; = mB&nbsp;sin&theta; that curls the tip; the field to steer a set angle scales as B<sub>crit</sub> &prop; 1/&phi;, so heavier particle loading needs a weaker magnet (Sub-Calc C).</em></p>
 
 ---
 
-## 8. Relevance
-Non-thermal actuation is the research frontier of 4D printing. The wireless coil design uniquely links materials science to electrical circuit design, the nanoparticle-agglomeration effect explains why superparamagnetic particles dominate, and the actuation-speed comparison is the most practically useful single output of the entire lab set.
+## 6. The Wireless Coil Driving an In-Body Robot (Sub-Calc D)
+An external drive coil must deliver a working field to a device implanted at depth r. The **on-axis field** of a coil of n turns and radius R carrying current I is:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">B = &mu;<sub>0</sub> n I R&sup2; / [2 (R&sup2; + r&sup2;)<sup>3/2</sup>]</div>
+
+Far from the coil this falls off as 1/r&sup3;. Crucially, biological tissue has relative magnetic permeability &approx; 1, so unlike light or RF power it does *not* absorb a magnetostatic field — the field reaching the device equals the coil's geometric field, with no extra exponential decay. Inverting for the current needed to reach the working field B<sub>crit</sub> = 50 mT, and the resistive power that current dissipates in the winding:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">I<sub>req</sub> = B<sub>crit</sub> &middot; 2 (R&sup2; + r&sup2;)<sup>3/2</sup> / (&mu;<sub>0</sub> n R&sup2;) &nbsp;&nbsp;|&nbsp;&nbsp; P = I<sub>req</sub><sup>2</sup> R<sub>coil</sub>, &nbsp; R<sub>coil</sub> &prop; n</div>
+
+Because the required field is fixed but the geometric coupling collapses with depth, the coil power climbs steeply. Past the **crossover depth**, where P exceeds a practical wireless budget of 300 W, a milliwatt-scale on-board battery becomes the sensible choice.
+
+<p align="center"><img src="images/subcalc_d.svg" alt="Coil power rising steeply with implant depth crossing the wireless power budget" width="620"/></p>
+<p align="center"><em>Figure 4: The on-axis field falls as 1/r&sup3; through magnetically-transparent tissue, so the current and power to hold B<sub>crit</sub> rise sharply with depth; beyond the crossover the coil exceeds the 300 W budget and a battery wins (Sub-Calc D).</em></p>
+
+---
+
+## 7. Picking the Right Trigger (Sub-Calc E)
+The three stimuli live in completely different time regimes, each set by its own rate-limiting physics. Magnetic alignment is viscosity-limited, photoswitching is reaction-kinetics-limited, and thermal actuation is diffusion-limited:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">t<sub>mag</sub> &asymp; &eta; / (M<sub>s</sub> B) = 0.6 / B &nbsp;|&nbsp; t<sub>photo</sub> &asymp; 1 / (&Phi; I &sigma;) = 850 / I &nbsp;|&nbsp; t<sub>therm</sub> = &tau;<sub>thermal</sub></div>
+
+(B in mT, I in mW/cm&sup2;, times in seconds). Across typical settings the magnetic strip snaps in milliseconds, the light-driven strip in seconds, and the heat-driven strip in minutes — spanning roughly six decades. The two ratios t<sub>photo</sub>/t<sub>mag</sub> and t<sub>therm</sub>/t<sub>mag</sub> quantify the gap. There is no single best trigger; the right one is the one whose speed matches the job — magnetic for fast surgical micro-robots, light for precisely-addressed microfluidics, and heat for simple, slow implants.
+
+<p align="center"><img src="images/subcalc_e.svg" alt="Log-scale response-time comparison of magnetic, photo, and thermal triggers mapped to applications" width="620"/></p>
+<p align="center"><em>Figure 5: On a log time axis the three triggers separate cleanly — magnetic (ms), photo (s), thermal (min) — and each maps to the application whose required response speed it fits (Sub-Calc E).</em></p>

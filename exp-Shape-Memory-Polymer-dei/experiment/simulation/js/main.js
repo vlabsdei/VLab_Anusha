@@ -1,6 +1,43 @@
 /* global THREE */
 // Combined simulator script for Exp 1
 
+/* ---- LabGate: gate the whole experiment behind a Start click ---- */
+window.LabGate = (function () {
+  let armed = false;
+  function disableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = true; });
+  }
+  function enableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = false; });
+  }
+  // startFn = the deferred init sequence for the active sub-calc module.
+  function arm(startFn) {
+    if (armed) return; armed = true;
+    const host = document.getElementById('viewport3D')
+              || document.querySelector('.sim-viewport-fluid');
+    disableControls();
+    const ov = document.createElement('div');
+    ov.className = 'labgate';
+    ov.innerHTML =
+      '<div class="labgate__panel">' +
+      '<div class="labgate__title">Experiment idle</div>' +
+      '<div class="labgate__sub">Set parameters, then start the simulation.</div>' +
+      '<button type="button" class="labgate__btn">Start Experiment</button>' +
+      '</div>';
+    const anchor = host.closest('.sim-viewport-fluid > div') || host;
+    anchor.style.position = anchor.style.position || 'relative';
+    anchor.appendChild(ov);
+    ov.querySelector('.labgate__btn').addEventListener('click', () => {
+      ov.remove();
+      enableControls();
+      startFn();
+    });
+  }
+  return { arm: arm };
+})();
+
 // ============================================================
 // SCRIPT_A.JS (Page Check: document.getElementById('plotCanvasMain'))
 // ============================================================
@@ -52,6 +89,7 @@
     let currentMaterial = 'PU';
     let Tg = materials.PU.Tg;
     let currentT = Tg - 20;
+    let targetT = Tg - 20;
     let isAnimating = false;
     let animationFrameId = null;
     let time = 0.0;
@@ -945,33 +983,36 @@
         valRate.innerText = inputRate.value + " °C/min";
     });
     
-    // Animation Timeline
+    // Animation Timeline — ramps from the glassy baseline toward the
+    // Test Temperature slider's chosen target, at the Heating Rate slider's pace.
     function animateTimeline() {
-        const tMax = Tg + 40;
         const rate = parseFloat(inputRate.value);
         // heating rate scaled down to frame rate step
         const dt = (rate * 0.06);
-    
-        currentT += dt;
-        if (currentT >= tMax) {
-            currentT = tMax;
+        const direction = targetT >= currentT ? 1 : -1;
+
+        currentT += dt * direction;
+        if ((direction > 0 && currentT >= targetT) || (direction < 0 && currentT <= targetT)) {
+            currentT = targetT;
             stopAnimation();
             const btnNext = document.getElementById('btnNextCalc');
             if (btnNext) btnNext.style.display = 'block';
         }
-    
+
         updateUI();
-    
+
         if (isAnimating) {
             animationFrameId = requestAnimationFrame(animateTimeline);
         }
     }
-    
+
     function startAnimation() {
         isAnimating = true;
         btnRun.innerText = "Pause Cycle";
         btnRun.style.background = "#475569";
-        currentT = Tg - 20; // reset to beginning
+        targetT = parseFloat(inputTemp.value); // Test Temperature slider now drives the run's endpoint
+        currentT = Tg - 20; // ramp begins at the glassy baseline every cycle
+        if (currentT === targetT) { updateUI(); stopAnimation(); return; }
         animateTimeline();
     }
     
@@ -1003,10 +1044,12 @@
     }
     
     // Initialize on Load
-    init3D();
-    handleMaterialChange('PU');
-    renderScene();
-    updateBioTable();
+    LabGate.arm(function () {
+        init3D();
+        handleMaterialChange('PU');
+        renderScene();
+        updateBioTable();
+    });
 })();
 
 // ============================================================
@@ -1695,15 +1738,17 @@
     
         // Highlight preset Tg+30 by default
         setActivePresetStyle(presetTg30);
-    
+
         // Initialize 3D scene & graphics
         init3D();
         renderScene();
         updateUI();
     }
-    
+
     // Load initialization
-    initializeState();
+    LabGate.arm(function () {
+        initializeState();
+    });
 })();
 
 // ============================================================
@@ -2383,15 +2428,17 @@
         recTemp.value = Tg + 30; // default preset
     
         strain = eps_u;
-    
+
         setActiveScenarioStyle('scenarioFree');
         init3D();
         renderScene();
         updateUI();
     }
-    
+
     // Load initialization
-    initializeState();
+    LabGate.arm(function () {
+        initializeState();
+    });
 })();
 
 // ============================================================
@@ -2992,14 +3039,16 @@
         // Determine active morphology
         const checkedMorph = document.querySelector('input[name="morphology"]:checked');
         currentMorphology = checkedMorph ? checkedMorph.value : 'immiscible';
-    
+
         init3D();
         renderScene();
         updateUI();
     }
-    
+
     // Load initialization
-    initializeState();
+    LabGate.arm(function () {
+        initializeState();
+    });
 })();
 
 // ============================================================
@@ -3334,6 +3383,8 @@
         renderScene();
         updateUI();
     }
-    
-    initializeState();
+
+    LabGate.arm(function () {
+        initializeState();
+    });
 })();

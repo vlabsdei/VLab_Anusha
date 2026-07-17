@@ -1,8 +1,7 @@
 ### Aim of the Experiment
-To investigate and quantify the thermomechanical cycle of Shape Memory Polymers (SMPs) across five distinct viscoelastic and thermodynamic phases:
-1. **Glass Transition Kinetics:** Characterize the glass transition temperature (T<sub>g</sub>) and compute the viscoelastic molecular relaxation shift factor (log(a<sub>T</sub>)) using the WLF equation.
-2. **Viscoelastic Programming:** Analyze the loading strain, creep deformation, and evaluate the Strain Fixity Ratio (R<sub>f</sub>) as a function of programming temperature.
-3. **Shape Recovery & Opposing Stress:** Measure the kinetics of free and constrained shape recovery, calculating the Shape Recovery Ratio (R<sub>r</sub>), blocking recovery stress, and 95% relaxation timescale (t<sub>95</sub>).
-4. **Multi-Shape Memory Copolymers:** Compare the multi-stage recovery profiles of copolymer blends under phase-separated (immiscible) and miscible morphology modes.
-5. **Thermodynamic Efficiency:** Calculate the stored elastic energy, thermal heat input, mechanical work output, and determine the thermodynamic actuation efficiency of a shape memory polymer muscle.
-
+To trace a shape memory polymer through its complete thermomechanical cycle and quantify the viscoelastic, kinetic, and thermodynamic quantities that govern each stage across five sub-calculators:
+1. **Glass Transition & WLF Shift:** Locate the glass transition temperature (T<sub>g</sub>) of a chosen SMP, and evaluate the molecular relaxation shift factor log(a<sub>T</sub>) and the viscosity ratio a<sub>T</sub> from the Williams-Landel-Ferry equation as the sample is heated.
+2. **Strain Fixity & Programming:** Load the rubbery polymer under an applied stress &sigma;, cool it below T<sub>g</sub>, and determine the loading strain &epsilon;<sub>load</sub>, the frozen strain &epsilon;<sub>u</sub>, and the strain fixity ratio R<sub>f</sub> as it depends on how far above T<sub>g</sub> the programming was done.
+3. **Shape Recovery Kinetics:** Reheat the programmed specimen and measure the relaxation time &tau;(T), the shape recovery ratio R<sub>r</sub>, the blocking recovery stress under a constraint, and the time to reach 95% recovery (t<sub>95</sub>) for both free and constrained cases.
+4. **Multi-Shape Memory Blends:** Compare a phase-separated (immiscible) PU/PMMA blend that carries two transitions (T<sub>g1</sub>, T<sub>g2</sub>) against a miscible blend whose single T<sub>g,blend</sub> follows the Fox equation, and read off the intermediate strain &epsilon;<sub>intermediate</sub>.
+5. **Actuation Energy & Efficiency:** Size an SMP muscle and compute the stored elastic energy U<sub>stored</sub>, the trigger heat Q, the mechanical work output W, and the overall thermal-to-mechanical efficiency &eta;.

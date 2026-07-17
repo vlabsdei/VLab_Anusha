@@ -1,72 +1,67 @@
-# Procedure: Shape Memory Alloys Virtual Laboratory
+# Procedure: Shape Memory Alloy Instrument Lab
 
-Welcome to the Shape Memory Alloys (SMAs) Virtual Laboratory. This lab guides you through phase transformations, superelastic mechanical behavior, electro-thermal Joule heating, actuator sizing, and fatigue life evaluation of Nitinol (NiTi) wires. Follow the procedures below for each sub-calculation.
-
----
-
-## Sub-Calc A: Martensite Phase Transformation & Temperatures
-**Objective:** Characterize composition-dependent phase transition temperatures and martensite fraction transformation kinetics.
-
-1. **Adjust Composition:** Adjust the **Nickel Content (at%)** slider (range: 50.5–51.5 at%). Observe how small shifts in composition change the transformation start temperature (M_s).
-2. **Observe Transformations:** Note the calculated phase transformation temperatures (M_s, M_f, A_s, A_f) and the hysteresis temperature window (A_f - M_s).
-3. **Execute Cycle:** Click **Initiate Thermal Cycle** to heat the specimen.
-4. **Observe Phase Fraction:** 
-   * In the 3D viewport, watch the Nitinol wire transition from a low-temperature martensite phase (monoclinic lattice, blue color) to the high-temperature austenite phase (cubic lattice, red color).
-   * Review the cosine transformation curve plotting Martensite Phase Fraction (x_M) vs Temperature.
-5. **Record Recoverable Strain:** Observe the calculated recoverable strain (e_SMA) at three temperatures during recovery.
-6. **Advance:** Click **Next Experiment ->** at the bottom right.
+Welcome to the Shape Memory Alloys bench of the 4D Printing Virtual Laboratory. Each sub-calculator is a working lab instrument for Nitinol (NiTi). Set the parameters, click **Start Experiment** on the viewport to arm the rig, then run the cycle. The five stations are worked in order below.
 
 ---
 
-## Sub-Calc B: Stress-Strain Behavior: SME vs Superelasticity
-**Objective:** Compare the mechanical stress-strain loop of Nitinol under Shape Memory and Superelasticity regimes.
+## Sub-Calc A: DSC Machine (Differential Scanning Calorimetry)
+**Objective:** Read the four transformation temperatures off the heat-flow trace and watch the martensite fraction x<sub>M</sub> collapse as the Nitinol wire recovers its printed shape.
 
-1. **Set Test Temperature:** Adjust the **Test Temperature (T) relative to A_f** slider.
-2. **Select Regime:**
-   * **Below A_f (T < A_f):** Activates the Shape Memory Effect (SME) regime.
-   * **Above A_f (T ≥ A_f):** Activates the Superelastic (SE) regime.
-3. **Run Mechanical Test:** Click **Run Stress-Strain Test** to load the specimen to 8% strain and then unload it.
-4. **Observe Hysteresis:**
-   * Watch the UTM tensile test animation.
-   * Below A_f, notice the permanent deformation (detwinning set) remaining after unloading.
-   * Above A_f, watch the closed superelastic loop, showing full elastic strain recovery due to stress-induced martensite (SIM) transformation.
-5. **Evaluate Damping:** Compare the calculated hysteresis loop energy dissipation (W_hysteresis) and damping capacity (Q<sup>-1</sup>) to steel and rubber references.
-6. **Advance:** Click **Next Experiment ->**.
+1. **Arm the stage:** Click **Start Experiment** on the 3D viewport to release the controls.
+2. **Set composition:** Drag the **Nickel Content (at%)** slider (50.5-51.5 at%). This drives the Duerig formula for M<sub>s</sub>, so every transformation temperature shifts with it.
+3. **Pick a soak temperature:** Set the **Test Temperature (&deg;C)** slider anywhere from &minus;40 to 100 &deg;C.
+4. **Run the scan:** Click **Initiate Thermal Cycle**. The stage ramps from &minus;20 &deg;C up to your target while the heater platen and coil grooves glow.
+5. **Read the trace:** The rust curve is the endothermic heating scan, the navy curve the exothermic cooling scan, and the shaded band marks the hysteresis window. The amber marker rides the active temperature.
+6. **Record results:** Note M<sub>s</sub>, M<sub>f</sub>, A<sub>s</sub>, A<sub>f</sub>, the hysteresis A<sub>f</sub> &minus; M<sub>s</sub>, the phase fractions x<sub>M</sub> / x<sub>A</sub>, and the recoverable strain at A<sub>s</sub>+5/10/15 &deg;C.
+7. **Advance** to the UTM station.
 
 ---
 
-## Sub-Calc C: Joule Heating Actuation: Current & Activation Time
-**Objective:** Solve the electro-thermal ODE to determine wire heating response, steady-state temperatures, and activation time (t_act).
+## Sub-Calc B: Universal Testing Machine (UTM)
+**Objective:** Pull a Nitinol dog-bone coupon and compare the shape-memory-effect loop (cold) against the superelastic loop (hot), reading off plateau stress, dissipated work, and damping.
 
-1. **Set Actuator Parameters:** Adjust the **Wire Diameter (μm)** slider (range: 100–500 μm) and the **Applied Current (I) (A)** slider.
-2. **Run Actuation:** Click **Run Electrical Actuation**.
-3. **Observe Temperature Rise:**
-   * The 3D viewport shows the SMA wire heating up and glowing as its temperature rises.
-   * The live plot tracks Temperature vs Time, illustrating the exponential curve heading to steady state.
-4. **Analyze Output:** Record the activation time (t_act) required to reach A_f and the steady-state temperature.
-5. **Check Current Limits:** Varies the current and wire diameter to find the minimum current required for activation and the maximum current to stay safely below 150°C (oxidation limit).
-6. **Advance:** Click **Next Experiment ->**.
-
----
-
-## Sub-Calc D: SMA Wire Stroke & Blocking Force
-**Objective:** Size a Nitinol wire actuator to meet stroke and force requirements for a soft robotic gripper.
-
-1. **Set Sizing Parameters:** Adjust the **Wire Length (mm)**, **Wire Diameter (μm)**, and **Applied Pre-strain (%)** sliders.
-2. **Initiate Actuation:** Click **Execute Actuator Sizing**.
-3. **Observe Gripper Motion:** The 3D viewport shows the SMA wire contract under Joule heating, pulling the mechanical arm to close/deploy a robotic gripper finger.
-4. **Evaluate Sizing:** Check the computed **Actuator Stroke (d)** and **Blocking Force (F_block)**.
-5. **Analyze Actuator Density:** Note the mechanical work output (W) and specific work (w_sp). Compare the energy density to hydraulic, pneumatic, and shape memory polymer muscles.
-6. **Advance:** Click **Next Experiment ->**.
+1. **Start Experiment** to arm the crosshead.
+2. **Set the test temperature:** Use the **Test Temp relative to A<sub>f</sub> (T &minus; A<sub>f</sub>) (&deg;C)** slider (&minus;20 to +40). Negative values put the specimen below A<sub>f</sub> (Shape Memory Effect); zero or positive gives Superelasticity.
+3. **Set the strain limit:** Drag **Applied Maximum Strain (%)** between 2 and 8 %.
+4. **Run the test:** Click **Run Stress-Strain Test**. The crosshead loads the coupon to the strain limit, then unloads.
+5. **Interpret the loop:** Below A<sub>f</sub> the specimen detwins and keeps a permanent set on unloading; above A<sub>f</sub> the stress-induced transformation closes the loop and the strain recovers fully.
+6. **Record:** Operating regime, plateau stress &sigma;<sub>AM</sub>, max stress reached, energy dissipated W<sub>hyst</sub>, and the damping capacity Q<sup>&minus;1</sup> versus steel and rubber.
+7. **Advance** to the bench supply.
 
 ---
 
-## Sub-Calc E: Fatigue Life & Cycling Stability
-**Objective:** Predict structural fatigue life using the Coffin-Manson relation and analyze functional strain degradation over cycling.
+## Sub-Calc C: Bench Power Supply & Thermocouple
+**Objective:** Joule-heat a clamped Nitinol wire with a controlled current and measure how fast, and how hot, it drives the austenite transformation.
 
-1. **Set Strain Amplitude:** Adjust the **Applied Strain Amplitude (%)** slider (range: 2% to 8%).
-2. **Run Fatigue Cycle:** Click **Initiate Fatigue Cycling**.
-3. **Analyze Life Bounds:**
-   * The log-log scale plot verifies the Coffin-Manson fatigue relationship, illustrating the inverse power-law slope of -2.
-   * Watch the cycle counter advance to the fatigue limit and check the degradation curve.
-4. **Observe Degradation:** Note the calculated structural fatigue life (N_cycles) and the remaining recoverable strain (e_recoverable) after 10,000 cycles.
+1. **Start Experiment** to arm the supply.
+2. **Choose the wire:** Set **Wire Diameter (&micro;m)** (100-500). Thinner wire has more resistance and less thermal mass.
+3. **Dial the current:** Set **Applied Current (I) (A)** between 0.10 and 1.50 A.
+4. **Energise:** Click **Run Electrical Actuation**. The wire heats, transforms through A<sub>s</sub>-A<sub>f</sub>, and contracts against the bias spring while the temperature-time curve builds live.
+5. **Watch the limits:** Dashed lines mark A<sub>s</sub> (48 &deg;C) and A<sub>f</sub> (68 &deg;C). If the steady-state temperature never clears A<sub>f</sub>, the readout flags "Never Actuates".
+6. **Record:** Activation time t<sub>act</sub>, steady-state temperature T<sub>ss</sub>, the operational status (safe vs. >150 &deg;C oxidation risk), martensite/austenite resistances, and peak power.
+7. **Advance** to the actuator rig.
+
+---
+
+## Sub-Calc D: Actuator Rig with Load Cell & Ruler
+**Objective:** Size a wire actuator - turn a length, diameter, and pre-strain into a stroke, a blocking force, and a mass-specific work you can benchmark.
+
+1. **Start Experiment** to arm the scissor gripper.
+2. **Set the geometry:** Adjust **Wire Active Length (mm)** (50-500) and **Wire Diameter (&micro;m)** (100-500).
+3. **Set the pre-strain:** Use **Applied Pre-Strain (%)** (1-6 %). This fixes the recoverable stroke.
+4. **Run:** Click **Execute Actuator Sizing**. The heated wire contracts, closing the jaws onto the work-piece and loading the ruler-mounted load cell.
+5. **Read the F-d line:** The force-stroke plot fills as the actuation progresses; area under it is the delivered work.
+6. **Record:** Actuator stroke d, blocking force F<sub>block</sub>, mechanical work W, specific work w<sub>sp</sub>, and the comparison against SMP, pneumatic, and hydraulic actuators.
+7. **Advance** to the fatigue rig.
+
+---
+
+## Sub-Calc E: Fatigue Testing Rig (Rotating Bending)
+**Objective:** Spin an hourglass specimen under a fixed bending-strain amplitude and predict both its fracture life and its loss of recoverable strain.
+
+1. **Start Experiment** to arm the R.R. Moore rig.
+2. **Set the amplitude:** Drag **Applied Strain Amplitude (%)** (2-8 %). Higher amplitude drops the cycle life steeply.
+3. **Run:** Click **Initiate Fatigue Cycling**. The specimen spins, the cycle counter climbs, and a crack initiates near 70 % of the predicted life before fracture.
+4. **Read the S-N curve:** The log-scale plot shows N = C/&epsilon;<sup>2</sup>; the amber marker sits at your amplitude.
+5. **Record:** Fatigue life N, design status (durable vs. low-cycle), recoverable strain remaining at 10 000 cycles, and the functional degradation loss.
+6. The bench is complete - review all five instrument readouts against the theory page.

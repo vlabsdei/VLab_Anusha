@@ -439,6 +439,18 @@ a:hover { color: var(--rust-700); }
   background: var(--surface);
   overflow: hidden;
 }
+.dock .card { flex-shrink: 0; }
+
+/* ---- LabGate: idle overlay shown until "Start Experiment" is clicked ---- */
+.labgate{position:absolute;inset:0;z-index:20;display:flex;align-items:center;
+  justify-content:center;background:rgba(248,249,251,.86);backdrop-filter:blur(2px);
+  border-radius:var(--r-md,10px);}
+.labgate__panel{text-align:center;padding:20px 24px;}
+.labgate__title{font-weight:700;color:var(--navy-700,#1E3A8A);font-size:15px;}
+.labgate__sub{color:var(--ink-3,#64748b);font-size:12px;margin:4px 0 14px;}
+.labgate__btn{background:var(--rust-600,#E2570F);color:#fff;border:0;
+  border-radius:8px;padding:10px 22px;font-weight:600;font-size:13px;cursor:pointer;}
+.labgate__btn:hover{background:var(--rust-700,#c2410c);}
 .card__head {
   padding: 12px 16px;
   border-bottom: 1px solid var(--line);

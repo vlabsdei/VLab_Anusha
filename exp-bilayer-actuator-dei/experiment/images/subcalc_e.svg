@@ -1,0 +1,126 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .axes { stroke: #334155; stroke-width: 1.5; }
+      .grid { stroke: #E2E8F0; stroke-width: 0.8; }
+      .curve { stroke: #1E40AF; stroke-width: 2.5; fill: none; }
+      .text-label { font: 13px sans-serif; fill: #334155; }
+      .highlight { stroke: #E2570F; stroke-width: 2.5; }
+      .fill-region { fill: #E0F0FF; opacity: 0.2; }
+      .bar-sma { fill: #1E40AF; }
+      .bar-smp { fill: #9333EA; }
+      .bar-hygro { fill: #E2570F; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#334155" />
+    </marker>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="30" y="25" class="text-label" font-weight="bold" font-size="14">Actuator Work &amp; Energy Trade-off</text>
+
+  <!-- Left panel: Operating line (free deflection vs blocking force) -->
+  <g>
+    <text x="40" y="55" class="text-label" font-size="12" font-weight="bold">Operating Line</text>
+
+    <!-- Axes -->
+    <line x1="60" y1="220" x2="250" y2="220" class="axes"/>
+    <line x1="60" y1="80" x2="60" y2="220" class="axes"/>
+
+    <!-- Grid -->
+    <line x1="60" y1="150" x2="250" y2="150" class="grid"/>
+    <line x1="155" y1="80" x2="155" y2="220" class="grid"/>
+
+    <!-- Axis labels -->
+    <text x="240" y="240" class="text-label" font-size="11" font-weight="bold">Deflection δ</text>
+    <text x="25" y="85" class="text-label" font-size="11" font-weight="bold">Force F</text>
+
+    <!-- Tick marks -->
+    <line x1="55" y1="220" x2="60" y2="220" class="axes"/>
+    <text x="35" y="225" class="text-label" font-size="10">0</text>
+
+    <line x1="60" y1="80" x2="65" y2="80" class="axes"/>
+    <text x="35" y="85" class="text-label" font-size="10">F<tspan baseline-shift="sub">block</tspan></text>
+
+    <line x1="250" y1="220" x2="250" y2="225" class="axes"/>
+    <text x="240" y="240" class="text-label" font-size="10">δ<tspan baseline-shift="sub">free</tspan></text>
+
+    <!-- Operating line: linear from (δ_free, 0) to (0, F_block) -->
+    <line x1="250" y1="220" x2="60" y2="80" class="highlight" stroke-width="2.5"/>
+
+    <!-- Fill region under operating line -->
+    <polygon points="250,220 60,220 60,80" class="fill-region"/>
+
+    <!-- Maximum work point (midpoint) -->
+    <circle cx="155" cy="150" r="4" fill="#E2570F" stroke="#334155" stroke-width="1"/>
+    <text x="165" y="155" class="text-label" font-size="10" fill="#E2570F" font-weight="bold">W<tspan baseline-shift="sub">max</tspan></text>
+
+    <!-- Free deflection point -->
+    <circle cx="250" cy="220" r="3" fill="#1E40AF"/>
+    <text x="255" y="230" class="text-label" font-size="9">Free</text>
+
+    <!-- Blocking force point -->
+    <circle cx="60" cy="80" r="3" fill="#1E40AF"/>
+    <text x="30" y="70" class="text-label" font-size="9">Blocked</text>
+
+    <!-- Annotation -->
+    <text x="75" y="125" class="text-label" font-size="9" fill="#E2570F">W = ½F<tspan baseline-shift="sub">block</tspan>δ<tspan baseline-shift="sub">free</tspan></text>
+  </g>
+
+  <!-- Right panel: Energy density comparison -->
+  <g>
+    <text x="290" y="55" class="text-label" font-size="12" font-weight="bold">Energy Density U</text>
+    <text x="290" y="72" class="text-label" font-size="10">(J/cm³)</text>
+
+    <!-- Y-axis -->
+    <line x1="310" y1="220" x2="310" y2="80" class="axes"/>
+    <line x1="310" y1="220" x2="550" y2="220" class="axes"/>
+
+    <!-- Grid -->
+    <line x1="310" y1="150" x2="550" y2="150" class="grid"/>
+    <line x1="310" y1="100" x2="550" y2="100" class="grid"/>
+
+    <!-- Axis labels and ticks -->
+    <line x1="305" y1="220" x2="310" y2="220" class="axes"/>
+    <text x="285" y="225" class="text-label" font-size="10">0</text>
+
+    <line x1="305" y1="150" x2="310" y2="150" class="axes"/>
+    <text x="280" y="155" class="text-label" font-size="10">0.1</text>
+
+    <line x1="305" y1="100" x2="310" y2="100" class="axes"/>
+    <text x="280" y="105" class="text-label" font-size="10">1.0</text>
+
+    <line x1="305" y1="85" x2="310" y2="85" class="axes"/>
+    <text x="295" y="90" class="text-label" font-size="9">10</text>
+
+    <text x="540" y="240" class="text-label" font-size="10">Material</text>
+
+    <!-- SMA bar (highest energy) ~1 J/cm³ = height 120 from baseline -->
+    <rect x="320" y="100" width="50" height="120" class="bar-sma" opacity="0.8"/>
+    <text x="325" y="130" class="text-label" font-size="10" font-weight="bold" fill="white">SMA</text>
+    <text x="325" y="150" class="text-label" font-size="9" fill="white">~1.0</text>
+
+    <!-- SMP bar (intermediate) ~0.1 J/cm³ = height 12 from baseline -->
+    <rect x="390" y="208" width="50" height="12" class="bar-smp" opacity="0.8"/>
+    <text x="395" y="212" class="text-label" font-size="10" font-weight="bold" fill="white">SMP</text>
+    <text x="390" y="232" class="text-label" font-size="9">~0.1</text>
+
+    <!-- Hygro bar (lowest) ~0.01–0.03 J/cm³ = height 1.2–3.6 from baseline -->
+    <rect x="460" y="214" width="50" height="6" class="bar-hygro" opacity="0.8"/>
+    <text x="460" y="218" class="text-label" font-size="9" font-weight="bold" fill="white">Hygro</text>
+    <text x="455" y="232" class="text-label" font-size="9">~0.01</text>
+
+    <!-- Note -->
+    <text x="320" y="260" class="text-label" font-size="9" fill="#666">Soft, slow, self-powered</text>
+  </g>
+
+  <!-- Bottom: Key trade-off equation -->
+  <g>
+    <rect x="30" y="295" width="560" height="50" fill="#F1F5F9" stroke="#334155" stroke-width="1" rx="3"/>
+    <text x="50" y="315" class="text-label" font-weight="bold" font-size="12">The Actuator Trade-off:</text>
+    <text x="50" y="335" class="text-label" font-size="11">Thin layer: large δ but weak F (∝ h³);  Thick layer: strong F but small δ (∝ 1/h)</text>
+  </g>
+</svg>

@@ -2,176 +2,173 @@
   "version": 2,
   "questions": [
     {
-      "question": "Q1. What is the key advantage of non-thermal actuation (light or magnetic) over thermal actuation in 4D printing?",
+      "question": "Q1. The Beer-Lambert law in Sub-Calc A predicts how much light is absorbed by the azobenzene dye. Which variable does it depend on?",
       "answers": {
-        "a": "It is always cheaper.",
-        "b": "It can be remote, spatially precise, and biocompatible in ways heat cannot easily provide.",
-        "c": "It does not require any energy.",
-        "d": "It only works in a vacuum."
+        "a": "Only the dye concentration C",
+        "b": "The light intensity, dye concentration, and absorptivity through optical depth εCx",
+        "c": "The temperature of the light source",
+        "d": "The color of the polymer film"
       },
       "explanations": {
-        "a": "Incorrect - cost is not the defining advantage.",
-        "b": "Correct - light and magnetic stimuli allow remote, localised, biocompatible actuation.",
-        "c": "Incorrect - all actuation requires an energy input.",
-        "d": "Incorrect - these methods work in normal environments, including inside the body."
+        "a": "Incorrect — concentration alone is incomplete; absorptivity and path length matter equally.",
+        "b": "Correct — I_abs = I_0 (1 - e^-εCx) includes all three factors.",
+        "c": "Incorrect — Beer-Lambert depends on material properties, not source temperature.",
+        "d": "Incorrect — The law is wavelength-specific through ε, but not on film color."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
     },
     {
-      "question": "Q2. Azobenzene molecules switch between which two configurations under light?",
+      "question": "Q2. In Sub-Calc A, which two wavelengths drive the azobenzene photoswitching cycle?",
       "answers": {
-        "a": "Solid and liquid.",
-        "b": "trans (extended) and cis (bent).",
-        "c": "Hot and cold.",
-        "d": "Charged and neutral."
+        "a": "365 nm UV (to *cis*) and 450 nm visible (back to *trans*)",
+        "b": "Infrared and visible light",
+        "c": "532 nm and 808 nm lasers",
+        "d": "X-rays and gamma rays"
       },
       "explanations": {
-        "a": "Incorrect - this is a molecular isomerisation, not a phase change.",
-        "b": "Correct - UV light drives trans -> cis and visible light reverses it.",
-        "c": "Incorrect - the switch is photochemical, not thermal.",
-        "d": "Incorrect - azobenzene isomerisation is not an ionisation."
-      },
-      "correctAnswer": "b",
-      "difficulty": "intermediate"
-    },
-
-    {
-      "question": "Q3. The Beer-Lambert law I(x) = I0 e^(-eps C x) describes:",
-      "answers": {
-        "a": "How a magnetic field decays with distance.",
-        "b": "How light intensity decreases with depth into an absorbing medium.",
-        "c": "How temperature rises with time.",
-        "d": "How stress relates to strain."
-      },
-      "explanations": {
-        "a": "Incorrect - that is a magnetostatics relation.",
-        "b": "Correct - Beer-Lambert gives the exponential attenuation of light with depth.",
-        "c": "Incorrect - that is a heating equation.",
-        "d": "Incorrect - that is Hooke's Law."
-      },
-      "correctAnswer": "b",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q4. Which wavelength is typically used to drive the trans -> cis isomerisation of azobenzene?",
-      "answers": {
-        "a": "Ultraviolet, around 365 nm.",
-        "b": "Visible blue, around 450 nm.",
-        "c": "Microwave.",
-        "d": "Radio waves."
-      },
-      "explanations": {
-        "a": "Correct - UV (~365 nm) drives trans -> cis; visible (~450 nm) reverses it.",
-        "b": "Incorrect - 450 nm drives the cis -> trans back-reaction.",
-        "c": "Incorrect - microwaves are not used for azobenzene isomerisation.",
-        "d": "Incorrect - radio waves do not drive this transition."
+        "a": "Correct — 365 nm drives trans → cis isomerization, 450 nm drives cis → trans recovery.",
+        "b": "Incorrect — The wavelengths must be more specific.",
+        "c": "Incorrect — Those are used in Sub-Calc B and D, not azobenzene switching.",
+        "d": "Incorrect — High-energy radiation would destroy the polymer."
       },
       "correctAnswer": "a",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q5. In NIR photothermal actuation, what is the role of the embedded nanoparticles?",
-      "answers": {
-        "a": "They store electricity.",
-        "b": "They absorb near-infrared light and convert it into localised heat.",
-        "c": "They make the material transparent.",
-        "d": "They generate a magnetic field."
-      },
-      "explanations": {
-        "a": "Incorrect - they are optical absorbers, not capacitors.",
-        "b": "Correct - NIR-absorbing nanoparticles act as nanoscale heaters to trigger the transition.",
-        "c": "Incorrect - they absorb, not transmit, light.",
-        "d": "Incorrect - photothermal particles produce heat, not a field."
-      },
-      "correctAnswer": "b",
       "difficulty": "beginner"
     },
-
     {
-      "question": "Q6. The magnetic torque on an embedded particle in a field B is given by:",
+      "question": "Q3. What material enables the local heating in Sub-Calc B (NIR skin-activated implant)?",
       "answers": {
-        "a": "tau = m B sin(theta), where m = M_s V_particle.",
-        "b": "tau = m / B.",
-        "c": "tau = B / m.",
-        "d": "tau = m + B."
+        "a": "Copper wires embedded in the polymer",
+        "b": "Resistive heating elements",
+        "c": "Gold nanorods tuned to absorb 808 nm near-infrared light",
+        "d": "Embedded thermistors"
       },
       "explanations": {
-        "a": "Correct - the torque on a magnetic moment in a field is m B sin(theta).",
-        "b": "Incorrect - torque is a product, not a ratio.",
-        "c": "Incorrect - this is dimensionally wrong.",
-        "d": "Incorrect - torque is not a sum of moment and field."
-      },
-      "correctAnswer": "a",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q7. How does the critical field B_crit to bend a magnetic composite beam depend on particle volume fraction?",
-      "answers": {
-        "a": "It increases with volume fraction.",
-        "b": "It scales inversely - a more highly loaded composite bends in a weaker field.",
-        "c": "It is independent of loading.",
-        "d": "It is zero at all loadings."
-      },
-      "explanations": {
-        "a": "Incorrect - higher loading lowers, not raises, the required field.",
-        "b": "Correct - B_crit scales inversely with particle volume fraction.",
-        "c": "Incorrect - loading strongly affects B_crit.",
-        "d": "Incorrect - a finite field is always needed."
-      },
-      "correctAnswer": "b",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q8. The on-axis magnetic field of a coil at distance r falls off as:",
-      "answers": {
-        "a": "1/(R^2 + r^2)^(3/2).",
-        "b": "Linearly with r.",
-        "c": "It does not decrease.",
-        "d": "It increases with r."
-      },
-      "explanations": {
-        "a": "Correct - B = mu0 n I R^2 / (2 (R^2 + r^2)^(3/2)), which decays rapidly with distance.",
-        "b": "Incorrect - the falloff is faster than linear.",
-        "c": "Incorrect - the field clearly weakens with distance.",
-        "d": "Incorrect - the field decreases, not increases, with r."
-      },
-      "correctAnswer": "a",
-      "difficulty": "advanced"
-    },
-
-    {
-      "question": "Q9. Which of the three actuation stimuli is the fastest?",
-      "answers": {
-        "a": "Thermal (minutes).",
-        "b": "Photo (seconds).",
-        "c": "Magnetic (milliseconds).",
-        "d": "They are all equally fast."
-      },
-      "explanations": {
-        "a": "Incorrect - thermal actuation is the slowest.",
-        "b": "Incorrect - photo is intermediate.",
-        "c": "Correct - magnetic actuation responds in milliseconds, far faster than photo or thermal.",
-        "d": "Incorrect - they differ by orders of magnitude."
+        "a": "Incorrect — Copper is not biocompatible for passive heating.",
+        "b": "Incorrect — Resistive heating requires electrical current, defeating the wireless goal.",
+        "c": "Correct — Gold nanorods convert 808 nm photons into local heat via plasmonic absorption.",
+        "d": "Incorrect — Thermistors measure temperature; they don't generate it."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
     },
     {
-      "question": "Q10. Why is near-infrared (NIR) light preferred over UV for triggering actuation inside the body?",
+      "question": "Q4. In Sub-Calc B, the implant activates once the local temperature rise crosses which threshold?",
       "answers": {
-        "a": "Because UV is invisible.",
-        "b": "Because NIR penetrates tissue much more deeply than UV.",
-        "c": "Because NIR is cheaper.",
-        "d": "Because UV cannot carry energy."
+        "a": "10 °C above body temperature",
+        "b": "ΔT_req = 25 °C above baseline",
+        "c": "37 °C (normal body temperature)",
+        "d": "100 °C (boiling point of water)"
       },
       "explanations": {
-        "a": "Incorrect - visibility is not the reason.",
-        "b": "Correct - NIR sits in the tissue 'optical window' and penetrates far deeper than UV.",
-        "c": "Incorrect - cost is not the deciding factor.",
-        "d": "Incorrect - UV carries energy but is strongly absorbed/scattered near the surface."
+        "a": "Incorrect — That is too high for practical biomedical use.",
+        "b": "Correct — The thermoresponsive material switches at ΔT_req = 25 °C above ambient.",
+        "c": "Incorrect — Activation is measured as a *rise* above baseline, not an absolute temperature.",
+        "d": "Incorrect — Boiling water would damage tissue."
       },
       "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q5. In Sub-Calc C, the magnetic torque on a ferromagnetic-loaded tip is τ = mB sinθ. What is m in this equation?",
+      "answers": {
+        "a": "The mass of the tip",
+        "b": "The meter length of the coil",
+        "c": "The molecular weight of the polymer",
+        "d": "The effective magnetic moment of the particles"
+      },
+      "explanations": {
+        "a": "Incorrect — Torque depends on the magnetic dipole moment, not mass.",
+        "b": "Incorrect — The coil is part of Sub-Calc D; here m is a magnetic quantity.",
+        "c": "Incorrect — Polymer chemistry is separate from the torque calculation.",
+        "d": "Correct — m = M_s V_particle is the net magnetic moment of all particles."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q6. What is the saturation magnetisation M_s for magnetite (Fe_3O_4) used in Sub-Calc C?",
+      "answers": {
+        "a": "4.8 × 10^5 A/m",
+        "b": "2.4 × 10^5 A/m",
+        "c": "1.0 × 10^4 A/m",
+        "d": "9.6 × 10^5 A/m"
+      },
+      "explanations": {
+        "a": "Correct — M_s = 4.8 × 10^5 A/m is the standard for magnetite particles.",
+        "b": "Incorrect — Close, but not the value in the simulation.",
+        "c": "Incorrect — This is too low for magnetite.",
+        "d": "Incorrect — This is approximately double the actual value."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q7. Why can a magnetic field penetrate deep into the body in Sub-Calc D without significant attenuation?",
+      "answers": {
+        "a": "Because tissue is diamagnetic",
+        "b": "Because neurons amplify the magnetic signal",
+        "c": "Because the relative magnetic permeability of tissue is approximately 1 (no absorption)",
+        "d": "Because blood contains iron that conducts the field"
+      },
+      "explanations": {
+        "a": "Incorrect — While tissue is slightly diamagnetic, that does not explain penetration.",
+        "b": "Incorrect — Neurons do not amplify passive magnetic fields.",
+        "c": "Correct — Biological tissue has µ_r ≈ 1, so magnetostatic fields pass through unabsorbed.",
+        "d": "Incorrect — Iron in hemoglobin does not meaningfully conduct quasi-static fields."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. In Sub-Calc D, the on-axis magnetic field from a coil falls off with distance as which power law?",
+      "answers": {
+        "a": "1/r (linear falloff)",
+        "b": "1/r^2",
+        "c": "e^-r (exponential)",
+        "d": "1/r^3"
+      },
+      "explanations": {
+        "a": "Incorrect — This is too shallow.",
+        "b": "Incorrect — This applies to point charges in electrostatics, not coil fields.",
+        "c": "Incorrect — Magnetic fields in non-absorbing tissue do not decay exponentially.",
+        "d": "Correct — The on-axis field B ∝ 1/r^3 far from the coil, causing steep power scaling."
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q9. Of the three stimuli (light, magnetic, thermal) in Sub-Calc E, which one acts the fastest?",
+      "answers": {
+        "a": "Light-driven photoswitching (hundreds of seconds)",
+        "b": "Magnetic alignment (milliseconds)",
+        "c": "Thermal diffusion (tens of minutes)",
+        "d": "All three are equally fast"
+      },
+      "explanations": {
+        "a": "Incorrect — Photoswitching is limited by reaction kinetics (seconds).",
+        "b": "Correct — Magnetic torque acts in milliseconds, viscosity-limited and magnetic-moment-limited.",
+        "c": "Incorrect — Thermal actuation is the slowest, limited by diffusion.",
+        "d": "Incorrect — They span roughly six orders of magnitude in speed."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q10. What physical process limits the speed of thermal actuation in Sub-Calc E?",
+      "answers": {
+        "a": "Thermal diffusion (heat spreading through the material)",
+        "b": "The rate of photon absorption",
+        "c": "The viscosity of the polymer chains",
+        "d": "The electrical resistance of the heating element"
+      },
+      "explanations": {
+        "a": "Correct — Thermal actuation is diffusion-limited with time constant τ_thermal.",
+        "b": "Incorrect — Photon absorption limits light actuation, not thermal.",
+        "c": "Incorrect — Viscosity limits magnetic alignment speed.",
+        "d": "Incorrect — Resistance is only relevant if the heat source is electrical."
+      },
+      "correctAnswer": "a",
       "difficulty": "intermediate"
     }
   ]

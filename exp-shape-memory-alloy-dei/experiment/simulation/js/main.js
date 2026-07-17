@@ -1,5 +1,42 @@
 /* global THREE */
 
+/* ---- LabGate: gate the whole experiment behind a Start click ---- */
+window.LabGate = (function () {
+  let armed = false;
+  function disableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = true; });
+  }
+  function enableControls() {
+    document.querySelectorAll('.dock input, .dock button#btnRun')
+      .forEach(el => { el.disabled = false; });
+  }
+  // startFn = the deferred init sequence for the active sub-calc module.
+  function arm(startFn) {
+    if (armed) return; armed = true;
+    const host = document.getElementById('viewport3D')
+              || document.querySelector('.sim-viewport-fluid');
+    disableControls();
+    const ov = document.createElement('div');
+    ov.className = 'labgate';
+    ov.innerHTML =
+      '<div class="labgate__panel">' +
+      '<div class="labgate__title">Experiment idle</div>' +
+      '<div class="labgate__sub">Set parameters, then start the simulation.</div>' +
+      '<button type="button" class="labgate__btn">Start Experiment</button>' +
+      '</div>';
+    const anchor = host.closest('.sim-viewport-fluid > div') || host;
+    anchor.style.position = anchor.style.position || 'relative';
+    anchor.appendChild(ov);
+    ov.querySelector('.labgate__btn').addEventListener('click', () => {
+      ov.remove();
+      enableControls();
+      startFn();
+    });
+  }
+  return { arm: arm };   // modules call LabGate.arm(...)
+})();
+
 // ============================================================
 // COMMON UTILITIES
 // ============================================================
@@ -524,8 +561,10 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     atNiEl.addEventListener('input', updateUI);
     testTempEl.addEventListener('input', updateUI);
     
-    init3D();
-    updateUI();
+    LabGate.arm(function () {
+        init3D();
+        updateUI();
+    });
 })();
 
 // ============================================================
@@ -1223,8 +1262,10 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         updateUI();
     });
     
-    init3D();
-    updateUI();
+    LabGate.arm(function () {
+        init3D();
+        updateUI();
+    });
 })();
 
 // ============================================================
@@ -1744,8 +1785,10 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         updateUI();
     });
     
-    init3D();
-    updateUI();
+    LabGate.arm(function () {
+        init3D();
+        updateUI();
+    });
 })();
 
 // ============================================================
@@ -2065,8 +2108,10 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
     dwEl.addEventListener('input', updateUI);
     preStrainEl.addEventListener('input', updateUI);
     
-    init3D();
-    updateUI();
+    LabGate.arm(function () {
+        init3D();
+        updateUI();
+    });
 })();
 
 // ============================================================
@@ -2550,6 +2595,8 @@ function drawGrid(ctx, width, height, xMin, xMax, yMin, yMax, xLabel, yLabel) {
         updateUI();
     });
     
-    init3D();
-    updateUI();
+    LabGate.arm(function () {
+        init3D();
+        updateUI();
+    });
 })();

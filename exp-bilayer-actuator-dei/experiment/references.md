@@ -1,8 +1,9 @@
 # References
 
 1. **Tibbits, S. (2014).** *4D Printing: Multi-Material Shape Change*. Architectural Design, 84(1), 116-121. DOI: 10.1002/ad.1710
-2. **Lendlein, A., & Kelch, S. (2002).** *Shape-memory polymers*. Angewandte Chemie International Edition, 41(12), 2034-2057. DOI: 10.1002/1521-3773(20020617)41:12<2034::AID-ANIE2034>3.0.CO;2-M
-3. **Rubinstein, M., & Colby, R. H. (2003).** *Polymer Physics*. Oxford University Press.
-4. **Williams, M. L., Landel, R. F., & Ferry, J. D. (1955).** *The Temperature Dependence of Relaxation Mechanisms in Amorphous Polymers and Other Glass-forming Liquids*. Journal of the American Chemical Society, 77(14), 3701-3707. DOI: 10.1021/ja01619a008
-5. **Ge, Q., Qi, H. J., & Dunn, M. L. (2013).** *Active materials by four-dimension printing*. Applied Physics Letters, 103(13), 131901. DOI: 10.1063/1.4819837
-6. **Xie, T. (2010).** *Tunable polymer multi-shape memory effect*. Nature, 464(7286), 267-270. DOI: 10.1038/nature08863
+2. **Timoshenko, S. (1925).** *Analysis of Bi-Metal Thermostats*. Journal of the Optical Society of America, 11(3), 233-255. DOI: 10.1364/JOSA.11.000233
+3. **Suo, Z., & Hutchinson, J. W. (1990).** *Interface crack between two elastic layers*. International Journal of Fracture, 43(1), 1-18. DOI: 10.1007/BF00018123
+4. **Gladman, A. S., Matsumoto, E. A., Nuzzo, R. G., Mahadevan, L., & Lewis, J. A. (2016).** *Biomimetic 4D printing*. Nature Materials, 15(4), 413-418. DOI: 10.1038/nmat4544
+5. **Le Duigou, A., Castro, M., Bevan, R., & Martin, N. (2016).** *3D printing of wood fibre biocomposites: From mechanical to actuation functionality*. Materials & Design, 96, 106-114. DOI: 10.1016/j.matdes.2016.02.018
+6. **Crank, J. (1975).** *The Mathematics of Diffusion* (2nd ed.). Oxford University Press.
+7. **Erb, R. M., Sander, J. S., Grisch, R., & Studart, A. R. (2013).** *Self-shaping composites with programmable bioinspired microstructures*. Nature Communications, 4, 1712. DOI: 10.1038/ncomms2666

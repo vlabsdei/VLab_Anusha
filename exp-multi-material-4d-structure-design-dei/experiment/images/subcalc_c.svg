@@ -1,29 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" font-family="Inter, Arial, sans-serif">
-  <rect width="640" height="440" fill="#ffffff"/>
-  <rect x="0" y="0" width="640" height="46" fill="#8A1134"/>
-  <text x="20" y="29" fill="#ffffff" font-size="18" font-weight="700">Sub-Calc C: Transformation Kinematics</text>
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="24" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">Serial Chain Kinematics: Forward and Inverse</text>
 
-  <!-- folding chain -->
-  <text x="320" y="74" fill="#475569" font-size="12" font-weight="700" text-anchor="middle">Open kinematic chain: flat sheet folds to 3D shape</text>
-  <line x1="70" y1="200" x2="170" y2="200" stroke="#8A1134" stroke-width="8"/>
-  <line x1="170" y1="200" x2="245" y2="135" stroke="#2563eb" stroke-width="8"/>
-  <line x1="245" y1="135" x2="270" y2="40" stroke="#14b8a6" stroke-width="8"/>
-  <g fill="#475569"><circle cx="70" cy="200" r="6"/><circle cx="170" cy="200" r="6"/><circle cx="245" cy="135" r="6"/></g>
-  <circle cx="270" cy="40" r="8" fill="#ef4444"/>
-  <text x="282" y="40" fill="#ef4444" font-size="10" font-weight="700">tip (x,y)</text>
-  <text x="120" y="220" fill="#8A1134" font-size="10" font-weight="700">&#952;&#8321;</text>
-  <text x="205" y="160" fill="#2563eb" font-size="10" font-weight="700">&#952;&#8322;</text>
-  <text x="258" y="95" fill="#14b8a6" font-size="10" font-weight="700">&#952;&#8323;</text>
-  <circle cx="360" cy="60" r="9" fill="none" stroke="#10b981" stroke-width="2"/>
-  <text x="374" y="64" fill="#047857" font-size="10" font-weight="700">target (inverse)</text>
-  <path d="M278 44 Q330 40 352 58" stroke="#10b981" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="80" y1="50" x2="80" y2="290"/>
+    <line x1="175" y1="50" x2="175" y2="290"/>
+    <line x1="270" y1="50" x2="270" y2="290"/>
+    <line x1="365" y1="50" x2="365" y2="290"/>
+    <line x1="460" y1="50" x2="460" y2="290"/>
+    <line x1="555" y1="50" x2="555" y2="290"/>
+    <line x1="80" y1="290" x2="555" y2="290"/>
+    <line x1="80" y1="230" x2="555" y2="230"/>
+    <line x1="80" y1="170" x2="555" y2="170"/>
+    <line x1="80" y1="110" x2="555" y2="110"/>
+    <line x1="80" y1="50" x2="555" y2="50"/>
+  </g>
 
-  <!-- equation panel -->
-  <rect x="20" y="252" width="600" height="168" rx="10" fill="#fafbfc" stroke="#e2e8f0"/>
-  <text x="36" y="280" fill="#8A1134" font-size="14" font-weight="700">Governing equations</text>
-  <text x="36" y="312" fill="#1e293b" font-size="14" font-weight="700">Forward:  x_end = &#931; L&#7522; cos(&#931;&#7308;&#8804;&#7522; &#952;&#11388;) ,  y_end = &#931; L&#7522; sin(&#931;&#7308;&#8804;&#7522; &#952;&#11388;)</text>
-  <text x="36" y="344" fill="#1e293b" font-size="14" font-weight="700">Inverse:  &#952;&#7522; = f(x_target, y_target)  &#8212; solved by CCD iteration</text>
-  <text x="36" y="372" fill="#0f766e" font-size="12" font-weight="700">Forward maps hinge angles &#8594; tip position; inverse finds angles to hit a target.</text>
-  <text x="36" y="396" fill="#475569" font-size="12" font-weight="700">Positioning error = | achieved tip &#8722; target | (mm), verified by forward kinematics.</text>
-  <text x="36" y="414" fill="#94a3b8" font-size="11">Connects 4D self-folding directly to robotics and mechanism design.</text>
+  <!-- axes for plot area -->
+  <line x1="80" y1="50" x2="80" y2="290" stroke="#334155" stroke-width="1.6"/>
+  <line x1="80" y1="290" x2="555" y2="290" stroke="#334155" stroke-width="1.6"/>
+
+  <!-- x-axis ticks -->
+  <g font-size="10" fill="#334155" text-anchor="middle">
+    <text x="80" y="310">0</text>
+    <text x="175" y="310">10</text>
+    <text x="270" y="310">20</text>
+    <text x="365" y="310">30</text>
+    <text x="460" y="310">40</text>
+    <text x="555" y="310">50</text>
+  </g>
+
+  <!-- y-axis ticks -->
+  <g font-size="10" fill="#334155" text-anchor="end">
+    <text x="75" y="294">0</text>
+    <text x="75" y="234">20</text>
+    <text x="75" y="174">40</text>
+    <text x="75" y="114">60</text>
+    <text x="75" y="54">80</text>
+  </g>
+
+  <!-- axis labels -->
+  <text x="310" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">x position (mm)</text>
+  <text x="20" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#334155" transform="rotate(-90 20 170)">y position (mm)</text>
+
+  <!-- title sections -->
+  <text x="140" y="34" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">Forward Kinematics</text>
+  <text x="400" y="34" text-anchor="middle" font-size="11" fill="#334155" font-weight="600">Inverse (CCD)</text>
+
+  <!-- LEFT SIDE: Forward kinematics diagram -->
+  <!-- Base point -->
+  <circle cx="120" cy="200" r="4" fill="#334155"/>
+  <text x="118" y="216" font-size="9" fill="#334155" font-weight="600">Base</text>
+
+  <!-- Panel 1: horizontal -->
+  <line x1="120" y1="200" x2="160" y2="200" stroke="#1E40AF" stroke-width="3"/>
+  <!-- Hinge 1: at 45 degrees -->
+  <circle cx="160" cy="200" r="2.5" fill="#E2570F"/>
+  <text x="158" y="185" font-size="8" fill="#E2570F" font-weight="600">θ₁=45°</text>
+
+  <!-- Panel 2: rotated 45 degrees -->
+  <line x1="160" y1="200" x2="188" y2="172" stroke="#1E40AF" stroke-width="3"/>
+  <!-- Hinge 2: at 45+30 = 75 degrees -->
+  <circle cx="188" cy="172" r="2.5" fill="#E2570F"/>
+  <text x="190" y="160" font-size="8" fill="#E2570F" font-weight="600">θ₂=30°</text>
+
+  <!-- Panel 3: rotated 45+30 = 75 degrees -->
+  <line x1="188" y1="172" x2="197" y2="131" stroke="#1E40AF" stroke-width="3"/>
+
+  <!-- Tip -->
+  <circle cx="197" cy="131" r="5" fill="#1E40AF" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="210" y="135" font-size="9" fill="#1E40AF" font-weight="700">(x_tip, y_tip)</text>
+
+  <!-- Cumulative angle arc -->
+  <path d="M 130 200 Q 145 190 155 185" stroke="#64748b" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+  <text x="145" y="195" font-size="8" fill="#64748b">Σθᵢ</text>
+
+  <!-- RIGHT SIDE: Inverse kinematics (CCD) -->
+  <!-- Base -->
+  <circle cx="440" cy="230" r="4" fill="#334155"/>
+  <text x="438" y="246" font-size="9" fill="#334155" font-weight="600">Base</text>
+
+  <!-- Initial flat chain -->
+  <line x1="440" y1="230" x2="480" y2="230" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="3 3"/>
+  <line x1="480" y1="230" x2="520" y2="230" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="3 3"/>
+  <line x1="520" y1="230" x2="540" y2="230" stroke="#E2E8F0" stroke-width="2" stroke-dasharray="3 3"/>
+  <text x="545" y="225" font-size="8" fill="#94a3b8" font-style="italic">initial</text>
+
+  <!-- Folded chain toward target -->
+  <line x1="440" y1="230" x2="475" y2="215" stroke="#1E40AF" stroke-width="3"/>
+  <circle cx="475" cy="215" r="2.5" fill="#E2570F"/>
+
+  <line x1="475" y1="215" x2="505" y2="180" stroke="#1E40AF" stroke-width="3"/>
+  <circle cx="505" cy="180" r="2.5" fill="#E2570F"/>
+
+  <line x1="505" y1="180" x2="525" y2="145" stroke="#1E40AF" stroke-width="3"/>
+
+  <!-- Tip reaching target -->
+  <circle cx="525" cy="145" r="5" fill="#1E40AF" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- Target point -->
+  <circle cx="530" cy="140" r="6" fill="none" stroke="#16a34a" stroke-width="2"/>
+  <text x="540" y="140" font-size="9" fill="#16a34a" font-weight="700">target</text>
+
+  <!-- Convergence arrow -->
+  <path d="M 527 148 L 532 142" stroke="#16a34a" stroke-width="1.5" fill="none" marker-end="url(#arrowgreen)"/>
+
+  <!-- CCD iteration note -->
+  <text x="480" y="100" font-size="9" fill="#64748b" font-style="italic">Rotate each joint iteratively</text>
+  <text x="480" y="112" font-size="9" fill="#64748b" font-style="italic">until tip reaches target</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0,0 10,5 0,10" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom note -->
+  <text x="310" y="350" text-anchor="middle" font-size="9" fill="#64748b" font-style="italic">Forward: angles θᵢ → tip position | Inverse: target point → angles via CCD</text>
 </svg>

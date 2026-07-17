@@ -1,114 +1,100 @@
-# Theory: Multi-Material 4D Structure Design
+# Theory: Multi-Material 4D Structure Design & Self-Folding Flat-Pack Structures
 
-## 1. Why Multi-Material 4D Printing?
-A single homogeneous material can only bend. To make a flat printed sheet **fold, twist, and self-assemble** into a prescribed 3D shape, designers combine materials of very different stiffness so that deformation localises where it is wanted. This experiment links classical mechanics, the Theory of Machines, and origami metamaterials to the design of transforming 4D-printed structures.
-
-<p align="center"><img src="images/theory_overview.svg" alt="Overview of multi-material 4D structure design" width="620"/></p>
-<p align="center"><em>Figure 1: The five sub-calculations form one transformation-design pipeline - stiffness contrast, mobility, kinematics, origami and fatigue.</em></p>
+## 1. Introduction to 4D Structure Design
+4D printing prints a flat, cheap-to-fabricate sheet that later folds itself into a functional 3D shape when a stimulus arrives. The "fourth dimension" is the programmed transformation over time. What makes it work is not one clever material but the *contrast* between materials: stiff panels that stay flat and soft printed hinges that do all the bending. Design the geometry and the material contrast correctly and the sheet snaps into the shape you intended - a box, a gripper, a deployable panel - with no external assembly.
 
 ---
 
-## 2. Stiffness Contrast & Hinge Design - The Self-Folding Flat-Pack Box (Sub-Calc A)
-A bilayer of an **active** layer (e.g. a soft E&nbsp;=&nbsp;1&nbsp;MPa hydrogel) and a **passive** layer (e.g. a stiff E&nbsp;=&nbsp;2&nbsp;GPa PLA) bends because the two layers respond differently to a stimulus. The bending resistance of a rectangular cross-section (width b, thickness h) is its **flexural rigidity**:
+## 2. From Flat Sheet to Folded Device
+Every structure in this experiment is a set of rigid panels joined by compliant hinges. Five questions decide whether the fold behaves:
+1. **Will the fold stay crisp?** The hinge must be far softer than the panels so the bending localises (Sub-Calc A).
+2. **Does the mechanism have the right joints?** Too few and it jams; too many and it flops (Sub-Calc B).
+3. **What fold angles reach the target?** Serial-chain kinematics, forward and inverse (Sub-Calc C).
+4. **How small does it pack?** Rigid-origami tessellation and auxetic deployment (Sub-Calc D).
+5. **How long does the hinge last?** Cyclic fatigue of the flexure (Sub-Calc E).
 
-<div align="center" style="font-size: 1.1em; font-weight: bold;">EI = E &middot; b &middot; h&sup3; / 12</div>
+---
 
-The **stiffness contrast ratio** between the two materials is:
+## 3. Stiffness Contrast and the Self-Folding Box (Sub-Calc A)
+A living hinge folds cleanly only if it is soft enough relative to the panels it connects. Panel bending stiffness scales with the cube of thickness through the second moment of area:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">EI = E&middot;b&middot;h<sup>3</sup>/12</div>
+
+with panel width b = 10 mm. The controlling quantity is the **stiffness contrast** between the passive panel and the active hinge material:
 
 <div align="center" style="font-size: 1.1em; font-weight: bold;">SC = E<sub>passive</sub> / E<sub>active</sub></div>
 
-For a hydrogel/PLA pair, SC &asymp; 2&times;10<sup>9</sup>/1&times;10<sup>6</sup> = **2000**. A high SC forces essentially all of the deformation into the soft hinge, mimicking a biological joint. The rotation of a soft flexure hinge of length L<sub>hinge</sub> under an applied bending moment M is, from beam theory:
+Treating the hinge as a short beam under a representative actuation moment M = 0.12 N&middot;mm, the rotation is &theta; = M&middot;L<sub>hinge</sub>/(E<sub>a</sub>I), so the printed hinge length required to reach a fold angle &theta; is:
 
-<div align="center" style="font-size: 1.1em; font-weight: bold;">&theta; = M &middot; L<sub>hinge</sub> / (E<sub>active</sub> &middot; I)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">L<sub>hinge</sub> = &theta;&middot;E<sub>a</sub>&middot;I / M &nbsp;&nbsp; (&theta; in radians)</div>
 
-<p align="center"><img src="images/subcalc_a.svg" alt="Stiffness contrast and hinge design" width="600"/></p>
-<p align="center"><em>Figure 2: A high stiffness contrast concentrates the bending in the soft hinge; the required hinge length scales with the cross-section (L<sub>hinge</sub> &prop; h&sup3;).</em></p>
+How much of the rotation actually stays in the hinge rather than smearing into the panels follows a localisation fraction with a geometric ratio R<sub>geom</sub> = 100:
 
-Rearranging gives the **hinge length** needed for a target fold angle &theta;: L<sub>hinge</sub> = &theta;&middot;E<sub>active</sub>&middot;I / M. Because I = b&middot;h&sup3;/12, a **thinner active hinge** (smaller h) is more compliant and needs a **shorter** L<sub>hinge</sub> to reach the same angle. The design rule is that the minimum stiffness contrast to keep deformation in the hinge scales with the moment and geometry; in practice **SC &gt; 1000** is required for clean, localised folding.
+<div align="center" style="font-size: 1.1em; font-weight: bold;">f<sub>hinge</sub> = SC / (SC + 100)</div>
 
----
+The hinge materials span hydrogel (1 MPa), elastomer (5 MPa) and soft SMP (20 MPa); panels are PLA (2 GPa) or ABS (2.3 GPa). The practical rule the simulation flags is SC &ge; 1000 for a genuinely clean box - below that the panels bow and the corners round off.
 
-## 3. Degrees of Freedom: the Grubler-Kutzbach Criterion - The Self-Closing Gripper Mechanism (Sub-Calc B)
-A transforming structure is a **mechanism**, so its mobility can be predicted with the **Grubler-Kutzbach** criterion for planar mechanisms:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">F = 3(n - 1) - 2&middot;j<sub>1</sub> - j<sub>2</sub></div>
-
-where n is the number of rigid **links** (the fixed ground counts as one), j<sub>1</sub> is the number of **full joints** (lower pairs, 1 relative DOF, each removing 2 DOF), and j<sub>2</sub> is the number of **half joints** (higher pairs, 2 relative DOF, each removing 1 DOF). In a compliant 4D-printed mechanism a **flexure hinge** plays the role of a full joint. To find the links needed for a target mobility:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">n = (F + 2&middot;j<sub>1</sub> + j<sub>2</sub>) / 3 + 1</div>
-
-<p align="center"><img src="images/subcalc_b.svg" alt="Grubler-Kutzbach mobility" width="600"/></p>
-<p align="center"><em>Figure 3: The Grubler-Kutzbach criterion predicts whether a compliant mechanism is over-constrained (locked), correctly mobile (F = 2), or under-constrained (floppy).</em></p>
-
-For a self-folding gripper we usually want **F = 2** (open/close plus a lateral motion). The mobility tells us the regime:
-* **F &lt; target (e.g. F = 0):** over-constrained - the structure is rigid/locked and cannot transform regardless of stimulus magnitude.
-* **F = target:** correctly mobile.
-* **F &gt; target:** under-constrained - floppy, with uncontrolled extra motions.
-
-Adding a constraint (a full or half joint) lowers F; adding a link raises F. This is the first time classical Theory-of-Machines mobility analysis is applied directly to a 4D-printing design problem.
+<p align="center"><img src="images/subcalc_a.svg" alt="Localisation fraction rising with stiffness contrast across the glass, mixed and clean-fold regimes" width="620"/></p>
+<p align="center"><em>Figure 1: The fraction of the fold that stays in the hinge, f = SC/(SC+100), climbs toward 100% as the panel-to-hinge stiffness contrast grows; past SC &ge; 1000 the box folds crisply (Sub-Calc A).</em></p>
 
 ---
 
-## 4. Transformation Kinematics: Forward & Inverse - Folding a Sheet to a Target Shape (Sub-Calc C)
-A flat strip that folds into a 3D shape is an **open kinematic chain**. With link lengths L<sub>i</sub> and hinge angles &theta;<sub>i</sub>, **forward kinematics** maps the angles to the position of the free (end-effector) tip by accumulating the rotations:
+## 4. Mechanism Mobility of the Self-Closing Gripper (Sub-Calc B)
+A printed gripper is a planar linkage, and whether it can move at all is a counting problem. The **Kutzbach&ndash;Gr&uuml;bler criterion** gives the mobility (degrees of freedom) of a planar mechanism with n links, j<sub>1</sub> full (one-DOF) joints and j<sub>2</sub> half (two-DOF) joints:
 
-<div align="center" style="font-size: 1.05em; font-weight: bold;">x<sub>end</sub> = &Sigma;<sub>i</sub> L<sub>i</sub> cos(&Sigma;<sub>j&le;i</sub> &theta;<sub>j</sub>) , &nbsp; y<sub>end</sub> = &Sigma;<sub>i</sub> L<sub>i</sub> sin(&Sigma;<sub>j&le;i</sub> &theta;<sub>j</sub>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">F = 3(n &minus; 1) &minus; 2j<sub>1</sub> &minus; j<sub>2</sub></div>
 
-<p align="center"><img src="images/subcalc_c.svg" alt="Forward and inverse kinematics" width="600"/></p>
-<p align="center"><em>Figure 4: Forward kinematics maps hinge angles to the folded end-effector position; inverse kinematics (CCD) solves the angles needed to reach a target shape.</em></p>
+Each free link contributes three planar freedoms; every full joint removes two, every half joint removes one. The regimes matter for design: F &lt; 0 is over-constrained and jammed, F = 0 is a rigid structure, F = 1 permits a single stiff motion, **F = 2 is the sweet spot** for a controllable open/close gripper, and F &gt; 2 is under-constrained and floppy. Rearranging for the link count needed to hit a target mobility:
 
-**Inverse kinematics** is the reverse problem: given a target shape or tip position, find the hinge angles &theta;<sub>i</sub> = f(x<sub>target</sub>, y<sub>target</sub>) that achieve it. For a folding box from a flat sheet the simulation computes the required fold angles, then verifies them by running forward kinematics and reporting the **maximum deviation (positioning error, mm)** from the target. This directly connects 4D printing to robotics and mechanism design.
+<div align="center" style="font-size: 1.1em; font-weight: bold;">n = (F + 2j<sub>1</sub> + j<sub>2</sub>)/3 + 1</div>
 
----
-
-## 5. Origami-Based Structures: the Miura Fold - The Deployable Miura Panel / Stent (Sub-Calc D)
-The **Miura-ori** is the origami pattern behind deployable satellite solar panels, foldable maps, and 4D-printed metamaterials. For a sheet with sector angle &alpha; folded to a fold angle &phi;, the mountain-valley dihedral angle is:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">tan(&theta;<sub>M</sub>) = tan(&alpha;) &middot; sin(&phi;)</div>
-
-The **flat-to-folded area ratio** (how much the footprint shrinks) is:
-
-<div align="center" style="font-size: 1.05em; font-weight: bold;">A<sub>ratio</sub> = sin(&phi;) cos(&alpha;) / (sin&sup2;(&alpha;) cos(&phi;) + cos&sup2;(&alpha;))</div>
-
-Most strikingly, the Miura-ori has a **negative (auxetic) Poisson's ratio**: stretching it in one in-plane direction makes it expand in the perpendicular in-plane direction as well:
-
-<div align="center" style="font-size: 1.1em; font-weight: bold;">&nu;<sub>x</sub> = &minus;(&part;&epsilon;<sub>y</sub>/&part;&epsilon;<sub>x</sub>) &lt; 0</div>
-
-<p align="center"><img src="images/subcalc_d.svg" alt="Miura fold geometry and auxetic behaviour" width="600"/></p>
-<p align="center"><em>Figure 5: The Miura-ori folds to a smaller footprint (A<sub>ratio</sub> &lt; 1) and is auxetic - it expands in both in-plane directions on deployment (&nu;<sub>x</sub> &lt; 0).</em></p>
-
-The simulation computes &nu;<sub>x</sub> by finite-differencing the projected in-plane width W(&phi;) and length L(&phi;) of the unit cell as the fold changes, robustly yielding the auxetic (negative) value. A<sub>ratio</sub> &lt; 1 means the folded sheet is smaller than the flat one, enabling compact deployment. (The exact magnitude of &nu;<sub>x</sub> depends on the parametrisation; the sign - negative - is the key auxetic signature.)
+<p align="center"><img src="images/subcalc_b.svg" alt="Mobility versus joint count with locked, rigid, working and floppy bands" width="620"/></p>
+<p align="center"><em>Figure 2: Mobility F falls by two for every full joint added; the design target is the narrow F = 2 band where the jaws open and close in a controlled way (Sub-Calc B).</em></p>
 
 ---
 
-## 6. Printed Hinge Fatigue: Basquin's Law - The Living-Hinge Cycle Life (Sub-Calc E)
-Any repeatedly actuated hinge eventually fails by **fatigue**. The peak bending strain at the surface of a flexure hinge of thickness h bent to a minimum radius R<sub>min</sub> is:
+## 5. Fold Kinematics of a Serial Hinge Chain (Sub-Calc C)
+A strip of rigid panels linked by hinges is a serial kinematic chain. With equal panel length L = 10 mm and hinge angles &theta;<sub>i</sub>, the tip position comes from summing the cumulative rotations - **forward kinematics**:
 
-<div align="center" style="font-size: 1.1em; font-weight: bold;">&epsilon;<sub>max</sub> = h / (2 R<sub>min</sub>)</div>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">x<sub>tip</sub> = &Sigma;<sub>i</sub> L<sub>i</sub> cos(&Sigma;<sub>j&le;i</sub> &theta;<sub>j</sub>), &nbsp; y<sub>tip</sub> = &Sigma;<sub>i</sub> L<sub>i</sub> sin(&Sigma;<sub>j&le;i</sub> &theta;<sub>j</sub>)</div>
 
-For a hinge of length L folded through angle &theta; (radians), the bend radius is R<sub>min</sub> = L/&theta;, so &epsilon;<sub>max</sub> = h&middot;&theta;/(2L). The peak stress is &sigma;<sub>max</sub> = E&middot;&epsilon;<sub>max</sub>. Fatigue life follows the S-N curve via **Basquin's Law**:
+The reverse question - what fold angles land the tip on a chosen target - is **inverse kinematics**. There is no closed form for a general chain, so the simulation uses **cyclic coordinate descent (CCD)**: sweeping from the last hinge to the first, each hinge is rotated to point the tip-to-joint vector at the target, iterating until convergence. Every hinge is clamped to &plusmn;90&deg;, and the tip is judged to reach the target when the residual error falls below 1 mm (the chain's reach is about 30 mm).
 
-<div align="center" style="font-size: 1.1em; font-weight: bold;">N = (&sigma;<sub>f</sub> / &sigma;<sub>max</sub>)<sup>1/b</sup></div>
-
-<p align="center"><img src="images/subcalc_e.svg" alt="Printed hinge fatigue via Basquin's Law" width="600"/></p>
-<p align="center"><em>Figure 6: Folding a hinge sets the peak surface strain &epsilon;<sub>max</sub> = h/(2R<sub>min</sub>); Basquin's Law then converts the stress into a fatigue life N (very sensitive, since 1/b = 10).</em></p>
-
-with fatigue strength coefficient &sigma;<sub>f</sub> &asymp; 60 MPa and exponent b = 0.1 for PLA-SMP. Because the exponent 1/b = 10, fatigue life is **extremely** sensitive to stress: a small reduction in h (and hence &sigma;<sub>max</sub>) raises N by orders of magnitude. To design for N &gt; 1000 cycles, require &sigma;<sub>max</sub> &lt; &sigma;<sub>f</sub>&middot;N<sup>&minus;b</sup>. An engineering **safety factor of 5** is applied to the computed N for polymers.
+<p align="center"><img src="images/subcalc_c.svg" alt="Three-panel folded strip reaching a target point in the x-y plane" width="620"/></p>
+<p align="center"><em>Figure 3: Forward kinematics maps hinge angles to the tip position; inverse kinematics (CCD) solves the angles that fold the strip onto a target point (Sub-Calc C).</em></p>
 
 ---
 
-## 7. Contradictions and Limitations
+## 6. Miura-ori Tessellation and Auxetic Deployment (Sub-Calc D)
+The Miura-ori crease pattern packs flat and deploys in a single rigid motion. Its geometry is set by two angles: the crease sector angle &alpha; and the fold state &phi;. The dihedral angle of the mountain-valley folds is:
 
-<p align="center"><img src="images/theory_limits.svg" alt="Model validity windows and limitations" width="620"/></p>
-<p align="center"><em>Figure 7: Validity windows - rigid-body DOF for thin flexures, rigid-origami for thin panels, and a factor-of-3 fatigue margin (safety factor 5).</em></p>
+<div align="center" style="font-size: 1.1em; font-weight: bold;">tan(&theta;<sub>M</sub>) = tan(&alpha;)&middot;sin(&phi;)</div>
 
-**Contradiction 1 - Grubler for compliant mechanisms.** The Grubler-Kutzbach equation was derived for **rigid bodies with ideal pin joints**. A compliant flexure hinge distributes deformation over a region rather than at a point, so the very notion of a "joint" is ambiguous. For thin, localised flexures the rigid-body equivalent is a good approximation; for thick, distributed flexures (hinge length &gt; 5&times; thickness) mobility alone cannot describe the mechanism and a continuum model is required.
+Folding contracts the pattern in both in-plane directions - a straight-fold contraction &lambda;<sub>L</sub> = cos&phi; and a zigzag contraction &lambda;<sub>W</sub> = &radic;(1 &minus; sin<sup>2</sup>&alpha;&middot;sin<sup>2</sup>&phi;) - so the packed area as a fraction of the flat sheet is:
 
-**Contradiction 2 - rigid-origami assumption.** The Miura geometry (Sub-Calc D) assumes **rigid panels** joined by zero-thickness creases. Real 4D-printed panels have finite thickness and finite-compliance folds, so the actual A<sub>ratio</sub> and Poisson's ratio deviate from rigid-origami predictions once panel thickness exceeds ~5% of panel length. Thick-panel corrections (Tachi-Miura) are an active research frontier beyond this lab's scope.
+<div align="center" style="font-size: 1.1em; font-weight: bold;">A<sub>pack</sub>/A<sub>flat</sub> = cos&phi; &middot; &radic;(1 &minus; sin<sup>2</sup>&alpha; sin<sup>2</sup>&phi;)</div>
 
-**Contradiction 3 - Basquin's Law for polymers.** Basquin's Law was developed for **metals**. Polymer fatigue is rate-dependent, temperature-sensitive, and affected by hysteretic self-heating, so the life prediction carries roughly a **factor-of-3** uncertainty. Engineers therefore apply safety factors of 5-10 on N when using polymer S-N data; this lab applies a stated safety factor of 5.
+The signature property is the in-plane **Poisson's ratio**, obtained from the two contractions:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">&nu;<sub>x</sub> = &minus;d(ln&lambda;<sub>W</sub>)/d(ln&lambda;<sub>L</sub>) &lt; 0</div>
+
+Because &nu;<sub>x</sub> is negative, the sheet is **auxetic** - pull it open in one direction and it expands in the other too, which is exactly why a single actuation deploys the whole array. Deployable solar panels and self-expanding stents exploit this.
+
+<p align="center"><img src="images/subcalc_d.svg" alt="Miura-ori pack ratio and negative Poisson ratio versus fold angle" width="620"/></p>
+<p align="center"><em>Figure 4: As the fold angle &phi; increases the Miura sheet packs to a small fraction of its flat area while its Poisson's ratio stays negative, so it expands in both directions at once (Sub-Calc D).</em></p>
 
 ---
 
-## 8. Relevance
-Multi-material design and origami-inspired structures are the most visually compelling aspects of 4D printing. Applying the Grubler-Kutzbach criterion to a compliant mechanism uniquely bridges classical Theory of Machines with 4D-printing design, and the Miura fold connects directly to the AICTE-recognised field of mechanical metamaterials.
+## 7. Living-Hinge Cycle Life and Basquin's Law (Sub-Calc E)
+Every open/close cycle bends the living hinge, and repeated bending eventually cracks it by fatigue. Folding a hinge of length L through angle &theta; sets the bend radius R = L/&theta;, and the peak surface (skin) strain of a beam bent to that radius is:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">R = L/&theta;, &nbsp; &epsilon;<sub>max</sub> = h/(2R)</div>
+
+With an effective hinge modulus E<sub>eff</sub> = 400 MPa near actuation, the peak cyclic stress is &sigma;<sub>max</sub> = E<sub>eff</sub>&middot;&epsilon;<sub>max</sub>. The number of cycles the hinge survives follows **Basquin's power law** (the S-N curve), inverted for life:
+
+<div align="center" style="font-size: 1.1em; font-weight: bold;">&sigma; = &sigma;<sub>f</sub>&middot;N<sup>&minus;b</sup> &rArr; N = (&sigma;<sub>f</sub>/&sigma;<sub>max</sub>)<sup>1/b</sup></div>
+
+using fatigue strength coefficient &sigma;<sub>f</sub> = 60 MPa and Basquin exponent b = 0.1. If the per-cycle stress already meets or exceeds &sigma;<sub>f</sub> the hinge fails almost immediately (N &rarr; ~0.5). A polymer safety factor of 5 gives the dependable life N<sub>safe</sub> = N/5, and the model calls a hinge long-lived when N<sub>safe</sub> &ge; 1000. Because b is small, the life depends steeply on stress - halving the thickness cuts the strain and buys exponentially more cycles.
+
+<p align="center"><img src="images/subcalc_e.svg" alt="Basquin S-N fatigue curve of stress versus cycles to crack on a log scale" width="620"/></p>
+<p align="center"><em>Figure 5: The Basquin S-N curve &sigma; = &sigma;<sub>f</sub>N<sup>&minus;b</sup> sets how many open/close cycles the hinge survives; a thinner hinge lowers the per-cycle stress and moves it far to the right (Sub-Calc E).</em></p>

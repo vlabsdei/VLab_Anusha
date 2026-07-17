@@ -1,72 +1,65 @@
-# Procedure: 4D Printing and Shape Memory Cycle
+# Procedure: Shape Memory Polymer Thermomechanical Cycle
 
-Welcome to the 4D Printing Virtual Laboratory. This lab guides you through the full thermomechanical programming and recovery cycle of Shape Memory Polymers (SMPs). Follow the step-by-step procedures below for the five sub-calculators.
+Welcome to the 4D Printing Virtual Laboratory. The five sub-calculators below walk a shape memory polymer through one full cycle - transition, programming, recovery, multi-shape behaviour, and actuation. Each panel is gated: set your parameters first, then press **Start Experiment** on the viewport before the controls unlock. Material choices and the programmed strain carry forward from one sub-calc to the next, so work through them in order.
 
 ---
 
 ## Sub-Calc A: Glass Transition & Viscoelasticity
-**Objective:** Observe the transition from a glassy state to a rubbery state and calculate the temperature-dependent molecular relaxation shift factor log(a<sub>T</sub>).
+**Objective:** Heat a polymer through T<sub>g</sub> and read the WLF shift factor log(a<sub>T</sub>), the viscosity ratio a<sub>T</sub>, and the DSC heat-capacity step.
 
-1. **Select Base Material:** In the left sidebar, choose a base polymer preset (e.g., **PU-SMP**, **PLA-SMP**, or **PMMA-SMP**). Each has a unique Glass Transition Temperature (T<sub>g</sub>).
-2. **Set Variables:** Adjust the **Heating Rate (°C/min)** and **Test Temperature (°C)** sliders.
-3. **Initiate Cycle:** Click **Run Thermal Cycle**.
-4. **Observe Kinetics:**
-   * Watch the 3D viewport: polymer chains will transitions from rigid vibration (blue-grey) to wave-like writhing and high mobility (warm burgundy) as the temperature crosses T<sub>g</sub>.
-   * Analyze the plots: the linked cursor tracks WLF log(a<sub>T</sub>) shift factor and DSC heat capacity inflection points in real-time.
-5. **Record Results:** Observe the calculated WLF shift factor (a<sub>T</sub>) and the active thermal regime.
-6. **Advance:** Click **Next Experiment ->** at the bottom right.
-
----
-
-## Sub-Calc B: Viscoelastic Programming & Strain Fixity
-**Objective:** Program a temporary shape by deforming the rubbery polymer and rapidly cooling it under stress to freeze the chain deformation.
-
-1. **Deformation Temp:** Set the **Programming Temp (°C)** slider above the material's T<sub>g</sub>.
-2. **Apply Stress:** Adjust the **Applied Stress (MPa)** slider (range: 0.5–4.0 MPa).
-3. **Deformation Step:** Click **Run Creep Cycle**. The 3D specimen inside the UTM grips will stretch along the tensile axis and contract laterally (Poisson effect).
-4. **Thermal Quenching:** Once stretching completes, click **Cool to Lock Shape**. The system will cool down, freezing the chains in their high-energy, aligned glassy conformation (specimen turns cool slate grey).
-5. **Verify Fixity:** Observe the calculated **Strain Fixity Ratio (R<sub>f</sub>)** and the locked **Programmed Strain (&epsilon;<sub>u</sub>)**.
-6. **Advance:** Click **Next Experiment ->**.
+1. Under **Material Structure**, pick a base polymer: **PU-SMP** (T<sub>g</sub> = 45&deg;C), **PLA-SMP** (60&deg;C), or **PMMA-SMP** (105&deg;C). Your choice is remembered by the later sub-calcs.
+2. Set the two sliders under **Simulation Variables** - **Heating Rate (&deg;C/min)** (1-20) sets how fast the ramp animates, and **Test Temperature (&deg;C)** picks the endpoint the run heats toward. The temperature range auto-rescales to [T<sub>g</sub>-20, T<sub>g</sub>+40] for the selected material.
+3. Press **Run Thermal Cycle**. The molecular viewport ramps from the glassy baseline up to your target temperature.
+4. Watch the chains: below T<sub>g</sub> they only vibrate in place (slate grey); once past T<sub>g</sub> they writhe and drift, and the colour warms toward rust as mobility climbs.
+5. Read the linked plots - the WLF curve tracks log(a<sub>T</sub>) (undefined in the shaded glassy zone) and the lower panel shows the C<sub>p</sub> sigmoid with its inflection sitting on T<sub>g</sub>.
+6. In the **Readouts** card, note log(a<sub>T</sub>), the viscosity ratio a<sub>T</sub>, the active regime, and &Delta;T from T<sub>g</sub>. The bio-suitability table rates each material against 37&deg;C body actuation.
+7. Use the arrow in the left rail (or the auto-revealed next link) to advance to Sub-Calc B.
 
 ---
 
-## Sub-Calc C: Thermodynamic Shape Recovery
-**Objective:** Reheat the programmed specimen to activate molecular relaxation, observing shape recovery under free and constrained boundary conditions.
+## Sub-Calc B: Strain Fixity
+**Objective:** Program a temporary shape by loading the rubbery polymer, cooling under stress, and unloading - then read the strain fixity ratio R<sub>f</sub>.
 
-1. **Select Scenario:** Choose either **Free Recovery** (zero opposing load) or **Constrained Recovery** (opposing load &gt; 0).
-2. **Set Opposing Load:** If Constrained, adjust the **Opposing Stress (MPa)** slider (range: 0.0–5.0 MPa).
-3. **Set Actuation Variables:** Adjust the **Recovery Temp (°C)** and **Reference Relaxation Time &tau;<sub>ref</sub> (s)**.
-4. **Run Actuation:** Click **Run Recovery Cycle**.
-5. **Observe Retraction:**
-   * In **Free Recovery**, the specimen fully recovers to its initial flat length.
-   * In **Constrained Recovery**, the specimen retracts until it hits a solid constraint wall. Once blocked, a red stress-arrow grows at the contact point, representing the generated blocking recovery stress.
-6. **Record Parameters:** Check the Shape Recovery Ratio (R<sub>r</sub>), blocking recovery stress, and timescale to 95% recovery (t<sub>95</sub>).
-7. **Advance:** Click **Next Experiment ->**.
+1. Confirm the inherited material in the **Active Material** card. Its T<sub>g</sub>, crystallinity limit X<sub>c</sub>, and rubbery modulus E<sub>r</sub> are carried over from Sub-Calc A.
+2. Set the programming temperature. Either tap a **Programming Temp Preset** (**T<sub>g</sub> + 10&deg;**, **+ 30&deg;**, or **+ 60&deg;**) or drag the **Programming Temp (&deg;C)** slider directly.
+3. Adjust **Applied Stress &sigma; (MPa)** (0.5-4.0) and the **Cooling Rate (&deg;C/min)** (5-30).
+4. Press **Execute Programming Cycle**. The run steps through three phases on its own: tensile loading at the rubbery modulus, cooling/quenching under held stress, then unloading. The specimen in the UTM grips stretches, shifts colour as it freezes, and locks the deformation.
+5. Track the stress-strain loop on the upper plot and the R<sub>f</sub> saturating curve on the lower one; the current programming margin sits as a dot on that curve, with the X<sub>c</sub> ceiling drawn as a dashed asymptote.
+6. Read **Max loading strain &epsilon;<sub>load</sub>**, **Fixed strain &epsilon;<sub>u</sub>**, and **Shape fixity ratio R<sub>f</sub>** from the readouts. The fixed strain &epsilon;<sub>u</sub> is what Sub-Calc C inherits.
+7. Advance to Sub-Calc C.
 
 ---
 
-## Sub-Calc D: Multi-Shape Memory & Fox Equation
-**Objective:** Explore complex multi-shape recovery profiles in copolymer blends using immiscible phase-separated and miscible morphology modes.
+## Sub-Calc C: Shape Recovery
+**Objective:** Reheat the programmed specimen and measure the relaxation time, recovery ratio, blocking stress, and t<sub>95</sub> under free and constrained conditions.
 
-1. **Set Blend Fraction:** Use the weight fraction slider to adjust the PU polymer weight fraction w<sub>1</sub> (which dynamically calculates PMMA weight fraction w<sub>2</sub>).
-2. **Select Morphology:** Toggle between **Triple-Shape Mode (Phase-Separated)** and **Dual-Shape Mode (Miscible Blend)**.
-3. **Initiate Phase Transition:** Click **Run Cycle**.
-4. **Observe Recovery Profile:**
-   * In **Phase-Separated Mode**, the specimen starts as a double-bent S-curve. During heating, it releases in two distinct thermal stages (transitioning first to a single-bend U-bow shape as PU melts, then to a flat bar as PMMA melts), creating a distinct recovery strain plateau.
-   * In **Miscible Blend Mode**, the specimen displays a single-stage, rapid recovery transition at a unified blend glass transition temperature (T<sub>g,blend</sub>).
-5. **Advance:** Click **Next Experiment ->**.
+1. Check the inherited **Active Material** and **Programmed Strain &epsilon;<sub>u</sub>** cards at the top of the controls.
+2. Under **Recovery Scenario**, choose **Free Recovery** (no opposing load) or **Constrained**. Selecting Constrained reveals the **Opposing Load &sigma;<sub>opp</sub> (MPa)** slider (0.1-2.0), whose upper cap is limited so the equilibrium strain never exceeds &epsilon;<sub>u</sub>.
+3. Set **Recovery Temp (&deg;C)** (must be above T<sub>g</sub> for anything to move) and the **Reference Time &tau;<sub>ref</sub> (s)** (100-2000).
+4. Press **Initiate Heating Cycle**.
+5. Observe the retraction: in free recovery the specimen relaxes all the way back to its flat length; under constraint it retracts to the wall, and a red arrow grows to represent the blocking recovery stress.
+6. The plot overlays the free (dashed) and constrained (solid) exponential recovery curves; a tracer dot follows the active one. Read **Relaxation time &tau;**, **Shape recovery ratio R<sub>r</sub>**, **Generated recovery stress**, and **Time to 95% recovery t<sub>95</sub>**.
+7. Advance to Sub-Calc D.
 
 ---
 
-## Sub-Calc E: Thermodynamics & Efficiency
-**Objective:** Quantify the thermodynamic energy budget (stored elastic energy, heat input, mechanical work output, and efficiency) of a shape memory actuator.
+## Sub-Calc D: Multi-Shape Memory & the Fox Equation
+**Objective:** Compare triple-shape recovery in a phase-separated blend against dual-shape recovery in a miscible blend.
 
-1. **Setup Actuator Dimensions:** Adjust the **Muscle Length (cm)** and **Muscle Thickness (cm)** sliders.
-2. **Set Thermal Properties:** Adjust the **Specific Heat Capacity (C<sub>p</sub>)** and **Material Density (&rho;)** sliders.
-3. **Trigger Actuation:** Click **Run Load Cycle**.
-4. **Observe Output:** Watch the 3D actuator heat up to trigger temperature (45°C), lift a mechanical load block, and perform work.
-5. **Record Energy Budget:** Note the output values in the results panel:
-   * **Programmed Stored Energy (U<sub>stored</sub>)**
-   * **Thermal Trigger Heat Input (Q)**
-   * **Mechanical Work Output (W)**
-   * **Thermodynamic Efficiency (&eta;)**
+1. Set the **PU / PMMA Blend Ratio** slider (0-100). The labels update the PU and PMMA weight fractions; sliding right raises the PMMA content w<sub>2</sub>.
+2. Pick a **Shape Memory Mode**: **Triple-Shape (phase-separated, T<sub>g1</sub>=45&deg;C, T<sub>g2</sub>=90&deg;C)** keeps two separate domain transitions; **Dual-Shape (miscible blend)** collapses them into a single Fox-equation T<sub>g</sub>.
+3. Press **Initiate Heating Cycle**.
+4. Watch the specimen recover. In phase-separated mode it releases in two stages - the S-curve relaxes to a single U-bow when the PU domain melts at T<sub>g1</sub>, then flattens completely once PMMA melts at T<sub>g2</sub>, giving a clear strain plateau. In miscible mode it recovers in one sharp step at T<sub>g,blend</sub>.
+5. The strain-versus-temperature plot shows the staircase (immiscible) or single drop (miscible); the sequence-verification table flags each stage as locked, active, or complete.
+6. Read **w<sub>1</sub>**, **w<sub>2</sub>**, the **Calculated T<sub>g</sub> (Fox eq.)**, and the observed recovery count. Advance to Sub-Calc E.
+
+---
+
+## Sub-Calc E: Actuation Energy & Efficiency
+**Objective:** Size an SMP muscle and compute its stored energy, trigger heat, work output, and thermal efficiency.
+
+1. Set the geometry and material sliders: **Length (cm)** (1-20), **Thickness (cm)** (0.1-2.0), **Density (g/cm&sup3;)** (0.5-2.0), and **Specific Heat C<sub>p</sub> (J/g&deg;C)** (0.5-3.0). The specimen width is fixed at 2.0 cm.
+2. The fixed **Material & Thermal Constants** are listed in the panel: E<sub>rubbery</sub> = 15 MPa, &epsilon;<sub>u</sub> = 100%, &sigma;<sub>recovery</sub> = 1.5 MPa, T<sub>ambient</sub> = 20&deg;C, T<sub>recovery</sub> = 45&deg;C, so &Delta;T = 25&deg;C.
+3. Press **Trigger Thermodynamic Actuation**. The muscle heats from 20&deg;C to 45&deg;C, contracts its recovery stroke, and drives the load block through the piston.
+4. Follow the energy-balance panel as it fills in geometry, U<sub>stored</sub>, Q, W, and &eta; line by line, and watch the live temperature and recovered-strain readouts.
+5. Record the final **Energy stored U<sub>stored</sub>**, **Thermal energy to trigger Q**, **Mechanical work output W**, and **Overall thermal efficiency &eta;** - typically a low single-digit percentage for an SMP.
