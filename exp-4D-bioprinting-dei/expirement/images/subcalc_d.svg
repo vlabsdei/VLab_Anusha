@@ -1,0 +1,106 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .axis-line { stroke: #334155; stroke-width: 2; }
+      .grid-line { stroke: #E2E8F0; stroke-width: 1; }
+      .curve-plga { stroke: #E2570F; stroke-width: 2.5; fill: none; }
+      .curve-pla { stroke: #1E40AF; stroke-width: 2.5; fill: none; }
+      .curve-pcl { stroke: #334155; stroke-width: 2.5; fill: none; }
+      .failure-line { stroke: #E2570F; stroke-width: 2; stroke-dasharray: 3,3; }
+      .axis-label { font-family: Arial, sans-serif; font-size: 12px; fill: #334155; }
+      .title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #334155; }
+      .tick-label { font-family: Arial, sans-serif; font-size: 10px; fill: #334155; }
+      .legend-label { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; }
+      .marker { stroke: #334155; stroke-width: 2; fill: none; }
+      .marker-text { font-family: Arial, sans-serif; font-size: 10px; fill: #334155; }
+    </style>
+  </defs>
+
+  <!-- White background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" class="title" text-anchor="middle">Scaffold Degradation &amp; Mechanical Lifetime</text>
+
+  <!-- Axes -->
+  <line x1="70" y1="290" x2="570" y2="290" class="axis-line"/>
+  <line x1="70" y1="50" x2="70" y2="290" class="axis-line"/>
+
+  <!-- Grid lines -->
+  <line x1="120" y1="290" x2="120" y2="50" class="grid-line"/>
+  <line x1="170" y1="290" x2="170" y2="50" class="grid-line"/>
+  <line x1="220" y1="290" x2="220" y2="50" class="grid-line"/>
+  <line x1="270" y1="290" x2="270" y2="50" class="grid-line"/>
+  <line x1="320" y1="290" x2="320" y2="50" class="grid-line"/>
+  <line x1="370" y1="290" x2="370" y2="50" class="grid-line"/>
+  <line x1="420" y1="290" x2="420" y2="50" class="grid-line"/>
+  <line x1="470" y1="290" x2="470" y2="50" class="grid-line"/>
+  <line x1="520" y1="290" x2="520" y2="50" class="grid-line"/>
+
+  <line x1="70" y1="240" x2="570" y2="240" class="grid-line"/>
+  <line x1="70" y1="190" x2="570" y2="190" class="grid-line"/>
+  <line x1="70" y1="140" x2="570" y2="140" class="grid-line"/>
+  <line x1="70" y1="90" x2="570" y2="90" class="grid-line"/>
+
+  <!-- PLGA curve: fast decay (E ∝ M^4/3, k_deg = 0.02/day) -->
+  <path d="M 70 70 Q 130 95, 180 140 Q 200 160, 220 190 L 250 290" class="curve-plga"/>
+  <circle cx="200" cy="160" r="3" class="marker" fill="#E2570F"/>
+  <text x="200" y="210" class="legend-label" text-anchor="middle" fill="#E2570F">PLGA ~3 wk</text>
+
+  <!-- PLA curve: medium decay (k_deg = 0.002/day) -->
+  <path d="M 70 70 Q 160 95, 260 140 Q 320 165, 370 190 Q 400 210, 430 240 L 480 290" class="curve-pla"/>
+  <circle cx="370" cy="190" r="3" class="marker" fill="#1E40AF"/>
+  <text x="370" y="240" class="legend-label" text-anchor="middle" fill="#1E40AF">PLA ~90 d</text>
+
+  <!-- PCL curve: slow decay (k_deg = 0.0005/day) -->
+  <path d="M 70 70 Q 240 85, 380 110 Q 450 125, 520 155 L 560 240" class="curve-pcl"/>
+  <circle cx="520" cy="155" r="3" class="marker" fill="#334155"/>
+  <text x="520" y="200" class="legend-label" text-anchor="middle" fill="#334155">PCL ~1 yr</text>
+
+  <!-- E_min failure floor -->
+  <line x1="70" y1="200" x2="570" y2="200" class="failure-line"/>
+  <text x="55" y="205" class="tick-label" text-anchor="end" fill="#E2570F" font-weight="bold">E_min</text>
+
+  <!-- Tissue regeneration time zones (annotations) -->
+  <text x="140" y="330" class="marker-text" text-anchor="middle">Skin</text>
+  <text x="140" y="345" class="tick-label" text-anchor="middle">(~21 d)</text>
+
+  <text x="300" y="330" class="marker-text" text-anchor="middle">Bone</text>
+  <text x="300" y="345" class="tick-label" text-anchor="middle">(~90 d)</text>
+
+  <text x="470" y="330" class="marker-text" text-anchor="middle">Cartilage</text>
+  <text x="470" y="345" class="tick-label" text-anchor="middle">(~150 d)</text>
+
+  <!-- Axis labels -->
+  <text x="320" y="330" class="axis-label" text-anchor="middle">Time (days)</text>
+  <text x="25" y="170" class="axis-label" text-anchor="middle" transform="rotate(-90 25 170)">Modulus E(t)/E₀ (-)</text>
+
+  <!-- Tick marks -->
+  <line x1="65" y1="290" x2="75" y2="290" class="axis-line"/>
+  <line x1="65" y1="240" x2="75" y2="240" class="axis-line"/>
+  <line x1="65" y1="190" x2="75" y2="190" class="axis-line"/>
+  <line x1="65" y1="140" x2="75" y2="140" class="axis-line"/>
+  <line x1="65" y1="90" x2="75" y2="90" class="axis-line"/>
+
+  <line x1="70" y1="295" x2="70" y2="305" class="axis-line"/>
+  <line x1="170" y1="295" x2="170" y2="305" class="axis-line"/>
+  <line x1="270" y1="295" x2="270" y2="305" class="axis-line"/>
+  <line x1="370" y1="295" x2="370" y2="305" class="axis-line"/>
+  <line x1="470" y1="295" x2="470" y2="305" class="axis-line"/>
+
+  <!-- Axis tick labels -->
+  <text x="70" y="320" class="tick-label" text-anchor="middle">0</text>
+  <text x="170" y="320" class="tick-label" text-anchor="middle">30</text>
+  <text x="270" y="320" class="tick-label" text-anchor="middle">60</text>
+  <text x="370" y="320" class="tick-label" text-anchor="middle">120</text>
+  <text x="470" y="320" class="tick-label" text-anchor="middle">180</text>
+
+  <text x="50" y="295" class="tick-label" text-anchor="end">0</text>
+  <text x="50" y="245" class="tick-label" text-anchor="end">0.25</text>
+  <text x="50" y="195" class="tick-label" text-anchor="end">0.5</text>
+  <text x="50" y="145" class="tick-label" text-anchor="end">0.75</text>
+  <text x="50" y="95" class="tick-label" text-anchor="end">1.0</text>
+
+  <!-- Model formula annotation -->
+  <text x="350" y="50" class="tick-label" font-style="italic">E(t) = E₀·exp(-(4/3)k_deg·t)</text>
+</svg>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc C · Cell Viability - 4D Bioprinting</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Printability</span><span class="subcalc__desc">Power-law rheology</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Gelation</span><span class="subcalc__desc">Avrami gelation</span></span></a>
+            <a class="subcalc is-active" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Cell Viability</span><span class="subcalc__desc">Shear-stress viability</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Scaffold Life</span><span class="subcalc__desc">Scaffold degradation</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Stent Design</span><span class="subcalc__desc">4D tracheal capstone</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>3</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index1.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index3.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc C · Shear-Stress Viability</span>
+            <h1 class="stage__title">Cell Viability</h1>
+            <p class="stage__obj">Extrusion squeezes living cells through the nozzle. Wall shear stress &tau;<sub>wall</sub> = &eta;&middot;(4v/R) rises steeply as the nozzle narrows, and survival falls as S = exp(&minus;k&middot;&tau;<sub>wall</sub>&middot;t<sub>res</sub>). This is the resolution-viability trade-off unique to bioprinting.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the print conditions, then see which nozzles keep survival above the 85% target.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Cells through nozzle</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Cell survival vs wall shear stress</div>
+                    <canvas id="plotCanvasViab" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Wall shear stress vs nozzle diameter</div>
+                    <canvas id="plotCanvasTau" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Resolution vs viability by nozzle</h3>
+            <table id="viabTable">
+                <thead><tr><th>Nozzle</th><th>τ_wall</th><th>Survival</th><th style="text-align:right;">Verdict</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind cell death</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Print speed</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>v_print (mm/s)</label><input type="range" id="vInput" aria-label="v" min="2" max="40" step="1" value="10"><div class="slider-val" id="valV">10 mm/s</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Nozzle viscosity</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>&eta; at print shear (Pa·s)</label><input type="range" id="etaInput" aria-label="eta" min="0.05" max="2.0" step="0.05" value="0.30"><div class="slider-val" id="valEta">0.30 Pa·s</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Nozzle length</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>L_nozzle (mm)</label><input type="range" id="lInput" aria-label="L" min="0.5" max="10" step="0.5" value="2"><div class="slider-val" id="valL">2.0 mm</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Cell shear sensitivity</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>k_kill (Pa⁻¹s⁻¹)</label><input type="range" id="kkillInput" aria-label="kkill" min="0.002" max="0.03" step="0.001" value="0.01"><div class="slider-val" id="valKkill">0.010 Pa⁻¹s⁻¹</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Print the Cells</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Do the cells survive?</h3>
+                        <div class="result-row"><span class="result-label">Residence time in nozzle</span><span class="result-val" id="resTres">-</span></div>
+                        <div class="result-row"><span class="result-label">τ_wall @ 400 µm</span><span class="result-val" id="resTau">-</span></div>
+                        <div class="result-row"><span class="result-label">Survival @ 400 µm</span><span class="result-val" id="resSurv">-</span></div>
+                        <div class="result-row"><span class="result-label">Nozzles passing (S>85%)</span><span class="result-val" id="resPass">-</span></div>
+                        <div class="result-row"><span class="result-label">Smallest safe nozzle</span><span class="result-val" id="resMinNoz">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>
