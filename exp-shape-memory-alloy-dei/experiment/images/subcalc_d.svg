@@ -1,0 +1,106 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 30" fill="none" stroke="#E2E8F0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="620" height="360" fill="url(#grid)"/>
+
+  <!-- Axes -->
+  <line x1="60" y1="30" x2="60" y2="310" stroke="#334155" stroke-width="2"/>
+  <line x1="60" y1="310" x2="600" y2="310" stroke="#334155" stroke-width="2"/>
+
+  <!-- Axis labels -->
+  <text x="25" y="180" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="end" font-style="italic">Force (N)</text>
+  <text x="330" y="340" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle" font-style="italic">Stroke (mm)</text>
+
+  <!-- Stroke markers on x-axis -->
+  <line x1="100" y1="305" x2="100" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="100" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">0</text>
+
+  <line x1="180" y1="305" x2="180" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="180" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">1</text>
+
+  <line x1="260" y1="305" x2="260" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="260" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">2</text>
+
+  <line x1="340" y1="305" x2="340" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="340" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">3</text>
+
+  <line x1="420" y1="305" x2="420" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="420" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">4</text>
+
+  <!-- Force markers on y-axis -->
+  <line x1="55" y1="310" x2="65" y2="310" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="315" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">0</text>
+
+  <line x1="55" y1="250" x2="65" y2="250" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="255" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">50</text>
+
+  <line x1="55" y1="190" x2="65" y2="190" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="195" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">100</text>
+
+  <line x1="55" y1="130" x2="65" y2="130" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="135" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">150</text>
+
+  <line x1="55" y1="70" x2="65" y2="70" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="75" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">200</text>
+
+  <!-- Force-stroke line (triangular actuation profile) -->
+  <!-- From F_block at 0 stroke to 0 force at max stroke -->
+  <!-- F_block ≈ 160 N (for a typical 1 mm² wire), d_stroke ≈ 4 mm -->
+  <line x1="100" y1="100" x2="420" y2="310" stroke="#1E40AF" stroke-width="2.5"/>
+
+  <!-- Work triangle (shaded area) -->
+  <polygon points="100,310 100,100 420,310" fill="#E2570F" opacity="0.25" stroke="none"/>
+
+  <!-- Label corners of work triangle -->
+  <!-- Blocking force point -->
+  <circle cx="100" cy="100" r="2.5" fill="#E2570F" stroke="none"/>
+  <text x="85" y="100" font-family="Arial, sans-serif" font-size="11" fill="#E2570F" font-weight="bold" text-anchor="end">F<tspan baseline-shift="sub">block</tspan></text>
+
+  <!-- Maximum stroke point -->
+  <circle cx="420" cy="310" r="2.5" fill="#E2570F" stroke="none"/>
+  <text x="420" y="330" font-family="Arial, sans-serif" font-size="11" fill="#E2570F" font-weight="bold" text-anchor="middle">d<tspan baseline-shift="sub">stroke</tspan></text>
+
+  <!-- Origin -->
+  <circle cx="100" cy="310" r="2.5" fill="#334155" stroke="none"/>
+
+  <!-- Work area annotation -->
+  <text x="250" y="210" font-family="Arial, sans-serif" font-size="12" fill="#E2570F" font-weight="bold" text-anchor="middle">W = F<tspan baseline-shift="sub">block</tspan> × d<tspan baseline-shift="sub">stroke</tspan> / 2</text>
+
+  <!-- Formula box -->
+  <rect x="30" y="20" width="300" height="80" fill="white" stroke="#334155" stroke-width="1"/>
+  <text x="180" y="40" font-family="Arial, sans-serif" font-size="12" fill="#334155" font-weight="bold" text-anchor="middle">Actuator Performance</text>
+  <text x="40" y="60" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="start">Stroke: d = ε<tspan baseline-shift="sub">pre</tspan> × L<tspan baseline-shift="sub">wire</tspan></text>
+  <text x="40" y="77" font-family="Arial, sans-serif" font-size="11" fill="#334155" text-anchor="start">Force: F = σ<tspan baseline-shift="sub">recovery</tspan> × A<tspan baseline-shift="sub">wire</tspan></text>
+  <text x="40" y="94" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="start" font-style="italic">Specific Work: w<tspan baseline-shift="sub">sp</tspan> = W / m<tspan baseline-shift="sub">wire</tspan> [J/kg]</text>
+
+  <!-- Comparison box -->
+  <rect x="370" y="20" width="230" height="100" fill="white" stroke="#334155" stroke-width="1"/>
+  <text x="485" y="40" font-family="Arial, sans-serif" font-size="12" fill="#334155" font-weight="bold" text-anchor="middle">Actuator Comparison</text>
+
+  <line x1="380" y1="48" x2="580" y2="48" stroke="#334155" stroke-width="0.5"/>
+
+  <text x="380" y="65" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="start" font-weight="bold">Material</text>
+  <text x="485" y="65" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle" font-weight="bold">w<tspan baseline-shift="sub">sp</tspan> [J/kg]</text>
+
+  <text x="380" y="82" font-family="Arial, sans-serif" font-size="10" fill="#1E40AF" text-anchor="start">Nitinol (SMA)</text>
+  <text x="485" y="82" font-family="Arial, sans-serif" font-size="10" fill="#1E40AF" text-anchor="middle" font-weight="bold">250-400</text>
+
+  <text x="380" y="98" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="start">SMP</text>
+  <text x="485" y="98" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">~5</text>
+
+  <text x="380" y="114" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="start">Pneumatics</text>
+  <text x="485" y="114" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">~100</text>
+
+  <!-- Design trade-off annotation -->
+  <rect x="100" y="240" width="350" height="60" fill="white" stroke="#E2570F" stroke-width="1.5"/>
+  <text x="275" y="260" font-family="Arial, sans-serif" font-size="11" fill="#334155" font-weight="bold" text-anchor="middle">Design Trade-off</text>
+  <text x="275" y="280" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">Larger diameter → higher F<tspan baseline-shift="sub">block</tspan>, but L<tspan baseline-shift="sub">wire</tspan> must increase for stroke</text>
+  <text x="275" y="295" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">Optimize for application: force or displacement</text>
+</svg>

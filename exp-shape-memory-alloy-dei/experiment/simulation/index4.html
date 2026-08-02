@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc E · Fatigue Rig - Shape Memory Alloys</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">DSC Machine</span><span class="subcalc__desc">Transformation temps</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">UTM</span><span class="subcalc__desc">Superelastic hysteresis</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Bench Supply</span><span class="subcalc__desc">Joule heating &amp; R(T)</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Actuator Rig</span><span class="subcalc__desc">Stroke &amp; blocking force</span></span></a>
+            <a class="subcalc is-active" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Fatigue Rig</span><span class="subcalc__desc">Coffin-Manson life</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>5</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index3.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-disabled" title="End of simulation">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc E · Cyclic Durability</span>
+            <h1 class="stage__title">Fatigue Rig</h1>
+            <p class="stage__obj">Nitinol fatigue life follows an inverse-square Coffin-Manson relationship with applied strain amplitude. Set the strain amplitude and read the predicted cycle life, plus the functional degradation of recoverable strain after 10,000 cycles.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Nitinol fatigue life displays an inverse square relationship with applied strain amplitude (Coffin-Manson). Evaluate cycling degradation.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Cycles: 0</div>
+                <div class="sim-badge" style="position:absolute; top:10px; right:10px; background:rgba(15,23,42,.75); color:#fff; padding:4px 8px; border-radius:4px; font-size:10px; font-family:monospace; font-weight:bold; z-index:10; pointer-events:none; border:1px solid rgba(255,255,255,.1);">R.R. MOORE FATIGUE &times; NITINOL</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div>
+                <div class="sim-label">Live Analytics: Fatigue curves</div>
+                <canvas id="plotCanvas" width="450" height="400"></canvas>
+            </div>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">Simulation Variables</div>
+                        <div class="form-options">
+                            <div class="slider-group">
+                                <label>Applied Strain Amplitude (%)</label>
+                                <input type="range" id="appliedStrain" aria-label="Applied Strain" min="2" max="8" value="4" step="0.5">
+                                <div class="slider-val" id="valAppliedStrain">4.0 %</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Initiate Fatigue Cycling</button>
+                        <button type="button" onclick="location.reload()">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer" style="display:flex; flex-direction:column; gap:18px;">
+                    <div class="result-box">
+                        <h3>Structural cycle life</h3>
+                        <div class="result-row"><span class="result-label">Fatigue Limit (N cycles)</span><span class="result-val" id="resCycles">-</span></div>
+                        <div class="result-row"><span class="result-label">Design Status</span><span class="result-val" id="resStatus">-</span></div>
+                    </div>
+                    <div class="result-box">
+                        <h3>Functional degradation</h3>
+                        <div class="result-row"><span class="result-label">Recoverable Strain @ 10k Cycles</span><span class="result-val" id="resDegstrain">-</span></div>
+                        <div class="result-row"><span class="result-label">Degradation Loss (%)</span><span class="result-val" id="resLoss">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

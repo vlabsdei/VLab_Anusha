@@ -1,0 +1,102 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 30" fill="none" stroke="#E2E8F0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="620" height="360" fill="url(#grid)"/>
+
+  <!-- Axes -->
+  <line x1="60" y1="30" x2="60" y2="310" stroke="#334155" stroke-width="2"/>
+  <line x1="60" y1="310" x2="600" y2="310" stroke="#334155" stroke-width="2"/>
+
+  <!-- Axis labels -->
+  <text x="25" y="180" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="end" font-style="italic">Temperature (°C)</text>
+  <text x="330" y="340" font-family="Arial, sans-serif" font-size="12" fill="#334155" text-anchor="middle" font-style="italic">Time (s)</text>
+
+  <!-- Time markers on x-axis -->
+  <line x1="100" y1="305" x2="100" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="100" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">0</text>
+
+  <line x1="180" y1="305" x2="180" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="180" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">5</text>
+
+  <line x1="260" y1="305" x2="260" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="260" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">10</text>
+
+  <line x1="340" y1="305" x2="340" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="340" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">15</text>
+
+  <line x1="420" y1="305" x2="420" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="420" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">20</text>
+
+  <line x1="500" y1="305" x2="500" y2="315" stroke="#334155" stroke-width="1"/>
+  <text x="500" y="330" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">25</text>
+
+  <!-- Temperature markers on y-axis -->
+  <line x1="55" y1="310" x2="65" y2="310" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="315" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">20</text>
+
+  <line x1="55" y1="250" x2="65" y2="250" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="255" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">40</text>
+
+  <line x1="55" y1="190" x2="65" y2="190" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="195" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">60</text>
+
+  <line x1="55" y1="130" x2="65" y2="130" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="135" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">80</text>
+
+  <line x1="55" y1="70" x2="65" y2="70" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="75" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="end">100</text>
+
+  <!-- Exponential heating curve approaching steady-state (Tss ≈ 90°C) -->
+  <!-- T(t) = Tamb + (Tss - Tamb) * (1 - exp(-t/tau)) -->
+  <!-- Using tau ≈ 3s, Tss = 90°C, Tamb = 20°C -->
+  <path d="M 100 310 Q 150 295 200 245 Q 250 200 300 170 Q 350 150 400 140 Q 450 135 500 133 Q 550 132 600 132"
+        fill="none" stroke="#1E40AF" stroke-width="2.5"/>
+
+  <!-- A_f line at 68°C -->
+  <line x1="60" y1="152" x2="600" y2="152" stroke="#E2570F" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="50" y="157" font-family="Arial, sans-serif" font-size="11" fill="#E2570F" font-weight="bold" text-anchor="end">A<tspan baseline-shift="sub">f</tspan> = 68°C</text>
+
+  <!-- Intersection point (activation time t_act) -->
+  <circle cx="270" cy="152" r="3" fill="#E2570F" stroke="none"/>
+  <line x1="270" y1="152" x2="270" y2="320" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="270" y="335" font-family="Arial, sans-serif" font-size="10" fill="#E2570F" text-anchor="middle" font-weight="bold">t<tspan baseline-shift="sub">act</tspan></text>
+
+  <!-- T_ss asymptote line -->
+  <line x1="60" y1="132" x2="600" y2="132" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <text x="50" y="140" font-family="Arial, sans-serif" font-size="10" fill="#E2570F" text-anchor="end" font-style="italic">T<tspan baseline-shift="sub">ss</tspan> ≈ 90°C</text>
+
+  <!-- Scenario annotations -->
+  <text x="330" y="35" font-family="Arial, sans-serif" font-size="13" fill="#334155" font-weight="bold" text-anchor="middle">Resistive Heating in Nitinol Wire</text>
+
+  <!-- Case 1: Successful actuation (reaches A_f) -->
+  <rect x="100" y="50" width="200" height="70" fill="white" stroke="#1E40AF" stroke-width="1.5"/>
+  <text x="200" y="70" font-family="Arial, sans-serif" font-size="11" fill="#334155" font-weight="bold" text-anchor="middle">Sufficient Current:</text>
+  <text x="200" y="85" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">T<tspan baseline-shift="sub">ss</tspan> &gt; A<tspan baseline-shift="sub">f</tspan></text>
+  <text x="200" y="100" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">Wire actuates at t<tspan baseline-shift="sub">act</tspan></text>
+  <text x="200" y="115" font-family="Arial, sans-serif" font-size="9" fill="#334155" text-anchor="middle" font-style="italic">(shown here)</text>
+
+  <!-- Case 2: Failed actuation (stalls below A_f) -->
+  <rect x="350" y="50" width="200" height="70" fill="white" stroke="#E2570F" stroke-width="1.5"/>
+  <text x="450" y="70" font-family="Arial, sans-serif" font-size="11" fill="#334155" font-weight="bold" text-anchor="middle">Insufficient Current:</text>
+  <text x="450" y="85" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">T<tspan baseline-shift="sub">ss</tspan> ≤ A<tspan baseline-shift="sub">f</tspan></text>
+  <text x="450" y="100" font-family="Arial, sans-serif" font-size="10" fill="#334155" text-anchor="middle">Wire asymptotes below A<tspan baseline-shift="sub">f</tspan></text>
+  <text x="450" y="115" font-family="Arial, sans-serif" font-size="9" fill="#334155" text-anchor="middle" font-style="italic">No actuation occurs</text>
+
+  <!-- Legend -->
+  <rect x="450" y="240" width="150" height="90" fill="white" stroke="#334155" stroke-width="1"/>
+  <line x1="460" y1="255" x2="495" y2="255" stroke="#1E40AF" stroke-width="2.5"/>
+  <text x="505" y="259" font-family="Arial, sans-serif" font-size="10" fill="#334155">T(t) curve</text>
+
+  <line x1="460" y1="275" x2="495" y2="275" stroke="#E2570F" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="505" y="279" font-family="Arial, sans-serif" font-size="10" fill="#334155">A<tspan baseline-shift="sub">f</tspan> threshold</text>
+
+  <line x1="460" y1="295" x2="495" y2="295" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+  <text x="505" y="299" font-family="Arial, sans-serif" font-size="10" fill="#334155">Asymptote T<tspan baseline-shift="sub">ss</tspan></text>
+</svg>

@@ -1,0 +1,60 @@
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="640" height="400" fill="#FFFFFF"/>
+  <text x="320" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">DSC Thermogram - Martensitic Transformation of Nitinol</text>
+
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="205" y1="52" x2="205" y2="338"/>
+    <line x1="340" y1="52" x2="340" y2="338"/>
+    <line x1="475" y1="52" x2="475" y2="338"/>
+  </g>
+
+  <line x1="70" y1="195" x2="610" y2="195" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <line x1="70" y1="52" x2="70" y2="338" stroke="#334155" stroke-width="1.5"/>
+  <line x1="70" y1="338" x2="610" y2="338" stroke="#334155" stroke-width="1.5"/>
+
+  <g fill="#334155" font-size="11" text-anchor="middle">
+    <line x1="70" y1="338" x2="70" y2="343" stroke="#334155"/><text x="70" y="356">0</text>
+    <line x1="205" y1="338" x2="205" y2="343" stroke="#334155"/><text x="205" y="356">40</text>
+    <line x1="340" y1="338" x2="340" y2="343" stroke="#334155"/><text x="340" y="356">80</text>
+    <line x1="475" y1="338" x2="475" y2="343" stroke="#334155"/><text x="475" y="356">120</text>
+    <line x1="610" y1="338" x2="610" y2="343" stroke="#334155"/><text x="610" y="356">160</text>
+  </g>
+  <text x="340" y="378" text-anchor="middle" font-size="13" fill="#334155">Temperature (°C)</text>
+  <text x="26" y="195" text-anchor="middle" font-size="13" fill="#334155" transform="rotate(-90 26 195)">Heat Flow  (endo up)</text>
+
+  <!-- transition markers -->
+  <g stroke="#94A3B8" stroke-width="1" stroke-dasharray="2 3">
+    <line x1="205" y1="230" x2="205" y2="272"/>
+    <line x1="272.5" y1="195" x2="272.5" y2="272"/>
+    <line x1="373.8" y1="122" x2="373.8" y2="195"/>
+    <line x1="441.2" y1="122" x2="441.2" y2="195"/>
+  </g>
+  <g font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">
+    <text x="205" y="287">Mf</text>
+    <text x="272.5" y="287">Ms</text>
+    <text x="373.8" y="116">As</text>
+    <text x="441.2" y="116">Af</text>
+  </g>
+
+  <!-- cooling scan (exothermic, peak down) -->
+  <polyline fill="none" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 4"
+    points="70.0,195.0 97.0,195.1 110.5,195.2 124.0,195.7 137.5,196.9 151.0,199.8 164.5,205.6 178.0,215.4 191.5,229.7 205.0,246.6 218.5,262.2 232.0,271.7 245.5,271.7 259.0,262.2 272.5,246.6 286.0,229.7 299.5,215.4 313.0,205.6 326.5,199.8 340.0,196.9 353.5,195.7 367.0,195.2 380.5,195.1 394.0,195.0 610.0,195.0"/>
+
+  <!-- heating scan (endothermic, peak up) -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.5"
+    points="70.0,195.0 245.5,195.0 272.5,194.9 286.0,194.6 299.5,193.9 313.0,191.9 326.5,187.8 340.0,180.1 353.5,167.9 367.0,152.0 380.5,135.1 394.0,122.0 407.5,117.0 421.0,122.0 434.5,135.1 448.0,152.0 461.5,167.9 475.0,180.1 488.5,187.8 502.0,191.9 515.5,193.9 529.0,194.6 542.5,194.9 556.0,195.0 610.0,195.0"/>
+
+  <!-- hysteresis span -->
+  <line x1="272.5" y1="80" x2="441.2" y2="80" stroke="#E2570F" stroke-width="1.5"/>
+  <path d="M272.5,76 L272.5,84 M441.2,76 L441.2,84" stroke="#E2570F" stroke-width="1.5"/>
+  <text x="356.8" y="72" text-anchor="middle" font-size="12" fill="#E2570F" font-weight="bold">ΔT = Af - Ms = 50 °C</text>
+
+  <!-- legend -->
+  <g font-size="11" fill="#334155">
+    <line x1="90" y1="120" x2="118" y2="120" stroke="#1E40AF" stroke-width="2.5"/>
+    <text x="123" y="124">Heating (endothermic)</text>
+    <line x1="90" y1="139" x2="118" y2="139" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <text x="123" y="143">Cooling (exothermic)</text>
+  </g>
+</svg>
