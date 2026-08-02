@@ -1,0 +1,90 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Manufacturing Cost - 4D vs Injection Moulding</text>
+
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="80" y1="40" x2="80" y2="280"/>
+    <line x1="180" y1="40" x2="180" y2="280"/>
+    <line x1="280" y1="40" x2="280" y2="280"/>
+    <line x1="380" y1="40" x2="380" y2="280"/>
+    <line x1="480" y1="40" x2="480" y2="280"/>
+    <line x1="580" y1="40" x2="580" y2="280"/>
+
+    <line x1="80" y1="280" x2="580" y2="280"/>
+    <line x1="80" y1="232" x2="580" y2="232"/>
+    <line x1="80" y1="184" x2="580" y2="184"/>
+    <line x1="80" y1="136" x2="580" y2="136"/>
+    <line x1="80" y1="88" x2="580" y2="88"/>
+    <line x1="80" y1="40" x2="580" y2="40"/>
+  </g>
+
+  <!-- axes -->
+  <line x1="80" y1="40" x2="80" y2="280" stroke="#1E40AF" stroke-width="1.8"/>
+  <line x1="80" y1="280" x2="580" y2="280" stroke="#1E40AF" stroke-width="1.8"/>
+
+  <!-- x tick labels (production volume) -->
+  <g font-size="11" fill="#334155" text-anchor="middle">
+    <text x="80" y="300">0</text>
+    <text x="180" y="300">500</text>
+    <text x="280" y="300">1000</text>
+    <text x="380" y="300">2000</text>
+    <text x="480" y="300">5000</text>
+    <text x="580" y="300">10k</text>
+  </g>
+
+  <!-- y tick labels (cost per part, $) -->
+  <g font-size="11" fill="#334155" text-anchor="end">
+    <text x="72" y="284">$0</text>
+    <text x="72" y="236">$5</text>
+    <text x="72" y="188">$10</text>
+    <text x="72" y="140">$15</text>
+    <text x="72" y="92">$20</text>
+    <text x="72" y="44">$25</text>
+  </g>
+
+  <!-- axis labels -->
+  <text x="330" y="335" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">Production Volume (parts)</text>
+  <text x="25" y="160" text-anchor="middle" font-size="12" font-weight="600" fill="#334155" transform="rotate(-90 25 160)">Cost per Part ($)</text>
+
+  <!-- 4D route: flat line C_4D = ~$12/part (rate·t_print + material) -->
+  <line x1="80" y1="160" x2="580" y2="160" stroke="#1E40AF" stroke-width="2.6" stroke-linejoin="round"/>
+  <text x="510" y="148" font-size="11" font-weight="700" fill="#1E40AF">4D-printing</text>
+  <text x="510" y="162" font-size="10" fill="#1E40AF">(flat: ~$12/part)</text>
+
+  <!-- Injection moulding route: falling curve C_inj(N) = C_mould/N + C_marginal -->
+  <!-- C_mould = ~$8000, C_marginal = $0.40 -->
+  <!-- At N=500: 8000/500 + 0.4 = 16.4; N=1000: 8; N=2000: 4.4; N=5000: 1.6; N=10000: 0.8 -->
+  <!-- But let's scale to fit our viewBox better: points at volumes 100, 500, 1000, 2000, 5000, 10000 -->
+  <polyline points="80,270 180,200 280,150 380,110 480,80 580,50"
+            fill="none" stroke="#E2570F" stroke-width="2.6" stroke-linejoin="round"/>
+  <text x="380" y="65" font-size="11" font-weight="700" fill="#E2570F">Injection moulding</text>
+  <text x="380" y="79" font-size="10" fill="#E2570F">C_mould/N + marginal</text>
+
+  <!-- crossover point (N_break, approximately at 1000 volumes, $12 cost) -->
+  <circle cx="280" cy="160" r="4" fill="#E2570F" stroke="#1E40AF" stroke-width="1.8"/>
+  <text x="280" y="195" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">N_break</text>
+
+  <!-- annotation lines to crossover -->
+  <line x1="280" y1="280" x2="280" y2="168" stroke="#334155" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+
+  <!-- region labels -->
+  <g font-size="11" fill="#1E40AF" font-weight="600" opacity="0.8">
+    <text x="120" y="220">Low-volume:</text>
+    <text x="120" y="235">4D wins</text>
+  </g>
+
+  <g font-size="11" fill="#E2570F" font-weight="600" opacity="0.8">
+    <text x="450" y="110">High-volume:</text>
+    <text x="450" y="125">Moulding wins</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="10" fill="#334155">
+    <rect x="90" y="45" width="220" height="50" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.2"/>
+    <line x1="100" y1="55" x2="130" y2="55" stroke="#1E40AF" stroke-width="2.6"/>
+    <text x="140" y="59" font-weight="600">4D: rate×t_print + material (flat)</text>
+    <line x1="100" y1="72" x2="130" y2="72" stroke="#E2570F" stroke-width="2.6"/>
+    <text x="140" y="76" font-weight="600">Moulding: C_mould/N + per-part cost</text>
+  </g>
+</svg>

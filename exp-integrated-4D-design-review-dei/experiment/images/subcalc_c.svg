@@ -1,0 +1,90 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Lifecycle Energy Budget - 4D vs Conventional</text>
+
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="80" y1="40" x2="80" y2="280"/>
+    <line x1="180" y1="40" x2="180" y2="280"/>
+    <line x1="280" y1="40" x2="280" y2="280"/>
+    <line x1="380" y1="40" x2="380" y2="280"/>
+    <line x1="480" y1="40" x2="480" y2="280"/>
+    <line x1="580" y1="40" x2="580" y2="280"/>
+
+    <line x1="80" y1="280" x2="580" y2="280"/>
+    <line x1="80" y1="232" x2="580" y2="232"/>
+    <line x1="80" y1="184" x2="580" y2="184"/>
+    <line x1="80" y1="136" x2="580" y2="136"/>
+    <line x1="80" y1="88" x2="580" y2="88"/>
+    <line x1="80" y1="40" x2="580" y2="40"/>
+  </g>
+
+  <!-- axes -->
+  <line x1="80" y1="40" x2="80" y2="280" stroke="#1E40AF" stroke-width="1.8"/>
+  <line x1="80" y1="280" x2="580" y2="280" stroke="#1E40AF" stroke-width="1.8"/>
+
+  <!-- x tick labels (cycles N) -->
+  <g font-size="11" fill="#334155" text-anchor="middle">
+    <text x="80" y="300">0</text>
+    <text x="180" y="300">500</text>
+    <text x="280" y="300">1000</text>
+    <text x="380" y="300">1500</text>
+    <text x="480" y="300">2000</text>
+    <text x="580" y="300">2500</text>
+  </g>
+
+  <!-- y tick labels (energy kJ) -->
+  <g font-size="11" fill="#334155" text-anchor="end">
+    <text x="72" y="284">0</text>
+    <text x="72" y="236">50</text>
+    <text x="72" y="188">100</text>
+    <text x="72" y="140">150</text>
+    <text x="72" y="92">200</text>
+    <text x="72" y="44">250</text>
+  </g>
+
+  <!-- axis labels -->
+  <text x="330" y="335" text-anchor="middle" font-size="12" font-weight="600" fill="#334155">Actuation Cycles N</text>
+  <text x="25" y="160" text-anchor="middle" font-size="12" font-weight="600" fill="#334155" transform="rotate(-90 25 160)">Cumulative Energy (kJ)</text>
+
+  <!-- 4D route: E_4D(N) = E_print + E_program + E_trigger·N (low slope) -->
+  <!-- starting at ~30 kJ (print+program), slope ~0.08 kJ/cycle (low trigger) -->
+  <polyline points="80,250 580,115"
+            fill="none" stroke="#1E40AF" stroke-width="2.6" stroke-linejoin="round"/>
+  <text x="520" y="80" font-size="11" font-weight="700" fill="#1E40AF">4D route</text>
+  <text x="520" y="94" font-size="10" fill="#1E40AF">E_4D(N)</text>
+
+  <!-- Conventional route: E_conv(N) = E_mould + E_actuator·N (high starting point, steeper slope) -->
+  <!-- starting at ~80 kJ (mould cost amortized), slope ~0.12 kJ/cycle (100 J = 0.1 kJ) -->
+  <polyline points="80,240 580,90"
+            fill="none" stroke="#E2570F" stroke-width="2.6" stroke-linejoin="round"/>
+  <text x="350" y="55" font-size="11" font-weight="700" fill="#E2570F">Conventional route</text>
+  <text x="350" y="69" font-size="10" fill="#E2570F">E_conv(N)</text>
+
+  <!-- crossover point (N_break, approximately at 1200 cycles, ~165 kJ) -->
+  <circle cx="340" cy="140" r="4" fill="#E2570F" stroke="#1E40AF" stroke-width="1.8"/>
+  <text x="340" y="175" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">N_break</text>
+
+  <!-- annotation lines to crossover -->
+  <line x1="340" y1="280" x2="340" y2="148" stroke="#334155" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+
+  <!-- region labels -->
+  <g font-size="11" fill="#1E40AF" font-weight="600" opacity="0.8">
+    <text x="150" y="130">4D favored</text>
+    <text x="150" y="145">(low use-count)</text>
+  </g>
+
+  <g font-size="11" fill="#E2570F" font-weight="600" opacity="0.8">
+    <text x="450" y="240">Conventional favored</text>
+    <text x="450" y="255">(high volume)</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="10" fill="#334155">
+    <rect x="90" y="45" width="200" height="50" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.2"/>
+    <line x1="100" y1="55" x2="130" y2="55" stroke="#1E40AF" stroke-width="2.6"/>
+    <text x="140" y="59" font-weight="600">4D: print + program + trigger×N</text>
+    <line x1="100" y1="72" x2="130" y2="72" stroke="#E2570F" stroke-width="2.6"/>
+    <text x="140" y="76" font-weight="600">Conventional: mould + actuator×N</text>
+  </g>
+</svg>
