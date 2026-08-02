@@ -1,0 +1,7 @@
+### Aim of the Experiment
+To model and quantify the five core capabilities of a 4D-printed soft robot, moving from a single actuator to a closed-loop controlled system:
+1. **Pneumatic Bending Actuation:** Compute the bending moment M = P&middot;A<sub>cross</sub>&middot;d<sub>ecc</sub>, the resulting curvature &kappa; = M/(E&middot;I<sub>eff</sub>), and the tip angle &theta; = &kappa;L, then show where geometric stiffening rolls the linear law off into saturation.
+2. **Shape-Memory Stiffness Switching:** Track the modulus E(T) through the glass transition T<sub>g</sub> = 40&deg;C, evaluate the stiffness ratio SR = E<sub>passive</sub>/E<sub>active</sub>, and compare the zero-power SMP hold against a continuously leaking pneumatic hold.
+3. **Earthworm Crawling Locomotion:** Derive the per-cycle net displacement &delta;<sub>net</sub> = &delta;<sub>ext</sub>&middot;(1 &minus; 1/&mu;<sub>asym</sub>) from friction asymmetry &mu;<sub>asym</sub> = &mu;<sub>back</sub>/&mu;<sub>fwd</sub> and the crawl speed v = &delta;<sub>net</sub>&middot;f.
+4. **Three-Finger Grasping & Force Closure:** Calculate the per-finger grasp force F = P&middot;A<sub>tip</sub>&middot;cos&theta;, the reachable workspace, and test the force-closure condition F&middot;&mu; &gt; mg/3 that decides hold versus drop.
+5. **Closed-Loop Bending Control:** Wrap a PID controller around the first-order pneumatic plant G(s) = K<sub>plant</sub>/(&tau;<sub>p</sub>s + 1) and tune K<sub>p</sub>, T<sub>i</sub>, T<sub>d</sub> to meet overshoot &lt; 15 % and settling time &lt; 2 s.

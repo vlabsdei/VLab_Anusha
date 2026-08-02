@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc A · Pneumatic Bending - 4D-Printed Soft Robots</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 09</div>
+            <div class="rail__title">4D-Printed Soft Robots</div>
+            <div class="rail__meta">Pneumatic bending · SMP locking · Crawling · Grasping · PID control</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc is-active" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Bending</span><span class="subcalc__desc">Pneumatic actuation</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Stiffness Lock</span><span class="subcalc__desc">SMP stiffness lock</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Crawling</span><span class="subcalc__desc">Friction-asymmetry gait</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Grasping</span><span class="subcalc__desc">Grasp &amp; force closure</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">PID Control</span><span class="subcalc__desc">Pressure-position PID</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>1</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow is-disabled" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index1.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc A · Pressure to Bending</span>
+            <h1 class="stage__title">Pneumatic Bending</h1>
+            <p class="stage__obj">Air pressure in an eccentric cavity bends a strain-limited elastomer finger: M = P&middot;A&middot;d drives curvature &kappa; = M/(E&middot;I), so &theta; = &kappa;L. Past ~30&deg; geometric stiffening makes the finger saturate below the linear prediction.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the drive pressure and finger geometry, then run the actuator to curl it to the solved bending angle.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Finger at rest</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Bending angle vs pressure (linear vs corrected)</div>
+                    <canvas id="plotCanvasBend" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Curvature &kappa; vs pressure</div>
+                    <canvas id="plotCanvasBendK" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Bending angle across the pressure sweep</h3>
+            <table id="bendTable">
+                <thead><tr><th>Pressure</th><th>&theta;_lin</th><th>&theta; (corrected)</th><th style="text-align:right;">Regime</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <div class="model-note" style="margin-top:12px;"><strong>Model note:</strong> the constant-moment-arm linear law &theta; = &kappa;L is only valid for &theta; &lesssim; 30&deg;. Above that we apply an empirical neo-Hookean-style rolloff &theta; = &theta;_lin/(1 + &beta;&middot;&theta;_lin&sup2;) (&beta; &asymp; 0.053 rad&#8315;&sup2;), calibrated to 20 kPa &rarr; 28&deg;, 80 kPa &rarr; 94&deg;.</div>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind pneumatic bending</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Drive pressure P</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>P (kPa) - cavity gauge pressure</label><input type="range" id="pInput" aria-label="P" min="0" max="100" step="1" value="50"><div class="slider-val" id="valP">50 kPa</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Finger length L</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>L (mm) - longer curls further</label><input type="range" id="lInput" aria-label="L" min="20" max="80" step="1" value="50"><div class="slider-val" id="valL">50 mm</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Cavity cross-section A</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>A_cross (mm&sup2;) - pressurised area</label><input type="range" id="aInput" aria-label="A" min="10" max="60" step="1" value="30"><div class="slider-val" id="valA">30 mm&sup2;</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">4. Wall eccentricity d</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>d_ecc (mm) - cavity to neutral axis</label><input type="range" id="dInput" aria-label="d" min="1" max="6" step="0.1" value="3"><div class="slider-val" id="valD">3.0 mm</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Pressurise the Finger</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>How far does it bend?</h3>
+                        <div class="result-row"><span class="result-label">Bending moment M</span><span class="result-val" id="resMoment">-</span></div>
+                        <div class="result-row"><span class="result-label">Curvature &kappa;</span><span class="result-val" id="resKappa">-</span></div>
+                        <div class="result-row"><span class="result-label">Linear angle &theta;_lin</span><span class="result-val" id="resThetaLin">-</span></div>
+                        <div class="result-row"><span class="result-label">Corrected angle &theta;</span><span class="result-val" id="resTheta">-</span></div>
+                        <div class="result-row"><span class="result-label">Regime</span><span class="result-val" id="resRegime">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

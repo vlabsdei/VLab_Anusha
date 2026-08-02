@@ -1,0 +1,103 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg">
+  <rect width="620" height="360" fill="white"/>
+
+  <!-- Title -->
+  <text x="310" y="25" font-size="16" font-weight="bold" fill="#334155">Earthworm Crawling: Friction Asymmetry</text>
+
+  <!-- Grid -->
+  <defs>
+    <pattern id="grid" width="40" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 30" fill="none" stroke="#E2E8F0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect x="60" y="50" width="520" height="260" fill="url(#grid)" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- Axes -->
+  <line x1="60" y1="310" x2="580" y2="310" stroke="#334155" stroke-width="2"/>
+  <line x1="60" y1="310" x2="60" y2="50" stroke="#334155" stroke-width="2"/>
+
+  <!-- Axis labels -->
+  <text x="570" y="330" font-size="13" fill="#334155" text-anchor="end">μ_asym = μ_back / μ_fwd</text>
+  <text x="35" y="60" font-size="13" fill="#334155">δ_net</text>
+
+  <!-- Axis ticks and values (x-axis) -->
+  <text x="60" y="325" font-size="11" fill="#334155" text-anchor="middle">0</text>
+  <text x="140" y="325" font-size="11" fill="#334155" text-anchor="middle">0.5</text>
+  <text x="220" y="325" font-size="11" fill="#334155" text-anchor="middle">1.0</text>
+  <text x="300" y="325" font-size="11" fill="#334155" text-anchor="middle">1.5</text>
+  <text x="380" y="325" font-size="11" fill="#334155" text-anchor="middle">2.0</text>
+  <text x="460" y="325" font-size="11" fill="#334155" text-anchor="middle">2.5</text>
+  <text x="540" y="325" font-size="11" fill="#334155" text-anchor="middle">3.0</text>
+
+  <!-- Axis ticks and values (y-axis) -->
+  <text x="55" y="315" font-size="11" fill="#334155" text-anchor="end">0</text>
+  <text x="55" y="230" font-size="11" fill="#334155" text-anchor="end">L_seg·ε</text>
+  <text x="55" y="140" font-size="11" fill="#334155" text-anchor="end">0</text>
+  <text x="55" y="60" font-size="11" fill="#334155" text-anchor="end">-L_seg·ε</text>
+
+  <!-- Minor tick marks -->
+  <line x1="60" y1="308" x2="60" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="100" y1="308" x2="100" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="140" y1="308" x2="140" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="180" y1="308" x2="180" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="220" y1="308" x2="220" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="260" y1="308" x2="260" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="300" y1="308" x2="300" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="340" y1="308" x2="340" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="380" y1="308" x2="380" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="420" y1="308" x2="420" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="460" y1="308" x2="460" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="500" y1="308" x2="500" y2="312" stroke="#334155" stroke-width="1"/>
+  <line x1="540" y1="308" x2="540" y2="312" stroke="#334155" stroke-width="1"/>
+
+  <!-- Zero crossing line (horizontal at y=180) -->
+  <line x1="60" y1="180" x2="580" y2="180" stroke="#E2E8F0" stroke-width="1" opacity="0.8"/>
+
+  <!-- Zero crossing vertical line at μ_asym = 1 -->
+  <line x1="220" y1="50" x2="220" y2="310" stroke="#E2570F" stroke-width="2" stroke-dasharray="4,4" opacity="0.7"/>
+  <text x="220" y="335" font-size="11" fill="#E2570F" font-weight="bold" text-anchor="middle">μ_asym = 1</text>
+
+  <!-- Net displacement curve: δ_net = δ_ext · (1 - 1/μ_asym) -->
+  <!-- At μ=0.5: δ_net = δ_ext·(1-2) = -δ_ext (backward, y ≈ 80) -->
+  <!-- At μ=1: δ_net = 0 (y = 180) -->
+  <!-- At μ=2: δ_net = δ_ext·(1-0.5) = 0.5·δ_ext (forward, y ≈ 240) -->
+  <!-- At μ=3: δ_net = δ_ext·(1-0.33) = 0.67·δ_ext (forward, y ≈ 245) -->
+
+  <path d="M 60,100 Q 140,120 220,180 Q 300,240 380,255 Q 460,265 540,270"
+    stroke="#1E40AF" stroke-width="2.5" fill="none"/>
+
+  <!-- Backward (left) region label -->
+  <text x="100" y="110" font-size="11" fill="#334155" font-weight="bold">Backward</text>
+  <text x="100" y="125" font-size="9" fill="#334155">(μ_asym &lt; 1)</text>
+
+  <!-- Forward (right) region label -->
+  <text x="450" y="240" font-size="11" fill="#334155" font-weight="bold">Forward</text>
+  <text x="450" y="255" font-size="9" fill="#334155">(μ_asym &gt; 1)</text>
+
+  <!-- Zero crossing point annotation -->
+  <circle cx="220" cy="180" r="3" fill="#E2570F"/>
+  <text x="245" y="195" font-size="10" fill="#E2570F" font-weight="bold">No net travel</text>
+
+  <!-- Asymmetry annotation (left side) -->
+  <g>
+    <path d="M 80 130 L 130 150" stroke="#334155" stroke-width="1"/>
+    <text x="85" y="120" font-size="9" fill="#334155">μ_back &gt; μ_fwd</text>
+  </g>
+
+  <!-- Asymmetry annotation (right side) -->
+  <g>
+    <path d="M 380 245 L 350 210" stroke="#334155" stroke-width="1"/>
+    <text x="360" y="210" font-size="9" fill="#334155">μ_back &lt; μ_fwd</text>
+  </g>
+
+  <!-- Legend -->
+  <g>
+    <line x1="420" y1="330" x2="450" y2="330" stroke="#1E40AF" stroke-width="2.5"/>
+    <text x="455" y="335" font-size="11" fill="#334155">δ_net = δ_ext(1 - 1/μ_asym)</text>
+  </g>
+
+  <g>
+    <line x1="420" y1="350" x2="450" y2="350" stroke="#E2570F" stroke-width="2" stroke-dasharray="4,4"/>
+    <text x="455" y="355" font-size="11" fill="#334155">Zero crossing</text>
+  </g>
+</svg>
