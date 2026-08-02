@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · Hygroscopic Swelling - Bilayer Actuator Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Timoshenko Bimetal</span><span class="subcalc__desc">Bending curvature &amp; stress</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Hygroscopic Swelling</span><span class="subcalc__desc">Anisotropic expansion</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Print-Path</span><span class="subcalc__desc">Raster angle &amp; twist</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Diffusion Timescale</span><span class="subcalc__desc">Fickian moisture transport</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuator Work</span><span class="subcalc__desc">Blocking force &amp; energy</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · Anisotropic Fibre Swelling</span>
+            <h1 class="stage__title">Hygroscopic Swelling</h1>
+            <p class="stage__obj">Cellulose-fibre composites swell far more across the fibre direction than along it. Set the fibre orientation and moisture uptake to see anisotropic swelling strain drive bilayer bending - or twisting when fibres run off-axis.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Setup your parameters and click 'Run Simulation' to begin.</section>
+
+        <div id="safetyWarningsBox" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+        <div class="sim-viewport-fluid">
+            <div class="viewport-card">
+                <div class="viewport-header" style="justify-content: space-between;">
+                    <span id="stateLabel" class="state-indicator flat">State: Swelling - A_s = 7.00</span>
+                    <div class="tab-pill-container">
+                        <button type="button" class="tab-pill active" id="viewSpecimenBtn">Specimen Swelling</button>
+                        <button type="button" class="tab-pill" id="viewBilayerBtn">Bilayer Bending</button>
+                    </div>
+                    <div class="viewport-actions">
+                        <button id="btnOrbitReset" class="btn-icon" title="Reset View">R</button>
+                    </div>
+                </div>
+                <div class="canvas-3d-wrapper">
+                    <div id="viewport3D"></div>
+                    <canvas id="simCanvas" width="500" height="400" style="display:none;"></canvas>
+                    <div class="legend-box" style="width:200px;">
+                        <div class="legend-title">Swelling Strain &epsilon;_xx</div>
+                        <div class="legend-bar" style="background: linear-gradient(to right, #1E40AF, #ffffff, #E2570F); height:10px; border-radius:2px; margin-top:4px;"></div>
+                        <div class="legend-labels"><span>Low</span><span>0</span><span>High</span></div>
+                        <div class="legend-title" style="border-top:1px solid var(--line); padding-top:6px; margin-top:6px;">Fibre Orientations</div>
+                        <div class="legend-direction-item">Red Arrow: Parallel Fibre (&parallel;)</div>
+                        <div class="legend-direction-item">Blue Arrow: Transverse Direction (&perp;)</div>
+                    </div>
+                </div>
+                <div class="viewport-overlay-controls">
+                    <label><input type="checkbox" id="showMeshNodes" checked> Show Mesh Nodes</label>
+                    <label><input type="checkbox" id="showDeformedMesh" checked> Show Reference Grid</label>
+                </div>
+            </div>
+
+            <div class="timeline-card">
+                <div class="timeline-row">
+                    <button id="btnPlayPause" class="btn-play">Play</button>
+                    <div class="timeline-slider-wrapper">
+                        <input type="range" id="timeScrubber" aria-label="Time Scrubber" min="0" max="20" step="0.1" value="0" style="width: 100%;">
+                    </div>
+                    <div class="time-readout"><span id="timeVal">0.0</span> s / 20s</div>
+                </div>
+                <div class="timeline-stats-row">
+                    <div class="stat-badge">Moisture &Delta;C(t): <strong id="timelineC">0.00 g/g</strong></div>
+                    <div class="stat-badge">Orientation &theta;_f: <strong id="timelineTheta">45&deg;</strong></div>
+                    <div class="stat-badge">Twist Angle: <strong id="timelineTwist">0.0&deg;</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="viz">
+            <div><div class="sim-label">Through-thickness swelling stress</div><canvas id="stressChartCanvas" width="450" height="320"></canvas></div>
+            <div><div class="sim-label">Bend &amp; twist history vs time</div><canvas id="historyChartCanvas" width="450" height="320"></canvas></div>
+        </div>
+
+        <div class="datacard">
+            <h3>Anisotropic swelling readouts</h3>
+            <table>
+                <thead><tr><th>&epsilon;&#8741; (parallel)</th><th>&epsilon;&perp; (transverse)</th><th>Anisotropy A&#8347;</th><th>Curvature &kappa;</th><th>Bend angle</th><th style="text-align:right;">Twist angle</th></tr></thead>
+                <tbody><tr>
+                    <td id="resEpsP">-</td><td id="resEpsT">-</td><td id="resAs">-</td><td id="resCurv">-</td><td id="resBend">-</td><td id="resTwist" style="text-align:right;">-</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="control-sections">
+                    <div class="control-group">
+                        <h3 class="section-title">1. Solver Model</h3>
+                        <div class="select-wrapper">
+                            <select id="solverModel">
+                                <option value="timoshenko" selected>Timoshenko (Linear)</option>
+                                <option value="elastica">Nonlinear Elastica</option>
+                                <option value="fem">FEM Validation</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">2. Material Settings</h3>
+                        <div class="input-row">
+                            <label for="matActive">Active Layer (Top)</label>
+                            <div class="select-wrapper">
+                                <select id="matActive">
+                                    <option value="cellulose" selected>Cellulose NFC (As = 7.0)</option>
+                                    <option value="wood">Wood Spruce (As = 10.0)</option>
+                                    <option value="custom">Custom Material</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="matPassive">Passive Layer (Bottom)</label>
+                            <div class="select-wrapper">
+                                <select id="matPassive">
+                                    <option value="cellulose_constrained" selected>Cellulose Constrained (&beta; = 0)</option>
+                                    <option value="pla_standard">Standard PLA (&beta; = 0)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="material-chips">
+                            <span class="value-badge">Active E = 8.5 GPa</span>
+                            <span class="value-badge">Passive E = 8.5 GPa</span>
+                            <span id="labelAs" class="value-badge">Anisotropy Index: 7.00</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">3. Swelling Settings</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Moisture Uptake (&Delta;C_target)</span><span id="valDC" class="value-badge">0.30 g/g</span></div>
+                            <input type="range" id="deltaC" aria-label="Delta C" min="0.05" max="0.50" step="0.01" value="0.30">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Fibre Orientation (&theta;_f)</span><span id="valTheta" class="value-badge">45&deg;</span></div>
+                            <input type="range" id="thetaF" aria-label="Theta F" min="0" max="90" step="1" value="45">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">4. Geometry Settings</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Active Thickness (h&#8321;)</span><span id="valH1" class="value-badge">0.50 mm</span></div>
+                            <input type="range" id="h1" aria-label="H1" min="0.1" max="2.0" step="0.05" value="0.50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Passive Thickness (h&#8322;)</span><span id="valH2" class="value-badge">0.50 mm</span></div>
+                            <input type="range" id="h2" aria-label="H2" min="0.1" max="2.0" step="0.05" value="0.50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Total Length (L)</span><span id="valLen" class="value-badge">50.00 mm</span></div>
+                            <input type="range" id="len" aria-label="Len" min="10" max="100" step="1" value="50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Beam Width (b)</span><span id="valWidth" class="value-badge">10.00 mm</span></div>
+                            <input type="range" id="beamWidth" aria-label="Beam Width" min="2" max="20" step="0.5" value="10">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-buttons">
+                        <button type="button" id="btnRun" class="btn btn-primary">Run Simulation</button>
+                        <button type="button" id="btnReset" class="btn btn-secondary">Reset Lab</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

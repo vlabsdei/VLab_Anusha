@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc E · Actuator Work Output - Bilayer Actuator Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Timoshenko Bimetal</span><span class="subcalc__desc">Bending curvature &amp; stress</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Hygroscopic Swelling</span><span class="subcalc__desc">Anisotropic expansion</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Print-Path</span><span class="subcalc__desc">Raster angle &amp; twist</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Diffusion Timescale</span><span class="subcalc__desc">Fickian moisture transport</span></span></a>
+            <a class="subcalc is-active" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Actuator Work</span><span class="subcalc__desc">Blocking force &amp; energy</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>5</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index3.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-disabled" title="End of simulation">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc E · Actuator Sizing</span>
+            <h1 class="stage__title">Actuator Work</h1>
+            <p class="stage__obj">Size a hygromorphic bilayer actuator: given its geometry and operating humidity swing, compute the free-deflection curvature, blocking force against a resisting load, and actuation energy density - compared against SMA and SMP benchmarks.</p>
+        </header>
+
+        <section id="liveInsight" class="safety-box"><strong>Live Insight:</strong> Configure materials and geometry, then simulate actuation.</section>
+
+        <div class="sim-viewport-fluid">
+            <div class="viewport-card">
+                <div class="viewport-header">
+                    <span id="stateLabel" class="state-indicator flat">State: Ready</span>
+                </div>
+                <div class="canvas-3d-wrapper" style="display:flex; flex-direction:column;">
+                    <canvas id="simCanvas" width="450" height="400" style="display:block; max-width:100%; height:auto; flex:1;"></canvas>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 14px; background:var(--surface-2); border-top:1px solid var(--line); font-size:11.5px;">
+                        <div style="display:flex; gap:14px;">
+                            <label style="display:flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:var(--ink-2);"><input type="checkbox" id="showGhost" checked> Show Free Deflection (ghost)</label>
+                            <label style="display:flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:var(--ink-2);"><input type="checkbox" id="showForce" checked> Show Force Vector</label>
+                        </div>
+                        <div style="display:flex; gap:12px; font-weight:600; color:var(--ink-3);">
+                            <span>Active Layer</span><span>Passive Layer</span><span>Free Shape</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-card">
+                <div class="timeline-row">
+                    <button id="btnPlayPause" class="btn-play">Play</button>
+                    <div class="timeline-slider-wrapper">
+                        <input type="range" id="timeScrubber" aria-label="Time Scrubber" min="0" max="100" step="1" value="0" style="width: 100%;">
+                    </div>
+                    <div class="time-readout"><span id="timeVal">0</span>% Saturated</div>
+                </div>
+                <div class="timeline-stats-row">
+                    <div class="stat-badge">Active Mat: <strong id="timelineMat">Cellulose</strong></div>
+                    <div class="stat-badge">Dimensions: <strong id="timelineDims">50x10 mm</strong></div>
+                    <div class="stat-badge">Curvature &kappa;: <strong id="timelineKappa">0.000 m&#8315;&sup1;</strong></div>
+                    <div class="stat-badge">Force F: <strong id="timelineForce">0.0 mN</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Actuator work &amp; force readouts</h3>
+            <table>
+                <thead><tr><th>Free-tip deflection</th><th>Blocking force F</th><th>Mechanical work W</th><th style="text-align:right;">Energy density</th></tr></thead>
+                <tbody><tr>
+                    <td id="resDeflect">-</td><td id="resForce">-</td><td id="resWork">-</td><td id="resEnergy" style="text-align:right;">-</td>
+                </tr></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">Governing physical equations</button>
+            <div class="derivation-content"><div id="latexFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="control-sections">
+                    <div class="control-group">
+                        <h3 class="section-title">1. Material Settings</h3>
+                        <div class="input-row">
+                            <label for="matActive">Active Layer (Top)</label>
+                            <div class="select-wrapper">
+                                <select id="matActive">
+                                    <option value="cellulose" selected>Cellulose NFC (As = 7.0)</option>
+                                    <option value="wood">Wood Spruce (As = 10.0)</option>
+                                    <option value="custom">Custom Material</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <label for="matPassive">Passive Layer (Bottom)</label>
+                            <div class="select-wrapper">
+                                <select id="matPassive">
+                                    <option value="cellulose_constrained" selected>Cellulose Constrained</option>
+                                    <option value="pla_standard">Standard PLA</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">2. Operating Environment</h3>
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:8px;">
+                            <button type="button" class="btn btn-secondary" id="presetRH1">40% RH</button>
+                            <button type="button" class="btn btn-secondary" id="presetRH2">60% RH</button>
+                            <button type="button" class="btn btn-secondary" id="presetRH3">80% RH</button>
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Target Humidity</span><span id="valRH" class="value-badge">60 %</span></div>
+                            <input type="range" id="humidity" aria-label="Humidity" min="0" max="100" step="5" value="60">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3 class="section-title">3. Geometry Parameters</h3>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Width b</span><span id="valB" class="value-badge">10 mm</span></div>
+                            <input type="range" id="widthB" aria-label="Width B" min="2" max="25" step="1" value="10">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Length L</span><span id="valL" class="value-badge">50 mm</span></div>
+                            <input type="range" id="lengthL" aria-label="Length L" min="10" max="100" step="5" value="50">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Active Layer h1</span><span id="valH1" class="value-badge">0.5 mm</span></div>
+                            <input type="range" id="thickH1" aria-label="Thick H1" min="0.1" max="2.5" step="0.1" value="0.5">
+                        </div>
+                        <div class="slider-wrapper">
+                            <div class="slider-header"><span>Passive Layer h2</span><span id="valH2" class="value-badge">0.5 mm</span></div>
+                            <input type="range" id="thickH2" aria-label="Thick H2" min="0.1" max="2.5" step="0.1" value="0.5">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-buttons">
+                        <button type="button" id="btnRun" class="btn btn-primary">Simulate Actuation</button>
+                        <button type="button" id="btnReset" class="btn btn-secondary">Reset Setup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+{
+ "version": 2,
+ "questions": [
+  {
+   "question": "Q1. Given a bilayer with mismatch strain Δε = 0.01, thickness ratio m = 1, and modulus ratio n = 10, use Timoshenko's formula to estimate the curvature κ relative to the case n = 1. How does stiffness ratio affect the result?",
+   "answers": {
+    "a": "Higher n increases κ because the active layer is more constrained.",
+    "b": "Higher n reduces κ because the stiff layer resists bending.",
+    "c": "Curvature is independent of the modulus ratio n.",
+    "d": "Higher n causes κ to oscillate sinusoidally."
+   },
+   "explanations": {
+    "a": "Incorrect - Constraint from a stiff layer increases stiffness, which resists bending.",
+    "b": "Correct - The denominator φ = 3(1+m)² + (1+mn)(m²+1/(mn)) increases with n, reducing κ.",
+    "c": "Incorrect - Modulus ratio n enters the denominator of φ.",
+    "d": "Incorrect - The relationship is monotonic, not oscillatory."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q2. Why does a raster pair of 45°/-45° in a symmetric (m = 1) bilayer produce pure twist but little bending?",
+   "answers": {
+    "a": "Because sin(45°)cos(45°) = 0.5 and cos²(45°) - sin²(45°) = 0.",
+    "b": "Because 45° fibres are inherently weaker in bending.",
+    "c": "Because the material is incompressible at 45°.",
+    "d": "Because twist always dominates at equal layer thicknesses."
+   },
+   "explanations": {
+    "a": "Correct - The axial CTE difference α_eff,top - α_eff,bot ∝ cos²θ - sin²θ = 0 at θ = 45°; the shear difference ∝ sin θ cos θ peaks at 45°.",
+    "b": "Incorrect - Weakness is unrelated; it is the symmetry of the angle transformation.",
+    "c": "Incorrect - Incompressibility does not explain the trigonometric cancellation.",
+    "d": "Incorrect - The raster angle, not the thickness ratio, determines the mode."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q3. Compare the volumetric energy density U = W/(hbL) of a hygroscopic actuator (typically ~0.01-0.1 J/cm³) with SMA (~1 J/cm³) and SMP (~0.1 J/cm³). What explains this trade-off?",
+   "answers": {
+    "a": "Hygroscopic actuators cannot be printed as thick as SMAs.",
+    "b": "Hygroscopic materials have lower diffusivity, so less strain accumulates.",
+    "c": "Hygroscopic actuators trade strength for softness and self-powered actuation over slow timescales.",
+    "d": "SMAs and SMPs are always lighter than hygroscopic materials."
+   },
+   "explanations": {
+    "a": "Incorrect - Thickness is a design choice; the trade-off is physical.",
+    "b": "Incorrect - Diffusivity affects speed, not the total recoverable work.",
+    "c": "Correct - Hygroscopic strains (e.g., β ≈ 0.01) are smaller than SMA martensite strains (~5%), and moisture-swelling stress is modest compared to trained SMA or glassy-state SMP restoring stress.",
+    "d": "Incorrect - Density is not the limiting factor."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q4. In Timoshenko's equation, how does the thickness ratio m = h₁/h₂ appear in the denominator φ? What happens when m approaches 0 (very thin active layer)?",
+   "answers": {
+    "a": "φ diverges to infinity, making κ approach 0.",
+    "b": "φ approaches 3(1+m)² ≈ 3, so curvature approaches a limit independent of E₁, E₂.",
+    "c": "φ approaches 3 + (E₁h₁)/(E₂h₂), so curvature depends only on the active-layer modulus.",
+    "d": "m has no effect on φ for small m."
+   },
+   "explanations": {
+    "a": "Incorrect - This would mean a thin active layer bends more, which contradicts stiffness scaling.",
+    "b": "Correct - As m approaches 0, φ ≈ 3(1+0)² + (1+0)(0+1/0) approaches 3 in the leading term (the 1/(mn) term diverges, but 0 × ∞ must be evaluated carefully; the proper limit is κ ≈ Δε/h).",
+    "c": "Incorrect - The denominator is more complex and features both moduli.",
+    "d": "Incorrect - m enters (1+mn) and m² terms that do not vanish."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q5. Explain the role of the transformed-section neutral axis y_na in bilayer bending stress. Why is it not at the midplane?",
+   "answers": {
+    "a": "It is the geometric midpoint and always lies at h/2 by symmetry.",
+    "b": "It is the centroid of the combined cross-section and is independent of material properties.",
+    "c": "It defines where the material yields first under loading.",
+    "d": "It is the location of zero bending stress, computed from the weighted average of E·h for each layer."
+   },
+   "explanations": {
+    "a": "Incorrect - y_na shifts if the layers have different moduli or thicknesses.",
+    "b": "Incorrect - The neutral axis is weighted by modulus, not just geometry.",
+    "c": "Incorrect - Yield depends on stress magnitude, not the neutral axis location alone.",
+    "d": "Correct - The neutral axis is where strain (and therefore stress) vanishes: y_na = [E₁h₁(h₂ + h₁/2) + E₂h₂(h₂/2)] / (E₁h₁ + E₂h₂). If layers differ in E or h, it is not at the midplane."
+   },
+   "correctAnswer": "d",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q6. Timoshenko's small-deflection assumption breaks down when κL > 0.3. What happens to the curvature and stress distribution beyond this limit?",
+   "answers": {
+    "a": "The deflection becomes large enough that the beam shortens and rotates; the nonlinear elastica solution is required.",
+    "b": "The curvature remains uniform but the linear strain-stress relationship fails.",
+    "c": "The curvature becomes nonlinear and the stress distribution remains unchanged.",
+    "d": "The material enters the plastic regime and permanent deformation occurs."
+   },
+   "explanations": {
+    "a": "Correct - When κL ≈ 0.3-1, the tip deflection is comparable to the beam length; the elliptic elastica equations (nonlinear in κ and deflection) must replace the Timoshenko formula.",
+    "b": "Incorrect - Large deflections induce nonlinear geometric effects.",
+    "c": "Incorrect - Beyond the small-deflection limit, both curvature and stress change.",
+    "d": "Incorrect - Nonlinearity from geometry precedes material plasticity at typical stress levels in soft actuators."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q7. How do the thickness ratio m and modulus ratio n interact in the denominator φ = 3(1+m)² + (1+mn)(m²+1/(mn))? What design choice minimizes φ (maximizes curvature for fixed mismatch)?",
+   "answers": {
+    "a": "Minimize m toward 0 (infinitesimally thin active layer) and maximize n (very stiff active layer).",
+    "b": "Set m and n such that the second term (1+mn)(m²+1/(mn)) vanishes.",
+    "c": "Set m = n = 1 (equal layers, equal moduli) to minimize φ.",
+    "d": "There is no minimum; φ is always large."
+   },
+   "explanations": {
+    "a": "Incorrect - While thin active layers can bend well, setting n very large stiffens the structure.",
+    "b": "Incorrect - The second term cannot vanish for positive m, n.",
+    "c": "Correct - At m = 1, n = 1: φ = 3·4 + 2·2 = 16. Deviating from these values increases φ. The extreme cases (very large or very small m, n) also increase φ.",
+    "d": "Incorrect - φ has a minimum at specific ratios."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q8. Cellulose NFC has diffusivity D = 5×10⁻¹² m²/s, while an open hydrogel has D = 2×10⁻¹⁰ m²/s (40× faster). How does this affect the response time for a 100 μm thick layer?",
+   "answers": {
+    "a": "The hydrogel is about 6× faster, since response time scales with the square root of D.",
+    "b": "The cellulose is actually faster due to its crystallinity.",
+    "c": "Both materials have the same response time because t_90 is material-independent.",
+    "d": "The hydrogel reaches 90% uptake in roughly 0.53·L²/D, so it is faster by factor 40."
+   },
+   "explanations": {
+    "a": "Incorrect - t_90 ∝ L²/D is linear in D, so the speed-up is the full 40×, not √40 ≈ 6×.",
+    "b": "Incorrect - Crystallinity reduces diffusivity.",
+    "c": "Incorrect - Diffusivity directly enters t_90.",
+    "d": "Correct - t_90 = 0.53 · L²/D for both, and the hydrogel's 40× higher D gives 40× faster uptake."
+   },
+   "correctAnswer": "d",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q9. A cantilever actuator has free-tip deflection δ_free = κL²/2 when unloaded and develops blocking force F_block when clamped. If you increase layer thickness from h to 2h, how do δ_free and F_block scale?",
+   "answers": {
+    "a": "δ_free ∝ h (decreases by 2), F_block ∝ h (increases by 2).",
+    "b": "δ_free ∝ 1/h (doubles), F_block ∝ h³ (increases by 8).",
+    "c": "δ_free ∝ 1/h, F_block ∝ h (both proportional to h).",
+    "d": "Both scale equally with h."
+   },
+   "explanations": {
+    "a": "Incorrect - κ ∝ 1/h (from Timoshenko), so δ_free ∝ 1/h; but F_block has an h³ term.",
+    "b": "Correct - δ_free ∝ κL² ∝ (Δε/h)L² (halves when h doubles); F_block = E_eff h³ b κ/(6L) ∝ h³ (octuples when h doubles). This is the classic actuator trade-off.",
+    "c": "Incorrect - δ_free and F_block scale differently.",
+    "d": "Incorrect - One drops as 1/h, the other rises as h³."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q10. PLA undergoes a modulus transition from E_glassy ≈ 2300 MPa to E_rubbery ≈ 25 MPa as temperature crosses T_g = 55°C. How does this softening affect the blocking force and curvature of a PLA-based bilayer actuator when heated?",
+   "answers": {
+    "a": "κ remains constant (set by Δε) but F_block decreases as E_eff drops by ~100×.",
+    "b": "κ increases because the softened PLA is more compliant; F_block decreases because E_eff drops.",
+    "c": "Both κ and F_block remain unchanged; softening only affects damping.",
+    "d": "κ decreases and F_block increases due to enhanced molecular rearrangement."
+   },
+   "explanations": {
+    "a": "Correct - κ = 6·Δε·(1+m)²/(h·φ) depends on the mismatch strain and geometric ratios, not E directly (since n cancels partially in the ratio). However, F_block = E_eff h³ b κ/(6L) drops dramatically with E_eff. The actuator bends the same amount but pushes far more weakly.",
+    "b": "Incorrect - Timoshenko's κ is independent of absolute modulus (it depends on Δε, m, n ratios, and geometry); but the effective stiffness changes, affecting how deflection couples to load.",
+    "c": "Incorrect - Modulus directly enters both the curvature formula and F_block.",
+    "d": "Incorrect - Softening does not increase force production."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q11. A swelling bilayer reaches 90% of its curvature after t90 ~ 0.53 L^2/D. If the diffusion length L is halved, the response time...",
+   "answers": {
+    "a": "doubles.",
+    "b": "is unchanged.",
+    "c": "falls to one quarter.",
+    "d": "quadruples."
+   },
+   "explanations": {
+    "a": "Incorrect - the dependence is on L^2, not L.",
+    "b": "Incorrect - thickness strongly controls the timescale.",
+    "c": "Correct - t90 scales with L^2, so halving L cuts the time to one quarter.",
+    "d": "Incorrect - thinner layers respond faster, not slower."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q12. For a bilayer actuator cycled many times, the dominant failure mode is usually...",
+   "answers": {
+    "a": "bulk yielding of the stiff layer.",
+    "b": "interfacial delamination between the two layers.",
+    "c": "melting of the active layer.",
+    "d": "photodegradation."
+   },
+   "explanations": {
+    "a": "Incorrect - bulk stress is usually kept below yield.",
+    "b": "Correct - repeated swell/deswell cycles the interfacial shear (Suo-Hutchinson), so delamination dominates.",
+    "c": "Incorrect - actuation is well below melting.",
+    "d": "Incorrect - photodegradation is not the mechanism for a swelling bilayer."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  }
+ ]
+}

@@ -1,0 +1,175 @@
+{
+  "version": 2,
+  "questions": [
+    {
+      "question": "Q1. What is a bilayer actuator?",
+      "answers": {
+        "a": "A single layer printed at multiple angles.",
+        "b": "Correct - Two bonded layers that respond differently to a stimulus, causing the structure to bend or twist.",
+        "c": "A material that only responds to heat.",
+        "d": "A composite made of three or more distinct layers."
+      },
+      "explanations": {
+        "a": "Incorrect - Multiple angles describe raster programming, not bilayer structure.",
+        "b": "Correct - A bilayer exploits mismatch strain between layers with different expansion coefficients.",
+        "c": "Incorrect - Bilayers respond to heat, moisture, light, or fields depending on material choice.",
+        "d": "Incorrect - A bilayer is specifically two bonded layers."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q2. What is the mismatch strain Δε in a bilayer?",
+      "answers": {
+        "a": "The difference in expansion between the two layers.",
+        "b": "The total strain in a single layer.",
+        "c": "The maximum stress the material can withstand.",
+        "d": "The rate at which moisture diffuses into the layers."
+      },
+      "explanations": {
+        "a": "Correct - Mismatch strain is the differential expansion (or swelling) that drives curvature.",
+        "b": "Incorrect - Individual layer strain is not the mismatch.",
+        "c": "Incorrect - That describes strength, not mismatch.",
+        "d": "Incorrect - Diffusion rate is a separate transport property."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q3. According to Timoshenko's formula, how does total thickness h affect the curvature κ?",
+      "answers": {
+        "a": "Curvature increases linearly with h.",
+        "b": "Thickness has no effect on curvature.",
+        "c": "Curvature decreases as h increases.",
+        "d": "Curvature is proportional to h²."
+      },
+      "explanations": {
+        "a": "Incorrect - Thicker beams are stiffer and bend less for the same mismatch.",
+        "b": "Incorrect - Thickness directly enters the denominator.",
+        "c": "Correct - κ ∝ Δε/(h·φ), so larger h reduces curvature.",
+        "d": "Incorrect - The relationship is inverse, not quadratic."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q4. What is the glass transition temperature T_g?",
+      "answers": {
+        "a": "The melting point of the polymer.",
+        "b": "The temperature at which a polymer transitions from glassy to rubbery state.",
+        "c": "The temperature where the material burns.",
+        "d": "The maximum operating temperature for any polymer."
+      },
+      "explanations": {
+        "a": "Incorrect - T_g is not melting; crystalline materials have a melting point instead.",
+        "b": "Correct - T_g marks the transition between rigid glassy and flexible rubbery behavior.",
+        "c": "Incorrect - That is the degradation temperature.",
+        "d": "Incorrect - Different polymers have different operating ranges above or below T_g."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q5. In anisotropic fibre-reinforced swelling, what happens at θ_f = 45°?",
+      "answers": {
+        "a": "Bending is maximized and twist is zero.",
+        "b": "Both bending and twist are maximized.",
+        "c": "The material does not respond to the stimulus.",
+        "d": "Twist is maximized and bending is reduced."
+      },
+      "explanations": {
+        "a": "Incorrect - At 45°, the shear strain component ε_xy peaks.",
+        "b": "Incorrect - Bending is driven by ε_xx, which is reduced at 45°.",
+        "c": "Incorrect - The material still responds, just in a different mode.",
+        "d": "Correct - At θ_f = 45°, the shear strain ε_xy is maximum, driving twist κ_xy; axial ε_xx is intermediate."
+      },
+      "correctAnswer": "d",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q6. Which stimulus is most relevant to hygroscopic (moisture-driven) bilayer actuators?",
+      "answers": {
+        "a": "Relative humidity and water uptake.",
+        "b": "Electromagnetic field.",
+        "c": "Magnetic field.",
+        "d": "UV light."
+      },
+      "explanations": {
+        "a": "Correct - Hygroscopic actuators swell when absorbing water, with swelling coefficient β.",
+        "b": "Incorrect - That applies to magnetically-actuated composites.",
+        "c": "Incorrect - Magnetic actuation uses ferromagnetic particles.",
+        "d": "Incorrect - Photoactuators use photochromic or light-sensitive materials."
+      },
+      "correctAnswer": "a",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q7. How does halving the layer thickness L affect the diffusion time t_90?",
+      "answers": {
+        "a": "t_90 is halved.",
+        "b": "t_90 remains unchanged.",
+        "c": "t_90 is quartered.",
+        "d": "t_90 doubles."
+      },
+      "explanations": {
+        "a": "Incorrect - The L² scaling makes the effect stronger.",
+        "b": "Incorrect - Diffusion time depends on thickness.",
+        "c": "Correct - t_90 ∝ L², so halving L gives (1/2)² = 1/4 of the original time.",
+        "d": "Incorrect - This would happen if we doubled thickness."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q8. What is the blocking force in a cantilever actuator?",
+      "answers": {
+        "a": "The maximum force the material can support before breaking.",
+        "b": "The force needed to overcome the glass transition.",
+        "c": "The force required to print the material.",
+        "d": "The force developed when the tip is held rigidly and cannot deflect."
+      },
+      "explanations": {
+        "a": "Incorrect - That is tensile strength.",
+        "b": "Incorrect - T_g is a temperature transition, not a force barrier.",
+        "c": "Incorrect - Printing force is unrelated to actuator performance.",
+        "d": "Correct - F_block arises when mismatch strain is converted to force against a rigid constraint."
+      },
+      "correctAnswer": "d",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Q9. What does the anisotropy index A_s = β_2/β_1 measure?",
+      "answers": {
+        "a": "The ratio of print-path angles in two layers.",
+        "b": "The ratio of transverse to longitudinal swelling in a fibre.",
+        "c": "The ratio of active layer thickness to passive layer thickness.",
+        "d": "The ratio of diffusion time to bending time."
+      },
+      "explanations": {
+        "a": "Incorrect - That would be a raster angle pair.",
+        "b": "Correct - A_s = β_perp/β_parallel quantifies how much more the fibre swells across its axis than along it.",
+        "c": "Incorrect - That is the thickness ratio m.",
+        "d": "Incorrect - There is no standard ratio of these timescales."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Q10. What happens to the elastic modulus E of PLA as temperature rises above its T_g = 55°C?",
+      "answers": {
+        "a": "It drops from ~2300 MPa toward ~25 MPa (glassy to rubbery).",
+        "b": "It remains constant.",
+        "c": "It increases dramatically.",
+        "d": "It oscillates unpredictably."
+      },
+      "explanations": {
+        "a": "Correct - Above T_g, PLA chains become mobile; E drops ~100× from the glassy to the rubbery state.",
+        "b": "Incorrect - Modulus is highly temperature-dependent.",
+        "c": "Incorrect - Softening occurs, not stiffening.",
+        "d": "Incorrect - The transition is smooth and well-characterized by the WLF equation."
+      },
+      "correctAnswer": "a",
+      "difficulty": "intermediate"
+    }
+  ]
+}
