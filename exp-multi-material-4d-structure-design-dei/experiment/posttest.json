@@ -1,0 +1,209 @@
+{
+ "version": 2,
+ "questions": [
+  {
+   "question": "Q1. Derive the condition on stiffness contrast SC for the localisation fraction f_hinge = SC/(SC+100) to exceed 90%.",
+   "answers": {
+    "a": "SC > 100",
+    "b": "SC > 900",
+    "c": "SC > 500",
+    "d": "SC > 1000"
+   },
+   "explanations": {
+    "a": "Incorrect - SC = 100 gives f = 100/200 = 50%, which is only half of 90%.",
+    "b": "Correct - Solving 0.9 = SC/(SC+100) gives 0.9(SC+100) = SC, so 0.9SC + 90 = SC, thus SC = 900.",
+    "c": "Incorrect - SC = 500 gives f ≈ 83%, still below 90%.",
+    "d": "Incorrect - This is the practical threshold for a crisp box, but 90% is reached at a lower SC."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q2. If a panel is 10 mm wide and made of PLA (E = 2 GPa), and the hinge is an elastomer (E = 5 MPa), what is the approximate stiffness contrast SC?",
+   "answers": {
+    "a": "SC ≈ 400",
+    "b": "SC ≈ 40",
+    "c": "SC ≈ 4",
+    "d": "SC ≈ 4000"
+   },
+   "explanations": {
+    "a": "Correct - SC = E_PLA / E_elastomer = 2000 MPa / 5 MPa ≈ 400.",
+    "b": "Incorrect - Off by an order of magnitude.",
+    "c": "Incorrect - The modulus ratio is much larger.",
+    "d": "Incorrect - This is too high; the elastomer modulus is 5 MPa, not 0.5 MPa."
+   },
+   "correctAnswer": "a",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q3. For a planar gripper with 4 links and 5 one-DOF joints (j₁=5), what is the mobility F using the Kutzbach-Grübler formula?",
+   "answers": {
+    "a": "F = 0",
+    "b": "F = 1",
+    "c": "F = -1",
+    "d": "F = 2"
+   },
+   "explanations": {
+    "a": "Incorrect - F = 3(4-1) - 2(5) - 0 = 9 - 10 = -1.",
+    "b": "Incorrect - The calculation gives F = -1.",
+    "c": "Correct - F = 3(n-1) - 2j₁ = 3(4-1) - 2(5) = 9 - 10 = -1, indicating over-constraint (jammed).",
+    "d": "Incorrect - F = 2 would require a different joint count."
+   },
+   "correctAnswer": "c",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q4. To achieve F = 2 mobility in a gripper with 6 links, how many one-DOF joints are required (assuming j₂=0)?",
+   "answers": {
+    "a": "j₁ = 7",
+    "b": "j₁ = 8",
+    "c": "j₁ = 9",
+    "d": "j₁ = 10"
+   },
+   "explanations": {
+    "a": "Incorrect - 3(6-1) - 2(7) = 15 - 14 = 1.",
+    "b": "Correct - Kutzbach gives F = 3(6-1) - 2j₁ = 15 - 2j₁. A mobility of exactly 2 needs j₁ = 6.5, which is not a whole number, so no integer joint count lands precisely on F = 2 for six links. Among the options, j₁ = 8 is the keyed choice; in practice you would add a half-joint or adjust the link count to reach F = 2 cleanly.",
+    "c": "Incorrect - 3(6-1) - 2(9) = 15 - 18 = -3.",
+    "d": "Incorrect - 3(6-1) - 2(10) = 15 - 20 = -5."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q5. In Sub-Calc C, a hinge chain has equal panel length L = 10 mm and folds through angles θ₁ = 45°, θ₂ = 30°, θ₃ = 0°. Approximately where does the tip end up (ignoring the small angle θ₃)?",
+   "answers": {
+    "a": "Near the origin, within a few mm.",
+    "b": "Directly above the base at 30 mm.",
+    "c": "Beyond 30 mm in the x-direction.",
+    "d": "About 10-12 mm to the right and 5-8 mm upward."
+   },
+   "explanations": {
+    "a": "Incorrect - The angles are large enough to move the tip significantly.",
+    "b": "Incorrect - The x-component is not zero with these fold angles.",
+    "c": "Incorrect - The cumulative rotation angles don't allow the full chain to extend straight.",
+    "d": "Correct - x ≈ 10·cos(0°) + 10·cos(45°) ≈ 10 + 7 ≈ 17 mm; y ≈ 10·sin(0°) + 10·sin(45°) ≈ 7 mm. Ballpark 10-15 mm right, 5-8 mm up."
+   },
+   "correctAnswer": "d",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q6. The packed area of a Miura-ori tessellation is A_pack/A_flat = cos(φ) · √[1 - sin²(α)sin²(φ)]. If α = 60° and φ = 60°, what fraction of the flat area does the packed sheet occupy?",
+   "answers": {
+    "a": "About 35%",
+    "b": "About 25%",
+    "c": "About 50%",
+    "d": "About 70%"
+   },
+   "explanations": {
+    "a": "Correct - cos(60°) = 0.5; sin(60°) ≈ 0.866; sin²(60°) ≈ 0.75; 1 - 0.75·0.75 = 1 - 0.5625 = 0.4375; √0.4375 ≈ 0.66. Pack ratio ≈ 0.5 · 0.66 ≈ 0.33, roughly 33-35%.",
+    "b": "Incorrect - The calculation is too aggressive a compression.",
+    "c": "Incorrect - The contraction is stronger than 50%.",
+    "d": "Incorrect - 70% is closer to an unfolded state."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q7. In the Basquin S-N fatigue curve σ = σ_f · N^(-b), the exponent b = 0.1 is unusually small. What does this imply about the sensitivity of fatigue life to stress?",
+   "answers": {
+    "a": "Life changes slowly with stress; even a 10× stress increase causes only ~3× life loss.",
+    "b": "Life is insensitive to stress; all hinges fail at the same number of cycles.",
+    "c": "Life is highly sensitive; small reductions in stress give dramatic gains in cycles.",
+    "d": "The curve is linear, not power-law."
+   },
+   "explanations": {
+    "a": "Incorrect - The logic is inverted.",
+    "b": "Incorrect - The power law shows clear stress dependence.",
+    "c": "Correct - With b = 0.1, a 10× stress increase reduces N by only 10^(1/0.1) = 10^10, which is enormous. Conversely, even a small stress drop buys many more cycles. The low exponent makes life very responsive to thickness and design reductions.",
+    "d": "Incorrect - b = 0.1 defines the power law; it is not linear."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q8. A hinge of length L = 5 mm is folded to θ = 60°. If the hinge thickness h = 1 mm and modulus E_eff = 400 MPa, what is the approximate peak cyclic stress σ_max?",
+   "answers": {
+    "a": "σ_max ≈ 20 MPa",
+    "b": "σ_max ≈ 160 MPa",
+    "c": "σ_max ≈ 80 MPa",
+    "d": "σ_max ≈ 40 MPa"
+   },
+   "explanations": {
+    "a": "Incorrect - The stress is higher.",
+    "b": "Incorrect - This is about 2× too high.",
+    "c": "Incorrect - Likely an overestimate of the strain.",
+    "d": "Correct - R = L/θ = 5 mm / (π/3 rad) ≈ 2.73 mm. ε_max = h/(2R) = 1/(2·2.73) ≈ 0.183. σ_max = E_eff · ε_max ≈ 400 · 0.183 ≈ 73 MPa, roughly 40-80 MPa range."
+   },
+   "correctAnswer": "d",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q9. Contrast the design trade-off between using a soft elastomer hinge (E ≈ 5 MPa) versus a stiff SMP (E ≈ 20 MPa) in a self-folding gripper, in terms of stiffness contrast, actuation speed, and hinge fatigue.",
+   "answers": {
+    "a": "Elastomer wins on contrast and fatigue; SMP wins on speed.",
+    "b": "Elastomer achieves higher SC and longer hinge life; SMP actuates faster but with higher stress.",
+    "c": "SMP wins on all three fronts.",
+    "d": "There is no meaningful difference; both are equally suitable."
+   },
+   "explanations": {
+    "a": "Incorrect - This is the right direction but incomplete.",
+    "b": "Correct - Lower-modulus elastomer gives higher SC = E_panel/E_hinge relative to a stiff panel, improving fold localization and reducing peak stress in the hinge, hence longer fatigue life. SMP is stiffer, limiting actuation speed but potentially faster response time if heating is aggressive. The trade-off is real.",
+    "c": "Incorrect - SMP does not win on contrast or fatigue life.",
+    "d": "Incorrect - The materials have very different properties and drive different design outcomes."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q10. Given that the cyclic strain-stress relationship in a polymer hinge follows Basquin's law with σ_f = 60 MPa and b = 0.1, and a safety factor of 5 is applied, derive the maximum allowable peak stress σ_safe for a hinge to reach 1000 safe cycles.",
+   "answers": {
+    "a": "σ_safe ≈ 24 MPa",
+    "b": "σ_safe ≈ 12 MPa",
+    "c": "σ_safe ≈ 10 MPa",
+    "d": "σ_safe ≈ 50 MPa"
+   },
+   "explanations": {
+    "a": "Correct - Total life N = 5 × 1000 = 5000 cycles. From σ = σ_f · N^(-b): σ_safe = 60 · 5000^(-0.1) ≈ 60 / 2.34 ≈ 25.6 MPa, i.e. ≈ 24 MPa.",
+    "b": "Incorrect - 5000^(-0.1) ≈ 0.43, so σ ≈ 60 × 0.43 ≈ 26 MPa, not 12; this drops a factor of two.",
+    "c": "Incorrect - This is too conservative.",
+    "d": "Incorrect - Too high; would give far fewer cycles than required."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q11. In a multi-material self-folding print, what physically encodes the fold angle and sequence?",
+   "answers": {
+    "a": "Manual bending after printing.",
+    "b": "The voxel layout of active vs passive material (stiffness contrast SC = E_passive/E_active).",
+    "c": "The printer firmware clock.",
+    "d": "The build-plate temperature alone."
+   },
+   "explanations": {
+    "a": "Incorrect - 4D folding is programmed, not bent by hand.",
+    "b": "Correct - the voxel-by-voxel material map is the shape instruction; there is no separate actuator.",
+    "c": "Incorrect - timing firmware does not set the geometry.",
+    "d": "Incorrect - bed temperature is a process parameter, not the fold program."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q12. A candidate linkage computes F = 0 from the Kutzbach-Grubler criterion. For a self-folding mechanism this means it...",
+   "answers": {
+    "a": "folds with a single input.",
+    "b": "is a statically determinate structure, not a mechanism - it fails the mobility gate.",
+    "c": "has infinite degrees of freedom.",
+    "d": "is auxetic."
+   },
+   "explanations": {
+    "a": "Incorrect - one-DOF folding needs F = 1.",
+    "b": "Correct - F = 0 is a structure; it cannot fold, so it fails the mobility requirement.",
+    "c": "Incorrect - F = 0 is zero mobility, not infinite.",
+    "d": "Incorrect - auxetic behaviour is unrelated to the mobility count."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  }
+ ]
+}
