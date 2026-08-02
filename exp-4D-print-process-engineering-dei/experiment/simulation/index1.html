@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · Crystallisation - 4D Print Process Engineering</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__id">
+            <div class="rail__eyebrow">Experiment 08</div>
+            <div class="rail__title">4D Print Process Engineering</div>
+            <div class="rail__meta">Bonding · Crystallinity · Residual Stress · Anisotropy · Tolerance</div>
+        </div>
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Layer Bonding</span><span class="subcalc__desc">Reptation layer bonding</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">Crystallisation</span><span class="subcalc__desc">Cooling &amp; X_c</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Warpage</span><span class="subcalc__desc">Residual stress</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Weak Plane</span><span class="subcalc__desc">Raster anisotropy</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Tolerance</span><span class="subcalc__desc">Tolerance stack-up</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · Cooling &amp; Crystallisation</span>
+            <h1 class="stage__title">Crystallisation</h1>
+            <p class="stage__obj">A freshly deposited road cools by Newtonian convection; the time it lingers in the T_g-T_m window sets crystallinity X_c = X_c,max(1&minus;e<sup>&minus;t_x/t_half</sup>). More crystallinity means a stiffer part but poorer shape-memory recovery - a genuine 4D trade-off.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set nozzle and chamber temperature and road diameter, then read crystallinity, stiffness gain, and the recovery penalty.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Road cooling &amp; nucleating</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Road temperature T(t) &amp; crystallisation window</div>
+                    <canvas id="plotCanvasCryst" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Crystallinity X_c vs chamber temperature</div>
+                    <canvas id="plotCanvasXc" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Crystallinity &amp; stiffness vs chamber temperature</h3>
+            <table id="crystTable">
+                <thead><tr><th>Chamber T_amb</th><th>X_c</th><th>E (GPa)</th><th style="text-align:right;">Recovery R_r</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <p class="model-note"><strong>Model note:</strong> X_c uses an empirical single-exponential fit of dwell time in the growth window. Real PLA shows extra cold-crystallisation enhancement at high chamber temperatures that this idealised relation under-captures.</p>
+
+        <div class="collapsible-derivation open">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind crystallisation</button>
+            <div class="derivation-content"><div id="eqBox" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Print (nozzle) temperature</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>T_print (&deg;C)</label><input type="range" id="tprintInput" aria-label="Tprint" min="190" max="240" step="1" value="220"><div class="slider-val" id="valTprint">220 &deg;C</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Ambient / chamber temperature</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>T_amb (&deg;C) - warmer = slower cooling</label><input type="range" id="tambInput" aria-label="Tamb" min="20" max="80" step="1" value="25"><div class="slider-val" id="valTamb">25 &deg;C</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. Road diameter</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>d_road (mm) - thicker cools slower</label><input type="range" id="dInput" aria-label="d" min="0.20" max="0.80" step="0.02" value="0.40"><div class="slider-val" id="valD">0.40 mm</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Cool the Road</button>
+                        <button type="button" onclick="location.reload()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>How crystalline does it get?</h3>
+                        <div class="result-row"><span class="result-label">Cooling time constant &tau;_cool</span><span class="result-val" id="resTauCool">-</span></div>
+                        <div class="result-row"><span class="result-label">Dwell in growth window t_x</span><span class="result-val" id="resTx">-</span></div>
+                        <div class="result-row"><span class="result-label">Crystallinity X_c</span><span class="result-val" id="resXc">-</span></div>
+                        <div class="result-row"><span class="result-label">Stiffened modulus E</span><span class="result-val" id="resE">-</span></div>
+                        <div class="result-row"><span class="result-label">Shape-memory recovery penalty</span><span class="result-val" id="resRecoveryPenalty">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<script defer src="js/main.js"></script>
+</body>
+</html>
