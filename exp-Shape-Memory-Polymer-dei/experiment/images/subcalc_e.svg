@@ -72,7 +72,7 @@
     η = (W / Q) × 100% = (12 / 440) × 100%
   </text>
   <text x="410" y="315" text-anchor="middle" font-size="14" font-weight="bold" fill="#E2570F">
-    η ≈ 2.7% (typically 1–5%)
+    η ≈ 2.7% (typically 1-5%)
   </text>
   <text x="410" y="335" text-anchor="middle" font-size="10" fill="#666" font-style="italic">
     Bulk sensible heat Q ≫ stored energy U<tspan baseline-shift="sub">stored</tspan>, so efficiency is low.
@@ -82,12 +82,12 @@
   <rect x="30" y="240" width="220" height="100" fill="#EBF8FF" stroke="#0369A1" stroke-width="1.5" rx="4"/>
   <text x="140" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#0369A1">Biomedical Advantage</text>
   <text x="40" y="285" font-size="10" fill="#0369A1">
-    • Body heat (37°C) supplies ~40% of ΔT for free
+    - Body heat (37°C) supplies ~40% of ΔT for free
   </text>
   <text x="40" y="305" font-size="10" fill="#0369A1">
-    • Trigger cost ≈ heating from 37°C to 45°C
+    - Trigger cost ≈ heating from 37°C to 45°C
   </text>
   <text x="40" y="325" font-size="10" fill="#0369A1">
-    • Low power consumption justifies low efficiency
+    - Low power consumption justifies low efficiency
   </text>
 </svg>

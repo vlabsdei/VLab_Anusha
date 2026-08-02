@@ -1,5 +1,5 @@
 /* ============================================================================
-   4D VIRTUAL LAB — UNIVERSAL SIMULATION UI  (v2)
+   4D VIRTUAL LAB - UNIVERSAL SIMULATION UI  (v2)
    Palette: Navy (structure + data) · Rust orange (action + live states)
    Type:    Archivo (grotesque UI) · IBM Plex Mono (numeric data)
    Layout:  Left nav rail · Center instrument stage · Right control/readout dock
@@ -9,7 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Navy — structure, chrome, primary data */
+  /* Navy - structure, chrome, primary data */
   --navy-900: #12245B;
   --navy-800: #16307A;
   --navy-700: #1E40AF;
@@ -17,7 +17,7 @@
   --navy-500: #3B6FD8;
   --navy-400: #6E93D8;
 
-  /* Rust orange — action, live/active, accents */
+  /* Rust orange - action, live/active, accents */
   --rust-700: #B8410F;
   --rust-600: #E2570F;
   --rust-500: #F6741C;
@@ -417,7 +417,7 @@ a:hover { color: var(--rust-700); }
 }
 
 /* ============================================================================
-   RIGHT DOCK — controls + primary readouts
+   RIGHT DOCK - controls + primary readouts
    ============================================================================ */
 .dock {
   background: var(--surface);

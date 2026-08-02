@@ -10,10 +10,10 @@
         "d": "The cost of production."
       },
       "explanations": {
-        "a": "Incorrect — We work in 3D space; time is the fourth dimension.",
-        "b": "Correct — 4D printing adds time as a dimension; the object changes shape after printing when triggered.",
-        "c": "Incorrect — Density is not related to the '4D' concept.",
-        "d": "Incorrect — Cost does not define 4D printing."
+        "a": "Incorrect - We work in 3D space; time is the fourth dimension.",
+        "b": "Correct - 4D printing adds time as a dimension; the object changes shape after printing when triggered.",
+        "c": "Incorrect - Density is not related to the '4D' concept.",
+        "d": "Incorrect - Cost does not define 4D printing."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
@@ -27,10 +27,10 @@
         "d": "Points where water molecules attach to the polymer."
       },
       "explanations": {
-        "a": "Correct — Netpoints are permanent crosslinks (chemical or physical) that define the permanent shape.",
-        "b": "Incorrect — Netpoints are permanent, not temporary.",
-        "c": "Incorrect — Netpoints are not fracture sites.",
-        "d": "Incorrect — Netpoints are mechanical features, not water-binding sites."
+        "a": "Correct - Netpoints are permanent crosslinks (chemical or physical) that define the permanent shape.",
+        "b": "Incorrect - Netpoints are permanent, not temporary.",
+        "c": "Incorrect - Netpoints are not fracture sites.",
+        "d": "Incorrect - Netpoints are mechanical features, not water-binding sites."
       },
       "correctAnswer": "a",
       "difficulty": "beginner"
@@ -44,10 +44,10 @@
         "d": "Solid and liquid."
       },
       "explanations": {
-        "a": "Incorrect — T_g is not a vaporization transition.",
-        "b": "Incorrect — T_g applies to amorphous polymers; it is not about crystallinity.",
-        "c": "Correct — Below T_g the polymer is a stiff glass; above it the switching segments soften and it becomes rubbery.",
-        "d": "Incorrect — The polymer remains solid at T_g; it undergoes a stiffness transition, not a phase change."
+        "a": "Incorrect - T_g is not a vaporization transition.",
+        "b": "Incorrect - T_g applies to amorphous polymers; it is not about crystallinity.",
+        "c": "Correct - Below T_g the polymer is a stiff glass; above it the switching segments soften and it becomes rubbery.",
+        "d": "Incorrect - The polymer remains solid at T_g; it undergoes a stiffness transition, not a phase change."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
@@ -61,10 +61,10 @@
         "d": "The maximum temperature the material can withstand."
       },
       "explanations": {
-        "a": "Incorrect — This describes recovery rate, not strain fixity.",
-        "b": "Correct — R_f is the percentage of loading strain that stays permanently fixed after the temporary shape is programmed and unloaded.",
-        "c": "Incorrect — This relates to tensile strength.",
-        "d": "Incorrect — This is thermal stability, not fixity."
+        "a": "Incorrect - This describes recovery rate, not strain fixity.",
+        "b": "Correct - R_f is the percentage of loading strain that stays permanently fixed after the temporary shape is programmed and unloaded.",
+        "c": "Incorrect - This relates to tensile strength.",
+        "d": "Incorrect - This is thermal stability, not fixity."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
@@ -78,10 +78,10 @@
         "d": "The relaxation time and viscosity shift above T_g."
       },
       "explanations": {
-        "a": "Incorrect — WLF does not govern density changes.",
-        "b": "Incorrect — WLF is not about optical properties.",
-        "c": "Incorrect — Below T_g the relaxation time is effectively infinite; WLF applies above T_g.",
-        "d": "Correct — The WLF equation gives the shift factor a_T, which scales how much faster the material relaxes as temperature rises above T_g."
+        "a": "Incorrect - WLF does not govern density changes.",
+        "b": "Incorrect - WLF is not about optical properties.",
+        "c": "Incorrect - Below T_g the relaxation time is effectively infinite; WLF applies above T_g.",
+        "d": "Correct - The WLF equation gives the shift factor a_T, which scales how much faster the material relaxes as temperature rises above T_g."
       },
       "correctAnswer": "d",
       "difficulty": "intermediate"
@@ -95,10 +95,10 @@
         "d": "Friction between polymer chains."
       },
       "explanations": {
-        "a": "Correct — Once reheated above T_g, the netpoints exert an entropic spring-back that pulls the polymer toward its permanent shape.",
-        "b": "Incorrect — Gravity is not the driver at the molecular scale.",
-        "c": "Incorrect — Recovery is an internal process once heat unfreezes the switching segments.",
-        "d": "Incorrect — Friction between chains resists motion rather than driving it."
+        "a": "Correct - Once reheated above T_g, the netpoints exert an entropic spring-back that pulls the polymer toward its permanent shape.",
+        "b": "Incorrect - Gravity is not the driver at the molecular scale.",
+        "c": "Incorrect - Recovery is an internal process once heat unfreezes the switching segments.",
+        "d": "Incorrect - Friction between chains resists motion rather than driving it."
       },
       "correctAnswer": "a",
       "difficulty": "intermediate"
@@ -112,10 +112,10 @@
         "d": "All three have the same T_g."
       },
       "explanations": {
-        "a": "Incorrect — PMMA has the highest T_g.",
-        "b": "Incorrect — PLA is intermediate.",
-        "c": "Correct — PU-SMP has T_g = 45°C, making it the easiest to trigger with modest heat.",
-        "d": "Incorrect — The three materials have distinct T_g values."
+        "a": "Incorrect - PMMA has the highest T_g.",
+        "b": "Incorrect - PLA is intermediate.",
+        "c": "Correct - PU-SMP has T_g = 45°C, making it the easiest to trigger with modest heat.",
+        "d": "Incorrect - The three materials have distinct T_g values."
       },
       "correctAnswer": "c",
       "difficulty": "beginner"
@@ -129,10 +129,10 @@
         "d": "To write the temporary shape by loading the rubbery material, cooling it below T_g while stressed, then unloading."
       },
       "explanations": {
-        "a": "Incorrect — Programming does not necessarily crystallize the material.",
-        "b": "Incorrect — Programming does not significantly change density.",
-        "c": "Incorrect — Programming preserves the netpoints and the permanent shape; it only adds a temporary shape.",
-        "d": "Correct — Programming imprints a temporary shape by applying stress in the rubbery state, cooling to lock the strain, then releasing the load."
+        "a": "Incorrect - Programming does not necessarily crystallize the material.",
+        "b": "Incorrect - Programming does not significantly change density.",
+        "c": "Incorrect - Programming preserves the netpoints and the permanent shape; it only adds a temporary shape.",
+        "d": "Correct - Programming imprints a temporary shape by applying stress in the rubbery state, cooling to lock the strain, then releasing the load."
       },
       "correctAnswer": "d",
       "difficulty": "intermediate"
@@ -146,10 +146,10 @@
         "d": "Constant rate independent of time and temperature."
       },
       "explanations": {
-        "a": "Incorrect — Recovery slows exponentially, not linearly.",
-        "b": "Correct — Strain recovery follows ε(t) = ε_eq + (ε_u - ε_eq)·exp(-t/τ), a first-order exponential decay.",
-        "c": "Incorrect — The recovery rate depends exponentially on the relaxation time τ(T), not quadratically on T.",
-        "d": "Incorrect — Recovery rate depends strongly on temperature and time."
+        "a": "Incorrect - Recovery slows exponentially, not linearly.",
+        "b": "Correct - Strain recovery follows ε(t) = ε_eq + (ε_u - ε_eq)·exp(-t/τ), a first-order exponential decay.",
+        "c": "Incorrect - The recovery rate depends exponentially on the relaxation time τ(T), not quadratically on T.",
+        "d": "Incorrect - Recovery rate depends strongly on temperature and time."
       },
       "correctAnswer": "b",
       "difficulty": "intermediate"
@@ -157,16 +157,16 @@
     {
       "question": "Q10. For biomedical applications at body temperature (37°C), which material offers the best activation temperature match?",
       "answers": {
-        "a": "PU-SMP (T_g = 45°C) — within 8°C of body temperature.",
-        "b": "PLA-SMP (T_g = 60°C) — moderate overshoot.",
-        "c": "PMMA-SMP (T_g = 105°C) — far above body temperature for safety.",
-        "d": "None — all are too far from 37°C."
+        "a": "PU-SMP (T_g = 45°C) - within 8°C of body temperature.",
+        "b": "PLA-SMP (T_g = 60°C) - moderate overshoot.",
+        "c": "PMMA-SMP (T_g = 105°C) - far above body temperature for safety.",
+        "d": "None - all are too far from 37°C."
       },
       "explanations": {
-        "a": "Correct — PU-SMP's T_g is within 10°C of 37°C, making it ideal for body-worn devices where ambient heat can nearly supply the trigger.",
-        "b": "Incorrect — Still 23°C above body temperature.",
-        "c": "Incorrect — So high that body heat alone cannot trigger it.",
-        "d": "Incorrect — PU-SMP is well-suited to biomedical use."
+        "a": "Correct - PU-SMP's T_g is within 10°C of 37°C, making it ideal for body-worn devices where ambient heat can nearly supply the trigger.",
+        "b": "Incorrect - Still 23°C above body temperature.",
+        "c": "Incorrect - So high that body heat alone cannot trigger it.",
+        "d": "Incorrect - PU-SMP is well-suited to biomedical use."
       },
       "correctAnswer": "a",
       "difficulty": "intermediate"

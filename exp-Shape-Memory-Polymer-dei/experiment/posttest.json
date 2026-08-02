@@ -1,175 +1,209 @@
 {
-  "version": 2,
-  "questions": [
-    {
-      "question": "Q1. Why does the WLF equation apply only above T_g and not below it?",
-      "answers": {
-        "a": "Because the material becomes conductive below T_g and WLF applies only to insulators.",
-        "b": "Because below T_g the chains are frozen and segmental motion is absent, making the relaxation time effectively infinite.",
-        "c": "Because below T_g the material is liquid and WLF only applies to solids.",
-        "d": "Because the WLF constants change sign below T_g."
-      },
-      "explanations": {
-        "a": "Incorrect — Conductivity is not the reason; WLF is about molecular mobility.",
-        "b": "Correct — Below T_g the glassy state locks the chains; there is no dynamic relaxation, so the WLF model breaks down.",
-        "c": "Incorrect — Below T_g the material is solid (glassy), not liquid.",
-        "d": "Incorrect — The constants C_1 and C_2 do not change; the model simply does not apply in the frozen regime."
-      },
-      "correctAnswer": "b",
-      "difficulty": "intermediate"
-    },
-    {
-      "question": "Q2. A PU-SMP (T_g = 45°C, X_c = 0.85) is programmed at 70°C under 5 MPa stress with E_rubbery = 15 MPa. What is the approximate strain fixity ratio?",
-      "answers": {
-        "a": "Approximately 75%.",
-        "b": "Approximately 50%.",
-        "c": "Approximately 15%.",
-        "d": "Approximately 98%."
-      },
-      "explanations": {
-        "a": "Correct — R_f = 0.85 × [1 - exp(-1.67)] ≈ 0.85 × 0.81 ≈ 69%, closest to 75% among the options.",
-        "b": "Incorrect — Closer, but the saturation formula with (T_prog - T_g)/15 = 25/15 = 1.67 gives higher fixity.",
-        "c": "Incorrect — This underestimates the fixity at a 25°C margin above T_g.",
-        "d": "Incorrect — This assumes full saturation, which requires a much larger temperature margin."
-      },
-      "correctAnswer": "a",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q3. In the recovery kinetics sub-calculator, why does free recovery (no external load) reach ε_recovered = 0 but constrained recovery stops at a finite ε_eq > 0?",
-      "answers": {
-        "a": "Free recovery is faster than constrained recovery.",
-        "b": "Free recovery is limited by friction between chains.",
-        "c": "In free recovery the material can shrink indefinitely; under a load the rubbery modulus produces a resisting stress that balances the programmed strain.",
-        "d": "Constrained recovery requires lower temperatures to activate."
-      },
-      "explanations": {
-        "a": "Incorrect — Both follow the same exponential law, but reach different endpoints.",
-        "b": "Incorrect — Friction slows relaxation but does not set the endpoint.",
-        "c": "Correct — Free recovery has no opposing force (ε_eq = 0), so the material relaxes completely. Under constraint, the recovered material generates a restoring stress (σ = E_rubbery × ε_eq / 100) that eventually balances the driving force.",
-        "d": "Incorrect — Temperature activates both in the same way; the boundary condition determines the endpoint."
-      },
-      "correctAnswer": "c",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q4. The DSC (Differential Scanning Calorimetry) heat capacity model in Sub-Calc A uses a smooth step function centered at T_g. Why is this smooth transition physically more realistic than a sharp step?",
-      "answers": {
-        "a": "Because the smooth step better models the heterogeneous distribution of relaxation times near T_g in a real polymer.",
-        "b": "Because polymers are not ideal materials and transitions are gradual.",
-        "c": "Because it reduces computational cost.",
-        "d": "Because the material's density changes smoothly near T_g."
-      },
-      "explanations": {
-        "a": "Incorrect — While true, the main reason is material non-ideality.",
-        "b": "Correct — Real polymers do not exhibit infinitely sharp transitions; the smooth sigmoidal step centered at T_g (with width w = 8) captures the actual breadth of the glass transition.",
-        "c": "Incorrect — This is a minor computational consideration, not the physical reason.",
-        "d": "Incorrect — Density change is not the primary reason; it is the breadth of the relaxation spectrum."
-      },
-      "correctAnswer": "b",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q5. In the multi-shape (phase-separated) blend sub-calculator, why does the intermediate shelf exist between T_g1 and T_g2?",
-      "answers": {
-        "a": "The material undergoes a chemical reaction that suspends strain recovery.",
-        "b": "The shelf is an artifact of the simulator and does not occur in real materials.",
-        "c": "The material crystallizes at the intermediate temperature.",
-        "d": "The soft phase (PU) has relaxed its strain at T_g1, but the hard phase (PMMA) remains glassy and its entropic restoring force is blocked until T_g2."
-      },
-      "explanations": {
-        "a": "Incorrect — No chemical reaction occurs; it is purely a mechanical effect.",
-        "b": "Incorrect — The plateau is real and directly results from the two-phase morphology.",
-        "c": "Incorrect — Crystallization does not govern the plateau.",
-        "d": "Correct — At T_g1 the soft PU domains soften and release their programmed strain, but the hard PMMA phase remains glassy (E_eff ~ 7.5 MPa) and does not soften until T_g2, creating a recovery plateau."
-      },
-      "correctAnswer": "d",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q6. The Fox equation combines two T_g values to predict a blend's single glass transition. What does this assume about the blend morphology?",
-      "answers": {
-        "a": "That the two components are completely miscible (form a single homogeneous phase).",
-        "b": "That the two components form separate phases and do not interact.",
-        "c": "That the blend will crystallize at a predictable rate.",
-        "d": "That the interface between components is chemically bonded."
-      },
-      "explanations": {
-        "a": "Correct — The Fox equation applies to miscible blends where the two polymers form a single, homogeneous phase with one averaged T_g.",
-        "b": "Incorrect — When phases are separate (immiscible), the two T_g values appear as distinct recovery steps, not a single T_g.",
-        "c": "Incorrect — The Fox equation does not predict crystallization.",
-        "d": "Incorrect — Chemical bonding is not a requirement for the Fox equation to apply."
-      },
-      "correctAnswer": "a",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q7. In Sub-Calc E (thermodynamic efficiency), why does the overall efficiency η remain low (1-5%) even though the stored elastic energy can be substantial?",
-      "answers": {
-        "a": "Because most of the material dissipates energy as heat through internal friction.",
-        "b": "Because the load is too heavy for the material to lift.",
-        "c": "Because the sensible heat capacity (m·C_p·ΔT) required to raise the specimen's temperature dwarfs the elastic energy available, so most input heat goes into temperature rise rather than doing work.",
-        "d": "Because the material loses its shape memory after one cycle."
-      },
-      "explanations": {
-        "a": "Incorrect — Internal friction contributes to losses, but it is not the dominant factor.",
-        "b": "Incorrect — The load and recovery stress are specified; the efficiency problem is thermodynamic, not mechanical.",
-        "c": "Correct — Since η = W/Q and Q includes both temperature rise (m·C_p·ΔT ≫ U_stored) and the elastic energy, the vast majority of input heat raises the bulk temperature, leaving only a small fraction for mechanical work.",
-        "d": "Incorrect — The material retains its memory across cycles; degradation is not the issue."
-      },
-      "correctAnswer": "c",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q8. How does the crystallinity limit X_c in the strain fixity formula explain why different materials achieve different maximum R_f values?",
-      "answers": {
-        "a": "Higher X_c means the material melts at a lower temperature.",
-        "b": "X_c determines the mechanical strength of the permanent netpoints.",
-        "c": "X_c is the cooling rate required to lock the temporary shape.",
-        "d": "X_c represents the fraction of polymer chains that can be permanently locked by netpoints; materials with higher X_c can fix more strain before reaching saturation."
-      },
-      "explanations": {
-        "a": "Incorrect — X_c is not a melting property.",
-        "b": "Incorrect — X_c modulates fixity, not the strength of individual netpoints.",
-        "c": "Incorrect — X_c is not a rate parameter.",
-        "d": "Correct — The saturating exponential R_f = X_c·[1-exp(-(T_prog-T_g)/15)] is capped by X_c (PU=0.85, PLA=0.70, PMMA=0.60), reflecting each material's ability to lock strain via crystalline and cross-linked regions."
-      },
-      "correctAnswer": "d",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q9. In the WLF shift factor calculation, log(a_T) becomes increasingly negative as T rises well above T_g. What is the physical meaning of a very large a_T (say, 1000)?",
-      "answers": {
-        "a": "The material has become too stiff to deform.",
-        "b": "The relaxation time at T is 1000 times shorter than at T_g, meaning the polymer is highly fluid and chains relax very rapidly.",
-        "c": "The relaxation time at T is 1000 times longer than at T_g.",
-        "d": "The material has undergone a phase transition to a liquid."
-      },
-      "explanations": {
-        "a": "Incorrect — High a_T indicates faster relaxation, not stiffening.",
-        "b": "Correct — a_T = τ(T) / τ(T_g); if a_T = 1000, then τ(T) is 1/1000 of τ(T_g), indicating much faster chain dynamics at the higher temperature.",
-        "c": "Incorrect — a_T is a ratio of relaxation times; large a_T means faster, not slower, relaxation.",
-        "d": "Incorrect — The polymer may be more fluid, but it remains solid; a phase transition is not guaranteed."
-      },
-      "correctAnswer": "b",
-      "difficulty": "advanced"
-    },
-    {
-      "question": "Q10. Consider a biomedical implant using PU-SMP with a programmed strain ε_u = 1.0 (100%), volume V = 10 cm³, mass m = 11 g, ρ = 1.1 g/cm³, C_p = 1.6 J/g°C. Approximately how much heat (in joules) is needed to raise it from 20°C to 45°C?",
-      "answers": {
-        "a": "About 440 J.",
-        "b": "About 220 J.",
-        "c": "About 44 J.",
-        "d": "About 880 J."
-      },
-      "explanations": {
-        "a": "Correct — Q = m·C_p·ΔT = 11 g × 1.6 J/(g·°C) × 25°C = 440 J. This bulk sensible heat dwarfs the stored elastic energy (a few tens of joules), illustrating why efficiency is low.",
-        "b": "Incorrect — Close, but under-estimates the actual value.",
-        "c": "Incorrect — This assumes ΔT = 2°C or half the mass.",
-        "d": "Incorrect — This would require either double the mass or double the temperature rise."
-      },
-      "correctAnswer": "a",
-      "difficulty": "advanced"
-    }
-  ]
+ "version": 2,
+ "questions": [
+  {
+   "question": "Q1. Why does the WLF equation apply only above T_g and not below it?",
+   "answers": {
+    "a": "Because the material becomes conductive below T_g and WLF applies only to insulators.",
+    "b": "Because below T_g the chains are frozen and segmental motion is absent, making the relaxation time effectively infinite.",
+    "c": "Because below T_g the material is liquid and WLF only applies to solids.",
+    "d": "Because the WLF constants change sign below T_g."
+   },
+   "explanations": {
+    "a": "Incorrect - Conductivity is not the reason; WLF is about molecular mobility.",
+    "b": "Correct - Below T_g the glassy state locks the chains; there is no dynamic relaxation, so the WLF model breaks down.",
+    "c": "Incorrect - Below T_g the material is solid (glassy), not liquid.",
+    "d": "Incorrect - The constants C_1 and C_2 do not change; the model simply does not apply in the frozen regime."
+   },
+   "correctAnswer": "b",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q2. A PU-SMP (T_g = 45°C, X_c = 0.85) is programmed at 70°C under 5 MPa stress with E_rubbery = 15 MPa. What is the approximate strain fixity ratio?",
+   "answers": {
+    "a": "Approximately 75%.",
+    "b": "Approximately 50%.",
+    "c": "Approximately 15%.",
+    "d": "Approximately 98%."
+   },
+   "explanations": {
+    "a": "Correct - R_f = 0.85 × [1 - exp(-1.67)] ≈ 0.85 × 0.81 ≈ 69%, closest to 75% among the options.",
+    "b": "Incorrect - Closer, but the saturation formula with (T_prog - T_g)/15 = 25/15 = 1.67 gives higher fixity.",
+    "c": "Incorrect - This underestimates the fixity at a 25°C margin above T_g.",
+    "d": "Incorrect - This assumes full saturation, which requires a much larger temperature margin."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q3. In the recovery kinetics sub-calculator, why does free recovery (no external load) reach ε_recovered = 0 but constrained recovery stops at a finite ε_eq > 0?",
+   "answers": {
+    "a": "Free recovery is faster than constrained recovery.",
+    "b": "Free recovery is limited by friction between chains.",
+    "c": "In free recovery the material can shrink indefinitely; under a load the rubbery modulus produces a resisting stress that balances the programmed strain.",
+    "d": "Constrained recovery requires lower temperatures to activate."
+   },
+   "explanations": {
+    "a": "Incorrect - Both follow the same exponential law, but reach different endpoints.",
+    "b": "Incorrect - Friction slows relaxation but does not set the endpoint.",
+    "c": "Correct - Free recovery has no opposing force (ε_eq = 0), so the material relaxes completely. Under constraint, the recovered material generates a restoring stress (σ = E_rubbery × ε_eq / 100) that eventually balances the driving force.",
+    "d": "Incorrect - Temperature activates both in the same way; the boundary condition determines the endpoint."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q4. The DSC (Differential Scanning Calorimetry) heat capacity model in Sub-Calc A uses a smooth step function centered at T_g. Why is this smooth transition physically more realistic than a sharp step?",
+   "answers": {
+    "a": "Because the smooth step better models the heterogeneous distribution of relaxation times near T_g in a real polymer.",
+    "b": "Because polymers are not ideal materials and transitions are gradual.",
+    "c": "Because it reduces computational cost.",
+    "d": "Because the material's density changes smoothly near T_g."
+   },
+   "explanations": {
+    "a": "Incorrect - While true, the main reason is material non-ideality.",
+    "b": "Correct - Real polymers do not exhibit infinitely sharp transitions; the smooth sigmoidal step centered at T_g (with width w = 8) captures the actual breadth of the glass transition.",
+    "c": "Incorrect - This is a minor computational consideration, not the physical reason.",
+    "d": "Incorrect - Density change is not the primary reason; it is the breadth of the relaxation spectrum."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q5. In the multi-shape (phase-separated) blend sub-calculator, why does the intermediate shelf exist between T_g1 and T_g2?",
+   "answers": {
+    "a": "The material undergoes a chemical reaction that suspends strain recovery.",
+    "b": "The shelf is an artifact of the simulator and does not occur in real materials.",
+    "c": "The material crystallizes at the intermediate temperature.",
+    "d": "The soft phase (PU) has relaxed its strain at T_g1, but the hard phase (PMMA) remains glassy and its entropic restoring force is blocked until T_g2."
+   },
+   "explanations": {
+    "a": "Incorrect - No chemical reaction occurs; it is purely a mechanical effect.",
+    "b": "Incorrect - The plateau is real and directly results from the two-phase morphology.",
+    "c": "Incorrect - Crystallization does not govern the plateau.",
+    "d": "Correct - At T_g1 the soft PU domains soften and release their programmed strain, but the hard PMMA phase remains glassy (E_eff ~ 7.5 MPa) and does not soften until T_g2, creating a recovery plateau."
+   },
+   "correctAnswer": "d",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q6. The Fox equation combines two T_g values to predict a blend's single glass transition. What does this assume about the blend morphology?",
+   "answers": {
+    "a": "That the two components are completely miscible (form a single homogeneous phase).",
+    "b": "That the two components form separate phases and do not interact.",
+    "c": "That the blend will crystallize at a predictable rate.",
+    "d": "That the interface between components is chemically bonded."
+   },
+   "explanations": {
+    "a": "Correct - The Fox equation applies to miscible blends where the two polymers form a single, homogeneous phase with one averaged T_g.",
+    "b": "Incorrect - When phases are separate (immiscible), the two T_g values appear as distinct recovery steps, not a single T_g.",
+    "c": "Incorrect - The Fox equation does not predict crystallization.",
+    "d": "Incorrect - Chemical bonding is not a requirement for the Fox equation to apply."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q7. In Sub-Calc E (thermodynamic efficiency), why does the overall efficiency η remain low (1-5%) even though the stored elastic energy can be substantial?",
+   "answers": {
+    "a": "Because most of the material dissipates energy as heat through internal friction.",
+    "b": "Because the load is too heavy for the material to lift.",
+    "c": "Because the sensible heat capacity (m·C_p·ΔT) required to raise the specimen's temperature dwarfs the elastic energy available, so most input heat goes into temperature rise rather than doing work.",
+    "d": "Because the material loses its shape memory after one cycle."
+   },
+   "explanations": {
+    "a": "Incorrect - Internal friction contributes to losses, but it is not the dominant factor.",
+    "b": "Incorrect - The load and recovery stress are specified; the efficiency problem is thermodynamic, not mechanical.",
+    "c": "Correct - Since η = W/Q and Q includes both temperature rise (m·C_p·ΔT ≫ U_stored) and the elastic energy, the vast majority of input heat raises the bulk temperature, leaving only a small fraction for mechanical work.",
+    "d": "Incorrect - The material retains its memory across cycles; degradation is not the issue."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q8. How does the crystallinity limit X_c in the strain fixity formula explain why different materials achieve different maximum R_f values?",
+   "answers": {
+    "a": "Higher X_c means the material melts at a lower temperature.",
+    "b": "X_c determines the mechanical strength of the permanent netpoints.",
+    "c": "X_c is the cooling rate required to lock the temporary shape.",
+    "d": "X_c represents the fraction of polymer chains that can be permanently locked by netpoints; materials with higher X_c can fix more strain before reaching saturation."
+   },
+   "explanations": {
+    "a": "Incorrect - X_c is not a melting property.",
+    "b": "Incorrect - X_c modulates fixity, not the strength of individual netpoints.",
+    "c": "Incorrect - X_c is not a rate parameter.",
+    "d": "Correct - The saturating exponential R_f = X_c·[1-exp(-(T_prog-T_g)/15)] is capped by X_c (PU=0.85, PLA=0.70, PMMA=0.60), reflecting each material's ability to lock strain via crystalline and cross-linked regions."
+   },
+   "correctAnswer": "d",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q9. In the WLF shift factor calculation, log(a_T) becomes increasingly negative as T rises well above T_g. What is the physical meaning of a very large a_T (say, 1000)?",
+   "answers": {
+    "a": "The material has become too stiff to deform.",
+    "b": "The relaxation time at T is 1000 times shorter than at T_g, meaning the polymer is highly fluid and chains relax very rapidly.",
+    "c": "The relaxation time at T is 1000 times longer than at T_g.",
+    "d": "The material has undergone a phase transition to a liquid."
+   },
+   "explanations": {
+    "a": "Incorrect - High a_T indicates faster relaxation, not stiffening.",
+    "b": "Correct - a_T = τ(T) / τ(T_g); if a_T = 1000, then τ(T) is 1/1000 of τ(T_g), indicating much faster chain dynamics at the higher temperature.",
+    "c": "Incorrect - a_T is a ratio of relaxation times; large a_T means faster, not slower, relaxation.",
+    "d": "Incorrect - The polymer may be more fluid, but it remains solid; a phase transition is not guaranteed."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q10. Consider a biomedical implant using PU-SMP with a programmed strain ε_u = 1.0 (100%), volume V = 10 cm³, mass m = 11 g, ρ = 1.1 g/cm³, C_p = 1.6 J/g°C. Approximately how much heat (in joules) is needed to raise it from 20°C to 45°C?",
+   "answers": {
+    "a": "About 440 J.",
+    "b": "About 220 J.",
+    "c": "About 44 J.",
+    "d": "About 880 J."
+   },
+   "explanations": {
+    "a": "Correct - Q = m·C_p·ΔT = 11 g × 1.6 J/(g·°C) × 25°C = 440 J. This bulk sensible heat dwarfs the stored elastic energy (a few tens of joules), illustrating why efficiency is low.",
+    "b": "Incorrect - Close, but under-estimates the actual value.",
+    "c": "Incorrect - This assumes ΔT = 2°C or half the mass.",
+    "d": "Incorrect - This would require either double the mass or double the temperature rise."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q11. An SMP with a near-ideal trigger temperature (small |T_g - 37 C|) can still fail the activation acceptance gate. Why?",
+   "answers": {
+    "a": "Its glassy modulus is too high.",
+    "b": "Its 95% recovery time t95 = tau*ln(20) is longer than the device's usable duty window.",
+    "c": "Its WLF constant C_1 is negative.",
+    "d": "It has too many netpoints."
+   },
+   "explanations": {
+    "a": "Incorrect - a high glassy modulus does not by itself violate the timing gate.",
+    "b": "Correct - the gate checks both temperature match AND that recovery arrives in time; a slow t95 fails it.",
+    "c": "Incorrect - the WLF constants are positive universal values.",
+    "d": "Incorrect - netpoint density sets recovery force, not the pass/fail timing gate."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q12. Programming strain uses epsilon = sigma/E_rubbery, and E = 3G. Which real bench experiment measures the modulus family behind this?",
+   "answers": {
+    "a": "Metre-bridge resistance of a wire.",
+    "b": "Redwood viscometer.",
+    "c": "Torsional pendulum / rigidity modulus.",
+    "d": "Colorimetric Beer-Lambert estimation."
+   },
+   "explanations": {
+    "a": "Incorrect - that measures electrical resistance, not modulus.",
+    "b": "Incorrect - that measures fluid viscosity.",
+    "c": "Correct - the torsional pendulum yields the rigidity (shear) modulus G, linked to E by E = 3G.",
+    "d": "Incorrect - colorimetry measures absorbance/concentration."
+   },
+   "correctAnswer": "c",
+   "difficulty": "advanced"
+  }
+ ]
 }

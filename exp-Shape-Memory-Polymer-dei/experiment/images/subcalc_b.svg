@@ -36,7 +36,7 @@
 
   <!-- Axis labels -->
   <text x="30" y="165" font-size="12" text-anchor="end" class="axis-label">R<tspan baseline-shift="sub">f</tspan> (%)</text>
-  <text x="315" y="270" font-size="12" text-anchor="middle" class="axis-label">Programming Margin T<tspan baseline-shift="sub">prog</tspan> − T<tspan baseline-shift="sub">g</tspan> (°C)</text>
+  <text x="315" y="270" font-size="12" text-anchor="middle" class="axis-label">Programming Margin T<tspan baseline-shift="sub">prog</tspan> - T<tspan baseline-shift="sub">g</tspan> (°C)</text>
 
   <!-- Y-axis ticks and labels -->
   <line x1="75" y1="240" x2="80" y2="240" class="axis-line"/>
@@ -79,7 +79,7 @@
 
   <!-- Annotations -->
   <text x="315" y="50" font-size="12" text-anchor="middle" fill="#334155" font-weight="bold">
-    Saturating Exponential: R<tspan baseline-shift="sub">f</tspan> = X<tspan baseline-shift="sub">c</tspan> × [1 − exp(−(T<tspan baseline-shift="sub">prog</tspan> − T<tspan baseline-shift="sub">g</tspan>)/15)]
+    Saturating Exponential: R<tspan baseline-shift="sub">f</tspan> = X<tspan baseline-shift="sub">c</tspan> × [1 - exp(-(T<tspan baseline-shift="sub">prog</tspan> - T<tspan baseline-shift="sub">g</tspan>)/15)]
   </text>
 
   <!-- Legend marker -->

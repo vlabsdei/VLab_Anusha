@@ -1,6 +1,248 @@
 /* global THREE */
 // Combined simulator script for Exp 1
 
+/* =====================================================================
+   CANONICAL SNIPPET - paste verbatim near the top of every
+   expN/simulation/js/main.js (before any drawing code that uses it).
+   Do not edit it per-experiment; every copy must stay identical.
+   ===================================================================== */
+
+/* Collapsible chart legend.
+   Everything that labels a plot now lives in a header bar above the canvas -
+   the chart's name on the left, the Legend toggle on the right - so nothing
+   sits on top of the curves. The legend body drops down from the button,
+   closed by default; click to open, click again to close. */
+window.LabLegend = (function () {
+  var boxes = new WeakMap();
+  var heads = new WeakMap();
+  var styled = false;
+
+  function addStyle() {
+    if (styled) return;
+    styled = true;
+    var s = document.createElement('style');
+    s.textContent =
+      /* the strip above the plot */
+      '.lg-head{display:flex;align-items:center;justify-content:space-between;gap:10px;' +
+      'flex:0 0 auto;position:relative;z-index:12;padding:5px 10px;background:#fff;' +
+      'border-bottom:1px solid #e2e8f0}' +
+      /* one line only: the strip is stealing height from the plot, and a wrapped
+         caption squeezes the axis ticks together. Full text is on the tooltip. */
+      '.lg-head .sim-label{position:static;top:auto;left:auto;right:auto;bottom:auto;' +
+      'z-index:auto;background:none;backdrop-filter:none;border:0;box-shadow:none;' +
+      'border-radius:0;padding:0!important;margin:0;flex:1 1 auto;min-width:0;' +
+      'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' +
+      'font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10.5px;font-weight:500;' +
+      'line-height:1.5;color:#334155}' +
+      /* the canvas gives up the header's height instead of being covered by it */
+      '.lg-chart{display:flex;flex-direction:column}' +
+      '.lg-chart>canvas.lg-canvas{flex:1 1 auto;min-height:0;display:block;' +
+      'width:100%!important;height:auto!important}' +
+      /* legend chip, anchored in the header */
+      '.lg-legend{position:relative;flex:0 0 auto;line-height:0;' +
+      'font-family:"IBM Plex Mono",ui-monospace,monospace}' +
+      '.lg-toggle{display:inline-flex;align-items:center;gap:5px;' +
+      'background:#fff;border:1px solid #cbd5e1;border-radius:4px;' +
+      'color:#475569;font:600 9px/1 "IBM Plex Mono",ui-monospace,monospace;' +
+      'letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;cursor:pointer}' +
+      '.lg-toggle:hover{background:#f8fafc;border-color:#94a3b8;color:#1e293b}' +
+      '.lg-toggle::after{content:"+";font-size:11px;line-height:1;color:#E2570F}' +
+      '.lg-legend.lg-open .lg-toggle::after{content:"\\2212"}' +
+      '.lg-body{display:none;position:absolute;top:calc(100% + 5px);right:0;z-index:30;' +
+      'width:max-content;max-width:230px;text-align:left;background:rgba(255,255,255,.98);' +
+      'border:1px solid #cbd5e1;border-radius:4px;padding:6px 8px;' +
+      'box-shadow:0 6px 16px rgba(15,23,42,.12)}' +
+      '.lg-legend.lg-open .lg-body{display:block}' +
+      '.lg-row{display:flex;align-items:center;gap:6px;font:500 9px/1.5 "IBM Plex Mono",ui-monospace,monospace;color:#55606f}' +
+      '.lg-row+.lg-row{margin-top:3px}' +
+      '.lg-swatch{flex:0 0 14px;height:8px;border-radius:1px}' +
+      '.lg-swatch.lg-dash{height:0;border-top:2px dashed currentColor;background:none!important}';
+    document.head.appendChild(s);
+  }
+
+  /* The header strip for one plot: created just above the canvas, with the
+     caption that used to float over the plot moved into it. */
+  function head(canvas) {
+    if (!canvas || !canvas.parentElement) return null;
+    var el = heads.get(canvas);
+    if (el && el.parentElement) return el;
+    addStyle();
+
+    var host = canvas.parentElement;
+    host.classList.add('lg-chart');
+    canvas.classList.add('lg-canvas');
+
+    el = document.createElement('div');
+    el.className = 'lg-head';
+    host.insertBefore(el, canvas);
+
+    /* Pull in the caption sitting over this plot, if the page has one. */
+    var label = null;
+    Array.prototype.some.call(host.children, function (sib) {
+      if (sib !== el && sib.classList && sib.classList.contains('sim-label')) {
+        label = sib;
+        return true;
+      }
+      return false;
+    });
+    if (label) {
+      if (!label.title) label.title = label.textContent.trim();
+      el.appendChild(label);
+    } else {
+      el.appendChild(document.createElement('span'));
+    }
+
+    heads.set(canvas, el);
+    return el;
+  }
+
+  /* items: [{ color, text, dash }]   corner: kept for call-site compatibility */
+  function attach(canvas, items, corner) {
+    if (!canvas || !canvas.parentElement || !items || !items.length) return;
+    var bar = head(canvas);
+    if (!bar) return;
+
+    var el = boxes.get(canvas);
+    if (!el || !el.parentElement) {
+      el = document.createElement('div');
+      el.className = 'lg-legend';
+      el.innerHTML = '<button type="button" class="lg-toggle">Legend</button><div class="lg-body"></div>';
+      el.querySelector('.lg-toggle').addEventListener('click', function () {
+        el.classList.toggle('lg-open');
+      });
+      bar.appendChild(el);
+      boxes.set(canvas, el);
+    }
+
+    var rows = items.map(function (it) {
+      var c = it.color || '#475569';
+      var sw = it.dash
+        ? '<span class="lg-swatch lg-dash" style="color:' + c + '"></span>'
+        : '<span class="lg-swatch" style="background:' + c + '"></span>';
+      return '<div class="lg-row">' + sw + '<span>' + it.text + '</span></div>';
+    }).join('');
+    el.querySelector('.lg-body').innerHTML = rows;
+  }
+
+  /* Existing call sites pass the x/y they used to paint the old canvas box.
+     The chip has a fixed home in the header now, so the point is ignored. */
+  function fromPoint(ctx, x, y, items) {
+    attach(ctx.canvas, items);
+  }
+
+  /* ---- marker labels ------------------------------------------------------
+     Several plots drop three or four markers close together and label each one,
+     which used to print the names on top of each other. Every label goes
+     through here instead: it remembers what it has already put on this canvas
+     this frame and takes the first offset that lands clear. */
+  var marks = new WeakMap();
+
+  function slots(canvas) {
+    var a = marks.get(canvas);
+    if (!a) { a = []; marks.set(canvas, a); }
+    return a;
+  }
+
+  function resetLabels(ctx) {
+    if (ctx && ctx.canvas) marks.set(ctx.canvas, []);
+  }
+
+  /* candidates: [dx, dy, textAlign, textBaseline], tried in order */
+  var SPOTS = [
+    [9, -6, 'left', 'bottom'], [-9, -6, 'right', 'bottom'],
+    [9, 8, 'left', 'top'], [-9, 8, 'right', 'top'],
+    [0, -9, 'center', 'bottom'], [0, 11, 'center', 'top'],
+    [9, -20, 'left', 'bottom'], [-9, -20, 'right', 'bottom'],
+    [0, -22, 'center', 'bottom'], [0, 24, 'center', 'top'],
+    [0, -35, 'center', 'bottom'], [0, 37, 'center', 'top']
+  ];
+
+  function boxOf(x, y, w, h, align, base) {
+    var l = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
+    var t = base === 'bottom' ? y - h : base === 'top' ? y : y - h / 2;
+    return { l: l, t: t, r: l + w, b: t + h };
+  }
+
+  function clashes(a, b) {
+    return !(a.r + 2 < b.l || a.l > b.r + 2 || a.b + 2 < b.t || a.t > b.b + 2);
+  }
+
+  /* opts: { font, color, size, bounds:{l,t,r,b}, gap } */
+  function label(ctx, x, y, text, opts) {
+    if (!text) return;
+    opts = opts || {};
+    ctx.font = opts.font || '700 11px "IBM Plex Mono", monospace';
+    var w = ctx.measureText(text).width;
+    var h = opts.size || 11;
+    var gap = opts.gap || 0;                 // marker radius to clear
+    var taken = slots(ctx.canvas);
+    var lim = opts.bounds;
+    var pick = null, fallback = null, least = Infinity;
+
+    for (var i = 0; i < SPOTS.length && !pick; i++) {
+      var s = SPOTS[i];
+      var dy = s[1] < 0 ? s[1] - gap : s[1] + gap;
+      var bx = x + s[0], by = y + dy;
+      var box = boxOf(bx, by, w, h, s[2], s[3]);
+      var spot = { x: bx, y: by, align: s[2], base: s[3], box: box };
+      var cost = 0;
+      if (lim) {
+        cost += Math.max(0, lim.l - box.l) + Math.max(0, box.r - lim.r) +
+                Math.max(0, lim.t - box.t) + Math.max(0, box.b - lim.b);
+      }
+      for (var j = 0; j < taken.length; j++) {
+        if (clashes(box, taken[j])) cost += 100;
+      }
+      if (cost === 0) pick = spot;
+      else if (cost < least) { least = cost; fallback = spot; }
+    }
+    /* Nothing was completely clear, so take the least crowded spot rather than
+       dropping a label the reader may be relying on. */
+    pick = pick || fallback;
+    if (!pick) return;
+
+    taken.push(pick.box);
+    if (opts.color) ctx.fillStyle = opts.color;
+    ctx.textAlign = pick.align;
+    ctx.textBaseline = pick.base;
+    ctx.fillText(text, pick.x, pick.y);
+  }
+
+  /* Frames start a new plot, so what was on the old one no longer blocks. */
+  var proto = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
+  if (proto && !proto.__lgReset) {
+    var rawClear = proto.clearRect;
+    proto.clearRect = function () {
+      marks.set(this.canvas, []);
+      return rawClear.apply(this, arguments);
+    };
+    proto.__lgReset = true;
+  }
+
+  /* Charts without a legend still have a caption to lift off the plot. */
+  function hoistCaptions() {
+    var labels = document.querySelectorAll('.sim-label');
+    Array.prototype.forEach.call(labels, function (label) {
+      var host = label.parentElement;
+      if (!host || label.closest('.lg-head')) return;
+      var canvas = null;
+      Array.prototype.some.call(host.children, function (sib) {
+        if (sib.tagName === 'CANVAS') { canvas = sib; return true; }
+        return false;
+      });
+      if (canvas) head(canvas);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hoistCaptions);
+  } else {
+    hoistCaptions();
+  }
+
+  return { attach: attach, fromPoint: fromPoint, label: label, resetLabels: resetLabels };
+})();
+
 /* ---- LabGate: gate the whole experiment behind a Start click ---- */
 window.LabGate = (function () {
   let armed = false;
@@ -465,7 +707,7 @@ window.LabGate = (function () {
                 ctx.stroke();
             }
     
-            // Shaded Glassy Region (T < Tg) — clipped rectangular fill
+            // Shaded Glassy Region (T < Tg) - clipped rectangular fill
             const xTg = getX(Tg);
             const xMin = getX(T_min);
             ctx.fillStyle = "rgba(226, 232, 240, 0.4)"; // soft slate grey
@@ -569,61 +811,6 @@ window.LabGate = (function () {
             ctx.fill();
             ctx.stroke();
     
-            // Graph-level Legend Box to stagger and clean up label collisions
-            const legX = padLeft + w - 160;
-            const legY = padTop + 20;
-            ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-            ctx.fillRect(legX, legY, 150, 72);
-            ctx.strokeStyle = "#cbd5e1";
-            ctx.lineWidth = 1;
-            ctx.strokeRect(legX, legY, 150, 72);
-    
-            ctx.fillStyle = "#1e293b";
-            ctx.font = "bold 9px sans-serif";
-            ctx.textAlign = "left";
-            ctx.fillText("Main Plot Legend", legX + 8, legY + 11);
-    
-            ctx.font = "8px sans-serif";
-            ctx.fillStyle = "#475569";
-    
-            // WLF Line legend
-            ctx.strokeStyle = "#E2570F";
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(legX + 8, legY + 22);
-            ctx.lineTo(legX + 24, legY + 22);
-            ctx.stroke();
-            ctx.fillText("WLF Shift factor log(a_T)", legX + 30, legY + 25);
-    
-            // Reference point circle legend
-            ctx.fillStyle = "#ffffff";
-            ctx.strokeStyle = "#E2570F";
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.arc(legX + 16, legY + 34, 3, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = "#475569";
-            ctx.fillText("Ref: a_T = 1 at T = T_g", legX + 30, legY + 37);
-    
-            // Tg line legend
-            ctx.strokeStyle = "#3B6FD8";
-            ctx.lineWidth = 1.5;
-            ctx.setLineDash([2, 2]);
-            ctx.beginPath();
-            ctx.moveTo(legX + 8, legY + 46);
-            ctx.lineTo(legX + 24, legY + 46);
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.fillStyle = "#475569";
-            ctx.fillText("Transition Line (T = T_g)", legX + 30, legY + 49);
-    
-            // Glassy region legend
-            ctx.fillStyle = "rgba(226, 232, 240, 0.8)";
-            ctx.fillRect(legX + 8, legY + 56, 16, 8);
-            ctx.fillStyle = "#475569";
-            ctx.fillText("Glassy Zone (Undefined)", legX + 30, legY + 63);
-    
             // Draw current temperature tracker dot and label
             if (T >= T_min && T <= T_max) {
                 const cx = getX(T);
@@ -647,7 +834,7 @@ window.LabGate = (function () {
                     ctx.lineWidth = 1.5;
                     ctx.stroke();
     
-                    // Live tracker value label — dynamic side selection to prevent canvas edge clipping
+                    // Live tracker value label - dynamic side selection to prevent canvas edge clipping
                     const isNearRightEdge = (T > Tg + 18);
                     ctx.fillStyle = "#ef4444";
                     ctx.font = "bold 9px sans-serif";
@@ -655,6 +842,13 @@ window.LabGate = (function () {
                     ctx.fillText(`log(a_T) = ${logVal.toFixed(2)}`, cx + (isNearRightEdge ? -8 : 8), cy + 3);
                 }
             }
+
+            LabLegend.attach(plotCanvasMain, [
+              { color: '#E2570F', text: 'WLF shift factor log(a_T)' },
+              { color: '#E2570F', text: 'Ref: a_T = 1 at T = T_g' },
+              { color: '#3B6FD8', dash: true, text: 'Transition line (T = T_g)' },
+              { color: '#cbd5e1', text: 'Glassy zone (undefined)' }
+            ], 'tr');
         }
     
         // ==========================================
@@ -725,12 +919,6 @@ window.LabGate = (function () {
             ctx.beginPath();
             ctx.arc(xTg, yInflection, 4, 0, Math.PI * 2);
             ctx.fill();
-    
-            // Label: "T_g (DSC inflection)"
-            ctx.fillStyle = "#3B6FD8";
-            ctx.font = "bold 9px sans-serif";
-            ctx.textAlign = "left";
-            ctx.fillText("T_g (DSC inflection)", xTg + 8, yInflection + 3);
     
             // Draw axes
             ctx.strokeStyle = "#94a3b8";
@@ -803,9 +991,14 @@ window.LabGate = (function () {
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
             }
+
+            LabLegend.attach(plotCanvasDSC, [
+              { color: '#1E40AF', text: 'C_p heat capacity' },
+              { color: '#3B6FD8', dash: true, text: 'T_g (DSC inflection)' }
+            ], 'tl');
         }
     }
-    
+
     // ============================================================
     // DYNAMIC TABLE GENERATOR
     // ============================================================
@@ -983,7 +1176,7 @@ window.LabGate = (function () {
         valRate.innerText = inputRate.value + " °C/min";
     });
     
-    // Animation Timeline — ramps from the glassy baseline toward the
+    // Animation Timeline - ramps from the glassy baseline toward the
     // Test Temperature slider's chosen target, at the Heating Rate slider's pace.
     function animateTimeline() {
         const rate = parseFloat(inputRate.value);
@@ -1421,10 +1614,7 @@ window.LabGate = (function () {
         fixityCtx.lineTo(padLeft + w, yAsymptote);
         fixityCtx.stroke();
         fixityCtx.setLineDash([]);
-        fixityCtx.fillStyle = "#ef4444";
-        fixityCtx.textAlign = "right";
-        fixityCtx.fillText(`Limit: X_c = ${(Xc * 100).toFixed(0)}%`, padLeft + w - 4, yAsymptote - 4);
-    
+
         // Current State Dot
         const currentDeltaT = Math.max(0, T_prog - Tg);
         const currentRf = calculateRf(T_prog, Tg, Xc);
@@ -1438,6 +1628,11 @@ window.LabGate = (function () {
         fixityCtx.strokeStyle = "#ffffff";
         fixityCtx.lineWidth = 1;
         fixityCtx.stroke();
+
+        LabLegend.attach(fixityCanvas, [
+          { color: '#E2570F', text: 'Shape fixity R_f' },
+          { color: '#ef4444', dash: true, text: `Limit: X_c = ${(Xc * 100).toFixed(0)}%` }
+        ], 'tl');
     }
     
     // ============================================================
@@ -2840,8 +3035,8 @@ window.LabGate = (function () {
     
         if (currentMorphology === 'miscible') {
             const ver = verifySequenceDual(eps_total, eps_total, 0.0);
-            const stage1_status = currentTemp < mixedTg ? "Active" : (ver.stage1_locked ? "✓ locked" : "Failed");
-            const stage2_status = currentTemp >= mixedTg ? (ver.stage2_complete ? "✓ complete" : "Failed") : "Locked";
+            const stage1_status = currentTemp < mixedTg ? "Active" : (ver.stage1_locked ? "locked" : "Failed");
+            const stage2_status = currentTemp >= mixedTg ? (ver.stage2_complete ? "complete" : "Failed") : "Locked";
     
             const stagesDual = [
                 { name: "Programmed", temp: `T < ${mixedTg.toFixed(1)}°C`, strainVal: eps_total, status: stage1_status },
@@ -2853,15 +3048,15 @@ window.LabGate = (function () {
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.name}</td>
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.temp}</td>
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.strainVal.toFixed(1)}%</td>
-                    <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1; text-align: right; font-weight: bold; color: ${st.status === 'Active' ? '#ef4444' : (st.status.startsWith('✓') ? '#16a34a' : '#94a3b8')};">${st.status}</td>
+                    <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1; text-align: right; font-weight: bold; color: ${st.status === 'Active' ? '#ef4444' : (/^(locked|complete|partial)/.test(st.status) ? '#16a34a' : '#94a3b8')};">${st.status}</td>
                 `;
                 tbody.appendChild(tr);
             });
         } else {
             const ver = verifySequence(eps_total, eps_total, eps_final, 0.0);
-            const stage1_status = currentTemp < Tg1 ? "Active" : (ver.stage1_locked ? "✓ locked" : "Failed");
-            const stage2_status = (currentTemp >= Tg1 && currentTemp < Tg2) ? "Active" : (currentTemp >= Tg2 ? (ver.stage2_partial ? "✓ partial release" : "Failed") : "Locked");
-            const stage3_status = currentTemp >= Tg2 ? (ver.stage3_complete ? "✓ complete" : "Failed") : "Locked";
+            const stage1_status = currentTemp < Tg1 ? "Active" : (ver.stage1_locked ? "locked" : "Failed");
+            const stage2_status = (currentTemp >= Tg1 && currentTemp < Tg2) ? "Active" : (currentTemp >= Tg2 ? (ver.stage2_partial ? "partial release" : "Failed") : "Locked");
+            const stage3_status = currentTemp >= Tg2 ? (ver.stage3_complete ? "complete" : "Failed") : "Locked";
     
             const stagesTriple = [
                 { name: "Programmed (Shape C)", temp: `T < ${Tg1}°C`, strainVal: eps_total, status: stage1_status },
@@ -2874,7 +3069,7 @@ window.LabGate = (function () {
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.name}</td>
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.temp}</td>
                     <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1;">${st.strainVal.toFixed(1)}%</td>
-                    <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1; text-align: right; font-weight: bold; color: ${st.status === 'Active' ? '#ef4444' : (st.status.startsWith('✓') ? '#16a34a' : '#94a3b8')};">${st.status}</td>
+                    <td style="padding: 8px 4px; border-bottom: 1px solid #cbd5e1; text-align: right; font-weight: bold; color: ${st.status === 'Active' ? '#ef4444' : (/^(locked|complete|partial)/.test(st.status) ? '#16a34a' : '#94a3b8')};">${st.status}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -3061,11 +3256,11 @@ window.LabGate = (function () {
     // MATERIAL & THERMAL CONSTANTS
     // Unit Identity: 1 MPa = 1 J/cm³, so MPa * cm³ = Joules
     // ============================================================
-    const E_RUBBERY  = 15;     // MPa — PU rubbery modulus, carried over from Sub-Calc D
-    const E_U        = 1.0;    // dimensionless — programmed strain (100%), matches eps_total from Sub-Calc D
-    const S_RECOVERY = 1.5;    // MPa — constrained/realistic recovery stress (deliberately << E_rubbery)
+    const E_RUBBERY  = 15;     // MPa - PU rubbery modulus, carried over from Sub-Calc D
+    const E_U        = 1.0;    // dimensionless - programmed strain (100%), matches eps_total from Sub-Calc D
+    const S_RECOVERY = 1.5;    // MPa - constrained/realistic recovery stress (deliberately << E_rubbery)
     const T_AMBIENT  = 20;     // °C
-    const T_RECOVERY = 45;     // °C — PU Tg1 from Sub-Calc D, the actuation trigger point
+    const T_RECOVERY = 45;     // °C - PU Tg1 from Sub-Calc D, the actuation trigger point
     const DT         = T_RECOVERY - T_AMBIENT;   // = 25 °C
     
     // Three.js Globals
@@ -3292,7 +3487,7 @@ window.LabGate = (function () {
         
         plotCtx.fillStyle = "#475569";
         plotCtx.font = "italic 11px Arial";
-        plotCtx.fillText("Typical SMP range: 1–5%  |  Typical SMA range: 2–8%", 45, 358);
+        plotCtx.fillText("Typical SMP range: 1-5%  |  Typical SMA range: 2-8%", 45, 358);
     }
     
     // ============================================================
@@ -3362,11 +3557,11 @@ window.LabGate = (function () {
                     
                     let comparison = "";
                     if (eff < 1) {
-                        comparison = "below the typical SMP range (1–5%)";
+                        comparison = "below the typical SMP range (1-5%)";
                     } else if (eff <= 5) {
-                        comparison = "within the typical SMP range (1–5%), below SMA (2–8%)";
+                        comparison = "within the typical SMP range (1-5%), below SMA (2-8%)";
                     } else {
-                        comparison = "above the typical SMP range, approaching SMA-like values (2–8%)";
+                        comparison = "above the typical SMP range, approaching SMA-like values (2-8%)";
                     }
                     
                     liveInsight.innerHTML = `<strong>Live Insight:</strong> Stroke complete. The artificial muscle consumed <strong>${curThermal.toFixed(2)} J</strong> of thermal energy (Q<sub>trigger</sub>) to produce <strong>${curWork.toFixed(2)} mJ</strong> of mechanical work (W<sub>mech</sub>), recovering the originally invested programming energy (U<sub>stored</sub> = ${uStored.toFixed(2)} J). <br><br>The overall efficiency is <strong>${eff.toFixed(3)}%</strong>, which is <strong>${comparison}</strong>. <br><br><strong>Biomedical Note:</strong> In medical applications, body heat (~37°C) is close to the trigger transition (45°C), meaning the temperature delta ΔT is effectively much smaller than in the laboratory. This allows body heat to serve as a 'free' thermal trigger, offsetting the low thermodynamic efficiency.`;
