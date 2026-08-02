@@ -1,0 +1,89 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">Magnetic torque on ferromagnetic tip: angle &amp; critical field</text>
+
+  <!-- Left panel: tip bending diagram -->
+  <g>
+    <!-- resting tip -->
+    <line x1="100" y1="200" x2="100" y2="100" stroke="#334155" stroke-width="2"/>
+    <text x="95" y="220" font-size="11" fill="#334155">Rest</text>
+
+    <!-- bent tip with field -->
+    <path d="M 200 200 Q 230 150 250 80" stroke="#1E40AF" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- magnetic particles -->
+    <circle cx="205" cy="195" r="3" fill="#E2570F"/>
+    <circle cx="215" cy="185" r="3" fill="#E2570F"/>
+    <circle cx="225" cy="170" r="3" fill="#E2570F"/>
+    <circle cx="235" cy="150" r="3" fill="#E2570F"/>
+    <circle cx="245" cy="125" r="3" fill="#E2570F"/>
+
+    <!-- applied field B -->
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <polygon points="0 0, 10 3, 0 6" fill="#334155" />
+      </marker>
+    </defs>
+    <line x1="280" y1="50" x2="320" y2="50" stroke="#334155" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="330" y="55" font-size="12" font-weight="bold" fill="#334155">B (field)</text>
+
+    <!-- moment m alignment arrow -->
+    <line x1="240" y1="120" x2="280" y2="70" stroke="#E2570F" stroke-width="2.2" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+    <text x="285" y="95" font-size="11" fill="#E2570F" font-weight="bold">m</text>
+
+    <!-- angle θ arc -->
+    <path d="M 200 200 A 30 30 0 0 0 212 169" stroke="#E2570F" stroke-width="1.5" fill="none"/>
+    <text x="192" y="190" font-size="11" fill="#E2570F">θ</text>
+
+    <!-- torque indicator -->
+    <path d="M 235 160 Q 250 150 260 140" stroke="#E2570F" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    <text x="265" y="145" font-size="11" fill="#E2570F" font-weight="bold">τ = mB sinθ</text>
+  </g>
+
+  <!-- Right panel: critical field vs loading -->
+  <g>
+    <!-- grid -->
+    <g stroke="#E2E8F0" stroke-width="1">
+      <line x1="370" y1="79" x2="560" y2="79"/>
+      <line x1="370" y1="130" x2="560" y2="130"/>
+      <line x1="370" y1="181" x2="560" y2="181"/>
+      <line x1="370" y1="232" x2="560" y2="232"/>
+      <line x1="370" y1="283" x2="560" y2="283"/>
+      <line x1="432" y1="40" x2="432" y2="300"/>
+      <line x1="496" y1="40" x2="496" y2="300"/>
+    </g>
+
+    <!-- axes -->
+    <line x1="370" y1="40" x2="370" y2="300" stroke="#334155" stroke-width="1.6"/>
+    <line x1="370" y1="300" x2="560" y2="300" stroke="#334155" stroke-width="1.6"/>
+    <polygon points="370,34 366,44 374,44" fill="#334155"/>
+    <polygon points="566,300 556,296 556,304" fill="#334155"/>
+
+    <!-- B_crit curve: inversely proportional to φ (particle loading) -->
+    <polyline fill="none" stroke="#1E40AF" stroke-width="2.8"
+      points="370,300 395,283 420,249 445,217 470,181 495,143 520,100 560,60"/>
+
+    <!-- reference points -->
+    <circle cx="420" cy="249" r="4.5" fill="#E2570F" stroke="#ffffff" stroke-width="1.5"/>
+    <circle cx="495" cy="143" r="4.5" fill="#E2570F" stroke="#ffffff" stroke-width="1.5"/>
+
+    <!-- axis labels -->
+    <text x="465" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">Particle loading φ (vol%)</text>
+    <text x="325" y="170" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155" transform="rotate(-90 325 170)">B<sub>crit</sub> (mT)</text>
+
+    <!-- axis tick labels -->
+    <text x="364" y="304" text-anchor="end" font-size="10" fill="#475569">0</text>
+    <text x="364" y="253" text-anchor="end" font-size="10" fill="#475569">5</text>
+    <text x="364" y="202" text-anchor="end" font-size="10" fill="#475569">10</text>
+    <text x="364" y="83" text-anchor="end" font-size="10" fill="#475569">20</text>
+
+    <text x="370" y="320" font-size="10" fill="#475569">0</text>
+    <text x="432" y="320" font-size="10" fill="#475569">2</text>
+    <text x="496" y="320" font-size="10" fill="#475569">4</text>
+    <text x="560" y="320" font-size="10" fill="#475569">6</text>
+
+    <!-- formula -->
+    <text x="375" y="55" font-size="11" fill="#1E40AF" font-weight="bold">B<sub>crit</sub> = θ<sub>target</sub> / (k<sub>m</sub>φ)</text>
+    <text x="375" y="71" font-size="10.5" fill="#475569">∝ 1/φ  (more particles = weaker magnet needed)</text>
+  </g>
+</svg>

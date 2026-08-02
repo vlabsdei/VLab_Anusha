@@ -1,0 +1,60 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">NIR nanorod heating: temperature rise &amp; activation threshold</text>
+
+  <!-- grid -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="70" y1="79" x2="560" y2="79"/>
+    <line x1="70" y1="130" x2="560" y2="130"/>
+    <line x1="70" y1="181" x2="560" y2="181"/>
+    <line x1="70" y1="232" x2="560" y2="232"/>
+    <line x1="70" y1="283" x2="560" y2="283"/>
+    <line x1="192" y1="40" x2="192" y2="300"/>
+    <line x1="315" y1="40" x2="315" y2="300"/>
+    <line x1="437" y1="40" x2="437" y2="300"/>
+  </g>
+
+  <!-- axes -->
+  <line x1="70" y1="40" x2="70" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <line x1="70" y1="300" x2="560" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <polygon points="70,34 66,44 74,44" fill="#334155"/>
+  <polygon points="566,300 556,296 556,304" fill="#334155"/>
+
+  <!-- steady-state asymptote (ΔT_ss) -->
+  <line x1="70" y1="79" x2="560" y2="79" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <text x="556" y="73" text-anchor="end" font-size="11" fill="#475569">ΔT&#8339;&#8347; (steady state)</text>
+
+  <!-- activation threshold at +25°C -->
+  <line x1="70" y1="181" x2="560" y2="181" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="80" y="175" font-size="11" fill="#dc2626" font-weight="bold">ΔT<sub>req</sub> = 25&#176;C (activation)</text>
+
+  <!-- activation time vertical line -->
+  <line x1="220" y1="181" x2="220" y2="300" stroke="#E2570F" stroke-width="1.4" stroke-dasharray="4 4"/>
+  <text x="225" y="292" font-size="11" fill="#E2570F" font-weight="bold">t<sub>act</sub></text>
+
+  <!-- heated zone size visualization at t_act -->
+  <rect x="200" y="320" width="40" height="15" fill="none" stroke="#E2570F" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="225" y="340" text-anchor="middle" font-size="10" fill="#E2570F">d = 2√(D<sub>th</sub>t<sub>act</sub>)</text>
+
+  <!-- temperature rise curve: ΔT(t) = ΔT_ss(1 - e^(-t/τ_H)) -->
+  <polyline fill="none" stroke="#1E40AF" stroke-width="2.8"
+    points="70,300 119,269.3 168,248.1 217,232.8 266,222.4 315,215.5 364,210.8 413,207.7 462,205.7 511,204.4 560,203.5"/>
+
+  <!-- tracker dot at activation crossing -->
+  <circle cx="220" cy="181" r="5.5" fill="#E2570F" stroke="#ffffff" stroke-width="1.6"/>
+
+  <!-- axis labels -->
+  <text x="315" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">Time (s)</text>
+  <text x="24" y="170" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155" transform="rotate(-90 24 170)">ΔT (°C)</text>
+
+  <!-- y-axis tick labels -->
+  <text x="64" y="304" text-anchor="end" font-size="10" fill="#475569">0</text>
+  <text x="64" y="253" text-anchor="end" font-size="10" fill="#475569">10</text>
+  <text x="64" y="202" text-anchor="end" font-size="10" fill="#475569">25</text>
+  <text x="64" y="83" text-anchor="end" font-size="10" fill="#475569">ΔT<sub>ss</sub></text>
+
+  <!-- formula and note -->
+  <text x="380" y="150" font-size="11" fill="#1E40AF" font-weight="bold">ΔT(t) = ΔT&#8339;&#8347;(1 &#8722; e<sup>&#8722;t/τ<sub>H</sub></sup>)</text>
+  <text x="380" y="166" font-size="10.5" fill="#475569">τ<sub>H</sub> = 15 s (thermal time constant)</text>
+  <text x="380" y="182" font-size="10.5" fill="#475569">Higher power &#8594; faster rise &#8594; sooner t<sub>act</sub> &#8594; tighter zone</text>
+</svg>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc B · The NIR Skin-Activated Implant - Non-Thermal 4D Actuation</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Light Bending</span><span class="subcalc__desc">Azobenzene photoswitch</span></span></a>
+            <a class="subcalc is-active" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">NIR Heating</span><span class="subcalc__desc">NIR plasmonic heating</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Magnetic Steering</span><span class="subcalc__desc">Magnetic torque</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Coil Power</span><span class="subcalc__desc">Coil field &amp; power</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Trigger Speed</span><span class="subcalc__desc">Response-time comparison</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>2</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow" href="index.html" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index2.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc B · Plasmonic Photothermal Heating</span>
+            <h1 class="stage__title">NIR Implant</h1>
+            <p class="stage__obj">Gold nanorods absorb 808&nbsp;nm near-infrared light - a wavelength that passes through skin and tissue relatively unattenuated - and convert it to local heat, triggering a thermoresponsive implant without wires. Higher power heats faster, but the hot zone spreads wider.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Set the laser power and nanoparticle loading, then click 'Fire the Laser' to heat the spot and see if the implant switches on - and stays local.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Implant: off (too cool)</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Heated-zone size vs laser power</div>
+                    <canvas id="plotCanvasNIR" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Temperature rise vs laser power</div>
+                    <canvas id="plotCanvasTemp" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Turn up power: hotter, but less local</h3>
+            <table id="nirTable">
+                <thead><tr><th>Power (W)</th><th>Temp rise (&deg;C)</th><th style="text-align:right;">Zone d (mm)</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the heating</button>
+            <div class="derivation-content"><div id="nirFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Laser power (808 nm, through skin)</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Laser power P (W)</label><input type="range" id="powInput" aria-label="Pow Input" min="0.1" max="6.0" step="0.1" value="0.5"><div class="slider-val" id="valPow">0.5 W</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. Nanoparticles in the implant</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Nanorod loading (wt%)</label><input type="range" id="aunrInput" aria-label="Aunr Input" min="0.02" max="0.5" step="0.01" value="0.1"><div class="slider-val" id="valAunr">0.10 wt%</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Fire the Laser</button>
+                        <button type="button" onclick="location.reload()">Reset Implant</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>Does the implant switch on?</h3>
+                        <div class="result-row"><span class="result-label">How fast it heats</span><span class="result-val" id="resRate">-</span></div>
+                        <div class="result-row"><span class="result-label">Temperature rise</span><span class="result-val" id="resDT">-</span></div>
+                        <div class="result-row"><span class="result-label">Time to switch on (+25&deg;C)</span><span class="result-val" id="resTact">-</span></div>
+                        <div class="result-row"><span class="result-label">Heated-zone size d</span><span class="result-val" id="resD">-</span></div>
+                        <div class="result-row"><span class="result-label">Min power to stay local (d&lt;0.5mm)</span><span class="result-val" id="resPmin">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index2.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

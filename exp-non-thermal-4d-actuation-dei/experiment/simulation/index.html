@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub-Calc A · The Light-Driven Actuator Strip - Non-Thermal 4D Actuation</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+<div class="lab">
+
+    <nav class="rail">
+        <div class="rail__navlabel">Sub-calculators</div>
+        <div class="rail__nav">
+            <a class="subcalc is-active" href="index.html"><span class="subcalc__chip">A</span><span class="subcalc__text"><span class="subcalc__name">Light Bending</span><span class="subcalc__desc">Azobenzene photoswitch</span></span></a>
+            <a class="subcalc" href="index1.html"><span class="subcalc__chip">B</span><span class="subcalc__text"><span class="subcalc__name">NIR Heating</span><span class="subcalc__desc">NIR plasmonic heating</span></span></a>
+            <a class="subcalc" href="index2.html"><span class="subcalc__chip">C</span><span class="subcalc__text"><span class="subcalc__name">Magnetic Steering</span><span class="subcalc__desc">Magnetic torque</span></span></a>
+            <a class="subcalc" href="index3.html"><span class="subcalc__chip">D</span><span class="subcalc__text"><span class="subcalc__name">Coil Power</span><span class="subcalc__desc">Coil field &amp; power</span></span></a>
+            <a class="subcalc" href="index4.html"><span class="subcalc__chip">E</span><span class="subcalc__text"><span class="subcalc__name">Trigger Speed</span><span class="subcalc__desc">Response-time comparison</span></span></a>
+        </div>
+        <div class="rail__foot">
+            <span class="rail__step">Step <b>1</b> / 5</span>
+            <div class="rail__arrows">
+                <a class="rail__arrow is-disabled" title="Previous">&lsaquo;</a>
+                <a class="rail__arrow is-primary" href="index1.html" title="Next sub-calc">&rsaquo;</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="stage">
+        <header class="stage__head">
+            <span class="stage__tag">Sub-calc A · Photoswitchable Isomerisation</span>
+            <h1 class="stage__title">Light-Driven Strip</h1>
+            <p class="stage__obj">Azobenzene dye in the polymer switches between trans and cis forms under UV light, contracting the layer it's in and bending the strip. Visible light reverses it. Brightness and dye loading both set how fast the strip actuates.</p>
+        </header>
+
+        <section class="insight-box" id="liveInsight"><strong>Live Insight:</strong> Pick a light colour, set the brightness and dye loading, then click 'Shine the Light' to watch the printed strip bend.</section>
+
+        <div class="sim-viewport-fluid">
+            <div>
+                <div class="sim-label" id="stateLabel">Strip: relaxed (flat)</div>
+                <div id="viewport3D"></div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div style="position:relative; flex:3; min-height:0;">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">How far it has bent over time</div>
+                    <canvas id="plotCanvasAzo" width="450" height="240"></canvas>
+                </div>
+                <div style="position:relative; flex:2; min-height:0; border-top:1px solid var(--line);">
+                    <div class="sim-label" style="font-size:11px; padding:4px 10px;">Actuation time vs light brightness</div>
+                    <canvas id="plotCanvasBL" width="450" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="datacard">
+            <h3>Brighter light bends it faster</h3>
+            <table id="azoTable">
+                <thead><tr><th>Brightness I&#8320; (mW/cm&sup2;)</th><th style="text-align:right;">Actuate time t90 (s)</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="collapsible-derivation">
+            <button class="derivation-toggle" onclick="this.parentElement.classList.toggle('open')">The physics behind the bend</button>
+            <div class="derivation-content"><div id="azoFormulaContainer" style="padding:12px; overflow-x:auto; min-height:80px;"></div></div>
+        </div>
+    </main>
+
+    <aside class="dock">
+        <div class="card">
+            <div class="card__head"><span class="card__dot"></span><span class="card__title">Controls</span></div>
+            <div class="card__body">
+                <div class="form-container">
+                    <div class="form-row">
+                        <div class="form-label">1. Pick the light colour</div>
+                        <div class="form-options">
+                            <div class="option"><input type="radio" name="wl" value="365" id="wlUV" checked><label for="wlUV">365 nm UV - makes it bend</label></div>
+                            <div class="option"><input type="radio" name="wl" value="450" id="wlVis"><label for="wlVis">450 nm visible - lets it relax</label></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">2. How bright is the light?</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Light brightness I&#8320; (mW/cm&sup2;)</label><input type="range" id="intInput" aria-label="Int Input" min="5" max="60" step="1" value="10"><div class="slider-val" id="valInt">10 mW/cm&sup2;</div></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-label">3. How much dye in the strip?</div>
+                        <div class="form-options">
+                            <div class="slider-group"><label>Dye loading C (mmol/L)</label><input type="range" id="concInput" aria-label="Conc Input" min="1" max="30" step="1" value="8"><div class="slider-val" id="valConc">8 mmol/L</div></div>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" id="btnRun">Shine the Light</button>
+                        <button type="button" onclick="location.reload()">Reset Strip</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card__head navy"><span class="card__dot"></span><span class="card__title">Readouts</span></div>
+            <div class="card__body">
+                <div id="resultsContainer">
+                    <div class="result-box">
+                        <h3>What the actuator does</h3>
+                        <div class="result-row"><span class="result-label">Light colour / effect</span><span class="result-val" id="resWl">-</span></div>
+                        <div class="result-row"><span class="result-label">Light reaching the strip</span><span class="result-val" id="resIabs">-</span></div>
+                        <div class="result-row"><span class="result-label">How much the dye switches</span><span class="result-val" id="resCis">-</span></div>
+                        <div class="result-row"><span class="result-label">Bend angle</span><span class="result-val" id="resBend">-</span></div>
+                        <div class="result-row"><span class="result-label">Time to actuate (t90)</span><span class="result-val" id="resT90">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+<a id="btnNextCalc" href="index1.html" style="display:none;"></a>
+<script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<svg viewBox="0 0 620 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="620" height="360" fill="#ffffff"/>
+  <text x="310" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#334155">Stimulus speed comparison: log-scale response times</text>
+
+  <!-- log time axis grid (major ticks at decades) -->
+  <g stroke="#E2E8F0" stroke-width="1">
+    <line x1="100" y1="60" x2="100" y2="300"/>
+    <line x1="180" y1="60" x2="180" y2="300"/>
+    <line x1="260" y1="60" x2="260" y2="300"/>
+    <line x1="340" y1="60" x2="340" y2="300"/>
+    <line x1="420" y1="60" x2="420" y2="300"/>
+    <line x1="500" y1="60" x2="500" y2="300"/>
+  </g>
+
+  <!-- main axis -->
+  <line x1="70" y1="300" x2="560" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <polygon points="566,300 556,296 556,304" fill="#334155"/>
+  <text x="315" y="338" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">Log time (s)</text>
+
+  <!-- time scale labels (decades) -->
+  <text x="100" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10⁻³ (ms)</text>
+  <text x="180" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10⁻² (cs)</text>
+  <text x="260" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10⁻¹ (ds)</text>
+  <text x="340" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10⁰ (s)</text>
+  <text x="420" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10¹ (10s)</text>
+  <text x="500" y="320" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">10² (100s)</text>
+
+  <!-- y-axis (stimulus type) -->
+  <line x1="70" y1="60" x2="70" y2="300" stroke="#334155" stroke-width="1.6"/>
+  <polygon points="70,54 66,64 74,64" fill="#334155"/>
+
+  <!-- stimulus bands (colored ranges for each trigger) -->
+
+  <!-- MAGNETIC: 1 ms to 10 ms (10^-3 to 10^-2) -->
+  <rect x="85" y="80" width="95" height="45" fill="#1E40AF" opacity="0.15"/>
+  <text x="130" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E40AF">Magnetic</text>
+  <text x="130" y="124" text-anchor="middle" font-size="10" fill="#1E40AF">1-10 ms</text>
+  <text x="130" y="250" text-anchor="middle" font-size="9" fill="#1E40AF" font-style="italic">Surgical robots</text>
+  <text x="130" y="262" text-anchor="middle" font-size="9" fill="#1E40AF" font-style="italic">Fast catheters</text>
+
+  <!-- PHOTO: 0.1 s to 10 s (10^-1 to 10^1) -->
+  <rect x="250" y="135" width="170" height="45" fill="#E2570F" opacity="0.15"/>
+  <text x="335" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="#E2570F">Photoswitching</text>
+  <text x="335" y="179" text-anchor="middle" font-size="10" fill="#E2570F">0.1-10 s</text>
+  <text x="335" y="250" text-anchor="middle" font-size="9" fill="#E2570F" font-style="italic">Precise local control</text>
+  <text x="335" y="262" text-anchor="middle" font-size="9" fill="#E2570F" font-style="italic">Microfluidics</text>
+
+  <!-- THERMAL: 10 s to 1000 s (10^1 to 10^3) -->
+  <rect x="410" y="190" width="140" height="45" fill="#94a3b8" opacity="0.15"/>
+  <text x="480" y="220" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">Thermal</text>
+  <text x="480" y="234" text-anchor="middle" font-size="10" fill="#475569">10-1000 s</text>
+  <text x="480" y="250" text-anchor="middle" font-size="9" fill="#475569" font-style="italic">Simple implants</text>
+  <text x="480" y="262" text-anchor="middle" font-size="9" fill="#475569" font-style="italic">Body heat powered</text>
+
+  <!-- decade markers on time axis -->
+  <line x1="100" y1="295" x2="100" y2="305" stroke="#334155" stroke-width="1.2"/>
+  <line x1="180" y1="295" x2="180" y2="305" stroke="#334155" stroke-width="1.2"/>
+  <line x1="260" y1="295" x2="260" y2="305" stroke="#334155" stroke-width="1.2"/>
+  <line x1="340" y1="295" x2="340" y2="305" stroke="#334155" stroke-width="1.2"/>
+  <line x1="420" y1="295" x2="420" y2="305" stroke="#334155" stroke-width="1.2"/>
+  <line x1="500" y1="295" x2="500" y2="305" stroke="#334155" stroke-width="1.2"/>
+
+  <!-- legend box with key equations -->
+  <rect x="80" y="310" width="480" height="22" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" rx="2"/>
+  <text x="90" y="325" font-size="10" fill="#334155"><tspan font-weight="bold">t</tspan><tspan baseline-shift="sub" font-size="9">mag</tspan> ≈ η/(M<sub>s</sub>B) ≈ 0.6/B (mT) | <tspan font-weight="bold">t</tspan><tspan baseline-shift="sub" font-size="9">photo</tspan> ≈ 850/I (mW/cm²) | <tspan font-weight="bold">t</tspan><tspan baseline-shift="sub" font-size="9">therm</tspan> = τ<sub>thermal</sub></text>
+
+  <!-- note about separation -->
+  <text x="310" y="48" text-anchor="middle" font-size="11" fill="#475569" font-style="italic">Six orders of magnitude separate fastest from slowest</text>
+</svg>
