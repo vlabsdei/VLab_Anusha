@@ -1,0 +1,209 @@
+{
+ "version": 2,
+ "questions": [
+  {
+   "question": "Q1. Starting from the Flory-Rehner equation, what physical trade-off explains why Q increases as the solvent becomes more water-loving (lower χ)?",
+   "answers": {
+    "a": "Lower χ reduces elastic energy storage in the crosslinks, allowing the network to expand.",
+    "b": "Mixing entropy favours bringing water in; lower χ reduces the penalty for mixing, shifting equilibrium toward higher Q.",
+    "c": "Lower χ increases the crosslink density, which mechanically stretches the chains.",
+    "d": "Water solubility increases with lower χ, but the gel itself contracts."
+   },
+   "explanations": {
+    "a": "Incorrect - The elastic term v_p^(1/3) - v_p/2 does not vanish; it opposes swelling.",
+    "b": "Correct - The Flory-Rehner equation balances mixing (ln(1 - v_p) + χv_p²) against elastic restoring force; lower χ shifts the equilibrium toward lower v_p and thus higher Q = 1/v_p.",
+    "c": "Incorrect - χ is independent of crosslink density V₁/V_e.",
+    "d": "Incorrect - The gel swells, not contracts, when χ is lower."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q2. In the pH-triggered capsule, explain why the opening pH (p50) can be tuned by changing the pKa of the polyacid shell.",
+   "answers": {
+    "a": "The Henderson-Hasselbalch ionisation curve shifts; a higher pKa means the shell ionises at higher pH, so p50 moves deeper into the intestine.",
+    "b": "Higher pKa materials have more permanent charges that do not respond to pH.",
+    "c": "The pKa directly sets the Donnan osmotic pressure amplitude regardless of pH.",
+    "d": "Changing pKa alters the polymer chemical structure but not the pH sensitivity."
+   },
+   "explanations": {
+    "a": "Correct - α = 1 / (1 + 10^(pKa - pH)); PMAA (pKa 4.3) opens early in the stomach, while custom pKa 6.0 holds until deeper intestinal pH. Tuning pKa shifts when α climbs above ~50%, thus shifting p50.",
+    "b": "Incorrect - Weak polyacids always have pH-dependent ionisation.",
+    "c": "Incorrect - pKa determines the pH at which α = 0.5, not a constant pressure.",
+    "d": "Incorrect - pKa is an intrinsic chemical property that directly sets pH-ionisation coupling."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q3. Derive the actuation stroke ε for a body-temperature valve crossing the LCST, given Q_sw and Q_col.",
+   "answers": {
+    "a": "ε = Q_sw / Q_col",
+    "b": "ε = (Q_sw - Q_col) / Q_sw",
+    "c": "ε = 1 - (Q_col / Q_sw)^(1/3)",
+    "d": "ε = Q_sw^(1/3) - Q_col^(1/3)"
+   },
+   "explanations": {
+    "a": "Incorrect - This is the volume-change ratio, not the linear strain.",
+    "b": "Incorrect - This is a volume-normalised difference, not a linear strain.",
+    "c": "Correct - The linear actuation stroke scales as the cube root of the volume change: ε = 1 - (Q_col / Q_sw)^(1/3). A gel collapsing from Q_sw = 10 to Q_col = 1.3 gives ε ≈ 1 - 0.24 ≈ 0.76 or 76% linear contraction.",
+    "d": "Incorrect - The relationship is not additive in the cube-root terms."
+   },
+   "correctAnswer": "c",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q4. Why does PNIPAM collapse (lose water) above the LCST (~32°C) when most polymers swell on heating?",
+   "answers": {
+    "a": "PNIPAM has a very high glass transition temperature.",
+    "b": "At high temperature, PNIPAM-water hydrogen bonds break, making the polymer-polymer interactions energetically favourable, so water is expelled.",
+    "c": "The LCST is caused by melting of crystalline regions in the polymer backbone.",
+    "d": "PNIPAM undergoes a chemical reaction (decomposition) above 32°C."
+   },
+   "explanations": {
+    "a": "Incorrect - T_g and LCST are distinct phenomena.",
+    "b": "Correct - PNIPAM forms hydrogen bonds with water at low T; at the LCST, thermal energy breaks these bonds and polymer-polymer interactions become enthalpically favourable, causing water to be expelled and the gel to collapse.",
+    "c": "Incorrect - PNIPAM's LCST is not a crystallisation phenomenon.",
+    "d": "Incorrect - The LCST is a reversible phase transition, not chemical degradation."
+   },
+   "correctAnswer": "b",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q5. In Sub-Calc C, the full width at half maximum (FWHM) of dQ/dT around 32°C determines:",
+   "answers": {
+    "a": "How fast the valve returns to its cold state.",
+    "b": "Whether the gel is PNIPAM or a different material.",
+    "c": "The maximum swelling capacity of the gel.",
+    "d": "The sharpness of the temperature switch; a narrower FWHM means a more abrupt actuation over a small ΔT window."
+   },
+   "explanations": {
+    "a": "Incorrect - FWHM is not about the time scale of recovery.",
+    "b": "Incorrect - Material identity is orthogonal to the FWHM parameter.",
+    "c": "Incorrect - Q_sw is set independently by the material composition.",
+    "d": "Correct - The sigmoid width w in φ(T) = 1 / (1 + e^((T - 32)/w)) sets how steeply Q changes near 32°C. A small FWHM (narrow w) gives sharp switching; a large FWHM gives gradual change. A sharp switch is desirable for a valve that snaps decisively."
+   },
+   "correctAnswer": "d",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q6. Comparing Sub-Calc E release mechanisms: what distinguishes Fickian diffusion (n ≈ 0.5) from case-II transport (n = 1)?",
+   "answers": {
+    "a": "Fickian is passive molecule-by-molecule diffusion through the swollen network; case-II is driven by a sharp swelling front that steadily invades the implant at constant velocity.",
+    "b": "Fickian diffusion is faster; case-II is slower.",
+    "c": "Case-II transport occurs only in biological systems; Fickian only in vitro.",
+    "d": "They are identical processes with different names for historical reasons."
+   },
+   "explanations": {
+    "a": "Correct - Fickian diffusion (n = 0.5) is molecular diffusion through a static swollen matrix; case-II transport (n = 1) is zero-order release driven by a sharp moving swelling front. These produce different power-law exponents on a log-log plot of M_t / M_∞ vs. t.",
+    "b": "Incorrect - The speed depends on k and geometry; n alone does not determine rate.",
+    "c": "Incorrect - Both can occur in vivo and in vitro; the distinction is mechanistic, not environmental.",
+    "d": "Incorrect - They represent fundamentally different release mechanisms."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q7. A pH-triggered capsule with f_ion = 0.20 and β = 30 opens from Q ≈ 3.0 in the stomach (pH 1) to Q ≈ 9.0 at pH 7 (small intestine). At pH 8, it reaches Q ≈ 25 and ruptures. Which design parameter would you adjust to prevent rupture while maintaining release at pH 7?",
+   "answers": {
+    "a": "Increase the pKa to shift p50 higher, so the intestinal pH never produces excessive Q.",
+    "b": "Reduce the dry swelling Q_0 to limit the maximum possible Q.",
+    "c": "Lower f_ion or β to reduce the Donnan amplification, capping Q below the rupture threshold (~24).",
+    "d": "Increase the UV crosslinking to stiffen the shell material."
+   },
+   "explanations": {
+    "a": "Incorrect - Shifting p50 would delay release entirely, not prevent rupture.",
+    "b": "Incorrect - Q_0 is a material property (dry neutral swelling) difficult to adjust without reformulation.",
+    "c": "Correct - The swelling amplification Q = Q_0 (1 + β · α · f_ion)^(3/5) grows with either β or f_ion. Lowering one of these reduces the peak Q at high pH. A lower β means less Donnan amplification per unit charge, keeping the capsule intact.",
+    "d": "Incorrect - Crosslinking stiffens the shell but does not address the osmotic over-swelling."
+   },
+   "correctAnswer": "c",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q8. Why does the Korsmeyer-Peppas power law fail above 60% drug release?",
+   "answers": {
+    "a": "The drug degrades chemically at high concentration.",
+    "b": "Water osmotically re-enters the implant, reversing the release.",
+    "c": "The gel collapses and stops releasing drug entirely.",
+    "d": "Boundary effects and gel deformation dominate; the simple diffusion or swelling-front model no longer applies as the implant geometry changes."
+   },
+   "explanations": {
+    "a": "Incorrect - Chemical stability is independent of the diffusion model.",
+    "b": "Incorrect - Osmotic re-absorption is not why the model fails.",
+    "c": "Incorrect - Collapse does not necessarily stop release.",
+    "d": "Correct - The Korsmeyer-Peppas power law assumes a semi-infinite geometry with a sharp moving front or uniform diffusion field. Once >60% is released, boundary effects (implant edges, exhaustion, gel geometry change) violate these assumptions and the model breaks down."
+   },
+   "correctAnswer": "d",
+   "difficulty": "intermediate"
+  },
+  {
+   "question": "Q9. Native cartilage stiffness is approximately 0.1-1 MPa. Using E = 3G and G_swollen = G_dry · Q^(-1/3), which strategy is most effective for designing a gel scaffold that lands in this window?",
+   "answers": {
+    "a": "Choose any material; cartilage stiffness is independent of hydrogel composition.",
+    "b": "Start with a material whose G_dry is much higher than the target, then tune crosslink density to set Q so that Q^(-1/3) softening lands E in the cartilage window.",
+    "c": "Select a low-crosslink-density gel to achieve large Q, then rely on Q^(-1/3) softening to reach the target E.",
+    "d": "Use a very high crosslink density to maximise stiffness; cartilage-mimicking gels are always the stiffest hydrogels."
+   },
+   "explanations": {
+    "a": "Incorrect - E depends crucially on both G_dry and Q.",
+    "b": "Correct - Design proceeds by choosing materials with high enough G_dry, then tuning the UV cure dose (crosslink density) to control Q. A higher Q (more crosslinked) reduces Q^(-1/3) softening, raising E; a lower Q (less crosslinked) increases softening and lowers E. The optimum lands in [0.1, 1] MPa.",
+    "c": "Incorrect - A low-crosslink gel swells to large Q, but this over-softens it below cartilage stiffness; the strategy is backwards.",
+    "d": "Incorrect - Over-crosslinking can make the gel too stiff; the challenge is balancing stiffness against swelling and achieving the narrow tissue window."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q10. In Sub-Calc A, the gripper folds to θ_fold ≈ 90° · (Q^(1/3) - 1) but is capped at 180°. Below 30° the gripper stays essentially flat and fails to grasp. Given the four materials (Alginate χ=0.40, PEG-DA χ=0.45, PNIPAM χ=0.48, pHEMA χ=0.55), which material(s) would you select for a gripper that must fold to ~100°?",
+   "answers": {
+    "a": "PEG-DA or PNIPAM; pHEMA alone would over-fold at ~170°, while Alginate risks rupture from excessive Q.",
+    "b": "Only Alginate, because it has the lowest χ and thus the highest Q.",
+    "c": "Any material works equally well if crosslinking is adjusted.",
+    "d": "Only pHEMA, because the highest χ means the most controlled, moderate fold."
+   },
+   "explanations": {
+    "a": "Correct - From theory.md: Alginate (χ=0.40) swells so much that θ_fold ≈ 90° · (Q^(1/3) - 1) likely exceeds 160° and closes fully; pHEMA (χ=0.55) gives moderate Q and thus moderate fold (~170°). PEG-DA (χ=0.45) and PNIPAM (χ=0.48) land in an intermediate regime suitable for a ~100° target fold.",
+    "b": "Incorrect - Alginate's very high Q (from low χ) would drive θ_fold well past 100°, over-closing the gripper.",
+    "c": "Incorrect - While crosslinking affects Q, the material's χ sets the baseline swelling affinity; you cannot completely decouple them.",
+    "d": "Incorrect - pHEMA's high χ would give insufficiently high Q for 100°; experiment shows it folds ~170° (over-closed)."
+   },
+   "correctAnswer": "a",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q11. A stimuli-responsive hydrogel runs on two timescales. Which pairing is correct?",
+   "answers": {
+    "a": "Swelling follows Korsmeyer-Peppas; release follows Flory-Rehner.",
+    "b": "Swelling relaxes to the Flory-Rehner equilibrium Q; release follows Korsmeyer-Peppas M_t/M_inf = k t^n.",
+    "c": "Both are governed by the WLF equation.",
+    "d": "Both are instantaneous."
+   },
+   "explanations": {
+    "a": "Incorrect - the two laws are swapped.",
+    "b": "Correct - equilibrium swelling is Flory-Rehner; transport out is Korsmeyer-Peppas.",
+    "c": "Incorrect - WLF is a polymer relaxation law, not used here.",
+    "d": "Incorrect - both evolve over time."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  },
+  {
+   "question": "Q12. The scaffold/first-order release law ln M = ln M_0 - k t is measured on a real bench by which experiment?",
+   "answers": {
+    "a": "Redwood viscometer.",
+    "b": "Isothermal batch-reactor rate constant.",
+    "c": "Metre-bridge resistance.",
+    "d": "Torsional pendulum."
+   },
+   "explanations": {
+    "a": "Incorrect - that measures viscosity.",
+    "b": "Correct - the isothermal batch reactor gives the first-order rate constant from ln C_A = ln C_A0 - k t.",
+    "c": "Incorrect - that measures resistance.",
+    "d": "Incorrect - that measures rigidity modulus."
+   },
+   "correctAnswer": "b",
+   "difficulty": "advanced"
+  }
+ ]
+}
